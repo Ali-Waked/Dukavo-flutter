@@ -78,7 +78,7 @@ class Permissions {
   bool get canAssignConversations => can(PermissionSlugs.conversationsAssign);
   bool get canViewSettings => can(PermissionSlugs.settingsView);
   bool get canManageSettings => can(PermissionSlugs.settingsManage);
-  bool get canViewAnalytics => can(PermissionSlugs.profitView);
+  bool get canViewAnalytics => can(PermissionSlugs.dashboardView);
   bool get canViewStores => can(PermissionSlugs.storesView);
   bool get canManageStores => can(PermissionSlugs.storesManage);
   bool get canViewUsers => can(PermissionSlugs.usersView);
