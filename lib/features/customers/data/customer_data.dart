@@ -72,9 +72,13 @@ class CustomerModel {
 
   static CustomerAddress _address(Map<String, dynamic> json) => CustomerAddress(
         id: _int(json['id']),
-        label: json['label'] as String?,
-        line1: json['line1'] as String?,
-        line2: json['line2'] as String?,
+        // The API names the addressee `contact_name` and the type `type`;
+        // older snapshots used `label`/`line1`/`line2`, so both are accepted.
+        label: json['contact_name'] as String? ??
+            json['type'] as String? ??
+            json['label'] as String?,
+        line1: json['line_one'] as String? ?? json['line1'] as String?,
+        line2: json['line_two'] as String? ?? json['line2'] as String?,
         city: json['city'] as String?,
         state: json['state'] as String?,
         postalCode: json['postal_code'] as String?,
