@@ -49,8 +49,7 @@ Consequently:
 
 Run the commands in [Testing and quality checks](#10-testing-and-quality-checks)
 on a machine with Flutter before treating a build as verified. The exact
-delivery status is summarised in the final delivery report accompanying this
-repository.
+delivery status is summarised in [`docs/DELIVERY_REPORT.md`](docs/DELIVERY_REPORT.md).
 
 ## 2. Key features
 
