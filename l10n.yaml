@@ -1,0 +1,10 @@
+# Optional code generation. The app itself loads the same ARB files at runtime
+# through `AppLocalizations`, so a build never depends on `flutter gen-l10n`
+# having run. Keeping this file means `flutter gen-l10n` still works for teams
+# that prefer generated getters.
+arb-dir: lib/app/localization/l10n
+template-arb-file: app_en.arb
+output-localization-file: app_localizations_generated.dart
+output-dir: lib/app/localization/generated
+synthetic-package: false
+nullable-getter: false
