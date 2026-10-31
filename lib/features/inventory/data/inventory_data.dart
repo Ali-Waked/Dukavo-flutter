@@ -126,7 +126,7 @@ class InventoryMovementModel {
       id: InventoryModel._int(json['id']),
       inventoryId: InventoryModel._int(json['inventory_id']),
       type: '${json['type'] ?? 'adjustment'}',
-      typeLabel: '${json['type_label'] ?? json['type'] ?? ''}',
+      typeLabel: '${json['type_label'] ?? json['type'] ?? 'adjustment'}',
       quantity: InventoryModel._int(json['quantity']),
       direction: '${json['direction'] ?? 'in'}',
       balanceAfter: InventoryModel._int(json['balance_after']),
