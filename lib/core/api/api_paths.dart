@@ -29,7 +29,6 @@ class ApiPaths {
 
   // Tenant
   static const dashboard = '/tenant/dashboard';
-  static const dashboardSummary = '/tenant/dashboard/summary';
   static const dashboardRevenue = '/tenant/dashboard/revenue';
   static const dashboardTopProducts = '/tenant/dashboard/top-products';
   static const dashboardDeadStock = '/tenant/dashboard/dead-stock';
@@ -46,11 +45,6 @@ class ApiPaths {
   static const productSlugAvailability = '/tenant/products/slug-availability';
 
   static String product(String slug) => '/tenant/products/$slug';
-  static String productImages(String slug) => '/tenant/products/$slug/images';
-  static String productImage(String slug, int imageId) =>
-      '/tenant/products/$slug/images/$imageId';
-  static String productImagesReorder(String slug) =>
-      '/tenant/products/$slug/images/reorder';
 
   static const orders = '/tenant/orders';
   static String order(String orderNumber) => '/tenant/orders/$orderNumber';
@@ -65,8 +59,6 @@ class ApiPaths {
   static const inventoryLowStock = '/tenant/inventory/low-stock';
   static const inventoryAdjust = '/tenant/inventory/adjust';
   static const inventoryReceive = '/tenant/inventory/receive';
-  static const inventoryTransfers = '/tenant/inventory/transfers';
-  static const inventoryIntelligence = '/tenant/inventory/intelligence';
   static String inventoryMovements(int inventoryId) =>
       '/tenant/inventory/$inventoryId/movements';
 
@@ -81,6 +73,4 @@ class ApiPaths {
       '/tenant/conversations/$id/templates';
   static String conversationRead(int id) => '/tenant/conversations/$id/read';
   static String conversationAssign(int id) => '/tenant/conversations/$id/assign';
-  static String conversationMessageMedia(int conversationId, int messageId) =>
-      '/tenant/conversations/$conversationId/messages/$messageId/media';
 }
