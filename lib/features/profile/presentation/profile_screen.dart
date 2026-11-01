@@ -290,9 +290,7 @@ class _SessionsCard extends ConsumerWidget {
               ListTile(
                 contentPadding: EdgeInsets.zero,
                 leading: Icon(
-                  session.isCurrent
-                      ? Icons.phone_iphone
-                      : Icons.devices_other,
+                  session.isCurrent ? Icons.phone_iphone : Icons.devices_other,
                 ),
                 title: Text(session.name),
                 subtitle: Text(
@@ -426,6 +424,7 @@ class _ProfileEditSheetState extends State<_ProfileEditSheet> {
               ),
               const SizedBox(height: 10),
               DropdownButtonFormField<String>(
+                // ignore: deprecated_member_use
                 value: _locale,
                 decoration: InputDecoration(labelText: context.tr('locale')),
                 items: [

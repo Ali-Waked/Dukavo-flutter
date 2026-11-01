@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import '../../../app/localization/app_localizations.dart';
 import '../../../app/router/route_paths.dart';
 import '../../../app/theme/theme_controller.dart';
-import '../../../core/auth/permissions.dart';
 import '../../../core/widgets/app_widgets.dart';
 import '../../auth/application/auth_controller.dart';
 import '../../profile/application/profile_controller.dart';
@@ -170,9 +169,8 @@ class _AppearanceCard extends ConsumerWidget {
           ),
         ],
         selected: {mode},
-        onSelectionChanged: (selection) => ref
-            .read(themeControllerProvider.notifier)
-            .setMode(selection.first),
+        onSelectionChanged: (selection) =>
+            ref.read(themeControllerProvider.notifier).setMode(selection.first),
       ),
     );
   }
@@ -206,7 +204,8 @@ class _LanguageCard extends ConsumerWidget {
         selected: {code},
         onSelectionChanged: (selection) => ref
             .read(localeControllerProvider.notifier)
-            .setLocale(selection.first == 'system' ? null : Locale(selection.first)),
+            .setLocale(
+                selection.first == 'system' ? null : Locale(selection.first)),
       ),
     );
   }
@@ -306,6 +305,7 @@ class _WorkspaceFormState extends ConsumerState<_WorkspaceForm> {
             ),
             const SizedBox(height: 10),
             DropdownButtonFormField<String>(
+              // ignore: deprecated_member_use
               value: _currency,
               decoration: InputDecoration(labelText: context.tr('currency')),
               items: [
@@ -318,6 +318,7 @@ class _WorkspaceFormState extends ConsumerState<_WorkspaceForm> {
             ),
             const SizedBox(height: 10),
             DropdownButtonFormField<String>(
+              // ignore: deprecated_member_use
               value: _timezone,
               decoration: InputDecoration(labelText: context.tr('timezone')),
               items: [
@@ -330,6 +331,7 @@ class _WorkspaceFormState extends ConsumerState<_WorkspaceForm> {
             ),
             const SizedBox(height: 10),
             DropdownButtonFormField<String>(
+              // ignore: deprecated_member_use
               value: _locale,
               decoration: InputDecoration(labelText: context.tr('locale')),
               items: [
@@ -411,8 +413,8 @@ class _NotificationsCard extends ConsumerWidget {
       ),
       data: (data) => _NotificationSwitches(
         preferences: data,
-        channels: channels.valueOrNull ??
-            const <String, NotificationChannelState>{},
+        channels:
+            channels.valueOrNull ?? const <String, NotificationChannelState>{},
       ),
     );
   }

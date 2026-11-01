@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../app/localization/app_localizations.dart';
-import '../../../core/auth/permissions.dart';
 import '../../../core/widgets/app_widgets.dart';
 import '../../auth/application/auth_controller.dart';
 import '../application/category_controller.dart';
@@ -109,7 +108,8 @@ class CategoriesScreen extends ConsumerWidget {
     WidgetRef ref, {
     Category? category,
   }) async {
-    final tree = ref.read(categoryTreeProvider).valueOrNull ?? const <Category>[];
+    final tree =
+        ref.read(categoryTreeProvider).valueOrNull ?? const <Category>[];
     final flattened = Category.flatten(tree)
         .where((entry) => entry.id != category?.id)
         .toList();
@@ -181,7 +181,9 @@ class _CategoryNode extends StatelessWidget {
           ),
           child: ListTile(
             leading: Icon(
-              depth == 0 ? Icons.folder_outlined : Icons.subdirectory_arrow_right,
+              depth == 0
+                  ? Icons.folder_outlined
+                  : Icons.subdirectory_arrow_right,
               color: category.isActive
                   ? theme.colorScheme.primary
                   : theme.colorScheme.onSurfaceVariant,
@@ -304,6 +306,7 @@ class _CategoryFormSheetState extends State<_CategoryFormSheet> {
               ),
               const SizedBox(height: 12),
               DropdownButtonFormField<int?>(
+                // ignore: deprecated_member_use
                 value: _parentId,
                 decoration: InputDecoration(
                   labelText: context.tr('parentCategory'),

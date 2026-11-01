@@ -7,7 +7,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/localization/app_localizations.dart';
 import '../../../app/router/route_paths.dart';
-import '../../../core/auth/permissions.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/widgets/app_widgets.dart';
 import '../../auth/application/auth_controller.dart';
@@ -60,7 +59,7 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
         actions: [
           IconButton(
             tooltip: context.tr('refresh'),
-            onPressed: () => notifier.reload(),
+            onPressed: notifier.reload,
             icon: const Icon(Icons.refresh),
           ),
         ],
@@ -80,7 +79,7 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
               controller: _search,
               hint: context.tr('searchProducts'),
               onChanged: _onSearch,
-              onSubmitted: (value) => notifier.setSearch(value),
+              onSubmitted: notifier.setSearch,
             ),
           ),
           SizedBox(
@@ -247,7 +246,7 @@ class _StockChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (stock.available <= 0) {
-      return StatusChip(status: 'out_of_stock', compact: true);
+      return const StatusChip(status: 'out_of_stock', compact: true);
     }
     return StatusChip(
       status: stock.available <= 5 ? 'low_stock' : 'in_stock',

@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/localization/app_localizations.dart';
 import '../../../app/router/route_paths.dart';
-import '../../../core/auth/permissions.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/utils/validators.dart';
 import '../../../core/widgets/app_widgets.dart';
@@ -249,7 +248,8 @@ class CustomerDetailScreen extends ConsumerWidget {
                 ),
               ),
             ],
-            if (customer.notes != null && customer.notes!.trim().isNotEmpty) ...[
+            if (customer.notes != null &&
+                customer.notes!.trim().isNotEmpty) ...[
               const SizedBox(height: 12),
               SectionCard(
                 title: context.tr('notes'),
@@ -409,6 +409,7 @@ class _CustomerFormScreenState extends ConsumerState<CustomerFormScreen> {
                         ),
                         const SizedBox(height: 12),
                         DropdownButtonFormField<String>(
+                          // ignore: deprecated_member_use
                           value: _status,
                           decoration: InputDecoration(
                             labelText: context.tr('customerStatus'),

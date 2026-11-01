@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../app/localization/app_localizations.dart';
 import '../../../core/utils/formatters.dart';
-import '../../../core/utils/validators.dart';
 import '../../../core/widgets/app_widgets.dart';
 import '../application/auth_controller.dart';
 import '../domain/auth_domain.dart';
@@ -33,7 +32,8 @@ class _TenantSetupScreenState extends ConsumerState<TenantSetupScreen> {
     FocusScope.of(context).unfocus();
     await ref.read(authControllerProvider.notifier).provisionTenant(
           name: _name.text.trim(),
-          storeName: _storeName.text.trim().isEmpty ? null : _storeName.text.trim(),
+          storeName:
+              _storeName.text.trim().isEmpty ? null : _storeName.text.trim(),
         );
   }
 
@@ -41,9 +41,8 @@ class _TenantSetupScreenState extends ConsumerState<TenantSetupScreen> {
   Widget build(BuildContext context) {
     final auth = ref.watch(authControllerProvider);
     final theme = Theme.of(context);
-    final error = auth.errorKey != null
-        ? context.tr(auth.errorKey!)
-        : auth.errorMessage;
+    final error =
+        auth.errorKey != null ? context.tr(auth.errorKey!) : auth.errorMessage;
 
     return Scaffold(
       body: SafeArea(
@@ -126,7 +125,9 @@ class _TenantSetupScreenState extends ConsumerState<TenantSetupScreen> {
                       variant: AppButtonVariant.text,
                       onPressed: auth.isSubmitting
                           ? null
-                          : () => ref.read(authControllerProvider.notifier).logout(),
+                          : () => ref
+                              .read(authControllerProvider.notifier)
+                              .logout(),
                     ),
                   ],
                 ),
@@ -186,8 +187,9 @@ Future<void> showTenantSwitcher(BuildContext context, WidgetRef ref) {
                           leading: CircleAvatar(
                             backgroundColor:
                                 Theme.of(context).colorScheme.primaryContainer,
-                            foregroundColor:
-                                Theme.of(context).colorScheme.onPrimaryContainer,
+                            foregroundColor: Theme.of(context)
+                                .colorScheme
+                                .onPrimaryContainer,
                             child: Text(Formatters.initials(tenant.name)),
                           ),
                           title: Text(tenant.name),

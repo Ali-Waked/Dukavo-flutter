@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/localization/app_localizations.dart';
 import '../../../app/router/route_paths.dart';
-import '../../../core/auth/permissions.dart';
 import '../../auth/application/auth_controller.dart';
 import '../../notifications/application/notification_controller.dart';
 

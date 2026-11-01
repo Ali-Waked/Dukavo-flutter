@@ -99,9 +99,7 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
 
     try {
       if (_isEditing) {
-        await ref
-            .read(productActionsProvider)
-            .update(widget.slug!, draft);
+        await ref.read(productActionsProvider).update(widget.slug!, draft);
       } else {
         await ref.read(productActionsProvider).create(draft);
       }
@@ -121,8 +119,8 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
   @override
   Widget build(BuildContext context) {
     final categories = ref.watch(categoriesProvider);
-    final categoryOptions =
-        categories.maybeWhen(data: Category.flatten, orElse: () => const <Category>[]);
+    final categoryOptions = categories.maybeWhen(
+        data: Category.flatten, orElse: () => const <Category>[]);
 
     return Scaffold(
       appBar: AppBar(
@@ -167,7 +165,8 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
                                 controller: _price,
                                 label: context.tr('price'),
                                 prefixIcon: Icons.sell_outlined,
-                                keyboardType: const TextInputType.numberWithOptions(
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(
                                   decimal: true,
                                 ),
                                 textInputAction: TextInputAction.next,
@@ -180,7 +179,8 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
                                 controller: _cost,
                                 label: context.tr('cost'),
                                 prefixIcon: Icons.payments_outlined,
-                                keyboardType: const TextInputType.numberWithOptions(
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(
                                   decimal: true,
                                 ),
                                 textInputAction: TextInputAction.next,
@@ -191,10 +191,12 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
                         ),
                         const SizedBox(height: 12),
                         DropdownButtonFormField<int?>(
+                          // ignore: deprecated_member_use
                           value: _categoryId,
                           decoration: InputDecoration(
                             labelText: context.tr('category'),
-                            prefixIcon: const Icon(Icons.category_outlined, size: 20),
+                            prefixIcon:
+                                const Icon(Icons.category_outlined, size: 20),
                           ),
                           items: [
                             DropdownMenuItem<int?>(
@@ -215,6 +217,7 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
                         ),
                         const SizedBox(height: 12),
                         DropdownButtonFormField<String>(
+                          // ignore: deprecated_member_use
                           value: _status,
                           decoration: InputDecoration(
                             labelText: context.tr('productStatus'),

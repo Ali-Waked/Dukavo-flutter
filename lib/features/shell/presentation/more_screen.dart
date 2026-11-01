@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/localization/app_localizations.dart';
 import '../../../app/router/route_paths.dart';
-import '../../../core/auth/permissions.dart';
 import '../../../core/widgets/app_widgets.dart';
 import '../../auth/application/auth_controller.dart';
 import '../../auth/presentation/tenant_screens.dart';
@@ -67,7 +66,7 @@ class MoreScreen extends ConsumerWidget {
           ),
         ],
       ),
-      _MoreGroup(
+      const _MoreGroup(
         titleKey: 'account',
         entries: [
           _MoreEntry(
@@ -135,7 +134,8 @@ class MoreScreen extends ConsumerWidget {
             child: ListTile(
               leading: const Icon(Icons.storefront_outlined),
               title: Text(context.tr('workspace')),
-              subtitle: Text(session?.activeTenant?.name ?? context.tr('noStore')),
+              subtitle:
+                  Text(session?.activeTenant?.name ?? context.tr('noStore')),
               trailing: const Icon(Icons.chevron_right),
               onTap: () => showTenantSwitcher(context, ref),
             ),

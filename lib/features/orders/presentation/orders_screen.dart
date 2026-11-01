@@ -7,9 +7,7 @@ import 'package:go_router/go_router.dart';
 import '../../../app/localization/app_localizations.dart';
 import '../../../app/router/route_paths.dart';
 import '../../../app/theme/app_colors.dart';
-import '../../../core/auth/permissions.dart';
 import '../../../core/utils/formatters.dart';
-import '../../../core/utils/validators.dart';
 import '../../../core/widgets/app_widgets.dart';
 import '../../auth/application/auth_controller.dart';
 import '../../customers/application/customer_controller.dart';
@@ -723,10 +721,10 @@ class _TransitionSheetState extends State<_TransitionSheet> {
 }
 
 class _OrderLineDraft {
-  _OrderLineDraft({required this.option, this.quantity = 1});
+  _OrderLineDraft({required this.option});
 
   final ProductOption option;
-  int quantity;
+  int quantity = 1;
 
   num get lineTotal => option.variant.price * quantity;
 }
@@ -803,7 +801,8 @@ class _OrderFormScreenState extends ConsumerState<OrderFormScreen> {
                         contentPadding: EdgeInsets.zero,
                         leading: AppAvatar(name: _customer!.name, size: 40),
                         title: Text(_customer!.name),
-                        subtitle: Text(_customer!.phone ?? _customer!.email ?? '—'),
+                        subtitle:
+                            Text(_customer!.phone ?? _customer!.email ?? '—'),
                         trailing: IconButton(
                           tooltip: context.tr('clear'),
                           onPressed: () => setState(() => _customer = null),
@@ -857,7 +856,8 @@ class _OrderFormScreenState extends ConsumerState<OrderFormScreen> {
                               onQuantityChanged: (value) => setState(
                                 () => _lines[i].quantity = value,
                               ),
-                              onRemove: () => setState(() => _lines.removeAt(i)),
+                              onRemove: () =>
+                                  setState(() => _lines.removeAt(i)),
                             ),
                         ],
                       ),
@@ -1146,8 +1146,12 @@ class _ProductPickerState extends State<_ProductPicker> {
     final filtered = widget.options
         .where(
           (option) =>
-              option.product.name.toLowerCase().contains(_query.toLowerCase()) ||
-              option.variant.name.toLowerCase().contains(_query.toLowerCase()) ||
+              option.product.name
+                  .toLowerCase()
+                  .contains(_query.toLowerCase()) ||
+              option.variant.name
+                  .toLowerCase()
+                  .contains(_query.toLowerCase()) ||
               (option.variant.sku ?? '')
                   .toLowerCase()
                   .contains(_query.toLowerCase()),

@@ -216,7 +216,7 @@ class _DashboardBody extends ConsumerWidget {
           child: bundle.deadStock.isEmpty
               ? Row(
                   children: [
-                    Icon(Icons.check_circle_outline,
+                    const Icon(Icons.check_circle_outline,
                         color: AppColors.success, size: 20),
                     const SizedBox(width: 10),
                     Expanded(
@@ -251,8 +251,8 @@ class _DashboardBody extends ConsumerWidget {
                                   if (item.sku != null)
                                     Text(
                                       item.sku!,
-                                      style: theme.textTheme.labelSmall
-                                          ?.copyWith(
+                                      style:
+                                          theme.textTheme.labelSmall?.copyWith(
                                         color:
                                             theme.colorScheme.onSurfaceVariant,
                                       ),
@@ -373,7 +373,8 @@ class _RevenueHero extends StatelessWidget {
               child: CustomPaint(
                 size: Size.infinite,
                 painter: _SparklinePainter(
-                  values: revenue.map((point) => point.total.toDouble()).toList(),
+                  values:
+                      revenue.map((point) => point.total.toDouble()).toList(),
                 ),
               ),
             ),
@@ -451,7 +452,8 @@ class _SparklinePainter extends CustomPainter {
 
     final path = Path();
     for (var i = 0; i < values.length; i++) {
-      final x = values.length == 1 ? 0.0 : (i / (values.length - 1)) * size.width;
+      final x =
+          values.length == 1 ? 0.0 : (i / (values.length - 1)) * size.width;
       final y = size.height -
           ((values[i] - minValue) / range) * (size.height * 0.85) -
           size.height * 0.075;

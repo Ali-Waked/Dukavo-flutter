@@ -63,8 +63,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
           ),
           IconButton(
             tooltip: context.tr('refresh'),
-            onPressed: () =>
-                ref.invalidate(analyticsOverviewProvider(_query)),
+            onPressed: () => ref.invalidate(analyticsOverviewProvider(_query)),
             icon: const Icon(Icons.refresh),
           ),
         ],
@@ -262,6 +261,7 @@ class _Filters extends StatelessWidget {
       children: [
         if (stores.isNotEmpty)
           DropdownButtonFormField<int?>(
+            // ignore: deprecated_member_use
             value: storeId,
             decoration: InputDecoration(labelText: context.tr('storeFilter')),
             items: [
@@ -486,7 +486,8 @@ class _TrendPainter extends CustomPainter {
 
     final maxValue = values.reduce((a, b) => a > b ? a : b);
     final ceiling = maxValue <= 0 ? 1 : maxValue.toDouble();
-    final step = values.length == 1 ? size.width : size.width / (values.length - 1);
+    final step =
+        values.length == 1 ? size.width : size.width / (values.length - 1);
 
     final line = Path();
     final fill = Path()..moveTo(0, size.height);

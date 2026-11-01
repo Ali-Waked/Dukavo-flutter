@@ -7,7 +7,6 @@ import 'package:go_router/go_router.dart';
 import '../../../app/localization/app_localizations.dart';
 import '../../../app/router/route_paths.dart';
 import '../../../app/theme/app_colors.dart';
-import '../../../core/auth/permissions.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/widgets/app_widgets.dart';
 import '../../auth/application/auth_controller.dart';
@@ -34,7 +33,8 @@ class ConversationsScreen extends ConsumerStatefulWidget {
   const ConversationsScreen({super.key});
 
   @override
-  ConsumerState<ConversationsScreen> createState() => _ConversationsScreenState();
+  ConsumerState<ConversationsScreen> createState() =>
+      _ConversationsScreenState();
 }
 
 class _ConversationsScreenState extends ConsumerState<ConversationsScreen> {
@@ -324,7 +324,8 @@ class _ConversationTile extends StatelessWidget {
                         ),
                         Text(
                           Formatters.relative(
-                            conversation.lastMessageAt ?? conversation.createdAt,
+                            conversation.lastMessageAt ??
+                                conversation.createdAt,
                           ),
                           style: theme.textTheme.labelSmall?.copyWith(
                             color: theme.colorScheme.onSurfaceVariant,
@@ -341,9 +342,8 @@ class _ConversationTile extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: theme.colorScheme.onSurfaceVariant,
-                        fontStyle: last?.isInternal == true
-                            ? FontStyle.italic
-                            : null,
+                        fontStyle:
+                            last?.isInternal == true ? FontStyle.italic : null,
                       ),
                     ),
                     const SizedBox(height: 6),
@@ -493,8 +493,8 @@ class _ConversationThreadScreenState
                     : ListView.builder(
                         reverse: true,
                         padding: const EdgeInsets.fromLTRB(12, 12, 12, 8),
-                        itemCount: messages.items.length +
-                            (messages.hasMore ? 1 : 0),
+                        itemCount:
+                            messages.items.length + (messages.hasMore ? 1 : 0),
                         itemBuilder: (context, index) {
                           if (index >= messages.items.length) {
                             return Center(
@@ -575,9 +575,7 @@ class _ConversationThreadScreenState
 
   Future<void> _retry(ConversationMessage message) async {
     try {
-      await ref
-          .read(conversationActionsProvider)
-          .retry(widget.id, message.id);
+      await ref.read(conversationActionsProvider).retry(widget.id, message.id);
       if (!mounted) return;
       AppSnack.show(context, context.tr('messageSent'));
     } catch (error) {
@@ -628,7 +626,9 @@ class _ConversationThreadScreenState
 
   Future<void> _changeStatus(String status) async {
     try {
-      await ref.read(conversationActionsProvider).updateStatus(widget.id, status);
+      await ref
+          .read(conversationActionsProvider)
+          .updateStatus(widget.id, status);
       if (!mounted) return;
       AppSnack.show(context, context.tr('statusUpdated'));
     } catch (error) {
@@ -714,7 +714,8 @@ class _ThreadHeader extends StatelessWidget {
               padding: const EdgeInsets.only(top: 6),
               child: Row(
                 children: [
-                  const Icon(Icons.lock_clock, size: 14, color: AppColors.warning),
+                  const Icon(Icons.lock_clock,
+                      size: 14, color: AppColors.warning),
                   const SizedBox(width: 4),
                   Expanded(
                     child: Text(
@@ -782,7 +783,9 @@ class _MessageBubble extends StatelessWidget {
     final textColor = inbound ? scheme.onSurface : scheme.onPrimary;
 
     return Align(
-      alignment: inbound ? AlignmentDirectional.centerStart : AlignmentDirectional.centerEnd,
+      alignment: inbound
+          ? AlignmentDirectional.centerStart
+          : AlignmentDirectional.centerEnd,
       child: Container(
         constraints: BoxConstraints(
           maxWidth: MediaQuery.sizeOf(context).width * 0.78,
@@ -984,9 +987,8 @@ class _Composer extends StatelessWidget {
                 const SizedBox(width: 8),
                 IconButton.filled(
                   tooltip: context.tr('sendMessage'),
-                  onPressed: canReply && !requiresTemplate && !sending
-                      ? onSend
-                      : null,
+                  onPressed:
+                      canReply && !requiresTemplate && !sending ? onSend : null,
                   icon: sending
                       ? const SizedBox(
                           width: 18,

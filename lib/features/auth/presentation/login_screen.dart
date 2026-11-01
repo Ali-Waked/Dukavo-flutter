@@ -167,8 +167,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       onPressed: _submit,
                     ),
                     const SizedBox(height: 28),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    Wrap(
+                      alignment: WrapAlignment.center,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      spacing: 6,
                       children: [
                         Text(
                           'Dukavo',
@@ -177,7 +179,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        const SizedBox(width: 6),
                         Container(
                           width: 6,
                           height: 6,
@@ -186,9 +187,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             shape: BoxShape.circle,
                           ),
                         ),
-                        const SizedBox(width: 6),
                         Text(
                           context.tr('appTagline'),
+                          textAlign: TextAlign.center,
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: scheme.onSurfaceVariant,
                           ),

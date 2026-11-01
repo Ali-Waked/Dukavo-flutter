@@ -6,12 +6,10 @@ import 'package:go_router/go_router.dart';
 import '../../../app/localization/app_localizations.dart';
 import '../../../app/router/route_paths.dart';
 import '../../../app/theme/app_colors.dart';
-import '../../../core/auth/permissions.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/widgets/app_widgets.dart';
 import '../../auth/application/auth_controller.dart';
 import '../application/product_controller.dart';
-import '../domain/product_domain.dart';
 
 class ProductDetailScreen extends ConsumerWidget {
   const ProductDetailScreen({super.key, required this.slug});
@@ -113,14 +111,12 @@ class ProductDetailScreen extends ConsumerWidget {
                         const SizedBox(height: 4),
                         Text(
                           product.sku!,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodySmall
-                              ?.copyWith(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onSurfaceVariant,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurfaceVariant,
+                                  ),
                         ),
                       ],
                     ],
@@ -177,7 +173,9 @@ class ProductDetailScreen extends ConsumerWidget {
                   ),
                   KeyValueRow(
                     label: context.tr('tax'),
-                    value: product.isTaxable ? context.tr('yes') : context.tr('no'),
+                    value: product.isTaxable
+                        ? context.tr('yes')
+                        : context.tr('no'),
                   ),
                   KeyValueRow(
                     label: context.tr('createdAt'),
