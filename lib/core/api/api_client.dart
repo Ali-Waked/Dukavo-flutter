@@ -283,7 +283,7 @@ class ApiClient {
       if (status == 419 && csrf && retryOnCsrfFailure) {
         _csrfInFlight = null;
         await primeCsrf();
-        return _send(
+        return await _send(
           method,
           path,
           body: body,

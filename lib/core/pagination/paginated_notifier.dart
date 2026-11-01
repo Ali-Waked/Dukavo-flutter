@@ -53,7 +53,7 @@ class PaginatedState<T> {
 /// Subclasses only implement [fetchPage]; filters and search text live in the
 /// subclass and call [reload] when they change.
 abstract class PaginatedNotifier<T> extends StateNotifier<PaginatedState<T>> {
-  PaginatedNotifier() : super(const PaginatedState<T>());
+  PaginatedNotifier() : super(PaginatedState<T>());
 
   Future<Paginated<T>> fetchPage(int page);
 

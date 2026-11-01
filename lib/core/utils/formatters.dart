@@ -14,7 +14,7 @@ class Formatters {
     final code = currencyCode.isEmpty ? 'USD' : currencyCode.toUpperCase();
     try {
       final format = compact
-          ? NumberFormat.compactCurrency(name: code, locale: locale)
+          ? NumberFormat.compactSimpleCurrency(name: code, locale: locale)
           : NumberFormat.simpleCurrency(name: code, locale: locale);
       return format.format(value);
     } catch (_) {
@@ -35,11 +35,11 @@ class Formatters {
 
   static String percent(num value, {String? locale, int decimals = 1}) {
     try {
-      return NumberFormat.decimalPatternDigits(
+      final formatted = NumberFormat.decimalPatternDigits(
         locale: locale,
         decimalDigits: decimals,
-      ).format(value) +
-          '%';
+      ).format(value);
+      return '$formatted%';
     } catch (_) {
       return '${value.toStringAsFixed(decimals)}%';
     }

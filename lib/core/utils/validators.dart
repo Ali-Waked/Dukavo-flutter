@@ -21,7 +21,7 @@ class Validators {
     return null;
   }
 
-  static String? minLength(int length) {
+  static String? Function(String?) minLength(int length) {
     return (String? value) {
       if (value == null || value.length < length) {
         return 'Use at least $length characters.';
