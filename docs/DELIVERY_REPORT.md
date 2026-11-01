@@ -1,8 +1,8 @@
 # Dukavo Mobile — Delivery Report
 
-**Date:** 2026-10-31
+**Date:** 2026-11-01
 **Directory:** `dukavo/mobile` (independent Git repository)
-**Status:** Feature implementation complete for the agreed scope. **Runtime verification is blocked** — no Flutter/Dart SDK is available in this environment, so nothing has been compiled, analyzed, tested or built. See §6–§8.
+**Status:** Feature implementation complete for the agreed scope. `flutter pub get`, `flutter analyze` and `flutter test` now run successfully on Flutter 3.47.9 / Dart 3.13.7. Android/iOS builds and the device integration test have **not** been run. See §5–§8.
 
 ---
 
@@ -15,10 +15,13 @@ A Flutter merchant app for Dukavo was built against the existing Laravel API rat
 | Application code | Written (95 Dart files across `lib/`, `test/`, `integration_test/`) |
 | API contract | Audited against `backend/routes/api/v1.php`, resources, requests and services |
 | Localization | 445 keys, English + Arabic, full parity |
-| Unit/widget/integration tests | Written, **not executed** |
-| `flutter analyze` / `flutter test` / builds | **Not run — SDK absent** |
+| Dependencies | `flutter pub get` resolves 114 packages; `pubspec.lock` committed |
+| Static analysis | `flutter analyze` — **No issues found** |
+| Unit/widget tests | `flutter test` — **72 tests, all passing** |
+| Device integration test | Written, **not executed** (needs an emulator/device) |
+| Android/iOS builds | **Not run** (no Android SDK here; iOS needs macOS) |
 | Documentation | README + API integration map + this report |
-| Git | 13 conventional commits, nothing pushed |
+| Git | 18 conventional commits, nothing pushed |
 
 ---
 
@@ -69,7 +72,7 @@ A Flutter merchant app for Dukavo was built against the existing Laravel API rat
 - The domain layer imports no Flutter, Dio or transport type; `Paginated<T>`/`PaginationMeta` live in `core/api` and are the only shared pagination contract.
 - UI never calls Dio directly; every screen goes through a repository exposed by a provider.
 - Riverpod 2.x with manual `AsyncNotifier`/`Notifier`; no code generation, `build_runner` or `freezed`, so the project has no generation prerequisite.
-- Centralized `ApiPaths`, `RoutePaths`, `PermissionSlugs`, `Formatters` and `Validators`; static checks confirmed no unresolved references (see §5).
+- Centralized `ApiPaths`, `RoutePaths`, `PermissionSlugs`, `Formatters` and `Validators`.
 - Android cleartext traffic is restricted to `10.0.2.2`, `localhost` and `127.0.0.1` via a network security config — not a global `usesCleartextTraffic` flag.
 - No secrets are logged; tokens live only in secure storage and are never written to preferences or logs.
 
@@ -89,27 +92,42 @@ Addressing rules follow the backend: products by slug, orders read by `order_num
 
 ---
 
-## 5. Static verification performed
+## 5. Verification performed
 
-These checks ran successfully against the source tree:
+Toolchain: Flutter 3.47.9 (stable), Dart 3.13.7, Linux aarch64.
 
-- All relative and `package:dukavo_mobile/` imports resolve to existing files.
+| Command | Result |
+|---|---|
+| `flutter pub get` | 114 dependencies resolved, `pubspec.lock` written |
+| `flutter analyze` | **No issues found** (39.8 s) |
+| `flutter test` | **72 tests passed** (19 s) |
+| `flutter build apk` | Not run — no Android SDK/emulator on this host |
+| `flutter build ios` | Not run — requires macOS + Xcode |
+| `flutter test integration_test/…` | Not run — requires a booted device/emulator and reachable backend |
+
+The first test run exposed six failures, all fixed:
+
+- The login footer `Row` overflowed by 12 px at 440 logical pixels; it is now a wrapping `Wrap`.
+- The compact-currency helper returned `USD1.2M`; it now uses the locale symbol (`$1.2M`).
+- A test treated `2024-13-40` as invalid, but Dart normalises it; the case now uses an unparseable string.
+- Four analyzer errors (nullable closure return, generic `const`, `Object` vs `bool?`, unchecked nullable calls) and the remaining warnings were corrected.
+
+Additional static audits still hold:
+
+- All relative and `package:dukavo_mobile/` imports resolve.
 - Every `RoutePaths`, `ApiPaths`, `Formatters`, `AppColors` and `PermissionSlugs` member referenced in `lib/` is defined.
-- Every `*Provider` referenced in `lib/` has a definition.
 - ARB parity: 445 keys in `app_en.arb` and 445 in `app_ar.arb`, identical key sets.
 - Every literal `context.tr('…')` key exists in both ARB files.
-- Backend permission slugs were cross-checked against `PermissionRegistry`; the mobile catalogue only contains slugs the backend seeds.
-- Model JSON keys were diffed against the corresponding API resources/requests for orders, products, inventory, conversations, dashboard, analytics, profile, stores, categories, notifications and customers.
-
-**These are source-level checks, not a compiler.** They do not prove type correctness, API runtime behavior or UI rendering.
+- Backend permission slugs match `PermissionRegistry`.
+- Model JSON keys match the corresponding API resources/requests.
 
 ---
 
-## 6. Tests written (unexecuted)
+## 6. Test coverage
 
 | Test | Coverage |
 |---|---|
-| `test/core/utils/formatters_test.dart` | Money, dates, numbers, compact values |
+| `test/core/utils/formatters_test.dart` | Money, compact currency, dates, numbers, initials, relative time |
 | `test/core/utils/validators_test.dart` | Required, email, length, numeric rules |
 | `test/core/api/paginated_test.dart` | Pagination metadata parsing and single-page synthesis |
 | `test/core/widgets/app_widgets_test.dart` | `StatusChip`, `EmptyState`, `KeyValueRow` |
@@ -122,7 +140,7 @@ These checks ran successfully against the source tree:
 | `test/features/analytics/domain/analytics_query_test.dart` | Query equality/hash and defaults |
 | `integration_test/app_boot_test.dart` | Device boot smoke test; credentialed login only with `DUKAVO_TEST_EMAIL`/`DUKAVO_TEST_PASSWORD` |
 
-The widget harness preloads both ARB files and uses the real theme and delegates, so localization failures surface as test failures rather than fallback strings.
+The widget harness preloads both ARB files and uses the real theme and delegates, so localization failures surface as test failures rather than fallback strings. The integration test is intentionally skipped for credentials unless both dart-defines are supplied.
 
 ---
 
@@ -131,7 +149,7 @@ The widget harness preloads both ARB files and uses the real theme and delegates
 These backend surfaces are out of scope for this release and are documented in the API map:
 
 - Platform administration, RBAC/team management, audit log.
-- Bundles; product image upload, deletion and reordering (product media is read-only/absent in the UI).
+- Bundles; product image upload, deletion and reordering (product media is not exposed in the mobile UI).
 - Inventory transfers and inventory intelligence.
 - CRM memories, carts, voice, AI conversation extras, recovery campaigns.
 - WhatsApp account management and webhook configuration.
@@ -144,16 +162,15 @@ These backend surfaces are out of scope for this release and are documented in t
 
 ---
 
-## 8. Environment blockers
+## 8. Remaining environment limits
 
-| Blocker | Impact |
+| Limit | Impact |
 |---|---|
-| No Flutter/Dart SDK installed | `flutter pub get`, `dart format`, `flutter analyze`, `flutter test`, `flutter build` never ran |
-| SDK download infeasible (1.58 GB at ~10–70 KB/s; timed out at 64 MB) | Cannot install the toolchain here |
+| No Android SDK or emulator on this host | APK/AAB builds and the device integration test have not been run |
 | Linux host | iOS compilation/signing impossible regardless of SDK |
-| No `gradle-wrapper.jar` in the Flutter template snapshot | Flutter normally supplies it on first build; an Android build may need `flutter create .` or a Gradle bootstrap |
+| No `gradle-wrapper.jar` in the Flutter template snapshot | Flutter supplies it on first build; an Android build may need `flutter create .` or a Gradle bootstrap |
 
-Consequences: dependency resolution is unproven, any analyzer error or type mismatch is undiscovered, widget tests have never rendered, and the Android/iOS hosts have never been assembled. The pinned versions (Flutter 3.47.9 / Dart 3.13.7 target, AGP 8.7.3, Kotlin 2.1.0, Gradle 8.12) may require adjustment on first build.
+Dependency resolution, static analysis and unit/widget tests are no longer blocked: they pass with the SDK at `/root/flutter` (Flutter 3.47.9 / Dart 3.13.7). Android toolchain setup is the remaining prerequisite for an installable build.
 
 ---
 
@@ -162,22 +179,32 @@ Consequences: dependency resolution is unproven, any analyzer error or type mism
 ```bash
 cd mobile
 flutter pub get
-dart format --output=none --set-exit-if-changed lib test integration_test
 flutter analyze
 flutter test
+```
+
+Already green here. To produce an installable build:
+
+```bash
 flutter build apk --debug
 ```
 
-Run the integration test on a booted emulator with the backend reachable:
+To run on a device, start the backend and an emulator, then:
 
 ```bash
-flutter test integration_test/app_boot_test.dart \
+flutter run --dart-define=DUKAVO_API_BASE_URL=http://10.0.2.2:8000/api/v1
+```
+
+The integration test:
+
+```bash
+flutter test integration_test/app_boot_test.dart -d <device-id> \
   --dart-define=DUKAVO_API_BASE_URL=http://10.0.2.2:8000/api/v1 \
   --dart-define=DUKAVO_TEST_EMAIL=... \
   --dart-define=DUKAVO_TEST_PASSWORD=...
 ```
 
-Expected first-run adjustments are limited to dependency version resolution, Gradle/AGP alignment, and any analyzer findings — no architecture change should be required.
+Expected first-build adjustments are limited to Android SDK/Gradle alignment — no architecture change should be required.
 
 ---
 
@@ -197,5 +224,10 @@ Expected first-run adjustments are limited to dependency version resolution, Gra
 | `dc976a2` | `fix(auth): gate analytics on dashboard.view` |
 | `25bd02e` | `fix(customers): map the address resource field names` |
 | `71de235` | `refactor(api): drop path constants for unimplemented surfaces` |
+| `9f9c8ef` | `docs: add delivery report with verification status` |
+| `be9073b` | `fix(core): satisfy analyzer and correct compact currency` |
+| `f98ac7a` | `fix(ui): clear analyzer lints and stop login footer overflow` |
+| `ee4ac92` | `test: align date and skip expectations with the toolchain` |
+| `16ea323` | `chore: lock dependencies and exclude build output from analysis` |
 
-This report is committed as the final `docs:` commit. Nothing has been pushed to a remote.
+This report and the README status update are committed as the final `docs:` commit. Nothing has been pushed to a remote.

@@ -33,23 +33,21 @@ reuses the existing contracts rather than introducing mobile-only endpoints.
 
 ## 1. Current status
 
-The application is **implemented at source level** and has not yet been
-compiled in the environment where it was authored. The Flutter SDK is not
-installed there, and downloading it was not possible on the available network.
-Consequently:
+The application is **implemented and verified at the Dart/Flutter source
+level** in this workspace:
 
-- `flutter pub get`, `flutter analyze`, `flutter test` and `flutter build` have
-  **not** been run against this tree.
-- Verification so far is a manual and scripted audit: imports resolve, ARB
-  keys exist in both languages, provider references exist, API paths and
-  resource shapes were checked against `backend/routes/api/v1.php` and
-  `backend/app/Http/Resources/`.
-- iOS builds require macOS and Xcode; they cannot be produced on Linux even
-  with a Flutter SDK.
+- `flutter pub get` resolves all dependencies (114 packages).
+- `flutter analyze` reports **No issues found**.
+- `flutter test` runs **72 unit and widget tests, all passing**.
+- Android and iOS builds have **not** been produced here: this host has no
+  Android SDK or emulator, and iOS builds require macOS and Xcode.
+- The device integration test requires a booted emulator/device and a
+  reachable backend; it has not been run here.
 
-Run the commands in [Testing and quality checks](#10-testing-and-quality-checks)
-on a machine with Flutter before treating a build as verified. The exact
-delivery status is summarised in [`docs/DELIVERY_REPORT.md`](docs/DELIVERY_REPORT.md).
+The verification used Flutter 3.47.9 / Dart 3.13.7. Run the commands in
+[Testing and quality checks](#10-testing-and-quality-checks) after any change.
+The exact delivery status is summarised in
+[`docs/DELIVERY_REPORT.md`](docs/DELIVERY_REPORT.md).
 
 ## 2. Key features
 
@@ -276,9 +274,10 @@ flutter test integration_test/app_boot_test.dart -d <device-id> \
   --dart-define=DUKAVO_TEST_PASSWORD=password
 ```
 
-> **Verification caveat:** these commands have not been executed in the
-> authoring environment because Flutter is unavailable there. Do not treat the
-> suite as green until it has been run and the output recorded.
+> **Current result (Flutter 3.47.9):** `flutter analyze` reports no issues
+> and `flutter test` passes all 72 unit/widget tests. The device integration
+> test and platform builds still require an emulator/device and have not been
+> run in this workspace.
 
 ## 11. Backend API integration
 
@@ -355,8 +354,7 @@ yet:
 - WhatsApp account management and connection status;
 - profit intelligence and exports;
 - automations, audit logs, marketing content administration;
-- product image upload/reorder (the API paths exist in `ApiPaths`, but no
-  screen uses them yet).
+- product image upload/reorder (product media is not exposed in the mobile UI).
 
 Store management is read-only in mobile: the store list feeds pickers and the
 order builder, but there is no create/edit/delete store screen.
