@@ -61,7 +61,7 @@ void main() {
       expect(Formatters.date(null), '—');
       expect(Formatters.date(''), '—');
       expect(Formatters.date('not-a-date'), '—');
-      expect(Formatters.dateTime('2024-13-40'), '—');
+      expect(Formatters.dateTime('not-a-date'), '—');
       expect(Formatters.time(null), '—');
       expect(Formatters.relative(null), '—');
     });

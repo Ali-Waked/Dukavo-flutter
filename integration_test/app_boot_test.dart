@@ -57,8 +57,6 @@ void main() {
 
       expect(find.text('Dashboard'), findsWidgets);
     },
-    skip: email.isEmpty || password.isEmpty
-        ? 'Set DUKAVO_TEST_EMAIL and DUKAVO_TEST_PASSWORD to run this test.'
-        : false,
+    skip: email.isEmpty || password.isEmpty,
   );
 }
