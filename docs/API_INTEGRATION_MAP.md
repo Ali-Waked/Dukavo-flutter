@@ -151,6 +151,23 @@ above.
 
 Store create/update/delete/default routes exist but no mobile screen calls them.
 
+### 6.1 Storefront, shipping and payment settings
+
+| Method | Path | Permission | Mobile owner | Notes |
+| --- | --- | --- | --- | --- |
+| `GET` | `/tenant/stores/{store}/storefront` | `storefront.view` | `features/storefront/data/storefront_data.dart` | Returns `store_id`, `name`, `slug`, `status`, `description`, `logo_url`, `storefront_enabled`, `currency`, `settings`, `updated_at`. |
+| `PATCH` | `/tenant/stores/{store}/storefront` | `storefront.manage` | same | Partial update; `settings` is merged server-side. Presentation fields are nullable and may be cleared with `null`. |
+| `GET` | `/tenant/stores/{store}/shipping-zones` | `shipping.view` | `features/shipping/data/shipping_data.dart` | Unpaginated list (`data` is a list). |
+| `POST` | `/tenant/stores/{store}/shipping-zones` | `shipping.manage` | same | Body `{name, city?, areas?, fee, free_shipping_threshold?, is_active?, sort_order?}`. The server lower-cases areas. |
+| `PATCH` | `/tenant/stores/{store}/shipping-zones/{zone}` | `shipping.manage` | same | The zone must belong to the store in the URL. |
+| `DELETE` | `/tenant/stores/{store}/shipping-zones/{zone}` | `shipping.manage` | same | Returns `204`. |
+| `GET` | `/tenant/stores/{store}/payments` | `payments.view` | `features/payments/data/payment_data.dart` | Returns `settings` (`cod_enabled`, `cod_instructions`) and `methods` with the server's availability and reason. |
+| `PATCH` | `/tenant/stores/{store}/payments` | `payments.manage` | same | Only `cod_enabled` and `cod_instructions` are accepted. Online payment is never reported as available. |
+
+The mobile store picker is local UI state; every request still resolves the
+store through the tenant-scoped route binding, so a sibling tenant's store id
+returns `404`.
+
 ## 7. Catalogue
 
 | Method | Path | Permission | Mobile owner | Notes |

@@ -38,7 +38,7 @@ level** in this workspace:
 
 - `flutter pub get` resolves all dependencies (114 packages).
 - `flutter analyze` reports **No issues found**.
-- `flutter test` runs **72 unit and widget tests, all passing**.
+- `flutter test` runs **85 unit and widget tests, all passing**.
 - Android and iOS builds have **not** been produced here: this host has no
   Android SDK or emulator, and iOS builds require macOS and Xcode.
 - The device integration test requires a booted emulator/device and a
@@ -79,6 +79,11 @@ Everything listed here is wired to a real API route and permission.
   the backend can actually deliver.
 - **Analytics** — executive KPIs, sales trend, product performance, stock
   health and explicit limitations, with date-range and store filters.
+- **Storefront, delivery and payments** — store-scoped shop settings
+  (visibility, branding, contact details, policies and sharing metadata),
+  delivery zones with fees and free-delivery thresholds, and cash-on-delivery
+  configuration. Online payment is shown as unavailable with the server's
+  reason until a provider is configured.
 - **Profile and settings** — profile editing, avatar upload/removal, password
   change, signed-in device management, workspace settings, theme and language.
 - **Native UX** — Material 3 surfaces, light/dark themes, Arabic RTL and
@@ -200,6 +205,7 @@ the platform keychain/keystore and used for every other request.
 | Setting | Where | Default |
 | --- | --- | --- |
 | API base URL | `--dart-define=DUKAVO_API_BASE_URL` | platform default above |
+| Public shop URL | `--dart-define=DUKAVO_WEB_BASE_URL` | derived from the API origin |
 | CSRF URL | derived from the API origin | `/sanctum/csrf-cookie` |
 | Theme | persisted in `shared_preferences` | system |
 | Language | persisted in `shared_preferences` | device, English fallback |
@@ -275,7 +281,7 @@ flutter test integration_test/app_boot_test.dart -d <device-id> \
 ```
 
 > **Current result (Flutter 3.47.9):** `flutter analyze` reports no issues
-> and `flutter test` passes all 72 unit/widget tests. The device integration
+> and `flutter test` passes all 85 unit/widget tests. The device integration
 > test and platform builds still require an emulator/device and have not been
 > run in this workspace.
 
@@ -296,6 +302,9 @@ In summary, the mobile client uses the existing v1 surface:
   `/notifications/read-all`, `/notifications/{id}/read|unread`.
 - Workspace: `/tenant/dashboard*`, `/tenant/analytics`, `/tenant/stores`,
   `/tenant/settings`.
+- Storefront settings: `/tenant/stores/{store}/storefront`,
+  `/tenant/stores/{store}/shipping-zones`,
+  `/tenant/stores/{store}/payments`.
 - Catalogue: `/tenant/products*`, `/tenant/categories*`.
 - Commerce: `/tenant/orders*`, `/tenant/customers*`, `/tenant/inventory*`.
 - Inbox: `/tenant/conversations*`.
@@ -357,7 +366,12 @@ yet:
 - product image upload/reorder (product media is not exposed in the mobile UI).
 
 Store management is read-only in mobile: the store list feeds pickers and the
-order builder, but there is no create/edit/delete store screen.
+order builder, but there is no create/edit/delete store screen. The
+store-scoped shop, shipping and payment settings are editable.
+
+Online payments are not implemented because the backend has no payment
+provider or transaction ledger yet. Cash on delivery is the only available
+method, and the app reports the server's reason for every unavailable method.
 
 These are tracked as future work, not as regressions in the implemented scope.
 

@@ -37,6 +37,12 @@ class PermissionSlugs {
   static const settingsManage = 'settings.manage';
   static const storesView = 'stores.view';
   static const storesManage = 'stores.manage';
+  static const storefrontView = 'storefront.view';
+  static const storefrontManage = 'storefront.manage';
+  static const shippingView = 'shipping.view';
+  static const shippingManage = 'shipping.manage';
+  static const paymentsView = 'payments.view';
+  static const paymentsManage = 'payments.manage';
   static const usersView = 'users.view';
   static const usersManage = 'users.manage';
   static const rolesView = 'roles.view';
@@ -81,6 +87,12 @@ class Permissions {
   bool get canViewAnalytics => can(PermissionSlugs.dashboardView);
   bool get canViewStores => can(PermissionSlugs.storesView);
   bool get canManageStores => can(PermissionSlugs.storesManage);
+  bool get canViewStorefront => can(PermissionSlugs.storefrontView);
+  bool get canManageStorefront => can(PermissionSlugs.storefrontManage);
+  bool get canViewShipping => can(PermissionSlugs.shippingView);
+  bool get canManageShipping => can(PermissionSlugs.shippingManage);
+  bool get canViewPayments => can(PermissionSlugs.paymentsView);
+  bool get canManagePayments => can(PermissionSlugs.paymentsManage);
   bool get canViewUsers => can(PermissionSlugs.usersView);
   bool get canManageUsers => can(PermissionSlugs.usersManage);
   bool get canViewRoles => can(PermissionSlugs.rolesView);

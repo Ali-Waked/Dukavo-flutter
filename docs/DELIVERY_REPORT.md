@@ -1,8 +1,8 @@
 # Dukavo Mobile — Delivery Report
 
-**Date:** 2026-11-01
+**Date:** 2026-11-02
 **Directory:** `dukavo/mobile` (independent Git repository)
-**Status:** Feature implementation complete for the agreed scope. `flutter pub get`, `flutter analyze` and `flutter test` now run successfully on Flutter 3.47.9 / Dart 3.13.7. Android/iOS builds and the device integration test have **not** been run. See §5–§8.
+**Status:** Feature implementation complete for the agreed scope. `flutter pub get`, `flutter analyze` and `flutter test` run successfully on Flutter 3.47.9 / Dart 3.13.7. The APK build was attempted and is blocked by a missing Android SDK; iOS builds need macOS, and the device integration test was **not** run. See §5–§8.
 
 ---
 
@@ -12,14 +12,14 @@ A Flutter merchant app for Dukavo was built against the existing Laravel API rat
 
 | Area | State |
 |---|---|
-| Application code | Written (95 Dart files across `lib/`, `test/`, `integration_test/`) |
+| Application code | Written (111 Dart files across `lib/`, `test/`, `integration_test/`) |
 | API contract | Audited against `backend/routes/api/v1.php`, resources, requests and services |
-| Localization | 445 keys, English + Arabic, full parity |
+| Localization | 507 keys, English + Arabic, full parity |
 | Dependencies | `flutter pub get` resolves 114 packages; `pubspec.lock` committed |
 | Static analysis | `flutter analyze` — **No issues found** |
-| Unit/widget tests | `flutter test` — **72 tests, all passing** |
+| Unit/widget tests | `flutter test` — **85 tests, all passing** |
 | Device integration test | Written, **not executed** (needs an emulator/device) |
-| Android/iOS builds | **Not run** (no Android SDK here; iOS needs macOS) |
+| Android/iOS builds | **Not produced** — APK build attempted but blocked by missing Android SDK; iOS needs macOS |
 | Documentation | README + API integration map + this report |
 | Git | 18 conventional commits, nothing pushed |
 
@@ -60,6 +60,9 @@ A Flutter merchant app for Dukavo was built against the existing Laravel API rat
 | Conversations | Inbox, thread, replies, internal notes, approved templates, assignment, read state, retry, create |
 | Notifications | Centre, unread badge, read/read-all, per-channel preferences |
 | Analytics | KPIs, sales trends, product performance, stock health, backend limitations, date-range/store/currency filters |
+| Storefront | Store-scoped shop visibility, branding, contact details, social links, policies, SEO and public shop link |
+| Shipping | Store-scoped delivery zones with city/area matching, fees, free-delivery thresholds, active state and ordering |
+| Payments | Cash-on-delivery settings and the server's honest availability state for online payment |
 | Profile | Edit, avatar upload/remove, password change, signed-in device revocation |
 | Settings | Workspace settings, theme, language, notification preferences, sign out |
 | Stores | Read-only store list feeding filters and order/stock defaults |
@@ -99,9 +102,9 @@ Toolchain: Flutter 3.47.9 (stable), Dart 3.13.7, Linux aarch64.
 | Command | Result |
 |---|---|
 | `flutter pub get` | 114 dependencies resolved, `pubspec.lock` written |
-| `flutter analyze` | **No issues found** (39.8 s) |
-| `flutter test` | **72 tests passed** (19 s) |
-| `flutter build apk` | Not run — no Android SDK/emulator on this host |
+| `flutter analyze` | **No issues found** (33.7 s) |
+| `flutter test` | **85 tests passed** (27 s) |
+| `flutter build apk` | Attempted — fails with `No Android SDK found`; no Android SDK/emulator on this host |
 | `flutter build ios` | Not run — requires macOS + Xcode |
 | `flutter test integration_test/…` | Not run — requires a booted device/emulator and reachable backend |
 
@@ -116,7 +119,7 @@ Additional static audits still hold:
 
 - All relative and `package:dukavo_mobile/` imports resolve.
 - Every `RoutePaths`, `ApiPaths`, `Formatters`, `AppColors` and `PermissionSlugs` member referenced in `lib/` is defined.
-- ARB parity: 445 keys in `app_en.arb` and 445 in `app_ar.arb`, identical key sets.
+- ARB parity: 507 keys in `app_en.arb` and 507 in `app_ar.arb`, identical key sets.
 - Every literal `context.tr('…')` key exists in both ARB files.
 - Backend permission slugs match `PermissionRegistry`.
 - Model JSON keys match the corresponding API resources/requests.
@@ -138,6 +141,9 @@ Additional static audits still hold:
 | `test/features/inventory/data/inventory_model_test.dart` | Inventory and movement JSON contract |
 | `test/features/customers/data/customer_model_test.dart` | Customer aggregates and both address shapes |
 | `test/features/analytics/domain/analytics_query_test.dart` | Query equality/hash and defaults |
+| `test/features/storefront/data/storefront_model_test.dart` | Storefront settings parsing, defaults and null-clearing payloads |
+| `test/features/shipping/data/shipping_model_test.dart` | Delivery zone parsing, numeric strings, coverage and defaults |
+| `test/features/payments/data/payment_model_test.dart` | COD settings, honest online availability and safe defaults |
 | `integration_test/app_boot_test.dart` | Device boot smoke test; credentialed login only with `DUKAVO_TEST_EMAIL`/`DUKAVO_TEST_PASSWORD` |
 
 The widget harness preloads both ARB files and uses the real theme and delegates, so localization failures surface as test failures rather than fallback strings. The integration test is intentionally skipped for credentials unless both dart-defines are supplied.

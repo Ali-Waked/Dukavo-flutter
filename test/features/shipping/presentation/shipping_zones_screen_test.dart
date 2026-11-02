@@ -1,0 +1,64 @@
+import 'package:dukavo_mobile/core/auth/permissions.dart';
+import 'package:dukavo_mobile/features/auth/application/auth_controller.dart';
+import 'package:dukavo_mobile/features/shipping/application/shipping_controller.dart';
+import 'package:dukavo_mobile/features/shipping/domain/shipping_domain.dart';
+import 'package:dukavo_mobile/features/shipping/presentation/shipping_zones_screen.dart';
+import 'package:dukavo_mobile/features/stores/application/store_controller.dart';
+import 'package:dukavo_mobile/features/stores/domain/store_domain.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+import '../../../helpers/test_app.dart';
+
+class _FakeShippingRepository implements ShippingRepository {
+  @override
+  Future<List<ShippingZone>> list(int storeId) async => const [];
+
+  @override
+  Future<ShippingZone> create(int storeId, ShippingZoneDraft draft) async {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ShippingZone> update(
+    int storeId,
+    int zoneId,
+    ShippingZoneDraft draft,
+  ) async {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> delete(int storeId, int zoneId) async {}
+}
+
+const _store = Store(
+  id: 4,
+  name: 'Maadi shop',
+  slug: 'maadi-shop',
+  status: 'active',
+  isDefault: true,
+  currency: 'EGP',
+  timezone: 'Africa/Cairo',
+);
+
+void main() {
+  setUpAll(preloadLocalizations);
+
+  testWidgets('shows the empty state and hides management for view-only roles',
+      (tester) async {
+    await pumpTestApp(
+      tester,
+      const ShippingZonesScreen(),
+      overrides: [
+        storeOptionsProvider.overrideWith((ref) async => [_store]),
+        shippingRepositoryProvider.overrideWithValue(_FakeShippingRepository()),
+        permissionsProvider.overrideWithValue(
+          const Permissions({PermissionSlugs.shippingView}),
+        ),
+      ],
+    );
+
+    expect(find.text('No shipping zones yet'), findsOneWidget);
+    expect(find.text('Add shipping zone'), findsNothing);
+  });
+}

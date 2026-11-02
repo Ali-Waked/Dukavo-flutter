@@ -18,9 +18,17 @@ final storeOptionsProvider = FutureProvider<List<Store>>((ref) {
 /// The store a new order or stock movement should default to.
 final defaultStoreProvider = Provider<Store?>((ref) {
   final stores = ref.watch(storeOptionsProvider).valueOrNull ?? const <Store>[];
+  return defaultStoreFrom(stores);
+});
+
+/// The default store from an already-loaded list, without reading a provider.
+///
+/// Store-scoped configuration screens share this so they all open on the same
+/// store the rest of the app treats as the default.
+Store? defaultStoreFrom(List<Store> stores) {
   if (stores.isEmpty) return null;
   for (final store in stores) {
     if (store.isDefault) return store;
   }
   return stores.first;
-});
+}

@@ -17,14 +17,17 @@ import '../../features/dashboard/presentation/dashboard_screen.dart';
 import '../../features/inventory/presentation/inventory_screen.dart';
 import '../../features/notifications/presentation/notifications_screen.dart';
 import '../../features/orders/presentation/orders_screen.dart';
+import '../../features/payments/presentation/payment_settings_screen.dart';
 import '../../features/products/presentation/product_detail_screen.dart';
 import '../../features/products/presentation/product_form_screen.dart';
 import '../../features/products/presentation/products_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
 import '../../features/settings/presentation/settings_screen.dart';
+import '../../features/shipping/presentation/shipping_zones_screen.dart';
 import '../../features/shell/presentation/app_shell.dart';
 import '../../features/shell/presentation/more_screen.dart';
 import '../../features/shell/presentation/no_access_screen.dart';
+import '../../features/storefront/presentation/storefront_settings_screen.dart';
 import 'route_paths.dart';
 
 /// A [Listenable] that fires whenever the auth status changes.
@@ -94,6 +97,15 @@ String? _permissionRedirect(Permissions permissions, String path) {
   }
   if (path.startsWith(RoutePaths.analytics)) {
     return permissions.canViewAnalytics ? null : RoutePaths.noAccess;
+  }
+  if (path.startsWith(RoutePaths.storefront)) {
+    return permissions.canViewStorefront ? null : RoutePaths.noAccess;
+  }
+  if (path.startsWith(RoutePaths.shippingZones)) {
+    return permissions.canViewShipping ? null : RoutePaths.noAccess;
+  }
+  if (path.startsWith(RoutePaths.paymentSettings)) {
+    return permissions.canViewPayments ? null : RoutePaths.noAccess;
   }
 
   // Notifications, profile, settings and the overflow menu are personal to the
@@ -259,6 +271,18 @@ List<RouteBase> _routes() {
     GoRoute(
       path: RoutePaths.analytics,
       builder: (context, state) => const AnalyticsScreen(),
+    ),
+    GoRoute(
+      path: RoutePaths.storefront,
+      builder: (context, state) => const StorefrontSettingsScreen(),
+    ),
+    GoRoute(
+      path: RoutePaths.shippingZones,
+      builder: (context, state) => const ShippingZonesScreen(),
+    ),
+    GoRoute(
+      path: RoutePaths.paymentSettings,
+      builder: (context, state) => const PaymentSettingsScreen(),
     ),
     GoRoute(
       path: RoutePaths.profile,

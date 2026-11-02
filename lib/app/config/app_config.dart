@@ -31,6 +31,28 @@ class AppConfig {
     return uri.replace(path: '/sanctum/csrf-cookie', query: null).toString();
   }
 
+  /// Public shop base, shown to merchants as the link they can share.
+  ///
+  /// In development the Vue app and the API share an origin, so stripping the
+  /// API path is correct. A deployment that serves them from different hosts
+  /// should set `DUKAVO_WEB_BASE_URL`.
+  static const String _webOverride = String.fromEnvironment(
+    'DUKAVO_WEB_BASE_URL',
+    defaultValue: '',
+  );
+
+  static String get webBaseUrl {
+    if (_webOverride.isNotEmpty) {
+      return _webOverride.replaceAll(RegExp(r'/+$'), '');
+    }
+    final uri = Uri.parse(apiBaseUrl);
+    return uri.replace(path: '', query: null, fragment: null).toString();
+  }
+
+  static String shopUrl({required String tenantSlug, required String storeSlug}) {
+    return '$webBaseUrl/shop/$tenantSlug/$storeSlug';
+  }
+
   static const Duration connectTimeout = Duration(seconds: 20);
   static const Duration receiveTimeout = Duration(seconds: 30);
 

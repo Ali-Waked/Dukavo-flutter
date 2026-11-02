@@ -39,6 +39,29 @@ class MoreScreen extends ConsumerWidget {
         ],
       ),
       _MoreGroup(
+        titleKey: 'storefrontGroup',
+        entries: [
+          _MoreEntry(
+            labelKey: 'storefrontSettings',
+            icon: Icons.storefront_outlined,
+            path: RoutePaths.storefront,
+            visible: permissions.canViewStorefront,
+          ),
+          _MoreEntry(
+            labelKey: 'shippingZones',
+            icon: Icons.local_shipping_outlined,
+            path: RoutePaths.shippingZones,
+            visible: permissions.canViewShipping,
+          ),
+          _MoreEntry(
+            labelKey: 'paymentSettings',
+            icon: Icons.payments_outlined,
+            path: RoutePaths.paymentSettings,
+            visible: permissions.canViewPayments,
+          ),
+        ],
+      ),
+      _MoreGroup(
         titleKey: 'customers',
         entries: [
           _MoreEntry(

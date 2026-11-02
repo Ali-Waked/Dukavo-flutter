@@ -37,6 +37,16 @@ class ApiPaths {
   static const stores = '/tenant/stores';
   static const workspaceSettings = '/tenant/settings';
 
+  // Store-scoped storefront, delivery and payment configuration.
+  static String storeStorefront(int storeId) =>
+      '/tenant/stores/$storeId/storefront';
+  static String storeShippingZones(int storeId) =>
+      '/tenant/stores/$storeId/shipping-zones';
+  static String storeShippingZone(int storeId, int zoneId) =>
+      '/tenant/stores/$storeId/shipping-zones/$zoneId';
+  static String storePayments(int storeId) =>
+      '/tenant/stores/$storeId/payments';
+
   static const categories = '/tenant/categories';
   static const categoryTree = '/tenant/categories/tree';
   static const categorySlugAvailability = '/tenant/categories/slug-availability';

@@ -23,6 +23,9 @@ class RoutePaths {
   static const conversations = '/conversations';
   static const notifications = '/notifications';
   static const analytics = '/analytics';
+  static const storefront = '/storefront';
+  static const shippingZones = '/shipping-zones';
+  static const paymentSettings = '/payments';
   static const profile = '/profile';
   static const settings = '/settings';
   static const more = '/more';
