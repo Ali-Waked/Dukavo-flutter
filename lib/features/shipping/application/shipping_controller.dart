@@ -49,5 +49,4 @@ class ShippingActions {
   }
 }
 
-final shippingActionsProvider =
-    Provider<ShippingActions>(ShippingActions.new);
+final shippingActionsProvider = Provider<ShippingActions>(ShippingActions.new);

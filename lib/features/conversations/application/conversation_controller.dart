@@ -135,8 +135,7 @@ class MessagesState {
   }
 }
 
-class ConversationMessagesNotifier
-    extends StateNotifier<MessagesState> {
+class ConversationMessagesNotifier extends StateNotifier<MessagesState> {
   ConversationMessagesNotifier(this._repository, this.conversationId)
       : super(const MessagesState());
 
@@ -203,13 +202,15 @@ class ConversationActions {
   final Ref _ref;
 
   Future<ConversationMessage> reply(int id, String body) async {
-    final message = await _ref.read(conversationRepositoryProvider).reply(id, body);
+    final message =
+        await _ref.read(conversationRepositoryProvider).reply(id, body);
     _afterSend(id, message);
     return message;
   }
 
   Future<ConversationMessage> note(int id, String body) async {
-    final message = await _ref.read(conversationRepositoryProvider).note(id, body);
+    final message =
+        await _ref.read(conversationRepositoryProvider).note(id, body);
     _afterSend(id, message);
     return message;
   }
@@ -254,8 +255,9 @@ class ConversationActions {
   }
 
   Future<Conversation> updateStatus(int id, String status) async {
-    final conversation =
-        await _ref.read(conversationRepositoryProvider).updateStatus(id, status);
+    final conversation = await _ref
+        .read(conversationRepositoryProvider)
+        .updateStatus(id, status);
     _refreshConversation(id);
     return conversation;
   }

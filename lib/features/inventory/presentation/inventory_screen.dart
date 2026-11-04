@@ -104,7 +104,8 @@ class _InventoryScreenState extends ConsumerState<InventoryScreen> {
         padding: EdgeInsets.only(
           bottom: MediaQuery.viewInsetsOf(sheetContext).bottom,
         ),
-        child: _StockSheet(item: item, canManage: permissions.canManageInventory),
+        child:
+            _StockSheet(item: item, canManage: permissions.canManageInventory),
       ),
     );
     if (context.mounted) {
@@ -141,8 +142,9 @@ class _InventoryTile extends StatelessWidget {
                 width: 44,
                 height: 44,
                 decoration: BoxDecoration(
-                  color: (item.isLowStock ? AppColors.danger : AppColors.primary)
-                      .withValues(alpha: 0.12),
+                  color:
+                      (item.isLowStock ? AppColors.danger : AppColors.primary)
+                          .withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(
@@ -482,9 +484,8 @@ class _MovementDialogState extends State<_MovementDialog> {
               _MovementResult(
                 quantity: int.tryParse(_quantity.text.trim()) ?? 0,
                 note: _note.text.trim().isEmpty ? null : _note.text.trim(),
-                threshold: widget.adjust
-                    ? int.tryParse(_threshold.text.trim())
-                    : null,
+                threshold:
+                    widget.adjust ? int.tryParse(_threshold.text.trim()) : null,
               ),
             );
           },

@@ -33,8 +33,8 @@ class AppLocalizations {
 
   static Future<AppLocalizations> _load(Locale locale) async {
     final code = locale.languageCode == 'ar' ? 'ar' : 'en';
-    final raw = await rootBundle
-        .loadString('lib/app/localization/l10n/app_$code.arb');
+    final raw =
+        await rootBundle.loadString('lib/app/localization/l10n/app_$code.arb');
     final decoded = jsonDecode(raw);
     final values = <String, String>{};
     if (decoded is Map) {

@@ -43,9 +43,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
 
-    final error = auth.errorKey != null
-        ? context.tr(auth.errorKey!)
-        : auth.errorMessage;
+    final error =
+        auth.errorKey != null ? context.tr(auth.errorKey!) : auth.errorMessage;
 
     return Scaffold(
       body: SafeArea(
@@ -67,8 +66,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           children: [
                             IconButton(
                               tooltip: context.tr('language'),
-                              onPressed: () =>
-                                  ref.read(localeControllerProvider.notifier).toggle(),
+                              onPressed: () => ref
+                                  .read(localeControllerProvider.notifier)
+                                  .toggle(),
                               icon: const Icon(Icons.translate),
                             ),
                             IconButton(
@@ -76,7 +76,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               onPressed: () {
                                 final controller =
                                     ref.read(themeControllerProvider.notifier);
-                                final current = ref.read(themeControllerProvider);
+                                final current =
+                                    ref.read(themeControllerProvider);
                                 controller.setMode(
                                   current == ThemeMode.dark
                                       ? ThemeMode.light
@@ -119,7 +120,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       autofillHints: const [AutofillHints.email],
                       validator: (value) {
                         final required = Validators.required(value);
-                        if (required != null) return context.tr('requiredField');
+                        if (required != null) {
+                          return context.tr('requiredField');
+                        }
                         if (!RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$')
                             .hasMatch(value!.trim())) {
                           return context.tr('invalidEmail');

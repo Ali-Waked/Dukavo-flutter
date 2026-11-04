@@ -50,7 +50,13 @@ class PermissionSlugs {
   static const whatsappView = 'whatsapp.view';
   static const whatsappManage = 'whatsapp.manage';
   static const aiUse = 'ai.use';
+  static const aiApprove = 'ai.approve';
   static const auditView = 'audit.view';
+  static const recoveryView = 'recovery.view';
+  static const recoveryManage = 'recovery.manage';
+  static const automationView = 'automation.view';
+  static const automationManage = 'automation.manage';
+  static const profitExport = 'profit.export';
 }
 
 /// An immutable view over the permissions returned by `GET /me`.
@@ -98,5 +104,14 @@ class Permissions {
   bool get canViewRoles => can(PermissionSlugs.rolesView);
   bool get canManageRoles => can(PermissionSlugs.rolesManage);
   bool get canUseAi => can(PermissionSlugs.aiUse);
+  bool get canApproveAi => can(PermissionSlugs.aiApprove);
   bool get canViewAudit => can(PermissionSlugs.auditView);
+  bool get canViewRecovery => can(PermissionSlugs.recoveryView);
+  bool get canManageRecovery => can(PermissionSlugs.recoveryManage);
+  bool get canViewAutomation => can(PermissionSlugs.automationView);
+  bool get canManageAutomation => can(PermissionSlugs.automationManage);
+  bool get canViewProfit => can(PermissionSlugs.profitView);
+  bool get canExportProfit => can(PermissionSlugs.profitExport);
+  bool get canViewWhatsapp => can(PermissionSlugs.whatsappView);
+  bool get canManageWhatsapp => can(PermissionSlugs.whatsappManage);
 }

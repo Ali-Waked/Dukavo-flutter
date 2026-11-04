@@ -16,7 +16,8 @@ void main() {
             'label': 'Cash on delivery',
             'description': 'Pay when your order arrives.',
             'available': false,
-            'unavailable_reason': 'This store does not accept cash on delivery.',
+            'unavailable_reason':
+                'This store does not accept cash on delivery.',
           },
           {
             'code': 'online',
@@ -36,7 +37,8 @@ void main() {
       final cod = settings.methods.first;
       expect(cod.code, 'cod');
       expect(cod.available, isFalse);
-      expect(cod.unavailableReason, 'This store does not accept cash on delivery.');
+      expect(cod.unavailableReason,
+          'This store does not accept cash on delivery.');
 
       final online = settings.methods.last;
       expect(online.code, 'online');

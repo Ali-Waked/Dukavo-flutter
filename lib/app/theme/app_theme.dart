@@ -20,19 +20,18 @@ class AppTheme {
       brightness: brightness,
       primary: AppColors.primary,
       onPrimary: Colors.white,
-      primaryContainer: isDark
-          ? AppColors.primaryDark
-          : const Color(0xFFCCFBF1),
+      primaryContainer:
+          isDark ? AppColors.primaryDark : const Color(0xFFCCFBF1),
       onPrimaryContainer: isDark ? Colors.white : AppColors.primaryDark,
       secondary: AppColors.accent,
       onSecondary: AppColors.text,
-      secondaryContainer: isDark
-          ? const Color(0xFF3F4A1B)
-          : const Color(0xFFF1FBD3),
+      secondaryContainer:
+          isDark ? const Color(0xFF3F4A1B) : const Color(0xFFF1FBD3),
       onSecondaryContainer: isDark ? Colors.white : const Color(0xFF365314),
       error: AppColors.danger,
       onError: Colors.white,
-      errorContainer: isDark ? const Color(0xFF4C1D1D) : const Color(0xFFFEE2E2),
+      errorContainer:
+          isDark ? const Color(0xFF4C1D1D) : const Color(0xFFFEE2E2),
       onErrorContainer: isDark ? Colors.white : const Color(0xFF7F1D1D),
       surface: isDark ? AppColors.darkSurface : AppColors.surface,
       onSurface: isDark ? AppColors.darkText : AppColors.text,
@@ -164,9 +163,8 @@ class AppTheme {
         elevation: 0,
         backgroundColor: isDark ? AppColors.darkSurface : AppColors.surface,
         surfaceTintColor: Colors.transparent,
-        indicatorColor: isDark
-            ? AppColors.primaryDark
-            : const Color(0xFFCCFBF1),
+        indicatorColor:
+            isDark ? AppColors.primaryDark : const Color(0xFFCCFBF1),
         labelTextStyle: WidgetStatePropertyAll(
           textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w600),
         ),

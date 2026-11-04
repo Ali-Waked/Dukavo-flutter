@@ -18,6 +18,9 @@ enum AuthStatus {
   /// A token exists but the account has no workspace yet.
   needsTenant,
 
+  /// Signed in as a Dukavo operator without a merchant workspace.
+  platform,
+
   /// Signed in with an active tenant.
   authenticated,
 }
@@ -42,7 +45,10 @@ class AuthState {
 
   final bool isSubmitting;
 
-  bool get isAuthenticated => status == AuthStatus.authenticated;
+  bool get isAuthenticated =>
+      status == AuthStatus.authenticated || status == AuthStatus.platform;
+  bool get isPlatformMode =>
+      status == AuthStatus.platform || (session?.isPlatformOnly ?? false);
   bool get isBootstrapping => status == AuthStatus.unknown;
 
   AuthState copyWith({
@@ -82,8 +88,7 @@ class AuthController extends StateNotifier<AuthState> {
         return;
       }
       state = AuthState(
-        status:
-            session.hasTenant ? AuthStatus.authenticated : AuthStatus.needsTenant,
+        status: _statusFor(session),
         session: session,
       );
     } on ApiException catch (error) {
@@ -107,8 +112,7 @@ class AuthController extends StateNotifier<AuthState> {
     try {
       final session = await _repository.login(email: email, password: password);
       state = AuthState(
-        status:
-            session.hasTenant ? AuthStatus.authenticated : AuthStatus.needsTenant,
+        status: _statusFor(session),
         session: session,
       );
       return true;
@@ -141,8 +145,7 @@ class AuthController extends StateNotifier<AuthState> {
         storeName: storeName,
       );
       state = AuthState(
-        status:
-            session.hasTenant ? AuthStatus.authenticated : AuthStatus.needsTenant,
+        status: _statusFor(session),
         session: session,
       );
       return true;
@@ -166,8 +169,7 @@ class AuthController extends StateNotifier<AuthState> {
     try {
       final session = await _repository.switchTenant(slug);
       state = AuthState(
-        status:
-            session.hasTenant ? AuthStatus.authenticated : AuthStatus.needsTenant,
+        status: _statusFor(session),
         session: session,
       );
       return true;
@@ -190,9 +192,7 @@ class AuthController extends StateNotifier<AuthState> {
       final session = await _repository.restoreSession();
       if (session == null || !mounted) return;
       state = state.copyWith(
-        status: session.hasTenant
-            ? AuthStatus.authenticated
-            : AuthStatus.needsTenant,
+        status: _statusFor(session),
         session: session,
       );
     } catch (_) {
@@ -223,6 +223,16 @@ class AuthController extends StateNotifier<AuthState> {
 
   void clearError() {
     state = state.copyWith(clearError: true);
+  }
+
+  /// The one place that decides what a restored session may open.
+  ///
+  /// A platform operator without a merchant workspace is authenticated; only a
+  /// merchant account with no workspace is sent to tenant onboarding.
+  AuthStatus _statusFor(Session session) {
+    if (session.hasTenant) return AuthStatus.authenticated;
+    if (session.isPlatformUser) return AuthStatus.platform;
+    return AuthStatus.needsTenant;
   }
 
   String? _loginErrorKey(ApiException error) {

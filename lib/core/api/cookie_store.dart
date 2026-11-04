@@ -40,9 +40,8 @@ class CookieStore {
     }
   }
 
-  String get cookieHeader => _cookies.entries
-      .map((entry) => '${entry.key}=${entry.value}')
-      .join('; ');
+  String get cookieHeader =>
+      _cookies.entries.map((entry) => '${entry.key}=${entry.value}').join('; ');
 
   void clear() => _cookies.clear();
 

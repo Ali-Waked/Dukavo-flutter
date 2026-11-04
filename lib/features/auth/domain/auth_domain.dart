@@ -134,6 +134,15 @@ class Session {
 
   bool get hasTenant => activeTenant != null;
 
+  /// Whether this account may enter the Dukavo platform console.
+  bool get isPlatformUser => user.isPlatformUser || user.isSuperAdmin;
+
+  /// A platform operator signed in without a merchant workspace.
+  ///
+  /// These accounts are fully authenticated: they must land in the platform
+  /// console, not the "create a workspace" onboarding screen.
+  bool get isPlatformOnly => !hasTenant && isPlatformUser;
+
   String get currency =>
       activeTenant?.currency ??
       (tenants.isEmpty ? 'USD' : tenants.first.currency);

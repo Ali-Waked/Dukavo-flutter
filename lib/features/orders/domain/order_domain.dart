@@ -115,8 +115,7 @@ class Order {
   final String? placedAt;
   final String? createdAt;
 
-  String get displayCustomer =>
-      customer?.name ?? customerName ?? '—';
+  String get displayCustomer => customer?.name ?? customerName ?? '—';
 }
 
 class OrderTransitionOption {

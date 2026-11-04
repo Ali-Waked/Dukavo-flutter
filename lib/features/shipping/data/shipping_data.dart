@@ -89,7 +89,8 @@ class ShippingRemoteDataSource {
     return data
         .whereType<Map>()
         .map((entry) =>
-            ShippingZoneModel.fromJson(Map<String, dynamic>.from(entry)).toEntity())
+            ShippingZoneModel.fromJson(Map<String, dynamic>.from(entry))
+                .toEntity())
         .toList();
   }
 

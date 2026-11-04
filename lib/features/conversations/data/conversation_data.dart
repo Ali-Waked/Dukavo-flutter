@@ -107,9 +107,7 @@ class MessageModel {
         canRetry: json['can_retry'] is bool ? json['can_retry'] as bool : null,
         attemptCount: ConversationModel._int(json['attempt_count']),
         hasMedia: rawMedia is Map,
-        mediaFilename: rawMedia is Map
-            ? rawMedia['filename'] as String?
-            : null,
+        mediaFilename: rawMedia is Map ? rawMedia['filename'] as String? : null,
         authorName: rawAuthor is Map ? '${rawAuthor['name'] ?? ''}' : null,
         sentAt: json['sent_at'] as String?,
         createdAt: json['created_at'] as String?,
@@ -348,7 +346,8 @@ class ConversationRepositoryImpl implements ConversationRepository {
   Future<Conversation> markRead(int id) => _remote.markRead(id);
 
   @override
-  Future<Conversation> assign(int id, int? userId) => _remote.assign(id, userId);
+  Future<Conversation> assign(int id, int? userId) =>
+      _remote.assign(id, userId);
 
   @override
   Future<Conversation> updateStatus(int id, String status) =>

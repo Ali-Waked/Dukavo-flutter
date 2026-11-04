@@ -54,7 +54,8 @@ void main() {
       expect(address.city, 'Dubai');
       expect(address.country, 'AE');
       expect(address.isDefault, isTrue);
-      expect(address.oneLine, 'Marina Walk 1, Apartment 1204, Dubai, Dubai, 00000, AE');
+      expect(address.oneLine,
+          'Marina Walk 1, Apartment 1204, Dubai, Dubai, 00000, AE');
     });
 
     test('accepts the legacy address field names', () {

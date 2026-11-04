@@ -54,7 +54,8 @@ class InventoryActions {
   }
 
   Future<InventoryMovement> receive(StockMovementDraft draft) async {
-    final movement = await _ref.read(inventoryRepositoryProvider).receive(draft);
+    final movement =
+        await _ref.read(inventoryRepositoryProvider).receive(draft);
     _refresh(draft.inventoryId);
     return movement;
   }

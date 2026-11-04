@@ -18,8 +18,9 @@ class AnalyticsModel {
     final range = rawRange is Map ? rawRange : const <String, dynamic>{};
     final store = context['store'];
     final health = rawHealth is Map ? rawHealth : const <String, dynamic>{};
-    final healthSummary =
-        health['summary'] is Map ? health['summary'] as Map : const <String, dynamic>{};
+    final healthSummary = health['summary'] is Map
+        ? health['summary'] as Map
+        : const <String, dynamic>{};
     final healthItems = health['items'];
 
     return AnalyticsOverview(

@@ -148,6 +148,7 @@ class AppTextField extends StatefulWidget {
     this.maxLines = 1,
     this.minLines,
     this.enabled = true,
+    this.autofocus = false,
     this.autofillHints,
     this.validator,
     this.onChanged,
@@ -166,6 +167,7 @@ class AppTextField extends StatefulWidget {
   final int maxLines;
   final int? minLines;
   final bool enabled;
+  final bool autofocus;
   final Iterable<String>? autofillHints;
   final String? Function(String?)? validator;
   final ValueChanged<String>? onChanged;
@@ -184,6 +186,7 @@ class _AppTextFieldState extends State<AppTextField> {
     return TextFormField(
       controller: widget.controller,
       enabled: widget.enabled,
+      autofocus: widget.autofocus,
       obscureText: _obscure,
       keyboardType: widget.keyboardType,
       textInputAction: widget.textInputAction,
@@ -206,7 +209,9 @@ class _AppTextFieldState extends State<AppTextField> {
                 tooltip: _obscure ? 'Show password' : 'Hide password',
                 onPressed: () => setState(() => _obscure = !_obscure),
                 icon: Icon(
-                  _obscure ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+                  _obscure
+                      ? Icons.visibility_outlined
+                      : Icons.visibility_off_outlined,
                   size: 20,
                 ),
               )
@@ -535,7 +540,8 @@ class _SearchFieldState extends State<SearchField> {
                   widget.onChanged?.call('');
                 },
               ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       ),
     );
   }
@@ -688,7 +694,8 @@ class ConfirmDialog {
 class AppSnack {
   const AppSnack._();
 
-  static void show(BuildContext context, String message, {bool isError = false}) {
+  static void show(BuildContext context, String message,
+      {bool isError = false}) {
     final scheme = Theme.of(context).colorScheme;
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
@@ -821,8 +828,8 @@ class _PagedListViewState<T> extends State<PagedListView<T>> {
           children: [
             SizedBox(
               height: MediaQuery.sizeOf(context).height * 0.55,
-              child: widget.empty ??
-                  const EmptyState(title: 'Nothing here yet'),
+              child:
+                  widget.empty ?? const EmptyState(title: 'Nothing here yet'),
             ),
           ],
         ),

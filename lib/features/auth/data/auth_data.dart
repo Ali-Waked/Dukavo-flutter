@@ -456,7 +456,8 @@ class AuthRepositoryImpl implements AuthRepository {
     required String name,
     String? storeName,
   }) async {
-    final tenant = await _remote.provisionTenant(name: name, storeName: storeName);
+    final tenant =
+        await _remote.provisionTenant(name: name, storeName: storeName);
     final slug = tenant.slug.isNotEmpty ? tenant.slug : null;
     if (slug != null) {
       return _activate(slug);

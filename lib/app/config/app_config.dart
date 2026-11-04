@@ -49,7 +49,8 @@ class AppConfig {
     return uri.replace(path: '', query: null, fragment: null).toString();
   }
 
-  static String shopUrl({required String tenantSlug, required String storeSlug}) {
+  static String shopUrl(
+      {required String tenantSlug, required String storeSlug}) {
     return '$webBaseUrl/shop/$tenantSlug/$storeSlug';
   }
 

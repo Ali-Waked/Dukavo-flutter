@@ -92,8 +92,9 @@ class NotificationRemoteDataSource {
   Future<int> unreadCount() async {
     final data = await _api.get<Map<String, dynamic>>(
       ApiPaths.notificationsUnreadCount,
-      decode: (raw) =>
-          raw is Map ? Map<String, dynamic>.from(raw) : const <String, dynamic>{},
+      decode: (raw) => raw is Map
+          ? Map<String, dynamic>.from(raw)
+          : const <String, dynamic>{},
     );
     final count = data['count'];
     if (count is int) return count;
@@ -103,8 +104,9 @@ class NotificationRemoteDataSource {
   Future<AppNotification> markRead(String id) async {
     final data = await _api.post<Map<String, dynamic>>(
       '${ApiPaths.notifications}/$id/read',
-      decode: (raw) =>
-          raw is Map ? Map<String, dynamic>.from(raw) : const <String, dynamic>{},
+      decode: (raw) => raw is Map
+          ? Map<String, dynamic>.from(raw)
+          : const <String, dynamic>{},
     );
     return NotificationModel.fromJson(data).toEntity();
   }
@@ -112,8 +114,9 @@ class NotificationRemoteDataSource {
   Future<AppNotification> markUnread(String id) async {
     final data = await _api.post<Map<String, dynamic>>(
       '${ApiPaths.notifications}/$id/unread',
-      decode: (raw) =>
-          raw is Map ? Map<String, dynamic>.from(raw) : const <String, dynamic>{},
+      decode: (raw) => raw is Map
+          ? Map<String, dynamic>.from(raw)
+          : const <String, dynamic>{},
     );
     return NotificationModel.fromJson(data).toEntity();
   }
@@ -121,8 +124,9 @@ class NotificationRemoteDataSource {
   Future<int> markAllRead() async {
     final data = await _api.post<Map<String, dynamic>>(
       ApiPaths.notificationsReadAll,
-      decode: (raw) =>
-          raw is Map ? Map<String, dynamic>.from(raw) : const <String, dynamic>{},
+      decode: (raw) => raw is Map
+          ? Map<String, dynamic>.from(raw)
+          : const <String, dynamic>{},
     );
     final updated = data['updated'];
     if (updated is int) return updated;
@@ -133,11 +137,13 @@ class NotificationRemoteDataSource {
     return _api.delete('${ApiPaths.notifications}/$id');
   }
 
-  Future<Map<String, NotificationChannelAvailability>> channelAvailability() async {
+  Future<Map<String, NotificationChannelAvailability>>
+      channelAvailability() async {
     final data = await _api.get<Map<String, dynamic>>(
       ApiPaths.profileNotificationChannels,
-      decode: (raw) =>
-          raw is Map ? Map<String, dynamic>.from(raw) : const <String, dynamic>{},
+      decode: (raw) => raw is Map
+          ? Map<String, dynamic>.from(raw)
+          : const <String, dynamic>{},
     );
 
     final result = <String, NotificationChannelAvailability>{};

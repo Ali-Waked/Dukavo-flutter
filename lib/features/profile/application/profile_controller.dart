@@ -41,8 +41,9 @@ class ProfileActions {
   }
 
   Future<UserProfile> uploadAvatar(List<int> bytes, String filename) async {
-    final profile =
-        await _ref.read(profileRepositoryProvider).uploadAvatar(bytes, filename);
+    final profile = await _ref
+        .read(profileRepositoryProvider)
+        .uploadAvatar(bytes, filename);
     _refresh();
     return profile;
   }

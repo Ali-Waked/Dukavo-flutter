@@ -28,6 +28,12 @@ class ProductDetailScreen extends ConsumerWidget {
         actions: [
           if (permissions.canManageProducts)
             IconButton(
+              tooltip: context.tr('productImages'),
+              onPressed: () => context.push(RoutePaths.productImages(slug)),
+              icon: const Icon(Icons.photo_library_outlined),
+            ),
+          if (permissions.canManageProducts)
+            IconButton(
               tooltip: context.tr('edit'),
               onPressed: () => context.push(RoutePaths.productEdit(slug)),
               icon: const Icon(Icons.edit_outlined),

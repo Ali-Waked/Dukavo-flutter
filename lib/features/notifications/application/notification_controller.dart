@@ -154,7 +154,8 @@ class UnreadCountNotifier extends StateNotifier<int> {
 
 final notificationUnreadProvider =
     StateNotifierProvider<UnreadCountNotifier, int>((ref) {
-  final notifier = UnreadCountNotifier(ref.watch(notificationRepositoryProvider));
+  final notifier =
+      UnreadCountNotifier(ref.watch(notificationRepositoryProvider));
   notifier.refresh();
   return notifier;
 });

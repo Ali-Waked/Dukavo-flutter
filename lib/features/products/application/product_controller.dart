@@ -84,8 +84,9 @@ class ProductOption {
   final Product product;
   final ProductVariant variant;
 
-  String get label =>
-      product.variants.length <= 1 ? product.name : '${product.name} · ${variant.name}';
+  String get label => product.variants.length <= 1
+      ? product.name
+      : '${product.name} · ${variant.name}';
 }
 
 final productOptionsProvider = FutureProvider<List<ProductOption>>((ref) async {

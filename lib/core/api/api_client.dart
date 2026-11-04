@@ -198,11 +198,15 @@ class ApiClient {
     return Paginated<T>(items: items, meta: meta);
   }
 
-  /// Fetch raw bytes from an authenticated route (conversation attachments).
-  Future<List<int>> download(String path) async {
+  /// Fetch raw bytes from an authenticated route (attachments and CSV exports).
+  Future<List<int>> download(
+    String path, {
+    Map<String, dynamic>? query,
+  }) async {
     final envelope = await _send(
       'GET',
       path,
+      query: query,
       responseType: ResponseType.bytes,
     );
     final data = envelope['data'];

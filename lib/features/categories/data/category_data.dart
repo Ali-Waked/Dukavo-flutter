@@ -91,7 +91,8 @@ class CategoryRemoteDataSource {
     );
     return data
         .whereType<Map>()
-        .map((entry) => CategoryModel.fromJson(Map<String, dynamic>.from(entry)).toEntity())
+        .map((entry) =>
+            CategoryModel.fromJson(Map<String, dynamic>.from(entry)).toEntity())
         .toList();
   }
 
@@ -103,7 +104,8 @@ class CategoryRemoteDataSource {
     );
     return data
         .whereType<Map>()
-        .map((entry) => CategoryModel.fromJson(Map<String, dynamic>.from(entry)).toEntity())
+        .map((entry) =>
+            CategoryModel.fromJson(Map<String, dynamic>.from(entry)).toEntity())
         .toList();
   }
 

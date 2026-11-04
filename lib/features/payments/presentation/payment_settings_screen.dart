@@ -23,8 +23,7 @@ class PaymentSettingsScreen extends ConsumerStatefulWidget {
       _PaymentSettingsScreenState();
 }
 
-class _PaymentSettingsScreenState
-    extends ConsumerState<PaymentSettingsScreen> {
+class _PaymentSettingsScreenState extends ConsumerState<PaymentSettingsScreen> {
   int? _storeId;
 
   @override

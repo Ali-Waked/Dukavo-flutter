@@ -83,7 +83,8 @@ class StoreRemoteDataSource {
 
     return data
         .whereType<Map>()
-        .map((entry) => StoreModel.fromJson(Map<String, dynamic>.from(entry)).toEntity())
+        .map((entry) =>
+            StoreModel.fromJson(Map<String, dynamic>.from(entry)).toEntity())
         .toList();
   }
 }

@@ -33,7 +33,8 @@ class CategoryActions {
   }
 
   Future<Category> update(int id, CategoryDraft draft) async {
-    final updated = await _ref.read(categoryRepositoryProvider).update(id, draft);
+    final updated =
+        await _ref.read(categoryRepositoryProvider).update(id, draft);
     _refresh();
     return updated;
   }

@@ -84,8 +84,7 @@ void main() {
     });
 
     test('defaults direction and type for a sparse payload', () {
-      final movement =
-          InventoryMovementModel.fromJson(const {}).toEntity();
+      final movement = InventoryMovementModel.fromJson(const {}).toEntity();
 
       expect(movement.type, 'adjustment');
       expect(movement.typeLabel, 'adjustment');

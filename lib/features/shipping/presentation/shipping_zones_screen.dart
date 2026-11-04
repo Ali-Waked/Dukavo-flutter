@@ -122,13 +122,12 @@ class _ShippingZonesScreenState extends ConsumerState<ShippingZonesScreen> {
                         children: [
                           Text(
                             context.tr('shippingZonesIntro'),
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodySmall
-                                ?.copyWith(
-                                  color:
-                                      Theme.of(context).colorScheme.onSurfaceVariant,
-                                ),
+                            style:
+                                Theme.of(context).textTheme.bodySmall?.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurfaceVariant,
+                                    ),
                           ),
                           const SizedBox(height: 8),
                           for (final zone in zones)
@@ -190,7 +189,8 @@ class _ShippingZonesScreenState extends ConsumerState<ShippingZonesScreen> {
       if (!mounted) return;
       AppSnack.show(
         context,
-        context.tr(zone == null ? 'shippingZoneCreated' : 'shippingZoneUpdated'),
+        context
+            .tr(zone == null ? 'shippingZoneCreated' : 'shippingZoneUpdated'),
       );
     } catch (error) {
       if (!mounted) return;
@@ -202,7 +202,8 @@ class _ShippingZonesScreenState extends ConsumerState<ShippingZonesScreen> {
     final confirmed = await ConfirmDialog.show(
       context,
       title: context.tr('deleteConfirmTitle'),
-      message: context.tr('deleteShippingZoneMessage', args: {'name': zone.name}),
+      message:
+          context.tr('deleteShippingZoneMessage', args: {'name': zone.name}),
       confirmLabel: context.tr('confirmDelete'),
       cancelLabel: context.tr('cancel'),
       destructive: true,
@@ -262,7 +263,8 @@ class _ZoneCard extends StatelessWidget {
                       ),
                       StatusChip(
                         status: zone.isActive ? 'active' : 'inactive',
-                        label: context.tr(zone.isActive ? 'isActive' : 'inactive'),
+                        label:
+                            context.tr(zone.isActive ? 'isActive' : 'inactive'),
                         compact: true,
                       ),
                     ],
@@ -436,7 +438,8 @@ class _ZoneFormSheetState extends State<_ZoneFormSheet> {
               AppTextField(
                 controller: _fee,
                 label: context.tr('deliveryFee'),
-                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
                 validator: Validators.positiveNumber,
               ),
               const SizedBox(height: 10),
@@ -444,7 +447,8 @@ class _ZoneFormSheetState extends State<_ZoneFormSheet> {
                 controller: _freeThreshold,
                 label: context.tr('freeShippingThreshold'),
                 helper: context.tr('freeShippingThresholdHint'),
-                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) return null;
                   final parsed = num.tryParse(value.trim());

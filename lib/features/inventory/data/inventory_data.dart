@@ -188,7 +188,8 @@ class InventoryRemoteDataSource {
     return data
         .whereType<Map>()
         .map((entry) =>
-            InventoryModel.fromJson(Map<String, dynamic>.from(entry)).toEntity())
+            InventoryModel.fromJson(Map<String, dynamic>.from(entry))
+                .toEntity())
         .toList();
   }
 

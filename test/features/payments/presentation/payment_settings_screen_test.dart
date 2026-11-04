@@ -14,7 +14,8 @@ class _FakePaymentRepository implements PaymentRepository {
   Future<PaymentSettings> get(int storeId) async => _settings;
 
   @override
-  Future<PaymentSettings> update(int storeId, PaymentSettingsDraft draft) async {
+  Future<PaymentSettings> update(
+      int storeId, PaymentSettingsDraft draft) async {
     return PaymentSettings(
       codEnabled: draft.codEnabled,
       codInstructions: draft.codInstructions,
@@ -56,7 +57,8 @@ const _store = Store(
 void main() {
   setUpAll(preloadLocalizations);
 
-  testWidgets('renders COD settings and the honest online state', (tester) async {
+  testWidgets('renders COD settings and the honest online state',
+      (tester) async {
     await pumpTestApp(
       tester,
       const PaymentSettingsScreen(),

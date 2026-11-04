@@ -29,7 +29,8 @@ class StorefrontSettingsModel {
 
   factory StorefrontSettingsModel.fromJson(Map<String, dynamic> json) {
     final raw = json['settings'];
-    final settings = raw is Map ? Map<String, dynamic>.from(raw) : const <String, dynamic>{};
+    final settings =
+        raw is Map ? Map<String, dynamic>.from(raw) : const <String, dynamic>{};
     final rawSocial = settings['social'];
     final social = rawSocial is Map
         ? Map<String, dynamic>.from(rawSocial)

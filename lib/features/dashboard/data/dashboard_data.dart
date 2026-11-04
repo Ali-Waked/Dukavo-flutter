@@ -13,8 +13,9 @@ class DashboardRemoteDataSource {
       query: {
         if (storeId != null) 'store_id': storeId,
       },
-      decode: (raw) =>
-          raw is Map ? Map<String, dynamic>.from(raw) : const <String, dynamic>{},
+      decode: (raw) => raw is Map
+          ? Map<String, dynamic>.from(raw)
+          : const <String, dynamic>{},
     );
 
     final rawContext = data['context'];

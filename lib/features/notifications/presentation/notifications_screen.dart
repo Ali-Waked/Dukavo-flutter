@@ -189,7 +189,8 @@ class _NotificationTile extends StatelessWidget {
                     color: accent.withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Icon(_categoryIcon(notification.category), size: 20, color: accent),
+                  child: Icon(_categoryIcon(notification.category),
+                      size: 20, color: accent),
                 ),
                 const SizedBox(width: 12),
                 Expanded(

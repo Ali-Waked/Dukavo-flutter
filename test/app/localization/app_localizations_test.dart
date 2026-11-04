@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:dukavo_mobile/app/localization/app_localizations.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -41,6 +44,53 @@ void main() {
         AppLocalizations.fromMap(const {}, locale: const Locale('ar')).isArabic,
         isTrue,
       );
+    });
+  });
+
+  group('ARB catalog', () {
+    Map<String, dynamic> load(String language) {
+      final file = File('lib/app/localization/l10n/app_$language.arb');
+      return jsonDecode(file.readAsStringSync()) as Map<String, dynamic>;
+    }
+
+    test('English and Arabic declare the same keys', () {
+      final en = load('en');
+      final ar = load('ar');
+
+      expect(ar.keys.toSet(), en.keys.toSet());
+    });
+
+    test('every translated value is non-empty', () {
+      for (final language in ['en', 'ar']) {
+        final catalog = load(language);
+        catalog.forEach((key, value) {
+          if (key.startsWith('@')) return;
+          expect(
+            (value as String).trim(),
+            isNotEmpty,
+            reason: '$language/$key is empty',
+          );
+        });
+      }
+    });
+
+    test('new storefront, marketing and platform keys are present', () {
+      final en = load('en');
+      for (final key in [
+        'addToCart',
+        'cartEmpty',
+        'checkout',
+        'placeOrder',
+        'trackOrder',
+        'subscribeToNewsletter',
+        'joinWaitlist',
+        'platformOverview',
+        'recoverySummary',
+        'inventoryIntelligence',
+        'teamMembers',
+      ]) {
+        expect(en.containsKey(key), isTrue, reason: 'missing $key');
+      }
     });
   });
 }

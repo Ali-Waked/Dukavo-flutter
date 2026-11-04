@@ -82,10 +82,91 @@ class MoreScreen extends ConsumerWidget {
             visible: permissions.canViewAnalytics,
           ),
           _MoreEntry(
+            labelKey: 'profit',
+            icon: Icons.trending_up_outlined,
+            path: RoutePaths.profit,
+            visible: permissions.canViewProfit,
+          ),
+          _MoreEntry(
+            labelKey: 'inventoryIntelligence',
+            icon: Icons.auto_graph_outlined,
+            path: RoutePaths.inventoryIntelligence,
+            visible: permissions.canViewInventory,
+          ),
+          _MoreEntry(
             labelKey: 'notifications',
             icon: Icons.notifications_none_outlined,
             path: RoutePaths.notifications,
             badge: unread,
+          ),
+        ],
+      ),
+      _MoreGroup(
+        titleKey: 'growth',
+        entries: [
+          _MoreEntry(
+            labelKey: 'recovery',
+            icon: Icons.replay_outlined,
+            path: RoutePaths.recovery,
+            visible: permissions.canViewRecovery,
+          ),
+          _MoreEntry(
+            labelKey: 'bundles',
+            icon: Icons.inventory_2_outlined,
+            path: RoutePaths.bundles,
+            visible: permissions.canViewProducts,
+          ),
+          _MoreEntry(
+            labelKey: 'aiActions',
+            icon: Icons.auto_awesome_outlined,
+            path: RoutePaths.aiActions,
+            visible: permissions.canUseAi,
+          ),
+          _MoreEntry(
+            labelKey: 'automations',
+            icon: Icons.bolt_outlined,
+            path: RoutePaths.automations,
+            visible: permissions.canViewAutomation,
+          ),
+          _MoreEntry(
+            labelKey: 'whatsapp',
+            icon: Icons.chat_outlined,
+            path: RoutePaths.whatsapp,
+            visible: permissions.canViewWhatsapp,
+          ),
+        ],
+      ),
+      _MoreGroup(
+        titleKey: 'workspace',
+        entries: [
+          _MoreEntry(
+            labelKey: 'stores',
+            icon: Icons.store_outlined,
+            path: RoutePaths.stores,
+            visible: permissions.canViewStores,
+          ),
+          _MoreEntry(
+            labelKey: 'teamAndAccess',
+            icon: Icons.groups_outlined,
+            path: RoutePaths.team,
+            visible: permissions.canViewUsers ||
+                permissions.canViewRoles ||
+                permissions.canViewAudit,
+          ),
+        ],
+      ),
+      const _MoreGroup(
+        titleKey: 'about',
+        entries: [
+          _MoreEntry(
+            labelKey: 'aboutDukavo',
+            icon: Icons.public_outlined,
+            path: RoutePaths.site,
+          ),
+          _MoreEntry(
+            labelKey: 'browseShop',
+            icon: Icons.storefront_outlined,
+            path: RoutePaths.shop,
           ),
         ],
       ),
