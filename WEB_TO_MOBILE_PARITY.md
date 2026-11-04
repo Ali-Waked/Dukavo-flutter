@@ -10,7 +10,7 @@ exists.
 - **API source of truth:** `backend/routes/api/v1.php`
 - **Web source of truth:** `frontend/src/router/index.ts`
 - **Last verified:** 2026-11-04
-- **Quality gates:** `flutter analyze` clean; `flutter test` 122 passing;
+- **Quality gates:** `flutter analyze` clean; `flutter test` 126 passing;
   `dart format --set-exit-if-changed` clean.
 
 ---
@@ -108,10 +108,10 @@ can complete the same business task against the same API and permissions.
 | Customer list | `/customers` | `GET /tenant/customers` | ✅ | Search, pagination |
 | Create/edit/delete | `/customers/new`, `/:id/edit` | `/tenant/customers*` | ✅ | Validated form, confirmation |
 | Customer detail | `/customers/:id` | `GET /tenant/customers/{id}` | ✅ | Contact and order context |
-| CRM overview | web | `/tenant/customers/{id}/crm/overview` | ✗ | No mobile CRM summary |
-| CRM timeline | web | `/tenant/customers/{id}/crm/timeline` | ✗ | No mobile timeline |
-| AI summary + refresh | web | `/tenant/customers/{id}/crm/summary*` | ✗ | No mobile summary |
-| Customer memories | web | `/tenant/customers/{id}/memories*` | ✗ | No mobile memory management |
+| CRM overview | `/customers/:id/crm` | `/tenant/customers/{id}/crm/overview` | ✅ | Lifetime stats, last interaction and the stored summary |
+| CRM timeline | `/customers/:id/crm` | `/tenant/customers/{id}/crm/timeline` | ✅ | Merged orders and conversations with navigation |
+| AI summary + refresh | `/customers/:id/crm` | `/tenant/customers/{id}/crm/summary*` | ✅ | Server-generated summary, refresh and manual correction |
+| Customer memories | `/customers/:id/crm` | `/tenant/customers/{id}/memories*` | ✅ | List, create, edit and delete memories with confidence |
 
 ### 3.6 Conversations
 
@@ -269,7 +269,6 @@ iteration can pick them up without re-auditing the backend.
 | Area | Missing mobile surface | Backend status | Why it was deferred |
 | --- | --- | --- | --- |
 | Conversations | Cart lifecycle, voice messages, AI drafts/summaries/copilot | Implemented | Requires media playback/recording and a multi-step cart UI; the text inbox is complete |
-| Customers | CRM overview/timeline/AI summary/memories | Implemented | Depends on AI availability and a richer detail layout; base customer CRUD is complete |
 | AI | Merchant copilot, tenant insights, availability probe | Implemented | Conversational UI and capability gating need product copy; AI approvals are implemented |
 | Inventory | Transfers | Implemented | Needs a two-store/item picker workflow; stock adjustments and intelligence are complete |
 | Platform | AI insights/newsletter generation, newsletter slug check, content images | Implemented (availability route added) | Editor/image tooling is web-first; the rest of platform marketing is complete |

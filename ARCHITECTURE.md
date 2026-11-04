@@ -116,7 +116,7 @@ lib/
     ├── categories/               category tree
     ├── inventory/                stock, movements, adjustments
     ├── orders/                   list, detail, transitions, order builder
-    ├── customers/                CRM-lite customer records
+    ├── customers/                customer records + CRM workspace
     ├── conversations/            WhatsApp inbox
     ├── notifications/            notification centre
     ├── stores/                   store list + selector
@@ -294,7 +294,7 @@ still render a button, but the request will be rejected.
 
 ## 10. Localisation, RTL and theming
 
-- `app_en.arb` and `app_ar.arb` each contain 890 keys and must stay in parity.
+- `app_en.arb` and `app_ar.arb` each contain 919 keys and must stay in parity.
   A test enforces identical key sets, non-empty values and the presence of keys
   referenced by the new surfaces.
 - The delegate is hand-written and loads both ARB files as assets during
@@ -385,6 +385,9 @@ Beyond the original merchant scope the app now covers:
 
 - **Team & access** — users, roles, permission editing, audit log.
 - **Catalogue** — product image upload/reorder/delete, bundles.
+- **Customers** — CRM workspace with lifetime stats, the server-generated AI
+  summary (refresh and manual correction), merchant memory CRUD and a merged
+  order/conversation timeline.
 - **Inventory** — intelligence overview/detail and CSV export.
 - **Growth** — lost-sale recovery queue with AI draft, dismiss and
   do-not-contact actions; WhatsApp account management; AI action approvals;
@@ -431,7 +434,7 @@ server validation errors without losing input. Destructive actions use
   `DUKAVO_TEST_EMAIL`/`DUKAVO_TEST_PASSWORD` are supplied.
 
 Current verified result: `flutter analyze` reports no issues and
-`flutter test` passes 122 tests. Device integration tests require an emulator
+`flutter test` passes 126 tests. Device integration tests require an emulator
 or physical device and a reachable backend.
 
 ---

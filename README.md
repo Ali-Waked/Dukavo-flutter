@@ -39,8 +39,8 @@ Source-level verification in this workspace (Flutter 3.47.9 / Dart 3.13.7):
 - `dart format --output=none --set-exit-if-changed lib test integration_test`
   is clean.
 - `flutter analyze` reports **No issues found**.
-- `flutter test` passes **122 unit and widget tests**.
-- Both ARB files contain **890 keys** with identical key sets.
+- `flutter test` passes **126 unit and widget tests**.
+- Both ARB files contain **919 keys** with identical key sets.
 - Android debug APK build status and exact commands are recorded in
   [`BUILD_AND_RELEASE.md`](BUILD_AND_RELEASE.md). iOS builds require macOS and
   Xcode and are not produced on this Linux host.
@@ -67,7 +67,8 @@ permission gate.
 - **Orders** — searchable/filterable list, detail, status transitions, payment
   marking and a native order builder.
 - **Customers** — searchable list, create/edit/delete, contact and order
-  context.
+  context, plus a CRM workspace with lifetime stats, the AI summary, merchant
+  memories and a merged order/conversation timeline.
 - **Conversations** — inbox filters, thread, replies, internal notes, approved
   templates, assignment, read state and retry.
 - **Growth** — lost-sale recovery (summary, filters, AI draft, dismiss,
@@ -243,7 +244,7 @@ renders.
 ## 9. Localization and theming
 
 - Copy lives in `lib/app/localization/l10n/app_en.arb` and `app_ar.arb`.
-  Both have 890 keys and identical key sets, enforced by tests.
+  Both have 919 keys and identical key sets, enforced by tests.
 - The delegate is hand-written and preloads both ARB assets during bootstrap;
   `flutter gen-l10n` is not required.
 - A missing key renders the key itself, making omissions visible in review.
@@ -284,7 +285,7 @@ flutter test integration_test/app_boot_test.dart -d <device-id> \
 ```
 
 > **Current result:** `flutter analyze` reports no issues and `flutter test`
-> passes all 122 unit/widget tests. Device integration tests still require an
+> passes all 126 unit/widget tests. Device integration tests still require an
 > emulator/device and a reachable backend.
 
 ## 11. Build and release
@@ -336,7 +337,6 @@ rationale in
 [`WEB_TO_MOBILE_PARITY.md`](WEB_TO_MOBILE_PARITY.md#8-remaining-gaps-and-rationale):
 
 - conversation carts, voice messages and AI reply drafts/summaries/copilot;
-- customer CRM timeline/memories and AI summary;
 - merchant AI copilot/insights;
 - inventory transfers;
 - platform AI content tools, newsletter slug check and inline content images;

@@ -157,5 +157,6 @@ class RoutePaths {
   static String productEdit(String slug) => '/products/$slug/edit';
   static String customer(int id) => '/customers/$id';
   static String customerEdit(int id) => '/customers/$id/edit';
+  static String customerCrm(int id) => '/customers/$id/crm';
   static String conversation(int id) => '/conversations/$id';
 }

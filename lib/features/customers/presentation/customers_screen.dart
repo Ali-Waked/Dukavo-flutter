@@ -143,6 +143,11 @@ class CustomerDetailScreen extends ConsumerWidget {
       appBar: AppBar(
         title: Text(context.tr('customerDetails')),
         actions: [
+          IconButton(
+            tooltip: context.tr('customerCrm'),
+            onPressed: () => context.push(RoutePaths.customerCrm(id)),
+            icon: const Icon(Icons.insights_outlined),
+          ),
           if (permissions.canUpdateCustomers)
             IconButton(
               tooltip: context.tr('edit'),

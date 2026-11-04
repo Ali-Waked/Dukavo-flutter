@@ -83,6 +83,7 @@ class Permissions {
   bool get canViewCustomers => can(PermissionSlugs.customersView);
   bool get canCreateCustomers => can(PermissionSlugs.customersCreate);
   bool get canUpdateCustomers => can(PermissionSlugs.customersUpdate);
+  bool get canDeleteCustomers => can(PermissionSlugs.customersDelete);
   bool get canViewInventory => can(PermissionSlugs.inventoryView);
   bool get canManageInventory => can(PermissionSlugs.inventoryManage);
   bool get canViewConversations => can(PermissionSlugs.conversationsView);

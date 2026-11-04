@@ -16,6 +16,7 @@ import '../../features/auth/presentation/splash_screen.dart';
 import '../../features/auth/presentation/tenant_screens.dart';
 import '../../features/categories/presentation/categories_screen.dart';
 import '../../features/conversations/presentation/conversations_screen.dart';
+import '../../features/customers/presentation/customer_crm_screen.dart';
 import '../../features/customers/presentation/customers_screen.dart';
 import '../../features/dashboard/presentation/dashboard_screen.dart';
 import '../../features/inventory/presentation/inventory_screen.dart';
@@ -396,6 +397,12 @@ List<RouteBase> _routes() {
       path: '/customers/:id/edit',
       builder: (context, state) => CustomerFormScreen(
         id: int.tryParse(state.pathParameters['id'] ?? ''),
+      ),
+    ),
+    GoRoute(
+      path: '/customers/:id/crm',
+      builder: (context, state) => CustomerCrmScreen(
+        id: int.tryParse(state.pathParameters['id'] ?? '') ?? 0,
       ),
     ),
     GoRoute(
