@@ -1,5 +1,13 @@
 # Dukavo Mobile — Delivery Report
 
+> **Historical snapshot (2026-11-02).** This report predates the platform,
+> merchant-growth, marketing and public-storefront work. Current status:
+> `flutter analyze` clean, **113 tests passing**, 862 ARB keys per locale, and
+> the authoritative coverage matrix is
+> [`../WEB_TO_MOBILE_PARITY.md`](../WEB_TO_MOBILE_PARITY.md). Build status is in
+> [`../BUILD_AND_RELEASE.md`](../BUILD_AND_RELEASE.md). Keep this file for the
+> original delivery history; do not treat its numbers as current.
+
 **Date:** 2026-11-02
 **Directory:** `dukavo/mobile` (independent Git repository)
 **Status:** Feature implementation complete for the agreed scope. `flutter pub get`, `flutter analyze` and `flutter test` run successfully on Flutter 3.47.9 / Dart 3.13.7. The APK build was attempted and is blocked by a missing Android SDK; iOS builds need macOS, and the device integration test was **not** run. See §5–§8.

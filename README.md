@@ -3,152 +3,155 @@
 The Flutter client for **Dukavo**, the multi-tenant commerce platform for
 merchants who sell and support customers over WhatsApp.
 
-This app is the native companion to the Vue workspace in the sibling
-`frontend/` repository. It talks to the same Laravel API in the sibling
-`backend/` repository, under the versioned JSON surface at `/api/v1`, and
-reuses the existing contracts rather than introducing mobile-only endpoints.
+The app is the native companion to the Vue workspace and public site in the
+sibling `frontend/` repository, and talks to the same Laravel API in the
+sibling `backend/` repository at `/api/v1`. It reuses the existing contracts,
+permissions and business rules; it does not contain a second API or fake data.
 
 ---
 
 ## Contents
 
-1. [Current status](#1-current-status)
-2. [Key features](#2-key-features)
-3. [Technology stack](#3-technology-stack)
+1. [Status](#1-status)
+2. [What the app covers](#2-what-the-app-covers)
+3. [Technology](#3-technology)
 4. [Architecture](#4-architecture)
 5. [Prerequisites](#5-prerequisites)
 6. [Local setup](#6-local-setup)
 7. [Configuration](#7-configuration)
 8. [Authentication and tenancy](#8-authentication-and-tenancy)
 9. [Localization and theming](#9-localization-and-theming)
-10. [Testing and quality checks](#10-testing-and-quality-checks)
-11. [Backend API integration](#11-backend-api-integration)
-12. [Build and release](#12-build-and-release)
+10. [Testing and quality](#10-testing-and-quality)
+11. [Build and release](#11-build-and-release)
+12. [Documentation](#12-documentation)
 13. [Troubleshooting](#13-troubleshooting)
-14. [Known limitations](#14-known-limitations)
+14. [Known gaps](#14-known-gaps)
 15. [Repository layout](#15-repository-layout)
 16. [License](#16-license)
 
 ---
 
-## 1. Current status
+## 1. Status
 
-The application is **implemented and verified at the Dart/Flutter source
-level** in this workspace:
+Source-level verification in this workspace (Flutter 3.47.9 / Dart 3.13.7):
 
-- `flutter pub get` resolves all dependencies (114 packages).
+- `flutter pub get` resolves all dependencies.
+- `dart format --output=none --set-exit-if-changed lib test integration_test`
+  is clean.
 - `flutter analyze` reports **No issues found**.
-- `flutter test` runs **85 unit and widget tests, all passing**.
-- Android and iOS builds have **not** been produced here: this host has no
-  Android SDK or emulator, and iOS builds require macOS and Xcode.
-- The device integration test requires a booted emulator/device and a
-  reachable backend; it has not been run here.
+- `flutter test` passes **113 unit and widget tests**.
+- Both ARB files contain **862 keys** with identical key sets.
+- Android debug APK build status and exact commands are recorded in
+  [`BUILD_AND_RELEASE.md`](BUILD_AND_RELEASE.md). iOS builds require macOS and
+  Xcode and are not produced on this Linux host.
+- The device integration test requires a booted emulator/device and a reachable
+  backend; it is not run on this host.
 
-The verification used Flutter 3.47.9 / Dart 3.13.7. Run the commands in
-[Testing and quality checks](#10-testing-and-quality-checks) after any change.
-The exact delivery status is summarised in
-[`docs/DELIVERY_REPORT.md`](docs/DELIVERY_REPORT.md).
+The endpoint-by-endpoint coverage matrix, including honest gaps and
+not-applicable decisions, is in
+[`WEB_TO_MOBILE_PARITY.md`](WEB_TO_MOBILE_PARITY.md).
 
-## 2. Key features
+## 2. What the app covers
 
-Everything listed here is wired to a real API route and permission.
+Every screen below calls a real Laravel endpoint and respects the server's
+permission gate.
 
-- **Authentication and session** — Sanctum bearer-token login, CSRF-primed
-  Fortify routes, token persistence in platform secure storage, silent session
-  restore via `/me`, workspace onboarding, workspace switching, logout and
-  password recovery.
-- **Role-aware navigation** — the bottom navigation and "More" workspace are
-  built from the permission slugs returned by `/me`; a screen the caller cannot
-  use is not offered, and every request is still authorised by the server.
-- **Dashboard** — revenue, order and stock aggregates, revenue trend, top
-  products, dead stock and recent activity.
-- **Catalogue** — products with variants, images, pricing and stock; category
-  tree with create/edit/delete; slug availability checks.
-- **Inventory** — stock levels per variant and store, low-stock filter,
-  movement history, absolute adjustment, additive receiving and transfers.
-- **Orders** — searchable, filterable order list, order detail with totals and
-  status timeline, status transitions with optional payment marking, and a
-  native order builder with customer and product pickers.
-- **Customers** — searchable list, create/edit/delete and a detail view with
-  contact information and order context.
-- **Conversations** — inbox with status/channel/unread filters, thread view,
-  replies, internal notes, approved templates, assignment, read state, retry
-  and conversation creation.
-- **Notifications** — unread badge, notification centre, mark read/unread,
-  mark all read, delete, and per-channel preference settings that respect what
-  the backend can actually deliver.
-- **Analytics** — executive KPIs, sales trend, product performance, stock
-  health and explicit limitations, with date-range and store filters.
-- **Storefront, delivery and payments** — store-scoped shop settings
-  (visibility, branding, contact details, policies and sharing metadata),
-  delivery zones with fees and free-delivery thresholds, and cash-on-delivery
-  configuration. Online payment is shown as unavailable with the server's
-  reason until a provider is configured.
-- **Profile and settings** — profile editing, avatar upload/removal, password
-  change, signed-in device management, workspace settings, theme and language.
-- **Native UX** — Material 3 surfaces, light/dark themes, Arabic RTL and
-  English LTR, pull-to-refresh, incremental pagination, skeleton/empty/error
-  states and accessible form validation.
+### Merchant workspace
 
-## 3. Technology stack
+- **Dashboard and analytics** — revenue, orders, stock, trends, top products,
+  dead stock, date-range/store filters, explicit limitations.
+- **Catalogue** — products with variants, pricing, stock and images (upload,
+  reorder, delete); category tree; slug availability; bundles.
+- **Inventory** — stock per variant/store, low-stock filter, movement history,
+  adjustments, receiving, intelligence overview/detail and CSV export.
+- **Orders** — searchable/filterable list, detail, status transitions, payment
+  marking and a native order builder.
+- **Customers** — searchable list, create/edit/delete, contact and order
+  context.
+- **Conversations** — inbox filters, thread, replies, internal notes, approved
+  templates, assignment, read state and retry.
+- **Growth** — lost-sale recovery (summary, filters, AI draft, dismiss,
+  do-not-contact), WhatsApp accounts (CRUD, verify, disconnect), AI action
+  approvals (submit/approve/reject/execute) and automations (rules, runs,
+  human tasks).
+- **Reporting** — profit overview with filters and CSV export.
+- **Stores** — list, create/edit/delete, make default.
+- **Storefront, delivery and payments** — per-store storefront settings,
+  shipping zones with fees/free-delivery thresholds, cash-on-delivery settings;
+  online payment is shown unavailable with the server's reason.
+- **Team and access** — users, custom roles, grouped permission editor, audit
+  log.
+- **Account** — profile, avatar, password, signed-in devices, notification
+  preferences, theme, language and workspace settings.
+
+### Platform console
+
+A separate five-tab shell for platform operators: dashboard; tenants (CRUD,
+suspend/activate, members); platform users (CRUD, role assignment); marketing
+(pricing plans, FAQ, content pages, newsletters, waitlist, contact messages,
+subscribers); and access control (roles/permissions, audit log). Platform-only
+operators are never sent to tenant onboarding.
+
+### Public marketing site
+
+Native home, features, pricing, FAQ, newsletter index/article, contact,
+waitlist and long-form content pages (about, privacy, terms). Content comes
+from the same public API as the Vue site.
+
+### Public storefront
+
+`/shop/:tenantSlug/:storeSlug` works without a session: store home and product
+grid, product detail with variants, client-side cart, checkout with
+zone-derived city/area and idempotency key, and order confirmation by opaque
+token. The server resolves all prices, shipping, discounts and totals.
+
+### Native UX
+
+Material 3 light/dark themes, Arabic RTL and English LTR, pull-to-refresh,
+incremental pagination, skeleton/empty/error states, accessible validation,
+confirmation dialogs and role-aware navigation.
+
+## 3. Technology
 
 | Concern | Choice |
 | --- | --- |
-| Framework | Flutter (stable channel), Dart 3 |
-| State management | Riverpod 2 (`StateNotifier`, `FutureProvider`, `Provider`) |
-| Navigation | `go_router` with a single `ShellRoute` |
+| Framework | Flutter stable, Dart 3 |
+| State | Riverpod 2 (`Provider`, `FutureProvider`, `StateNotifier`) |
+| Navigation | `go_router` with merchant, platform, shop and marketing shells |
 | HTTP | `dio` behind one `ApiClient` |
 | Secure storage | `flutter_secure_storage` for the bearer token |
 | Preferences | `shared_preferences` for theme, locale and tenant slug |
-| Images | `cached_network_image`; `image_picker` for avatars |
-| Localization | ARB assets loaded by a hand-written delegate (no codegen) |
+| Images | `cached_network_image`; `image_picker` for avatar/product images |
+| Localization | ARB assets parsed by a hand-written delegate (no codegen) |
 | Tests | `flutter_test`, `mocktail`, `integration_test` |
 
-No code generation is required: there is no `build_runner`, `freezed` or
-`json_serializable` step, so a clean checkout can be opened and built without
-generating files first.
+No `build_runner`, `freezed`, `json_serializable` or `gen-l10n` step is
+required. A clean checkout can be analyzed and tested immediately after
+`flutter pub get`.
 
 ## 4. Architecture
 
-The app follows feature-first Clean Architecture. Dependencies point inward:
+Feature-first Clean Architecture: `presentation → application → domain`, with
+`data → core` for transport and storage. A single `ApiClient` owns the bearer
+token, `X-Tenant`, CSRF priming, `Accept-Language`, response envelopes, raw
+downloads and `ApiException` mapping. `PaginatedNotifier` gives every list the
+same refresh/search/filter/load-more/error behaviour.
 
-```
-presentation  ->  application  ->  domain
-                       |
-                       v
-                     data  ->  core
-```
+A generic resource engine (`core/resources/`) drives list → detail → form →
+delete admin surfaces from declarative `ResourceSpec`s, while bespoke screens
+handle dashboards, profit, inventory intelligence, recovery, checkout and the
+public site.
 
-- **domain** — immutable entities, value objects, query objects and repository
-  interfaces. It imports no Flutter, Dio or plugin package.
-- **data** — JSON models, remote data sources and repository implementations.
-  This is the only layer that knows endpoint paths and response envelopes.
-- **application** — Riverpod providers, list notifiers, actions and screen
-  state. Widgets read state and call actions; they never call Dio.
-- **presentation** — screens and widgets. They receive domain objects and
-  localised copy, and never parse JSON.
-- **core** — transport, storage, permissions, formatting, validation,
-  pagination and shared widgets.
-- **app** — bootstrap, router, theme and localization wiring.
-
-Cross-cutting rules:
-
-- A single `ApiClient` attaches the bearer token, the `X-Tenant` header and
-  `Accept-Language`, primes Sanctum's CSRF cookie, normalises the
-  `{success, message, data, meta}` envelope and maps every failure to
-  `ApiException`.
-- Pagination is shared through `Paginated<T>`, `PaginationMeta` and
-  `PaginatedNotifier<T>`, so every list has the same refresh/load-more/error
-  behaviour.
-- Permissions come from the session payload. Hiding a control is a courtesy;
-  the server remains the security boundary.
+See [`ARCHITECTURE.md`](ARCHITECTURE.md) for layer rules, routing redirects,
+the permission model, storefront rules and an extension guide.
 
 ## 5. Prerequisites
 
-- Flutter **3.24 or newer** on the stable channel (the code targets Dart 3.5+).
-- An Android SDK for Android builds, or Xcode 15+ for iOS builds.
-- A running Dukavo backend. The default development URLs assume
-  `php artisan serve` on port `8000`.
+- Flutter 3.24+ on the stable channel (the code targets Dart 3.5+).
+- Android SDK for Android builds, or Xcode 15+ on macOS for iOS builds.
+- A running Dukavo backend. Development defaults assume `php artisan serve`
+  on port `8000`.
+- JDK 17 for the Android Gradle build.
 
 Check the toolchain:
 
@@ -165,14 +168,14 @@ flutter pub get
 flutter run
 ```
 
-The default API base URL is chosen from the target platform:
+Default API base URLs:
 
-| Target | Default base URL |
+| Target | Base URL |
 | --- | --- |
 | Android emulator | `http://10.0.2.2:8000/api/v1` |
 | iOS simulator | `http://127.0.0.1:8000/api/v1` |
 
-Both are overridable at build time:
+Override at build time:
 
 ```bash
 flutter run \
@@ -180,32 +183,32 @@ flutter run \
 ```
 
 Start the backend with CORS and Sanctum configured for the host you use. The
-mobile client authenticates with a bearer token, but Fortify's login, logout,
-forgot-password and reset-password routes run under the `web` middleware, so
-the client first requests `/sanctum/csrf-cookie` and sends the resulting
-`X-XSRF-TOKEN` header and cookies. The token returned by login is then stored in
-the platform keychain/keystore and used for every other request.
+client primes `/sanctum/csrf-cookie` for Fortify's web-guarded login/logout/
+forgot-password routes, then stores the returned bearer token in the platform
+keychain/keystore.
 
 ### Android notes
 
 - Application ID: `com.dukavo.mobile`.
 - Cleartext HTTP is permitted only for `10.0.2.2`, `localhost` and
-  `127.0.0.1` through `android/app/src/main/res/xml/network_security_config.xml`.
-  Production hosts keep the platform's HTTPS-only default.
-- `INTERNET` permission is declared in `android/app/src/main/AndroidManifest.xml`.
+  `127.0.0.1` through
+  `android/app/src/main/res/xml/network_security_config.xml`. Production hosts
+  keep the HTTPS-only default.
+- `INTERNET` permission is declared in
+  `android/app/src/main/AndroidManifest.xml`.
 
 ### iOS notes
 
 - Bundle identifier: `com.dukavo.mobile`.
 - The ATS exception for local HTTP is development-only; use HTTPS in release.
-- Photo-library and camera usage descriptions are declared for avatar capture.
+- Photo-library and camera usage descriptions are declared for image capture.
 
 ## 7. Configuration
 
 | Setting | Where | Default |
 | --- | --- | --- |
 | API base URL | `--dart-define=DUKAVO_API_BASE_URL` | platform default above |
-| Public shop URL | `--dart-define=DUKAVO_WEB_BASE_URL` | derived from the API origin |
+| Public web/shop URL | `--dart-define=DUKAVO_WEB_BASE_URL` | derived from the API origin |
 | CSRF URL | derived from the API origin | `/sanctum/csrf-cookie` |
 | Theme | persisted in `shared_preferences` | system |
 | Language | persisted in `shared_preferences` | device, English fallback |
@@ -213,65 +216,63 @@ the platform keychain/keystore and used for every other request.
 | App version | `AppConfig.appVersion` | `1.0.0` |
 
 No secret is compiled into the app. The bearer token lives only in secure
-storage, is never logged, and is cleared on logout or a `401` response.
+storage, is never logged, and is cleared on logout or `401`.
 
 ## 8. Authentication and tenancy
 
-1. The app boots, hydrates the token store and calls `/me` when a token exists.
-2. A valid session with an active tenant goes to the dashboard.
+1. Boot hydrates the token store and calls `/me` when a token exists.
+2. A valid session with an active tenant goes to the first permitted merchant
+   screen.
 3. A valid session without a workspace goes to workspace setup
    (`POST /onboarding/tenant`).
-4. No token, or an invalid token, goes to login.
-5. Login primes CSRF, exchanges credentials at `/auth/login`, stores the token
+4. A platform-only operator goes to `/platform/dashboard`, never to tenant
+   setup.
+5. No token or an invalid token goes to login.
+6. Login primes CSRF, exchanges credentials at `/auth/login`, stores the token
    and loads `/me`.
-6. Every tenant-scoped request carries `X-Tenant`; the backend resolves it
-   against the caller's memberships, so a forged value cannot widen access.
-7. A `401` anywhere clears the local session and returns to login.
+7. Every tenant request carries `X-Tenant`; the backend resolves it against the
+   caller's memberships, so a forged value cannot widen access.
+8. A `401` anywhere clears the local session and returns to login.
 
-Workspace switching re-reads `/me` with the new `X-Tenant` value and refreshes
-the permission set and navigation.
+Workspace switching re-reads `/me` with the new `X-Tenant`, replaces the
+permission set and invalidates tenant-scoped caches before the new scope
+renders.
 
 ## 9. Localization and theming
 
 - Copy lives in `lib/app/localization/l10n/app_en.arb` and `app_ar.arb`.
-- Both files are bundled as assets and preloaded during bootstrap. The delegate
-  is hand-written, so `flutter gen-l10n` is not required.
-- A missing key renders the key itself; that is intentional, because a visible
-  key in a screenshot is easier to catch than a blank label.
-- Arabic sets RTL automatically through Flutter's `Directionality`; layouts use
-  directional padding and alignment rather than left/right constants.
-- The palette is defined once in `lib/app/theme/app_colors.dart`:
-  primary `#0F766E`, primary dark `#115E59`, accent `#A3E635`, background
-  `#F8FAFC`, surface `#FFFFFF`, text `#0F172A`, muted `#64748B`, border
-  `#E2E8F0`.
-- Theme mode (light/dark/system) and language are persisted and restored before
-  the first frame.
+  Both have 862 keys and identical key sets, enforced by tests.
+- The delegate is hand-written and preloads both ARB assets during bootstrap;
+  `flutter gen-l10n` is not required.
+- A missing key renders the key itself, making omissions visible in review.
+- Arabic sets RTL automatically; layouts use directional padding,
+  `AlignmentDirectional` and `start`/`end`.
+- The palette is defined once in `lib/app/theme/app_colors.dart` (primary
+  `#0F766E`, accent `#A3E635`, light/dark surfaces and borders).
+- Theme mode and language persist and are restored before the first frame.
 
-## 10. Testing and quality checks
-
-The repository contains:
-
-- **Unit tests** for formatters, validators, pagination metadata, order and
-  inventory JSON models, analytics query equality, auth domain objects and the
-  localization delegate.
-- **Widget tests** for shared widgets and the login form, including validation,
-  server-error rendering and Arabic RTL copy.
-- **Integration tests** in `integration_test/app_boot_test.dart` for a real
-  device/emulator. The credential-based test is skipped unless
-  `DUKAVO_TEST_EMAIL` and `DUKAVO_TEST_PASSWORD` are supplied.
-
-Run them on a machine with Flutter:
+## 10. Testing and quality
 
 ```bash
 cd mobile
-flutter pub get
 dart format --output=none --set-exit-if-changed lib test integration_test
 flutter analyze
 flutter test
-flutter test integration_test/app_boot_test.dart -d <device-id>
 ```
 
-The integration login test needs a reachable backend:
+Coverage includes:
+
+- **Unit** — formatters, validators, pagination metadata, JSON models for
+  orders, inventory, customers, payments, shipping, storefront, shop and
+  marketing, analytics queries, auth domain, platform dashboard parsing, cart
+  notifier and ARB parity.
+- **Widget** — shared widgets, login validation/server errors/Arabic RTL,
+  payment settings and shipping zones.
+- **Integration** — `integration_test/app_boot_test.dart` on a real
+  device/emulator. Credential login runs only when `DUKAVO_TEST_EMAIL` and
+  `DUKAVO_TEST_PASSWORD` are supplied.
+
+Device integration test:
 
 ```bash
 flutter test integration_test/app_boot_test.dart -d <device-id> \
@@ -280,100 +281,72 @@ flutter test integration_test/app_boot_test.dart -d <device-id> \
   --dart-define=DUKAVO_TEST_PASSWORD=password
 ```
 
-> **Current result (Flutter 3.47.9):** `flutter analyze` reports no issues
-> and `flutter test` passes all 85 unit/widget tests. The device integration
-> test and platform builds still require an emulator/device and have not been
-> run in this workspace.
+> **Current result:** `flutter analyze` reports no issues and `flutter test`
+> passes all 113 unit/widget tests. Device integration tests still require an
+> emulator/device and a reachable backend.
 
-## 11. Backend API integration
+## 11. Build and release
 
-The complete endpoint-by-endpoint map — method, path, permission, mobile
-feature, request payload and response shape — is in
-[`docs/API_INTEGRATION_MAP.md`](docs/API_INTEGRATION_MAP.md).
+Android debug and release instructions, signing setup, environment checks and
+the exact verification log are in
+[`BUILD_AND_RELEASE.md`](BUILD_AND_RELEASE.md).
 
-In summary, the mobile client uses the existing v1 surface:
-
-- Auth and session: `/auth/login`, `/auth/logout`, `/auth/forgot-password`,
-  `/auth/reset-password`, `/me`, `/onboarding/tenant`.
-- Profile: `/profile`, `/profile/avatar`, `/profile/password`,
-  `/profile/sessions`, `/profile/notifications`,
-  `/profile/notifications/channels`.
-- Notifications: `/notifications`, `/notifications/unread-count`,
-  `/notifications/read-all`, `/notifications/{id}/read|unread`.
-- Workspace: `/tenant/dashboard*`, `/tenant/analytics`, `/tenant/stores`,
-  `/tenant/settings`.
-- Storefront settings: `/tenant/stores/{store}/storefront`,
-  `/tenant/stores/{store}/shipping-zones`,
-  `/tenant/stores/{store}/payments`.
-- Catalogue: `/tenant/products*`, `/tenant/categories*`.
-- Commerce: `/tenant/orders*`, `/tenant/customers*`, `/tenant/inventory*`.
-- Inbox: `/tenant/conversations*`.
-
-Resources addressed by slug use the slug (products); order reads use the
-human order number and order mutations use the numeric id; categories,
-customers and conversations use numeric ids.
-
-## 12. Build and release
-
-Android:
+Quick start:
 
 ```bash
+flutter build apk --debug
 flutter build appbundle --release \
   --dart-define=DUKAVO_API_BASE_URL=https://api.dukavo.com/api/v1
 ```
 
-iOS (macOS only):
+Before release: point the base URL at HTTPS, remove development cleartext/ATS
+exceptions, configure signing, verify Sanctum/CORS for the production origin,
+and run analyze + tests.
 
-```bash
-flutter build ipa --release \
-  --dart-define=DUKAVO_API_BASE_URL=https://api.dukavo.com/api/v1
-```
+## 12. Documentation
 
-Before release:
-
-- point the base URL at HTTPS;
-- remove the development cleartext/ATS exceptions;
-- configure signing (keystore for Android, certificates/profiles for iOS);
-- verify the backend's Sanctum stateful domains and CORS settings include the
-  production origin;
-- run `flutter analyze` and the full test suite.
+| Document | Purpose |
+| --- | --- |
+| [`ARCHITECTURE.md`](ARCHITECTURE.md) | Layers, routing, state, resource engine, storefront, extension guide |
+| [`WEB_TO_MOBILE_PARITY.md`](WEB_TO_MOBILE_PARITY.md) | Web ↔ mobile feature/endpoint matrix, gaps, not-applicable decisions |
+| [`BUILD_AND_RELEASE.md`](BUILD_AND_RELEASE.md) | Toolchain, signing, build commands, verification results |
+| [`docs/API_INTEGRATION_MAP.md`](docs/API_INTEGRATION_MAP.md) | Earlier endpoint map (kept for reference; parity doc is authoritative for coverage) |
+| [`docs/DELIVERY_REPORT.md`](docs/DELIVERY_REPORT.md) | Earlier delivery snapshot (superseded by this README and the parity doc) |
 
 ## 13. Troubleshooting
 
 | Symptom | Likely cause | Fix |
 | --- | --- | --- |
-| `10.0.2.2` connection refused | backend not running or bound to localhost only | start `php artisan serve --host=0.0.0.0` |
-| `419` on login | CSRF cookie missing or blocked | confirm `/sanctum/csrf-cookie` is reachable and cookies are accepted |
-| `401` immediately after login | token not stored or `/me` rejected | check secure-storage permissions and `SANCTUM_STATEFUL_DOMAINS` |
-| `403` on a screen | role lacks the permission | grant the permission in the backend; the app hides what it knows is unavailable |
-| Arabic layout looks mirrored incorrectly | hard-coded left/right in a new widget | use `EdgeInsetsDirectional`, `AlignmentDirectional` and `start`/`end` |
-| Text renders a key such as `orders.view` | missing ARB entry | add the key to both `app_en.arb` and `app_ar.arb` |
+| `10.0.2.2` connection refused | backend not running or bound to localhost only | `php artisan serve --host=0.0.0.0` |
+| `419` on login | CSRF cookie missing/blocked | confirm `/sanctum/csrf-cookie` is reachable and cookies are accepted |
+| `401` after login | token not stored or `/me` rejected | check secure storage and `SANCTUM_STATEFUL_DOMAINS` |
+| `403` on a screen | role lacks the permission | grant it in the backend; the app hides what it knows is unavailable |
+| Arabic layout mirrored incorrectly | hard-coded left/right in a new widget | use `EdgeInsetsDirectional`, `AlignmentDirectional`, `start`/`end` |
+| Text renders a key such as `orders.view` | missing ARB entry | add it to both ARB files |
+| Gradle runs out of memory | `org.gradle.jvmargs=-Xmx8G` on a small host | lower it in `android/gradle.properties` or set `GRADLE_OPTS` |
+| Android build cannot find SDK/JDK | `ANDROID_HOME`/`JAVA_HOME` unset | see [`BUILD_AND_RELEASE.md`](BUILD_AND_RELEASE.md) |
 
-## 14. Known limitations
+## 14. Known gaps
 
-The mobile app intentionally covers the merchant workflow, not every surface of
-the web product. The following backend areas are **not implemented in mobile**
-yet:
+The app covers the merchant, platform, marketing and storefront surfaces
+broadly, but a few web workflows are not yet native. They are listed with
+rationale in
+[`WEB_TO_MOBILE_PARITY.md`](WEB_TO_MOBILE_PARITY.md#8-remaining-gaps-and-rationale):
 
-- platform administration (tenants, platform users, platform roles, audit);
-- workspace team users, custom roles and permission editing;
-- smart bundles, bundle recommendations and AI assistance;
-- conversation carts/order builder, voice messages, AI reply drafts and
-  summaries, recovery opportunities;
-- WhatsApp account management and connection status;
-- profit intelligence and exports;
-- automations, audit logs, marketing content administration;
-- product image upload/reorder (product media is not exposed in the mobile UI).
+- conversation carts, voice messages and AI reply drafts/summaries/copilot;
+- customer CRM timeline/memories and AI summary;
+- merchant AI copilot/insights and store currency conversion;
+- inventory transfers;
+- platform AI content tools, newsletter slug check and inline content images;
+- standalone storefront order tracking by token;
+- reset-password and email-verification screens (these complete on web today).
 
-Store management is read-only in mobile: the store list feeds pickers and the
-order builder, but there is no create/edit/delete store screen. The
-store-scoped shop, shipping and payment settings are editable.
+Online payments are unavailable because the backend has no provider or
+transaction ledger; cash on delivery is the only method, and the app reports
+the server's reason for every unavailable method.
 
-Online payments are not implemented because the backend has no payment
-provider or transaction ledger yet. Cash on delivery is the only available
-method, and the app reports the server's reason for every unavailable method.
-
-These are tracked as future work, not as regressions in the implemented scope.
+These are future work, not hidden regressions: no fake API, dummy business data
+or client-side price calculation is used to fill them.
 
 ## 15. Repository layout
 
@@ -382,22 +355,25 @@ mobile/
 ├── android/                 Android host project (com.dukavo.mobile)
 ├── ios/                     iOS host project (com.dukavo.mobile)
 ├── assets/images/           Bundled image assets
-├── docs/                    Integration and delivery documentation
+├── docs/                    Earlier integration/delivery documents
 ├── integration_test/        Device/emulator end-to-end tests
 ├── lib/
 │   ├── app/                 Router, theme, localization and app wiring
-│   ├── core/                Transport, storage, auth primitives, shared UI
-│   ├── features/            One folder per feature: domain/data/application/presentation
+│   ├── core/                Transport, storage, permissions, resource engine, shared UI
+│   ├── features/            One folder per feature (domain/data/application/presentation)
 │   ├── bootstrap.dart       Dependency construction and first frame
 │   └── main.dart            Entry point
 ├── test/                    Unit and widget tests
+├── ARCHITECTURE.md
+├── BUILD_AND_RELEASE.md
+├── WEB_TO_MOBILE_PARITY.md
 ├── analysis_options.yaml
 ├── l10n.yaml
 └── pubspec.yaml
 ```
 
 This directory is its own Git repository. `backend/` and `frontend/` remain
-independent repositories; nothing here modifies or nests inside them.
+independent repositories.
 
 ## 16. License
 

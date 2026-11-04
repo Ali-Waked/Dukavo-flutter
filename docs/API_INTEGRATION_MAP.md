@@ -1,5 +1,12 @@
 # Dukavo Mobile — API Integration Map
 
+> **Reference note.** This map covers the original merchant scope. The app now
+> also calls platform, team/RBAC, growth, automation, marketing and public
+> storefront endpoints; the complete, current coverage matrix is
+> [`../WEB_TO_MOBILE_PARITY.md`](../WEB_TO_MOBILE_PARITY.md), and
+> `lib/core/api/api_paths.dart` is the authoritative list of paths used by the
+> client.
+
 This document maps every endpoint the Flutter client calls to the backend route,
 the permission that protects it, the mobile layer that owns it, and the payload
 or response shape the client relies on.
