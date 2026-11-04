@@ -51,6 +51,7 @@ import '../../features/shell/presentation/app_shell.dart';
 import '../../features/shell/presentation/more_screen.dart';
 import '../../features/shell/presentation/no_access_screen.dart';
 import '../../features/storefront/presentation/storefront_settings_screen.dart';
+import '../../features/stores/presentation/store_currency_screen.dart';
 import '../../features/team/presentation/role_permissions_screen.dart';
 import '../../features/team/presentation/team_user_form_screen.dart';
 import 'route_paths.dart';
@@ -640,6 +641,10 @@ List<RouteBase> _routes() {
         state,
         _idOf(state),
       ),
+    ),
+    GoRoute(
+      path: '/stores/:id/currency',
+      builder: (context, state) => StoreCurrencyScreen(storeId: _idOf(state)),
     ),
     GoRoute(
       path: RoutePaths.inventoryIntelligence,

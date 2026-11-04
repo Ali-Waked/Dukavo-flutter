@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../app/localization/app_localizations.dart';
 import '../../../app/router/route_paths.dart';
@@ -816,6 +817,15 @@ final storeSpec = ResourceSpec(
       visible: (resource) => !resource.flag('is_default'),
     ),
   ],
+  extraDetail: (context, resource) => Card(
+    child: ListTile(
+      leading: const Icon(Icons.currency_exchange),
+      title: Text(context.tr('storeCurrency')),
+      subtitle: Text(context.tr('storeCurrencyHelp')),
+      trailing: const Icon(Icons.chevron_right),
+      onTap: () => context.go(RoutePaths.storeCurrency(resource.id)),
+    ),
+  ),
   emptyIcon: Icons.store_mall_directory_outlined,
   emptyTitleKey: 'noStores',
 );

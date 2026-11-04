@@ -132,6 +132,7 @@ class RoutePaths {
   static String automationTask(int id) => '/automations/tasks/$id';
   static String recoveryDetail(int id) => '/recovery/$id';
   static String storeDetail(int id) => '/stores/$id';
+  static String storeCurrency(int id) => '/stores/$id/currency';
   static String storeEdit(int id) => '/stores/$id/edit';
   static String productImages(String slug) => '/products/$slug/images';
 

@@ -2,7 +2,7 @@
 
 > **Historical snapshot (2026-11-02).** This report predates the platform,
 > merchant-growth, marketing and public-storefront work. Current status:
-> `flutter analyze` clean, **118 tests passing**, 871 ARB keys per locale, and
+> `flutter analyze` clean, **122 tests passing**, 890 ARB keys per locale, and
 > the authoritative coverage matrix is
 > [`../WEB_TO_MOBILE_PARITY.md`](../WEB_TO_MOBILE_PARITY.md). Build status is in
 > [`../BUILD_AND_RELEASE.md`](../BUILD_AND_RELEASE.md). Keep this file for the

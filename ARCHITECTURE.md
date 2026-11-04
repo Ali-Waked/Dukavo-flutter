@@ -294,7 +294,7 @@ still render a button, but the request will be rejected.
 
 ## 10. Localisation, RTL and theming
 
-- `app_en.arb` and `app_ar.arb` each contain 871 keys and must stay in parity.
+- `app_en.arb` and `app_ar.arb` each contain 890 keys and must stay in parity.
   A test enforces identical key sets, non-empty values and the presence of keys
   referenced by the new surfaces.
 - The delegate is hand-written and loads both ARB files as assets during
@@ -390,7 +390,11 @@ Beyond the original merchant scope the app now covers:
   do-not-contact actions; WhatsApp account management; AI action approvals;
   automation rules, runs and human tasks.
 - **Reporting** — profit overview with filters and CSV export.
-- **Stores** — list, create/edit/delete and make-default.
+- **Stores** — list, create/edit/delete, make-default and base-currency
+  conversion. The currency screen asks the server for a preview (rate, counts
+  and sample prices), shows exactly what will change, and submits a confirmed,
+  idempotent conversion. The client never computes converted amounts itself;
+  historical orders and payments are never rewritten.
 - **Storefront** — settings, shipping zones and payments per store.
 
 These screens reuse `ResourceSpec` where the workflow is CRUD and use bespoke
@@ -427,7 +431,7 @@ server validation errors without losing input. Destructive actions use
   `DUKAVO_TEST_EMAIL`/`DUKAVO_TEST_PASSWORD` are supplied.
 
 Current verified result: `flutter analyze` reports no issues and
-`flutter test` passes 118 tests. Device integration tests require an emulator
+`flutter test` passes 122 tests. Device integration tests require an emulator
 or physical device and a reachable backend.
 
 ---

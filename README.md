@@ -39,8 +39,8 @@ Source-level verification in this workspace (Flutter 3.47.9 / Dart 3.13.7):
 - `dart format --output=none --set-exit-if-changed lib test integration_test`
   is clean.
 - `flutter analyze` reports **No issues found**.
-- `flutter test` passes **118 unit and widget tests**.
-- Both ARB files contain **871 keys** with identical key sets.
+- `flutter test` passes **122 unit and widget tests**.
+- Both ARB files contain **890 keys** with identical key sets.
 - Android debug APK build status and exact commands are recorded in
   [`BUILD_AND_RELEASE.md`](BUILD_AND_RELEASE.md). iOS builds require macOS and
   Xcode and are not produced on this Linux host.
@@ -75,7 +75,8 @@ permission gate.
   approvals (submit/approve/reject/execute) and automations (rules, runs,
   human tasks).
 - **Reporting** — profit overview with filters and CSV export.
-- **Stores** — list, create/edit/delete, make default.
+- **Stores** — list, create/edit/delete, make default, and base-currency
+  conversion with a server-owned rate preview, confirmation and history.
 - **Storefront, delivery and payments** — per-store storefront settings,
   shipping zones with fees/free-delivery thresholds, cash-on-delivery settings;
   online payment is shown unavailable with the server's reason.
@@ -242,7 +243,7 @@ renders.
 ## 9. Localization and theming
 
 - Copy lives in `lib/app/localization/l10n/app_en.arb` and `app_ar.arb`.
-  Both have 871 keys and identical key sets, enforced by tests.
+  Both have 890 keys and identical key sets, enforced by tests.
 - The delegate is hand-written and preloads both ARB assets during bootstrap;
   `flutter gen-l10n` is not required.
 - A missing key renders the key itself, making omissions visible in review.
@@ -283,7 +284,7 @@ flutter test integration_test/app_boot_test.dart -d <device-id> \
 ```
 
 > **Current result:** `flutter analyze` reports no issues and `flutter test`
-> passes all 118 unit/widget tests. Device integration tests still require an
+> passes all 122 unit/widget tests. Device integration tests still require an
 > emulator/device and a reachable backend.
 
 ## 11. Build and release
@@ -336,7 +337,7 @@ rationale in
 
 - conversation carts, voice messages and AI reply drafts/summaries/copilot;
 - customer CRM timeline/memories and AI summary;
-- merchant AI copilot/insights and store currency conversion;
+- merchant AI copilot/insights;
 - inventory transfers;
 - platform AI content tools, newsletter slug check and inline content images;
 - email-verification screen (verification links complete on web today).

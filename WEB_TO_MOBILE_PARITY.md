@@ -10,7 +10,7 @@ exists.
 - **API source of truth:** `backend/routes/api/v1.php`
 - **Web source of truth:** `frontend/src/router/index.ts`
 - **Last verified:** 2026-11-04
-- **Quality gates:** `flutter analyze` clean; `flutter test` 118 passing;
+- **Quality gates:** `flutter analyze` clean; `flutter test` 122 passing;
   `dart format --set-exit-if-changed` clean.
 
 ---
@@ -153,7 +153,7 @@ can complete the same business task against the same API and permissions.
 | Storefront settings | `/storefront` | `/tenant/stores/{id}/storefront` | ✅ | Visibility, branding, contact, policies, sharing metadata |
 | Shipping zones | `/shipping` | `/tenant/stores/{id}/shipping-zones*` | ✅ | CRUD, fees, free-delivery threshold |
 | Payments | `/payments` | `/tenant/stores/{id}/payments` | ✅ | Cash on delivery; online shown unavailable with server reason |
-| Store currency conversion | web | `/tenant/currencies`, `/stores/{id}/currency*` | ✗ | No mobile conversion preview/apply screen |
+| Store currency conversion | `/stores/:id/currency` | `/tenant/currencies`, `/stores/{id}/currency*` | ✅ | Server-owned rate preview with sample prices, confirmation dialog and idempotent apply; history shows past conversions |
 
 ### 3.9 Team, roles and audit
 
@@ -272,9 +272,7 @@ iteration can pick them up without re-auditing the backend.
 | Customers | CRM overview/timeline/AI summary/memories | Implemented | Depends on AI availability and a richer detail layout; base customer CRUD is complete |
 | AI | Merchant copilot, tenant insights, availability probe | Implemented | Conversational UI and capability gating need product copy; AI approvals are implemented |
 | Inventory | Transfers | Implemented | Needs a two-store/item picker workflow; stock adjustments and intelligence are complete |
-| Stores | Currency conversion preview/apply | Implemented | Needs exchange-rate UX and confirmation; store CRUD is complete |
 | Platform | AI insights/newsletter generation, newsletter slug check, content images | Implemented (availability route added) | Editor/image tooling is web-first; the rest of platform marketing is complete |
-| Storefront | Order tracking by token entry | Implemented | Order lookup works from checkout/shared links; a standalone form is a small follow-up |
 | Auth | Email-verification screen | Implemented | Verification links complete on the web; mobile sends the reset email and has a native reset form |
 | Marketing | Dedicated how-it-works/help/acceptable-use links | Content pages | Reachable through content pages when published; about/privacy/terms are linked |
 
