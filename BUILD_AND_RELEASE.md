@@ -120,7 +120,7 @@ Expected:
 
 - format: no output, exit 0;
 - analyze: `No issues found!`;
-- test: `All tests passed!` (113 tests at the time of writing).
+- test: `All tests passed!` (118 tests at the time of writing).
 
 Do not build an APK from a tree that fails these gates.
 
@@ -301,8 +301,8 @@ This workspace is Linux, so no iOS artifact is produced here.
 | `flutter pub get` | dependencies resolved |
 | `dart format --set-exit-if-changed` | clean |
 | `flutter analyze` | No issues found |
-| `flutter test` | 113 tests passed |
-| ARB parity | 862 keys in each file, identical sets |
+| `flutter test` | 118 tests passed |
+| ARB parity | 871 keys in each file, identical sets |
 | Android debug APK | see current status below |
 | Android release APK/AAB | not produced: no upload keystore/signing config in this workspace |
 | iOS IPA | not produced: Linux host, no Xcode |

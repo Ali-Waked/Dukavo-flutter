@@ -9,6 +9,7 @@ class RoutePaths {
   static const splash = '/splash';
   static const login = '/login';
   static const forgotPassword = '/forgot-password';
+  static const resetPassword = '/reset-password';
   static const setup = '/setup';
 
   static const dashboard = '/dashboard';
@@ -147,6 +148,8 @@ class RoutePaths {
       '/shop/$tenant/$store/checkout';
   static String shopOrder(String tenant, String store, String token) =>
       '/shop/$tenant/$store/order/$token';
+  static String shopTrack(String tenant, String store) =>
+      '/shop/$tenant/$store/track';
 
   static String order(String orderNumber) => '/orders/$orderNumber';
   static String product(String slug) => '/products/$slug';

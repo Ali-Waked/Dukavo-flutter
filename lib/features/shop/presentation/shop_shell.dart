@@ -68,6 +68,12 @@ class ShopShell extends ConsumerWidget {
         ),
         actions: [
           IconButton(
+            tooltip: context.tr('trackOrder'),
+            onPressed: () =>
+                context.go(RoutePaths.shopTrack(shop.tenant, shop.store)),
+            icon: const Icon(Icons.local_shipping_outlined),
+          ),
+          IconButton(
             tooltip: context.tr('about'),
             onPressed: () => _showStoreInfo(context, info),
             icon: const Icon(Icons.info_outline),

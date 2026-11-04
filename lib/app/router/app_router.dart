@@ -11,6 +11,7 @@ import '../../features/analytics/presentation/analytics_screen.dart';
 import '../../features/auth/application/auth_controller.dart';
 import '../../features/auth/presentation/forgot_password_screen.dart';
 import '../../features/auth/presentation/login_screen.dart';
+import '../../features/auth/presentation/reset_password_screen.dart';
 import '../../features/auth/presentation/splash_screen.dart';
 import '../../features/auth/presentation/tenant_screens.dart';
 import '../../features/categories/presentation/categories_screen.dart';
@@ -45,6 +46,7 @@ import '../../features/shop/presentation/shop_checkout_screen.dart';
 import '../../features/shop/presentation/shop_order_screen.dart';
 import '../../features/shop/presentation/shop_product_screen.dart';
 import '../../features/shop/presentation/shop_shell.dart';
+import '../../features/shop/presentation/shop_track_screen.dart';
 import '../../features/shell/presentation/app_shell.dart';
 import '../../features/shell/presentation/more_screen.dart';
 import '../../features/shell/presentation/no_access_screen.dart';
@@ -86,7 +88,8 @@ bool _isPublicPath(String path) {
   return path == RoutePaths.site ||
       path.startsWith('${RoutePaths.site}/') ||
       path == RoutePaths.shop ||
-      path.startsWith('${RoutePaths.shop}/');
+      path.startsWith('${RoutePaths.shop}/') ||
+      path == RoutePaths.resetPassword;
 }
 
 /// Screens that belong to the person, not to a workspace or the platform.
@@ -197,7 +200,9 @@ String? _redirect(Ref ref, GoRouterState state) {
   final path = state.uri.path;
 
   final onSplash = path == RoutePaths.splash;
-  final onAuth = path == RoutePaths.login || path == RoutePaths.forgotPassword;
+  final onAuth = path == RoutePaths.login ||
+      path == RoutePaths.forgotPassword ||
+      path == RoutePaths.resetPassword;
   final onSetup = path == RoutePaths.setup;
   final public = _isPublicPath(path);
 
@@ -292,6 +297,13 @@ List<RouteBase> _routes() {
     GoRoute(
       path: RoutePaths.forgotPassword,
       builder: (context, state) => const ForgotPasswordScreen(),
+    ),
+    GoRoute(
+      path: RoutePaths.resetPassword,
+      builder: (context, state) => ResetPasswordScreen(
+        token: state.uri.queryParameters['token'] ?? '',
+        email: state.uri.queryParameters['email'] ?? '',
+      ),
     ),
     GoRoute(
       path: RoutePaths.setup,
@@ -955,6 +967,15 @@ List<RouteBase> _routes() {
         GoRoute(
           path: '/shop/:tenant/:store/cart',
           builder: (context, state) => ShopCartScreen(
+            shop: ShopRef(
+              state.pathParameters['tenant'] ?? '',
+              state.pathParameters['store'] ?? '',
+            ),
+          ),
+        ),
+        GoRoute(
+          path: '/shop/:tenant/:store/track',
+          builder: (context, state) => ShopTrackScreen(
             shop: ShopRef(
               state.pathParameters['tenant'] ?? '',
               state.pathParameters['store'] ?? '',

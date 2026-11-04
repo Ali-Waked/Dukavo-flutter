@@ -10,7 +10,7 @@ exists.
 - **API source of truth:** `backend/routes/api/v1.php`
 - **Web source of truth:** `frontend/src/router/index.ts`
 - **Last verified:** 2026-11-04
-- **Quality gates:** `flutter analyze` clean; `flutter test` 113 passing;
+- **Quality gates:** `flutter analyze` clean; `flutter test` 118 passing;
   `dart format --set-exit-if-changed` clean.
 
 ---
@@ -35,7 +35,7 @@ can complete the same business task against the same API and permissions.
 | --- | --- | --- | --- | --- |
 | Login | `/login` | `POST /auth/login` | ✅ | Sanctum bearer token + CSRF priming; stores token in secure storage |
 | Forgot password | `/forgot-password` | `POST /auth/forgot-password` | ✅ | Sends the reset link; the link itself opens the web reset page |
-| Reset password form | web `/reset-password` | `POST /auth/reset-password` | ✗ | Mobile has the API method but no deep-link/token screen; resetting happens on web |
+| Reset password form | `/reset-password?token=&email=` | `POST /auth/reset-password` | ◐ | Native form validates and submits the token; reset emails still link to the web page until app-link configuration exists |
 | Email verification | `/verify-email` | Laravel verification routes | ✗ | No mobile screen; backend verification link is web-based |
 | Session restore | boot | `GET /me` | ✅ | Silent restore, tenant + permission hydration |
 | Workspace onboarding | `/setup` | `POST /onboarding/tenant` | ✅ | Name, slug, country, currency, timezone, locale, first store |
@@ -229,7 +229,7 @@ Addressed by `/shop/:tenantSlug/:storeSlug` and readable without a session.
 | Cart | `/shop/:tenant/:store/cart` | client-held | ✅ | Prices resolved by server at checkout |
 | Checkout | `/shop/:tenant/:store/checkout` | `POST .../checkout` | ✅ | Zone-derived city/area, COD/online, idempotency key |
 | Order confirmation | `/shop/:tenant/:store/order/:token` | `GET .../orders/{token}` | ✅ | Opaque token, totals, status |
-| Order tracking form | web `/track` | `GET .../orders/{token}` | ✗ | Mobile shows an order only from checkout or a shared link; no token entry form |
+| Order tracking form | `/shop/:tenant/:store/track` | `GET .../orders/{token}` | ✅ | Accepts a bare token or a pasted tracking link; opens the same token-authorised order view |
 | Shipping quote / payment methods | checkout | `GET .../shipping-zones`, `/payment-methods` | ✅ | Online payment unavailable until a provider exists |
 
 Storefront business rules enforced in mobile:
@@ -275,7 +275,7 @@ iteration can pick them up without re-auditing the backend.
 | Stores | Currency conversion preview/apply | Implemented | Needs exchange-rate UX and confirmation; store CRUD is complete |
 | Platform | AI insights/newsletter generation, newsletter slug check, content images | Implemented (availability route added) | Editor/image tooling is web-first; the rest of platform marketing is complete |
 | Storefront | Order tracking by token entry | Implemented | Order lookup works from checkout/shared links; a standalone form is a small follow-up |
-| Auth | Reset-password and email-verification screens | Implemented | Both flows currently complete on the web; mobile sends the reset email |
+| Auth | Email-verification screen | Implemented | Verification links complete on the web; mobile sends the reset email and has a native reset form |
 | Marketing | Dedicated how-it-works/help/acceptable-use links | Content pages | Reachable through content pages when published; about/privacy/terms are linked |
 
 None of these gaps fabricates data or bypasses the backend. Every implemented

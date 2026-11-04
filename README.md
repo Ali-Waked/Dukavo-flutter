@@ -39,8 +39,8 @@ Source-level verification in this workspace (Flutter 3.47.9 / Dart 3.13.7):
 - `dart format --output=none --set-exit-if-changed lib test integration_test`
   is clean.
 - `flutter analyze` reports **No issues found**.
-- `flutter test` passes **113 unit and widget tests**.
-- Both ARB files contain **862 keys** with identical key sets.
+- `flutter test` passes **118 unit and widget tests**.
+- Both ARB files contain **871 keys** with identical key sets.
 - Android debug APK build status and exact commands are recorded in
   [`BUILD_AND_RELEASE.md`](BUILD_AND_RELEASE.md). iOS builds require macOS and
   Xcode and are not produced on this Linux host.
@@ -102,8 +102,9 @@ from the same public API as the Vue site.
 
 `/shop/:tenantSlug/:storeSlug` works without a session: store home and product
 grid, product detail with variants, client-side cart, checkout with
-zone-derived city/area and idempotency key, and order confirmation by opaque
-token. The server resolves all prices, shipping, discounts and totals.
+zone-derived city/area and idempotency key, order confirmation by opaque
+token, and a tracking form that accepts a bare token or a pasted tracking link.
+The server resolves all prices, shipping, discounts and totals.
 
 ### Native UX
 
@@ -241,7 +242,7 @@ renders.
 ## 9. Localization and theming
 
 - Copy lives in `lib/app/localization/l10n/app_en.arb` and `app_ar.arb`.
-  Both have 862 keys and identical key sets, enforced by tests.
+  Both have 871 keys and identical key sets, enforced by tests.
 - The delegate is hand-written and preloads both ARB assets during bootstrap;
   `flutter gen-l10n` is not required.
 - A missing key renders the key itself, making omissions visible in review.
@@ -282,7 +283,7 @@ flutter test integration_test/app_boot_test.dart -d <device-id> \
 ```
 
 > **Current result:** `flutter analyze` reports no issues and `flutter test`
-> passes all 113 unit/widget tests. Device integration tests still require an
+> passes all 118 unit/widget tests. Device integration tests still require an
 > emulator/device and a reachable backend.
 
 ## 11. Build and release
@@ -338,8 +339,7 @@ rationale in
 - merchant AI copilot/insights and store currency conversion;
 - inventory transfers;
 - platform AI content tools, newsletter slug check and inline content images;
-- standalone storefront order tracking by token;
-- reset-password and email-verification screens (these complete on web today).
+- email-verification screen (verification links complete on web today).
 
 Online payments are unavailable because the backend has no provider or
 transaction ledger; cash on delivery is the only method, and the app reports
