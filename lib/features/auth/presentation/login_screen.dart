@@ -61,7 +61,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const AppLogo(size: 52),
+                        const Flexible(
+                          child: AppLogo(size: 52, showWordmark: true),
+                        ),
                         Row(
                           children: [
                             IconButton(

@@ -8,61 +8,51 @@ import '../api/api_exception.dart';
 import '../pagination/paginated_notifier.dart';
 import '../utils/formatters.dart';
 
-/// The Dukavo mark, drawn from the brand palette so it needs no raster asset
-/// and stays crisp at every size.
+/// The Dukavo logo.
+///
+/// The icon-only asset is used in square spots. Set [showWordmark] for headers,
+/// auth screens and other wide spaces that should include the brand name.
 class AppLogo extends StatelessWidget {
-  const AppLogo({super.key, this.size = 48, this.showWordmark = false});
+  const AppLogo({
+    super.key,
+    this.size = 48,
+    this.showWordmark = false,
+    this.forceLightBackground = false,
+  });
 
   final double size;
   final bool showWordmark;
 
+  /// Keeps the dark wordmark readable on branded gradients and dark surfaces.
+  final bool forceLightBackground;
+
   @override
   Widget build(BuildContext context) {
-    final mark = Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [AppColors.primary, AppColors.primaryDark],
-        ),
-        borderRadius: BorderRadius.circular(size * 0.28),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.25),
-            blurRadius: size * 0.35,
-            offset: Offset(0, size * 0.12),
-          ),
-        ],
-      ),
-      alignment: Alignment.center,
-      child: Text(
-        'D',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: size * 0.52,
-          fontWeight: FontWeight.w800,
-          height: 1,
-        ),
-      ),
+    final asset = showWordmark
+        ? 'assets/images/logo-full.png'
+        : 'assets/images/logo-icon.png';
+    final needsPlate = showWordmark &&
+        (forceLightBackground ||
+            Theme.of(context).brightness == Brightness.dark);
+
+    final image = Image.asset(
+      asset,
+      width: showWordmark ? null : size,
+      height: showWordmark ? (needsPlate ? size * 0.76 : size) : size,
+      fit: BoxFit.contain,
+      filterQuality: FilterQuality.medium,
+      semanticLabel: 'Dukavo',
     );
 
-    if (!showWordmark) return mark;
+    if (!needsPlate) return image;
 
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        mark,
-        const SizedBox(width: 12),
-        Text(
-          'Dukavo',
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.w800,
-                letterSpacing: -0.8,
-              ),
-        ),
-      ],
+    return Container(
+      padding: EdgeInsets.all(size * 0.12),
+      decoration: BoxDecoration(
+        color: AppColors.background,
+        borderRadius: BorderRadius.circular(size * 0.2),
+      ),
+      child: image,
     );
   }
 }

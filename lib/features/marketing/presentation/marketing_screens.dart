@@ -50,14 +50,7 @@ class MarketingSiteShell extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const AppLogo(size: 26),
-            const SizedBox(width: 8),
-            Text(context.tr('appName')),
-          ],
-        ),
+        title: const AppLogo(size: 26, showWordmark: true),
         actions: [
           IconButton(
             tooltip: context.tr('contactUs'),

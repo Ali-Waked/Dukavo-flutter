@@ -24,17 +24,12 @@ class SplashScreen extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const AppLogo(size: 84),
-                const SizedBox(height: 24),
-                Text(
-                  'Dukavo',
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: -1,
-                      ),
+                const AppLogo(
+                  size: 84,
+                  showWordmark: true,
+                  forceLightBackground: true,
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 24),
                 Text(
                   context.tr('appTagline'),
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(

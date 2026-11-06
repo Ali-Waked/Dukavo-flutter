@@ -58,7 +58,7 @@ class _TenantSetupScreenState extends ConsumerState<TenantSetupScreen> {
                   children: [
                     const Align(
                       alignment: AlignmentDirectional.centerStart,
-                      child: AppLogo(size: 56),
+                      child: AppLogo(size: 56, showWordmark: true),
                     ),
                     const SizedBox(height: 32),
                     Text(
