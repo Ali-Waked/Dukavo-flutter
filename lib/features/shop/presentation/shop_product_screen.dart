@@ -205,7 +205,7 @@ class _ShopProductScreenState extends ConsumerState<ShopProductScreen> {
                       ChoiceChip(
                         label: Text(
                           variant.name.isEmpty
-                              ? context.tr('default')
+                              ? context.tr('defaultLabel')
                               : variant.name,
                         ),
                         selected: variant.id == selectedId,
