@@ -184,7 +184,7 @@ These backend surfaces are out of scope for this release and are documented in t
 | Linux host | iOS compilation/signing impossible regardless of SDK |
 | No `gradle-wrapper.jar` in the Flutter template snapshot | Flutter supplies it on first build; an Android build may need `flutter create .` or a Gradle bootstrap |
 
-Dependency resolution, static analysis and unit/widget tests are no longer blocked: they pass with the SDK at `/root/flutter` (Flutter 3.47.9 / Dart 3.13.7). Android toolchain setup is the remaining prerequisite for an installable build.
+Dependency resolution, static analysis and unit/widget tests are no longer blocked: they pass with Flutter 3.47.9 / Dart 3.13.7. Android toolchain setup is the remaining prerequisite for an installable build.
 
 ---
 

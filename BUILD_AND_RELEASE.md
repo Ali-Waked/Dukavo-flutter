@@ -36,26 +36,24 @@ built. The project does not require code generation.
 
 ### 2.1 JDK
 
-Gradle 8.12 and the Android Gradle Plugin require JDK 17 (not 21+ for this
-project's configuration). Point `JAVA_HOME` at a JDK 17 installation:
+Gradle 9.3.1 and the Android Gradle Plugin 9.1.0 require JDK 17 (the
+version used by the CI workflow). Point `JAVA_HOME` at a JDK 17 installation:
 
 ```bash
-export JAVA_HOME=/opt/jdk/jdk-17.0.21+9
+export JAVA_HOME="/path/to/jdk-17"
 export PATH="$JAVA_HOME/bin:$PATH"
 java -version   # openjdk 17.x
 javac -version
 ```
 
-On this workspace the JDK was extracted to
-`/opt/jdk/jdk-17.0.21+9` from the verified tarball
-`/root/toolchain/jdk17.tar.gz`.
+Point `JAVA_HOME` at the root of your JDK 17 installation.
 
 ### 2.2 Android SDK
 
 Install the command-line tools, then the packages the project needs:
 
 ```bash
-export ANDROID_HOME=/opt/android-sdk
+export ANDROID_HOME="/path/to/android-sdk"
 export ANDROID_SDK_ROOT="$ANDROID_HOME"
 export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH"
 
@@ -73,8 +71,8 @@ The Flutter Android build reads the SDK from `ANDROID_HOME` or from
 `android/local.properties`:
 
 ```properties
-sdk.dir=/opt/android-sdk
-flutter.sdk=/root/flutter
+sdk.dir=/path/to/android-sdk
+flutter.sdk=/path/to/flutter
 ```
 
 `android/local.properties` is git-ignored and must not be committed.
@@ -130,8 +128,8 @@ Do not build an APK from a tree that fails these gates.
 
 ```bash
 cd mobile
-export JAVA_HOME=/opt/jdk/jdk-17.0.21+9
-export ANDROID_HOME=/opt/android-sdk
+export JAVA_HOME="/path/to/jdk-17"
+export ANDROID_HOME="/path/to/android-sdk"
 
 flutter build apk --debug
 ```
