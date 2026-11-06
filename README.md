@@ -175,10 +175,11 @@ Default API base URLs:
 
 | Target | Base URL |
 | --- | --- |
+| Release / default | `https://dukavo-backend.ethiodeploy.app/api/v1` |
 | Android emulator | `http://10.0.2.2:8000/api/v1` |
 | iOS simulator | `http://127.0.0.1:8000/api/v1` |
 
-Override at build time:
+The emulator URLs are overrides for local development. Override at build time:
 
 ```bash
 flutter run \
@@ -210,7 +211,7 @@ keychain/keystore.
 
 | Setting | Where | Default |
 | --- | --- | --- |
-| API base URL | `--dart-define=DUKAVO_API_BASE_URL` | platform default above |
+| API base URL | `AppConfig.defaultApiBaseUrl` or `--dart-define=DUKAVO_API_BASE_URL` | deployed backend above |
 | Public web/shop URL | `--dart-define=DUKAVO_WEB_BASE_URL` | derived from the API origin |
 | CSRF URL | derived from the API origin | `/sanctum/csrf-cookie` |
 | Theme | persisted in `shared_preferences` | system |

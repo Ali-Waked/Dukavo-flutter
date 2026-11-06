@@ -138,9 +138,10 @@ lib/
 
 `core/api/api_client.dart` is the only place that knows how to talk HTTP.
 
-- **Base URL** — `AppConfig.apiBaseUrl`, defaulting to
-  `http://10.0.2.2:8000/api/v1` on Android and `http://127.0.0.1:8000/api/v1`
-  elsewhere, overridable with `--dart-define=DUKAVO_API_BASE_URL=...`.
+- **Base URL** — `AppConfig.apiBaseUrl`, defaulting to the deployed backend at
+  `https://dukavo-backend.ethiodeploy.app/api/v1`. Local development overrides
+  it with `--dart-define=DUKAVO_API_BASE_URL=...` (for example
+  `http://10.0.2.2:8000/api/v1` on the Android emulator).
 - **Auth** — a bearer token read from `SecureTokenStore`. The token is written
   once at login and cleared on logout or `401`.
 - **CSRF** — Fortify's login/logout/forgot/reset routes run under the `web`
