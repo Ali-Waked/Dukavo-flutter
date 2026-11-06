@@ -100,8 +100,12 @@ class FaqEntry {
   }
 }
 
-class NewsletterArticle {
-  const NewsletterArticle({
+/// A public newsletter article.
+///
+/// The list response and the detail response share these fields; `body`,
+/// `meta_title` and `meta_description` are only present on the detail payload.
+class Newsletter {
+  const Newsletter({
     required this.id,
     required this.slug,
     required this.title,
@@ -109,6 +113,7 @@ class NewsletterArticle {
     required this.coverImageUrl,
     required this.readingMinutes,
     required this.publishedAt,
+    required this.locale,
     this.body,
     this.metaTitle,
     this.metaDescription,
@@ -121,12 +126,18 @@ class NewsletterArticle {
   final String? coverImageUrl;
   final int readingMinutes;
   final String? publishedAt;
+
+  /// The language the article was written in (for example `en` or `ar`).
+  final String locale;
+
   final String? body;
   final String? metaTitle;
   final String? metaDescription;
 
-  factory NewsletterArticle.fromJson(Map<String, dynamic> json) {
-    return NewsletterArticle(
+  bool get isArabic => locale.toLowerCase().startsWith('ar');
+
+  factory Newsletter.fromJson(Map<String, dynamic> json) {
+    return Newsletter(
       id: _int(json['id']),
       slug: '${json['slug'] ?? ''}',
       title: '${json['title'] ?? ''}',
@@ -134,6 +145,7 @@ class NewsletterArticle {
       coverImageUrl: json['cover_image_url'] as String?,
       readingMinutes: _int(json['reading_minutes']),
       publishedAt: json['published_at'] as String?,
+      locale: '${json['locale'] ?? 'en'}',
       body: json['body'] as String?,
       metaTitle: json['meta_title'] as String?,
       metaDescription: json['meta_description'] as String?,

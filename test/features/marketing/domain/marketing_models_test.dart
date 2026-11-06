@@ -73,9 +73,9 @@ void main() {
     });
   });
 
-  group('NewsletterArticle.fromJson', () {
+  group('Newsletter.fromJson', () {
     test('parses list metadata without a body', () {
-      final article = NewsletterArticle.fromJson(const {
+      final article = Newsletter.fromJson(const {
         'id': 9,
         'slug': 'launch',
         'title': 'Launch',
@@ -83,12 +83,25 @@ void main() {
         'cover_image_url': 'https://cdn.example.com/cover.png',
         'reading_minutes': 4,
         'published_at': '2026-01-01T00:00:00Z',
+        'locale': 'en',
       });
 
       expect(article.slug, 'launch');
       expect(article.readingMinutes, 4);
       expect(article.body, isNull);
       expect(article.coverImageUrl, 'https://cdn.example.com/cover.png');
+      expect(article.locale, 'en');
+      expect(article.isArabic, isFalse);
+    });
+
+    test('detects Arabic content for RTL rendering', () {
+      final article = Newsletter.fromJson(const {
+        'id': 10,
+        'title': 'مقال',
+        'locale': 'ar',
+      });
+
+      expect(article.isArabic, isTrue);
     });
   });
 

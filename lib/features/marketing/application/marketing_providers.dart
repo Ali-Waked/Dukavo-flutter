@@ -2,7 +2,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/api/api_client.dart';
 import '../../../core/api/api_paths.dart';
+import '../../../core/api/paginated.dart';
+import '../../../core/pagination/paginated_notifier.dart';
 import '../../../core/providers.dart';
+import '../data/newsletter_repository.dart';
 import '../domain/marketing_models.dart';
 
 JsonMap _asMap(Object? data) =>
@@ -48,28 +51,48 @@ final marketingFaqProvider =
       .toList();
 });
 
+final newsletterRepositoryProvider = Provider<NewsletterRepository>((ref) {
+  return NewsletterRepository(ref.watch(apiClientProvider));
+});
+
+/// Home-page preview: the first page of the public newsletter feed.
 final marketingNewslettersProvider =
-    FutureProvider.autoDispose<List<NewsletterArticle>>((ref) async {
-  final data = await ref.read(apiClientProvider).get<List<dynamic>>(
-        ApiPaths.publicNewsletters,
-        decode: (value) => value is List ? value : const <dynamic>[],
-      );
-  return data
-      .whereType<Map>()
-      .map((entry) => NewsletterArticle.fromJson(
-            Map<String, dynamic>.from(entry),
-          ))
-      .toList();
+    FutureProvider.autoDispose<List<Newsletter>>((ref) async {
+  final page = await ref
+      .watch(newsletterRepositoryProvider)
+      .fetchNewsletters(page: 1, perPage: 9);
+  return page.items;
+});
+
+/// The newsletter screen's own pager. Kept separate from the home preview so
+/// loading more articles never mutates the home page's short list.
+class NewsletterFeedNotifier extends PaginatedNotifier<Newsletter> {
+  NewsletterFeedNotifier(this._repository);
+
+  final NewsletterRepository _repository;
+
+  static const int perPage = 9;
+
+  @override
+  Future<Paginated<Newsletter>> fetchPage(int page) {
+    return _repository.fetchNewsletters(page: page, perPage: perPage);
+  }
+}
+
+final newsletterFeedProvider =
+    StateNotifierProvider<NewsletterFeedNotifier, PaginatedState<Newsletter>>(
+        (ref) {
+  return NewsletterFeedNotifier(ref.watch(newsletterRepositoryProvider));
 });
 
 final marketingNewsletterProvider =
-    FutureProvider.autoDispose.family<NewsletterArticle, String>(
+    FutureProvider.autoDispose.family<Newsletter, String>(
   (ref, slug) async {
     final data = await ref.read(apiClientProvider).get<JsonMap>(
           ApiPaths.publicNewsletter(slug),
           decode: _asMap,
         );
-    return NewsletterArticle.fromJson(data);
+    return Newsletter.fromJson(data);
   },
 );
 

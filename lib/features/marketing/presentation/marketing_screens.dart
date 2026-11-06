@@ -455,19 +455,35 @@ class SiteFaqScreen extends ConsumerWidget {
   }
 }
 
-class SiteNewsletterScreen extends ConsumerWidget {
+class SiteNewsletterScreen extends ConsumerStatefulWidget {
   const SiteNewsletterScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final newsletters = ref.watch(marketingNewslettersProvider);
-    return RefreshIndicator(
-      onRefresh: () async => ref.invalidate(marketingNewslettersProvider),
-      child: ListView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
-        children: [
-          SectionCard(
+  ConsumerState<SiteNewsletterScreen> createState() =>
+      _SiteNewsletterScreenState();
+}
+
+class _SiteNewsletterScreenState extends ConsumerState<SiteNewsletterScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (ref.read(newsletterFeedProvider).items.isEmpty) {
+        ref.read(newsletterFeedProvider.notifier).loadInitial();
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final state = ref.watch(newsletterFeedProvider);
+    final notifier = ref.read(newsletterFeedProvider.notifier);
+
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+          child: SectionCard(
             title: context.tr('subscribeToNewsletter'),
             subtitle: context.tr('subscribeToNewsletterHint'),
             child: AppButton(
@@ -477,30 +493,22 @@ class SiteNewsletterScreen extends ConsumerWidget {
               onPressed: () => _subscribe(context, ref),
             ),
           ),
-          const SizedBox(height: 16),
-          newsletters.when(
-            loading: () => const Padding(
-              padding: EdgeInsets.symmetric(vertical: 60),
-              child: LoadingView(),
+        ),
+        Expanded(
+          child: PagedListView<Newsletter>(
+            state: state,
+            onRefresh: notifier.reload,
+            onLoadMore: notifier.loadMore,
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
+            empty: EmptyState(
+              title: context.tr('noNewsletters'),
+              icon: Icons.newspaper_outlined,
             ),
-            error: (error, stack) => ErrorView(
-              message: _message(context, error),
-              onRetry: () => ref.invalidate(marketingNewslettersProvider),
-            ),
-            data: (items) => items.isEmpty
-                ? EmptyState(
-                    title: context.tr('noNewsletters'),
-                    icon: Icons.newspaper_outlined,
-                  )
-                : Column(
-                    children: [
-                      for (final article in items)
-                        _ArticleTile(article: article),
-                    ],
-                  ),
+            itemBuilder: (context, article, index) =>
+                _ArticleTile(article: article),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -567,51 +575,59 @@ class SiteNewsletterArticleScreen extends ConsumerWidget {
           message: _message(context, error),
           onRetry: () => ref.invalidate(marketingNewsletterProvider(slug)),
         ),
-        data: (item) => ListView(
-          padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
-          children: [
-            if (item.coverImageUrl != null)
-              ClipRRect(
-                borderRadius: BorderRadius.circular(18),
-                child: AspectRatio(
-                  aspectRatio: 16 / 9,
-                  child: CachedNetworkImage(
-                    imageUrl: item.coverImageUrl!,
-                    fit: BoxFit.cover,
-                    errorWidget: (context, url, error) => Container(
-                      color:
-                          Theme.of(context).colorScheme.surfaceContainerHighest,
-                      child: const Icon(Icons.broken_image_outlined),
+        data: (item) => Directionality(
+          textDirection:
+              item.isArabic ? TextDirection.rtl : Directionality.of(context),
+          child: ListView(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
+            children: [
+              if (item.coverImageUrl != null)
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(18),
+                  child: AspectRatio(
+                    aspectRatio: 16 / 9,
+                    child: CachedNetworkImage(
+                      imageUrl: item.coverImageUrl!,
+                      fit: BoxFit.cover,
+                      errorWidget: (context, url, error) => Container(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .surfaceContainerHighest,
+                        child: const Icon(Icons.broken_image_outlined),
+                      ),
                     ),
                   ),
                 ),
+              const SizedBox(height: 16),
+              Text(
+                item.title,
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineSmall
+                    ?.copyWith(fontWeight: FontWeight.w800),
               ),
-            const SizedBox(height: 16),
-            Text(
-              item.title,
-              style: Theme.of(context)
-                  .textTheme
-                  .headlineSmall
-                  ?.copyWith(fontWeight: FontWeight.w800),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              [
-                if (item.publishedAt != null) Formatters.date(item.publishedAt),
-                context
-                    .tr('readingMinutes', args: {'count': item.readingMinutes}),
-              ].join(' · '),
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              item.body?.isNotEmpty == true ? item.body! : item.excerpt,
-              style:
-                  Theme.of(context).textTheme.bodyLarge?.copyWith(height: 1.6),
-            ),
-          ],
+              const SizedBox(height: 6),
+              Text(
+                [
+                  if (item.publishedAt != null)
+                    Formatters.date(item.publishedAt),
+                  context.tr('readingMinutes',
+                      args: {'count': item.readingMinutes}),
+                ].join(' · '),
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                item.body?.isNotEmpty == true ? item.body! : item.excerpt,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge
+                    ?.copyWith(height: 1.6),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -1166,77 +1182,84 @@ class _PlanCard extends StatelessWidget {
 class _ArticleTile extends StatelessWidget {
   const _ArticleTile({required this.article});
 
-  final NewsletterArticle article;
+  final Newsletter article;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Card(
-      margin: const EdgeInsets.only(bottom: 10),
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: () =>
-            context.push(RoutePaths.siteNewsletterArticle(article.slug)),
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Row(
-            children: [
-              if (article.coverImageUrl != null)
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: SizedBox(
+    // Arabic articles keep their natural RTL direction even when the app UI is
+    // in English. Text in other scripts follows the ambient direction.
+    final textDirection =
+        article.isArabic ? TextDirection.rtl : Directionality.of(context);
+    return Directionality(
+      textDirection: textDirection,
+      child: Card(
+        margin: const EdgeInsets.only(bottom: 10),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: () =>
+              context.push(RoutePaths.siteNewsletterArticle(article.slug)),
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Row(
+              children: [
+                if (article.coverImageUrl != null)
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: SizedBox(
+                      width: 64,
+                      height: 64,
+                      child: CachedNetworkImage(
+                        imageUrl: article.coverImageUrl!,
+                        fit: BoxFit.cover,
+                        errorWidget: (context, url, error) => Container(
+                          color: theme.colorScheme.surfaceContainerHighest,
+                          child: const Icon(Icons.newspaper_outlined, size: 20),
+                        ),
+                      ),
+                    ),
+                  )
+                else
+                  Container(
                     width: 64,
                     height: 64,
-                    child: CachedNetworkImage(
-                      imageUrl: article.coverImageUrl!,
-                      fit: BoxFit.cover,
-                      errorWidget: (context, url, error) => Container(
-                        color: theme.colorScheme.surfaceContainerHighest,
-                        child: const Icon(Icons.newspaper_outlined, size: 20),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.surfaceContainerHighest,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: const Icon(Icons.newspaper_outlined),
+                  ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        article.title,
+                        style: theme.textTheme.titleSmall,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                  ),
-                )
-              else
-                Container(
-                  width: 64,
-                  height: 64,
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.surfaceContainerHighest,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: const Icon(Icons.newspaper_outlined),
-                ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      article.title,
-                      style: theme.textTheme.titleSmall,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      [
-                        if (article.publishedAt != null)
-                          Formatters.date(article.publishedAt),
-                        context.tr(
-                          'readingMinutes',
-                          args: {'count': article.readingMinutes},
+                      const SizedBox(height: 4),
+                      Text(
+                        [
+                          if (article.publishedAt != null)
+                            Formatters.date(article.publishedAt),
+                          context.tr(
+                            'readingMinutes',
+                            args: {'count': article.readingMinutes},
+                          ),
+                        ].join(' · '),
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: theme.colorScheme.onSurfaceVariant,
                         ),
-                      ].join(' · '),
-                      style: theme.textTheme.labelSmall?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              const Icon(Icons.chevron_right),
-            ],
+                const Icon(Icons.chevron_right),
+              ],
+            ),
           ),
         ),
       ),
