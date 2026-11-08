@@ -55,6 +55,7 @@ import '../../features/storefront/presentation/storefront_settings_screen.dart';
 import '../../features/stores/presentation/store_currency_screen.dart';
 import '../../features/team/presentation/role_permissions_screen.dart';
 import '../../features/team/presentation/team_user_form_screen.dart';
+import 'auth_destination.dart';
 import 'route_paths.dart';
 
 /// A [Listenable] that fires whenever the auth status changes.
@@ -68,21 +69,6 @@ class _AuthStatusListenable extends ChangeNotifier {
       if (previous?.status != next.status) notifyListeners();
     });
   }
-}
-
-/// The first screen a signed-in user may actually open.
-///
-/// A role without `dashboard.view` must not land on a screen that would answer
-/// 403, so the landing page is the first destination the server's permission
-/// list allows. Platform operators land in the platform console instead of a
-/// merchant workspace.
-String homePathFor(Permissions permissions, {bool platformMode = false}) {
-  if (platformMode) return RoutePaths.platformDashboard;
-  if (permissions.canViewDashboard) return RoutePaths.dashboard;
-  if (permissions.canViewOrders) return RoutePaths.orders;
-  if (permissions.canViewProducts) return RoutePaths.products;
-  if (permissions.canViewConversations) return RoutePaths.conversations;
-  return RoutePaths.more;
 }
 
 /// Marketing and public storefront pages are readable without a session.
@@ -208,9 +194,15 @@ String? _redirect(Ref ref, GoRouterState state) {
   final onSetup = path == RoutePaths.setup;
   final public = _isPublicPath(path);
 
+  // The splash owns its own timed exit. It waits for both the animation and the
+  // auth bootstrap, then navigates to the destination that state allows. If the
+  // router redirected here as soon as the token resolved, the brand animation
+  // would be cut off after a few frames.
+  if (onSplash) return null;
+
   switch (status) {
     case AuthStatus.unknown:
-      return onSplash || public ? null : RoutePaths.splash;
+      return public ? null : RoutePaths.splash;
 
     case AuthStatus.unauthenticated:
       return onAuth || public ? null : RoutePaths.login;
@@ -219,7 +211,7 @@ String? _redirect(Ref ref, GoRouterState state) {
       return onSetup || public ? null : RoutePaths.setup;
 
     case AuthStatus.platform:
-      if (onSplash || onAuth || onSetup) return RoutePaths.platformDashboard;
+      if (onAuth || onSetup) return RoutePaths.platformDashboard;
       if (public || path == RoutePaths.noAccess) return null;
       if (path.startsWith(RoutePaths.platform)) {
         return path == RoutePaths.platform
@@ -232,7 +224,7 @@ String? _redirect(Ref ref, GoRouterState state) {
     case AuthStatus.authenticated:
       final permissions = ref.read(permissionsProvider);
       final canUsePlatform = session?.isPlatformUser ?? false;
-      if (onSplash || onAuth || onSetup) {
+      if (onAuth || onSetup) {
         return homePathFor(permissions, platformMode: false);
       }
       if (public || path == RoutePaths.noAccess) return null;
@@ -290,7 +282,7 @@ List<RouteBase> _routes() {
     ),
     GoRoute(
       path: RoutePaths.splash,
-      builder: (context, state) => const SplashScreen(),
+      builder: (context, state) => const DukavoSplashScreen(),
     ),
     GoRoute(
       path: RoutePaths.login,

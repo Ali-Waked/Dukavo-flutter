@@ -2829,4 +2829,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tenant => 'Workspace';
+
+  @override
+  String get splashTagline => 'Your Business. Connected.';
+
+  @override
+  String get splashPreparing => 'Preparing your workspace…';
+
+  @override
+  String get splashAi => 'AI automation';
 }

@@ -2820,4 +2820,13 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get tenant => 'مساحة العمل';
+
+  @override
+  String get splashTagline => 'كل تجارتك في مكان واحد';
+
+  @override
+  String get splashPreparing => 'نجهز مساحتك…';
+
+  @override
+  String get splashAi => 'أتمتة بالذكاء الاصطناعي';
 }

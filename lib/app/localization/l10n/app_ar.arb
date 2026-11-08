@@ -924,5 +924,8 @@
   "contacted": "تم التواصل",
   "eligible": "مؤهل",
   "platform": "المنصة",
-  "tenant": "مساحة العمل"
+  "tenant": "مساحة العمل",
+  "splashTagline": "كل تجارتك في مكان واحد",
+  "splashPreparing": "نجهز مساحتك…",
+  "splashAi": "أتمتة بالذكاء الاصطناعي"
 }

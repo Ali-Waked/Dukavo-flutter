@@ -5599,6 +5599,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Workspace'**
   String get tenant;
+
+  /// No description provided for @splashTagline.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Business. Connected.'**
+  String get splashTagline;
+
+  /// No description provided for @splashPreparing.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing your workspace…'**
+  String get splashPreparing;
+
+  /// No description provided for @splashAi.
+  ///
+  /// In en, this message translates to:
+  /// **'AI automation'**
+  String get splashAi;
 }
 
 class _AppLocalizationsDelegate

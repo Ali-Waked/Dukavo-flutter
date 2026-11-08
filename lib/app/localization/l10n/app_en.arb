@@ -924,5 +924,8 @@
   "contacted": "Contacted",
   "eligible": "Eligible",
   "platform": "Platform",
-  "tenant": "Workspace"
+  "tenant": "Workspace",
+  "splashTagline": "Your Business. Connected.",
+  "splashPreparing": "Preparing your workspace…",
+  "splashAi": "AI automation"
 }
