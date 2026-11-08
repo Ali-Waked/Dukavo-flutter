@@ -32,6 +32,9 @@ class _FakeAuthRepository implements AuthRepository {
   Future<void> clearLocalSession() async {}
 
   @override
+  Future<void> resendVerificationEmail() async {}
+
+  @override
   Future<Session> switchTenant(String slug) {
     throw UnimplementedError();
   }
@@ -63,7 +66,7 @@ class _TestAuthController extends AuthController {
 }
 
 const _destinations = <String, String>{
-  '/login': 'destination-login',
+  '/home': 'destination-home',
   '/setup': 'destination-setup',
   '/dashboard': 'destination-dashboard',
   '/orders': 'destination-orders',
@@ -175,23 +178,23 @@ void main() {
     controller = _TestAuthController();
   });
 
-  testWidgets('keeps the full storyboard before opening the login screen',
+  testWidgets('keeps the full storyboard before opening the public home',
       (tester) async {
     await _pumpSplash(tester, controller: controller);
 
     await _advance(tester, const Duration(milliseconds: 2400));
     expect(find.byType(DukavoSplashScreen), findsOneWidget);
-    expect(find.text('destination-login'), findsNothing);
+    expect(find.text('destination-home'), findsNothing);
     expect(find.text('Your Business. Connected.'), findsOneWidget);
 
     // Just before the 3-second mark the exit is still running.
     await _advance(tester, const Duration(milliseconds: 500));
-    expect(find.text('destination-login'), findsNothing);
+    expect(find.text('destination-home'), findsNothing);
 
     await _advance(tester, const Duration(milliseconds: 300));
     // Let the default route transition finish so the splash is truly replaced.
     await tester.pumpAndSettle();
-    expect(find.text('destination-login'), findsOneWidget);
+    expect(find.text('destination-home'), findsOneWidget);
     expect(find.byType(DukavoSplashScreen), findsNothing);
   });
 
@@ -314,7 +317,7 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    expect(find.text('destination-login'), findsOneWidget);
+    expect(find.text('destination-home'), findsOneWidget);
   });
 
   testWidgets('holds the finished frame while auth is still resolving',
@@ -332,7 +335,7 @@ void main() {
     expect(find.text('Preparing your workspace…'), findsOneWidget);
     // The finished brand moment is kept; the animation does not restart.
     expect(find.byKey(const ValueKey('splash-tagline')), findsOneWidget);
-    expect(find.text('destination-login'), findsNothing);
+    expect(find.text('destination-home'), findsNothing);
 
     controller.emit(
       AuthState(
@@ -352,7 +355,7 @@ void main() {
     await _pumpSplash(tester, controller: controller);
     await _advance(tester, const Duration(milliseconds: 3200));
     await tester.pump();
-    expect(find.text('destination-login'), findsOneWidget);
+    expect(find.text('destination-home'), findsOneWidget);
 
     // Unmount the whole app, then boot a fresh introduction.
     await tester.pumpWidget(const SizedBox.shrink());
@@ -363,7 +366,7 @@ void main() {
     await _advance(tester, const Duration(milliseconds: 3200));
     await tester.pump();
 
-    expect(find.text('destination-login'), findsOneWidget);
+    expect(find.text('destination-home'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 

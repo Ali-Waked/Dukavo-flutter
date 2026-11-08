@@ -160,7 +160,7 @@ class _DukavoSplashScreenState extends ConsumerState<DukavoSplashScreen>
   void _navigate() {
     if (!mounted || _navigated) return;
     final destination =
-        splashDestination(ref.read(authControllerProvider)) ?? RoutePaths.login;
+        splashDestination(ref.read(authControllerProvider)) ?? RoutePaths.home;
     _navigated = true;
     context.go(destination);
   }

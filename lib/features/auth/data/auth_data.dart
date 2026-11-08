@@ -365,6 +365,13 @@ class AuthRemoteDataSource {
     );
   }
 
+  Future<void> resendVerificationEmail() {
+    return _api.postVoid(
+      ApiPaths.emailVerificationNotification,
+      csrf: true,
+    );
+  }
+
   Future<void> resetPassword({
     required String email,
     required String token,
@@ -502,6 +509,11 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<void> forgotPassword(String email) {
     return _remote.forgotPassword(email.trim());
+  }
+
+  @override
+  Future<void> resendVerificationEmail() {
+    return _remote.resendVerificationEmail();
   }
 
   @override

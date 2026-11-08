@@ -43,6 +43,9 @@ class _FakeAuthRepository implements AuthRepository {
   Future<void> clearLocalSession() => throw UnimplementedError();
 
   @override
+  Future<void> resendVerificationEmail() => throw UnimplementedError();
+
+  @override
   Future<Session> switchTenant(String slug) => throw UnimplementedError();
 
   @override

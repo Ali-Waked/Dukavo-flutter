@@ -2863,4 +2863,498 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get splashAi => 'AI automation';
+
+  @override
+  String get publicNavHome => 'Home';
+
+  @override
+  String get publicNavFeatures => 'Features';
+
+  @override
+  String get publicNavPricing => 'Pricing';
+
+  @override
+  String get publicNavAbout => 'About';
+
+  @override
+  String get publicNavMore => 'More';
+
+  @override
+  String get publicNavHowItWorks => 'How it works';
+
+  @override
+  String get publicNavFaq => 'FAQ';
+
+  @override
+  String get publicNavBlog => 'Blog';
+
+  @override
+  String get publicNavContact => 'Contact';
+
+  @override
+  String get publicOpenApp => 'Open workspace';
+
+  @override
+  String get publicBackToSite => 'Back to site';
+
+  @override
+  String get publicExplore => 'Explore Dukavo';
+
+  @override
+  String get publicRegister => 'Register';
+
+  @override
+  String publicCopyright(Object year) {
+    return '© $year Dukavo. All rights reserved.';
+  }
+
+  @override
+  String get publicLoginInviteOnly => 'Accounts are created by invitation.';
+
+  @override
+  String get publicRegisterHaveAccount => 'Already have an account? Sign in';
+
+  @override
+  String get publicFooterTagline =>
+      'Commerce operations for growing businesses.';
+
+  @override
+  String get publicFooterProduct => 'Product';
+
+  @override
+  String get publicFooterResources => 'Resources';
+
+  @override
+  String get publicFooterCompany => 'Company';
+
+  @override
+  String get publicFooterLegal => 'Legal';
+
+  @override
+  String get publicMenuExplore => 'Explore';
+
+  @override
+  String get publicMenuAccount => 'Account';
+
+  @override
+  String get publicMenuPreferences => 'Preferences';
+
+  @override
+  String get publicMenuLegal => 'Legal';
+
+  @override
+  String get publicMenuOpenAppHint => 'Continue to your workspace';
+
+  @override
+  String get publicMenuSignInHint => 'Sign in to manage your store';
+
+  @override
+  String get publicHomeBadge => 'Arabic-first commerce platform';
+
+  @override
+  String get publicHomeTitleLine1 => 'Run your whole store';
+
+  @override
+  String get publicHomeTitleFrom => 'from';
+
+  @override
+  String get publicHomeTitleAccent => 'one place';
+
+  @override
+  String get publicHomeSubtitle =>
+      'Products, inventory, orders, customers and WhatsApp conversations — everything you need to run your store in one place.';
+
+  @override
+  String get publicHomePrimary => 'Join the waitlist';
+
+  @override
+  String get publicHomeSecondary => 'See how Dukavo works';
+
+  @override
+  String get publicHomeTickArabic => 'Arabic-first';
+
+  @override
+  String get publicHomeTickWhatsapp => 'WhatsApp built in';
+
+  @override
+  String get publicHomeTickTeam => 'Team permissions';
+
+  @override
+  String get publicHomeEcosystemLabel => 'What runs on Dukavo';
+
+  @override
+  String get publicHomeEcosystemProducts => 'Products';
+
+  @override
+  String get publicHomeEcosystemInventory => 'Inventory';
+
+  @override
+  String get publicHomeEcosystemOrders => 'Orders';
+
+  @override
+  String get publicHomeEcosystemCustomers => 'Customers';
+
+  @override
+  String get publicHomeEcosystemConversations => 'Conversations';
+
+  @override
+  String get publicHomeEcosystemTeam => 'Team';
+
+  @override
+  String get publicHomePillarsEyebrow => 'Features';
+
+  @override
+  String get publicHomePillarsTitle => 'Five pillars, one system';
+
+  @override
+  String get publicHomePillarsSubtitle =>
+      'One place for products, stock, orders, customers and conversations.';
+
+  @override
+  String get publicHomeStoryEyebrow => 'From conversation to order';
+
+  @override
+  String get publicHomeStoryTitle => 'Without the chaos';
+
+  @override
+  String get publicHomeStorySubtitle => 'The same five steps, every time.';
+
+  @override
+  String get publicHomePricingEyebrow => 'Pricing';
+
+  @override
+  String get publicHomePricingTitle => 'Plans that grow with your business';
+
+  @override
+  String get publicHomePricingSubtitle =>
+      'Final pricing is being prepared. Join the waitlist to hear first.';
+
+  @override
+  String get publicHomeFaqEyebrow => 'FAQ';
+
+  @override
+  String get publicHomeFaqTitle => 'Questions you might have';
+
+  @override
+  String get publicHomeBlogEyebrow => 'Blog & newsletter';
+
+  @override
+  String get publicHomeBlogTitle => 'Ideas for a more organised business';
+
+  @override
+  String get publicHomeCtaTitle => 'Ready to get organised with us?';
+
+  @override
+  String get publicHomeCtaBody =>
+      'Join the waitlist and we’ll set up your products, orders, customers and conversations together.';
+
+  @override
+  String get publicHomeCtaAction => 'Join the waitlist';
+
+  @override
+  String get publicStepConversationTitle => 'The conversation';
+
+  @override
+  String get publicStepConversationBody =>
+      'The customer writes on WhatsApp, and the message lands in your Dukavo inbox.';
+
+  @override
+  String get publicStepCustomerTitle => 'The customer';
+
+  @override
+  String get publicStepCustomerBody =>
+      'Dukavo recognises the customer and opens their profile with their history.';
+
+  @override
+  String get publicStepOrderTitle => 'The order';
+
+  @override
+  String get publicStepOrderBody =>
+      'Conversation becomes a structured order, with its items and its status.';
+
+  @override
+  String get publicStepInventoryTitle => 'The inventory';
+
+  @override
+  String get publicStepInventoryBody =>
+      'Quantities drop automatically, with an alert when stock runs low.';
+
+  @override
+  String get publicStepTeamTitle => 'The team';
+
+  @override
+  String get publicStepTeamBody =>
+      'Every staff member sees and does only what their permissions allow.';
+
+  @override
+  String get publicFeaturesTitle =>
+      'Everything you need to run your store efficiently';
+
+  @override
+  String get publicFeaturesSubtitle =>
+      'The capabilities available today, and what is still on the way.';
+
+  @override
+  String get publicFeaturesAvailable => 'Available now';
+
+  @override
+  String get publicFeaturesAvailableHint =>
+      'These capabilities are live in the merchant workspace.';
+
+  @override
+  String get publicFeaturesUpcoming => 'Coming soon';
+
+  @override
+  String get publicFeaturesUpcomingHint =>
+      'Planned capabilities, shown honestly until they ship.';
+
+  @override
+  String get publicFeaturesEmpty => 'The public feature catalogue is empty.';
+
+  @override
+  String get publicPricingTitle => 'Plans that fit how you sell';
+
+  @override
+  String get publicPricingHeroSubtitle =>
+      'Transparent plans, published from the Dukavo platform.';
+
+  @override
+  String get publicPricingInviteTitle => 'Invite-only onboarding';
+
+  @override
+  String get publicPricingInviteBody =>
+      'Dukavo is onboarding merchants from the waitlist. Join it and we’ll contact you when a place opens.';
+
+  @override
+  String get publicPricingTaxNote =>
+      'Prices shown are before tax unless the plan says otherwise.';
+
+  @override
+  String get publicPricingFaqTitle => 'Pricing questions';
+
+  @override
+  String get publicPricingFaqSubtitle =>
+      'What merchants usually ask before choosing a plan.';
+
+  @override
+  String get publicFaqTitle => 'Frequently asked questions';
+
+  @override
+  String get publicFaqSubtitle =>
+      'Short answers about Dukavo, onboarding and the waitlist.';
+
+  @override
+  String get publicFaqContactTitle => 'Still have questions?';
+
+  @override
+  String get publicFaqContactBody =>
+      'Send us a message and we’ll reply to the email you provide.';
+
+  @override
+  String get publicBlogTitle => 'Blog';
+
+  @override
+  String get publicBlogSubtitle =>
+      'Guides and product notes from the Dukavo team.';
+
+  @override
+  String get publicBlogFeatured => 'Latest article';
+
+  @override
+  String get publicBlogAll => 'All articles';
+
+  @override
+  String get publicBlogEmptyTitle => 'No articles yet';
+
+  @override
+  String get publicBlogEmptyBody =>
+      'We haven’t published anything yet. Check back soon.';
+
+  @override
+  String get publicBlogNotFoundTitle => 'Article not found';
+
+  @override
+  String get publicBlogNotFoundBody =>
+      'This article may have been unpublished or removed.';
+
+  @override
+  String get publicBlogBack => 'All articles';
+
+  @override
+  String get publicContactTitle => 'Talk to us';
+
+  @override
+  String get publicContactSubtitle =>
+      'Questions about Dukavo, pricing or onboarding? Send a message.';
+
+  @override
+  String get publicContactResponse =>
+      'We usually reply within two business days.';
+
+  @override
+  String get publicContactSuccessTitle => 'Message sent';
+
+  @override
+  String get publicContactSuccessBody => 'We reply to the email you provide.';
+
+  @override
+  String get publicContactHoneypot => 'Website';
+
+  @override
+  String get publicWaitlistTitle => 'Join the waitlist';
+
+  @override
+  String get publicWaitlistSubtitle => 'Be first to know when a place opens.';
+
+  @override
+  String get publicWaitlistBody =>
+      'Leave your email and we’ll contact you when Dukavo is ready for your store.';
+
+  @override
+  String get publicWaitlistPrivacy =>
+      'We only use this email for your invitation.';
+
+  @override
+  String get publicAboutBadge => 'About Dukavo';
+
+  @override
+  String get publicAboutContactCta => 'Talk to us';
+
+  @override
+  String get publicAboutUnavailableTitle => 'This page isn’t available yet';
+
+  @override
+  String get publicAboutUnavailableBody =>
+      'It may still be in preparation. Please check back soon.';
+
+  @override
+  String get publicContentUnavailableTitle => 'This page isn’t available yet';
+
+  @override
+  String get publicContentUnavailableBody =>
+      'It may still be in preparation. Please check back soon.';
+
+  @override
+  String get publicContentBackHome => 'Back to home';
+
+  @override
+  String get publicRegisterBadge => 'Invite only';
+
+  @override
+  String get publicRegisterTitle => 'Get an invitation';
+
+  @override
+  String get publicRegisterSubtitle =>
+      'Dukavo creates merchant accounts by invitation, so onboarding stays deliberate and personal.';
+
+  @override
+  String get publicRegisterStepOneTitle => 'Join the waitlist';
+
+  @override
+  String get publicRegisterStepOneBody =>
+      'Tell us about your store and the way you sell.';
+
+  @override
+  String get publicRegisterStepTwoTitle => 'Receive your invitation';
+
+  @override
+  String get publicRegisterStepTwoBody =>
+      'We email an invitation when a place opens for your kind of business.';
+
+  @override
+  String get publicRegisterStepThreeTitle => 'Sign in and set up';
+
+  @override
+  String get publicRegisterStepThreeBody =>
+      'Use the email in your invitation to sign in and create your workspace.';
+
+  @override
+  String get publicRegisterNoteTitle => 'Why invite-only?';
+
+  @override
+  String get publicRegisterNoteBody =>
+      'It lets us help each merchant migrate products, stock and customers properly instead of leaving them to a blank screen.';
+
+  @override
+  String get publicVerifyTitle => 'Verify email';
+
+  @override
+  String get publicVerifyPendingTitle => 'Check your inbox';
+
+  @override
+  String get publicVerifyPendingBody =>
+      'Verify your email so we can send invitations, receipts and account notices.';
+
+  @override
+  String get publicVerifyVerifiedTitle => 'Email verified';
+
+  @override
+  String get publicVerifyVerifiedBody =>
+      'Your email is verified. You’re all set.';
+
+  @override
+  String get publicVerifyResend => 'Resend verification email';
+
+  @override
+  String get publicVerifyResendAgain => 'Send it again';
+
+  @override
+  String get publicVerifySent =>
+      'If the server allows it, the email is on its way.';
+
+  @override
+  String get publicVerifySessionNote =>
+      'Sending verification email requires a signed-in session. If the server refuses, sign in again and retry.';
+
+  @override
+  String get publicHowTitle => 'How Dukavo works';
+
+  @override
+  String get publicHowSubtitle =>
+      'From a WhatsApp message to a fulfilled order, without re-typing anything.';
+
+  @override
+  String get publicHowSetupTitle => 'Setting up';
+
+  @override
+  String get publicHowSetupSubtitle =>
+      'Three short steps when your invitation arrives.';
+
+  @override
+  String get publicHowSetupOneTitle => 'Add your products';
+
+  @override
+  String get publicHowSetupOneBody =>
+      'Import a catalogue or add products one by one, with prices and stock.';
+
+  @override
+  String get publicHowSetupTwoTitle => 'Invite your team';
+
+  @override
+  String get publicHowSetupTwoBody =>
+      'Give each person the permissions their job needs, nothing more.';
+
+  @override
+  String get publicHowSetupThreeTitle => 'Connect your channels';
+
+  @override
+  String get publicHowSetupThreeBody =>
+      'Bring WhatsApp conversations into the same inbox as orders and customers.';
+
+  @override
+  String get publicHowSecurityTitle => 'Permissions are enforced by the server';
+
+  @override
+  String get publicHowSecurityBody =>
+      'The app hides what you cannot use, and the API checks every request independently.';
+
+  @override
+  String get publicHowCtaTitle => 'Ready to get organised with us?';
+
+  @override
+  String get publicHowCtaBody =>
+      'Join the waitlist and we’ll set up your products, orders, customers and conversations together.';
+
+  @override
+  String get register => 'Register';
 }

@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../app/localization/app_localizations.dart';
+import '../../../app/router/auth_destination.dart';
+import '../../../app/router/route_paths.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/theme_controller.dart';
 import '../../../core/utils/validators.dart';
@@ -10,7 +12,11 @@ import '../../../core/widgets/app_widgets.dart';
 import '../application/auth_controller.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
-  const LoginScreen({super.key});
+  const LoginScreen({super.key, this.redirect});
+
+  /// Sanitised by the router. After a successful sign-in the user returns here
+  /// when their role allows it, instead of always landing on the dashboard.
+  final String? redirect;
 
   @override
   ConsumerState<LoginScreen> createState() => _LoginScreenState();
@@ -31,10 +37,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Future<void> _submit() async {
     if (!(_formKey.currentState?.validate() ?? false)) return;
     FocusScope.of(context).unfocus();
-    await ref.read(authControllerProvider.notifier).login(
+    final success = await ref.read(authControllerProvider.notifier).login(
           email: _email.text,
           password: _password.text,
         );
+    if (!success || !mounted) return;
+
+    final target = switch (ref.read(authControllerProvider).status) {
+      AuthStatus.needsTenant => RoutePaths.setup,
+      AuthStatus.platform => RoutePaths.platformDashboard,
+      AuthStatus.authenticated => sanitizeRedirect(widget.redirect) ??
+          homePathFor(ref.read(permissionsProvider)),
+      AuthStatus.unknown || AuthStatus.unauthenticated => RoutePaths.home,
+    };
+    context.go(target);
   }
 
   @override
@@ -58,6 +74,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    Align(
+                      alignment: AlignmentDirectional.centerStart,
+                      child: TextButton.icon(
+                        onPressed: () => context.go(RoutePaths.home),
+                        icon: const Icon(Icons.arrow_back, size: 18),
+                        label: Text(context.tr('publicBackToSite')),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -171,7 +196,27 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       expand: true,
                       onPressed: _submit,
                     ),
-                    const SizedBox(height: 28),
+                    const SizedBox(height: 10),
+                    Wrap(
+                      alignment: WrapAlignment.center,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      spacing: 4,
+                      children: [
+                        TextButton(
+                          onPressed: auth.isSubmitting
+                              ? null
+                              : () => context.push(RoutePaths.register),
+                          child: Text(context.tr('register')),
+                        ),
+                        TextButton(
+                          onPressed: auth.isSubmitting
+                              ? null
+                              : () => context.push(RoutePaths.waitlist),
+                          child: Text(context.tr('joinWaitlist')),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 18),
                     Wrap(
                       alignment: WrapAlignment.center,
                       crossAxisAlignment: WrapCrossAlignment.center,

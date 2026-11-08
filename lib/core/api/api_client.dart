@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ui' show PlatformDispatcher;
 
 import 'package:dio/dio.dart';
 
@@ -243,7 +244,7 @@ class ApiClient {
     final requestHeaders = <String, dynamic>{
       'Accept': 'application/json',
       'X-Requested-With': 'XMLHttpRequest',
-      'Accept-Language': _preferences.locale?.languageCode ?? 'en',
+      'Accept-Language': _acceptLanguage(),
     };
 
     final token = _tokenStore.token;
@@ -325,6 +326,20 @@ class ApiClient {
         isNetworkError: true,
       );
     }
+  }
+
+  /// The same `en`/`ar` fallback the interface uses.
+  ///
+  /// An explicit preference always wins. Otherwise the device language decides,
+  /// so a visitor who has never chosen a language still reads API content in
+  /// the language Flutter rendered around it.
+  String _acceptLanguage() {
+    final selected = _preferences.locale?.languageCode;
+    if (selected != null && selected.isNotEmpty) {
+      return selected == 'ar' ? 'ar' : 'en';
+    }
+    final device = PlatformDispatcher.instance.locale.languageCode;
+    return device == 'ar' ? 'ar' : 'en';
   }
 
   JsonMap _envelope(Object? raw) {

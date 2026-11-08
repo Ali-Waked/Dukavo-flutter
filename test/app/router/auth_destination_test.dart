@@ -75,12 +75,12 @@ void main() {
       );
     });
 
-    test('sends a signed-out visitor to login', () {
+    test('sends a signed-out visitor to the public home', () {
       expect(
         splashDestination(
           const AuthState(status: AuthStatus.unauthenticated),
         ),
-        RoutePaths.login,
+        RoutePaths.home,
       );
     });
 
@@ -139,6 +139,37 @@ void main() {
         ),
         RoutePaths.more,
       );
+    });
+  });
+
+  group('sanitizeRedirect', () {
+    test('keeps same-origin absolute paths with their query', () {
+      expect(sanitizeRedirect('/orders/1043'), '/orders/1043');
+      expect(
+        sanitizeRedirect('/orders?status=pending'),
+        '/orders?status=pending',
+      );
+    });
+
+    test('rejects external, protocol-relative and malformed targets', () {
+      expect(sanitizeRedirect(null), isNull);
+      expect(sanitizeRedirect(''), isNull);
+      expect(sanitizeRedirect('https://evil.example'), isNull);
+      expect(sanitizeRedirect('//evil.example/path'), isNull);
+      expect(sanitizeRedirect(r'\evil'), isNull);
+      expect(sanitizeRedirect('orders'), isNull);
+      expect(sanitizeRedirect('/orders\nSet-Cookie: x'), isNull);
+      expect(sanitizeRedirect('/orders?x=1'), '/orders?x=1');
+      expect(sanitizeRedirect('/orders%00'), isNull);
+    });
+
+    test('refuses to bounce back into the auth flow', () {
+      expect(sanitizeRedirect(RoutePaths.login), isNull);
+      expect(sanitizeRedirect('${RoutePaths.login}?redirect=/orders'), isNull);
+      expect(sanitizeRedirect(RoutePaths.register), isNull);
+      expect(sanitizeRedirect(RoutePaths.forgotPassword), isNull);
+      expect(sanitizeRedirect(RoutePaths.resetPassword), isNull);
+      expect(sanitizeRedirect(RoutePaths.splash), isNull);
     });
   });
 }

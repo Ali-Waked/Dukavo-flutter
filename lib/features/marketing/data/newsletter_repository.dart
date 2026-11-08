@@ -22,6 +22,7 @@ class NewsletterRepository {
   Future<Paginated<Newsletter>> fetchNewsletters({
     int page = 1,
     int perPage = 9,
+    String? locale,
   }) async {
     try {
       return await _api
@@ -30,6 +31,7 @@ class NewsletterRepository {
             query: {
               'page': page,
               'per_page': perPage,
+              if (locale != null && locale.isNotEmpty) 'locale': locale,
             },
             item: Newsletter.fromJson,
           )

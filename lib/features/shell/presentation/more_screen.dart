@@ -161,7 +161,7 @@ class MoreScreen extends ConsumerWidget {
           _MoreEntry(
             labelKey: 'aboutDukavo',
             icon: Icons.public_outlined,
-            path: RoutePaths.site,
+            path: RoutePaths.home,
           ),
           _MoreEntry(
             labelKey: 'browseShop',

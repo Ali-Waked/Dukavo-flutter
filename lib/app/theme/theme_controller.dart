@@ -27,6 +27,21 @@ final localeControllerProvider =
   return LocaleController(ref.watch(appPreferencesProvider));
 });
 
+/// The language the app is actually rendering in.
+///
+/// [localeControllerProvider] is `null` when the user follows the device. The
+/// router and the public API both need a concrete `en`/`ar` code, so resolve the
+/// same fallback Flutter uses: Arabic when the device asks for it, English
+/// otherwise. Watching this provider also makes API reads language-aware.
+final effectiveLocaleProvider = Provider<Locale>((ref) {
+  final selected = ref.watch(localeControllerProvider);
+  if (selected != null) {
+    return Locale(selected.languageCode == 'ar' ? 'ar' : 'en');
+  }
+  final device = WidgetsBinding.instance.platformDispatcher.locale;
+  return Locale(device.languageCode == 'ar' ? 'ar' : 'en');
+});
+
 /// Light, dark or system. Persisted in [AppPreferences].
 class ThemeController extends StateNotifier<ThemeMode> {
   ThemeController(this._preferences) : super(_preferences.themeMode);

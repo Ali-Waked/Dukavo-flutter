@@ -2854,4 +2854,483 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get splashAi => 'أتمتة بالذكاء الاصطناعي';
+
+  @override
+  String get publicNavHome => 'الرئيسية';
+
+  @override
+  String get publicNavFeatures => 'المزايا';
+
+  @override
+  String get publicNavPricing => 'الأسعار';
+
+  @override
+  String get publicNavAbout => 'من نحن';
+
+  @override
+  String get publicNavMore => 'المزيد';
+
+  @override
+  String get publicNavHowItWorks => 'كيف يعمل';
+
+  @override
+  String get publicNavFaq => 'الأسئلة الشائعة';
+
+  @override
+  String get publicNavBlog => 'المدونة';
+
+  @override
+  String get publicNavContact => 'اتصل بنا';
+
+  @override
+  String get publicOpenApp => 'افتح مساحة العمل';
+
+  @override
+  String get publicBackToSite => 'العودة إلى الموقع';
+
+  @override
+  String get publicExplore => 'اكتشف Dukavo';
+
+  @override
+  String get publicRegister => 'إنشاء حساب';
+
+  @override
+  String publicCopyright(Object year) {
+    return '© $year Dukavo. جميع الحقوق محفوظة.';
+  }
+
+  @override
+  String get publicLoginInviteOnly => 'الحسابات تُنشأ بدعوة.';
+
+  @override
+  String get publicRegisterHaveAccount => 'لديك حساب؟ سجّل الدخول';
+
+  @override
+  String get publicFooterTagline => 'إدارة عمليات البيع للمشاريع النامية.';
+
+  @override
+  String get publicFooterProduct => 'المنتج';
+
+  @override
+  String get publicFooterResources => 'الموارد';
+
+  @override
+  String get publicFooterCompany => 'الشركة';
+
+  @override
+  String get publicFooterLegal => 'قانوني';
+
+  @override
+  String get publicMenuExplore => 'استكشف';
+
+  @override
+  String get publicMenuAccount => 'الحساب';
+
+  @override
+  String get publicMenuPreferences => 'التفضيلات';
+
+  @override
+  String get publicMenuLegal => 'قانوني';
+
+  @override
+  String get publicMenuOpenAppHint => 'تابع إلى مساحة عملك';
+
+  @override
+  String get publicMenuSignInHint => 'سجّل الدخول لإدارة متجرك';
+
+  @override
+  String get publicHomeBadge => 'منصة تجارة مصممة للعربية أولًا';
+
+  @override
+  String get publicHomeTitleLine1 => 'أدر متجرك بالكامل';
+
+  @override
+  String get publicHomeTitleFrom => 'من';
+
+  @override
+  String get publicHomeTitleAccent => 'مكان واحد';
+
+  @override
+  String get publicHomeSubtitle =>
+      'المنتجات، المخزون، الطلبات، العملاء ومحادثات WhatsApp — كل ما تحتاجه لإدارة تجارتك في منصة واحدة.';
+
+  @override
+  String get publicHomePrimary => 'انضم لقائمة الانتظار';
+
+  @override
+  String get publicHomeSecondary => 'شاهد كيف يعمل Dukavo';
+
+  @override
+  String get publicHomeTickArabic => 'عربي أولًا';
+
+  @override
+  String get publicHomeTickWhatsapp => 'WhatsApp مدمج';
+
+  @override
+  String get publicHomeTickTeam => 'صلاحيات للفريق';
+
+  @override
+  String get publicHomeEcosystemLabel => 'ما الذي يعمل على Dukavo';
+
+  @override
+  String get publicHomeEcosystemProducts => 'المنتجات';
+
+  @override
+  String get publicHomeEcosystemInventory => 'المخزون';
+
+  @override
+  String get publicHomeEcosystemOrders => 'الطلبات';
+
+  @override
+  String get publicHomeEcosystemCustomers => 'العملاء';
+
+  @override
+  String get publicHomeEcosystemConversations => 'المحادثات';
+
+  @override
+  String get publicHomeEcosystemTeam => 'الفريق';
+
+  @override
+  String get publicHomePillarsEyebrow => 'المزايا';
+
+  @override
+  String get publicHomePillarsTitle => 'خمس ركائز، نظام واحد';
+
+  @override
+  String get publicHomePillarsSubtitle =>
+      'مكان واحد للمنتجات والمخزون والطلبات والعملاء والمحادثات.';
+
+  @override
+  String get publicHomeStoryEyebrow => 'من المحادثة إلى الطلب';
+
+  @override
+  String get publicHomeStoryTitle => 'بدون فوضى';
+
+  @override
+  String get publicHomeStorySubtitle => 'الخطوات الخمس نفسها في كل مرة.';
+
+  @override
+  String get publicHomePricingEyebrow => 'الأسعار';
+
+  @override
+  String get publicHomePricingTitle => 'خطط تنمو مع تجارتك';
+
+  @override
+  String get publicHomePricingSubtitle =>
+      'الأسعار النهائية قيد الإعداد. انضم إلى قائمة الانتظار لتصلك أولًا.';
+
+  @override
+  String get publicHomeFaqEyebrow => 'الأسئلة الشائعة';
+
+  @override
+  String get publicHomeFaqTitle => 'أسئلة قد تخطر ببالك';
+
+  @override
+  String get publicHomeBlogEyebrow => 'المدونة والنشرة';
+
+  @override
+  String get publicHomeBlogTitle => 'أفكار لتجارة أكثر تنظيمًا';
+
+  @override
+  String get publicHomeCtaTitle => 'جاهز لتنظيم تجارتك معنا؟';
+
+  @override
+  String get publicHomeCtaBody =>
+      'انضم لقائمة الانتظار وسنجهّز منتجاتك وطلباتك وعملاءك ومحادثاتك معًا.';
+
+  @override
+  String get publicHomeCtaAction => 'انضم لقائمة الانتظار';
+
+  @override
+  String get publicStepConversationTitle => 'المحادثة';
+
+  @override
+  String get publicStepConversationBody =>
+      'يكتب العميل على WhatsApp، وتصل رسالته إلى صندوق Dukavo.';
+
+  @override
+  String get publicStepCustomerTitle => 'العميل';
+
+  @override
+  String get publicStepCustomerBody =>
+      'يتعرف Dukavo على العميل ويفتح ملفه مع كامل تاريخه.';
+
+  @override
+  String get publicStepOrderTitle => 'الطلب';
+
+  @override
+  String get publicStepOrderBody => 'يتحول الكلام إلى طلب منظم بعناصره وحالته.';
+
+  @override
+  String get publicStepInventoryTitle => 'المخزون';
+
+  @override
+  String get publicStepInventoryBody =>
+      'تنقص الكمية تلقائيًا، مع تنبيه عند اقتراب النفاد.';
+
+  @override
+  String get publicStepTeamTitle => 'الفريق';
+
+  @override
+  String get publicStepTeamBody =>
+      'كل موظف يرى ويفعل ما سمحت له به الصلاحيات فقط.';
+
+  @override
+  String get publicFeaturesTitle => 'كل ما تحتاجه لإدارة تجارتك بفعالية';
+
+  @override
+  String get publicFeaturesSubtitle =>
+      'القدرات المتاحة اليوم، وما هو في الطريق.';
+
+  @override
+  String get publicFeaturesAvailable => 'متاح الآن';
+
+  @override
+  String get publicFeaturesAvailableHint =>
+      'هذه القدرات متاحة في مساحة عمل التاجر.';
+
+  @override
+  String get publicFeaturesUpcoming => 'قريبًا';
+
+  @override
+  String get publicFeaturesUpcomingHint => 'قدرات مخططة، نعرضها بصدق حتى تصدر.';
+
+  @override
+  String get publicFeaturesEmpty => 'كتالوج المزايا العام فارغ.';
+
+  @override
+  String get publicPricingTitle => 'خطط تناسب طريقة بيعك';
+
+  @override
+  String get publicPricingHeroSubtitle => 'خطط واضحة، منشورة من منصة Dukavo.';
+
+  @override
+  String get publicPricingInviteTitle => 'انضمام بالدعوة';
+
+  @override
+  String get publicPricingInviteBody =>
+      'تستقبل Dukavo التجار من قائمة الانتظار. انضم إليها وسنتواصل معك عند توفر مكان.';
+
+  @override
+  String get publicPricingTaxNote =>
+      'الأسعار المعروضة قبل الضريبة ما لم تُذكر خلاف ذلك.';
+
+  @override
+  String get publicPricingFaqTitle => 'أسئلة الأسعار';
+
+  @override
+  String get publicPricingFaqSubtitle => 'ما يسأله التجار عادة قبل اختيار خطة.';
+
+  @override
+  String get publicFaqTitle => 'الأسئلة الشائعة';
+
+  @override
+  String get publicFaqSubtitle =>
+      'إجابات قصيرة عن Dukavo والانضمام وقائمة الانتظار.';
+
+  @override
+  String get publicFaqContactTitle => 'لا تزال لديك أسئلة؟';
+
+  @override
+  String get publicFaqContactBody =>
+      'أرسل لنا رسالة وسنرد على البريد الذي تقدمه.';
+
+  @override
+  String get publicBlogTitle => 'المدونة';
+
+  @override
+  String get publicBlogSubtitle => 'أدلة وملاحظات منتج من فريق دوكافو.';
+
+  @override
+  String get publicBlogFeatured => 'أحدث مقال';
+
+  @override
+  String get publicBlogAll => 'كل المقالات';
+
+  @override
+  String get publicBlogEmptyTitle => 'لا توجد مقالات بعد';
+
+  @override
+  String get publicBlogEmptyBody => 'لم ننشر شيئاً بعد. عد قريباً.';
+
+  @override
+  String get publicBlogNotFoundTitle => 'المقال غير موجود';
+
+  @override
+  String get publicBlogNotFoundBody => 'ربما أُلغي نشر هذا المقال أو حُذف.';
+
+  @override
+  String get publicBlogBack => 'كل المقالات';
+
+  @override
+  String get publicContactTitle => 'تواصل معنا';
+
+  @override
+  String get publicContactSubtitle =>
+      'أسئلة عن Dukavo أو الأسعار أو الانضمام؟ أرسل رسالة.';
+
+  @override
+  String get publicContactResponse => 'نرد عادة خلال يومي عمل.';
+
+  @override
+  String get publicContactSuccessTitle => 'تم إرسال الرسالة';
+
+  @override
+  String get publicContactSuccessBody => 'نرد على البريد الذي تقدمه.';
+
+  @override
+  String get publicContactHoneypot => 'الموقع الإلكتروني';
+
+  @override
+  String get publicWaitlistTitle => 'انضم إلى قائمة الانتظار';
+
+  @override
+  String get publicWaitlistSubtitle => 'كن أول من يعرف عند توفر مكان.';
+
+  @override
+  String get publicWaitlistBody =>
+      'اترك بريدك وسنتواصل معك عندما تصبح Dukavo جاهزة لمتجرك.';
+
+  @override
+  String get publicWaitlistPrivacy => 'نستخدم هذا البريد فقط لدعوتك.';
+
+  @override
+  String get publicAboutBadge => 'عن Dukavo';
+
+  @override
+  String get publicAboutContactCta => 'تواصل معنا';
+
+  @override
+  String get publicAboutUnavailableTitle => 'هذه الصفحة غير متاحة بعد';
+
+  @override
+  String get publicAboutUnavailableBody =>
+      'قد تكون قيد الإعداد. يرجى المحاولة لاحقًا.';
+
+  @override
+  String get publicContentUnavailableTitle => 'هذه الصفحة غير متاحة بعد';
+
+  @override
+  String get publicContentUnavailableBody =>
+      'قد تكون قيد الإعداد. يرجى المحاولة لاحقًا.';
+
+  @override
+  String get publicContentBackHome => 'العودة إلى الرئيسية';
+
+  @override
+  String get publicRegisterBadge => 'بالدعوة فقط';
+
+  @override
+  String get publicRegisterTitle => 'احصل على دعوة';
+
+  @override
+  String get publicRegisterSubtitle =>
+      'تنشئ Dukavo حسابات التجار بالدعوة، ليبقى الانضمام مدروسًا وشخصيًا.';
+
+  @override
+  String get publicRegisterStepOneTitle => 'انضم إلى قائمة الانتظار';
+
+  @override
+  String get publicRegisterStepOneBody => 'أخبرنا عن متجرك وطريقة بيعك.';
+
+  @override
+  String get publicRegisterStepTwoTitle => 'استلم دعوتك';
+
+  @override
+  String get publicRegisterStepTwoBody =>
+      'نرسل دعوة بالبريد عند توفر مكان لنوع تجارتك.';
+
+  @override
+  String get publicRegisterStepThreeTitle => 'سجّل الدخول وجهّز متجرك';
+
+  @override
+  String get publicRegisterStepThreeBody =>
+      'استخدم البريد الوارد في دعوتك لتسجيل الدخول وإنشاء مساحة عملك.';
+
+  @override
+  String get publicRegisterNoteTitle => 'لماذا بالدعوة؟';
+
+  @override
+  String get publicRegisterNoteBody =>
+      'يتيح لنا مساعدة كل تاجر في نقل المنتجات والمخزون والعملاء بشكل صحيح بدل تركه أمام شاشة فارغة.';
+
+  @override
+  String get publicVerifyTitle => 'تأكيد البريد';
+
+  @override
+  String get publicVerifyPendingTitle => 'تحقق من بريدك';
+
+  @override
+  String get publicVerifyPendingBody =>
+      'أكّد بريدك حتى نتمكن من إرسال الدعوات والإيصالات وإشعارات الحساب.';
+
+  @override
+  String get publicVerifyVerifiedTitle => 'تم تأكيد البريد';
+
+  @override
+  String get publicVerifyVerifiedBody => 'تم تأكيد بريدك. كل شيء جاهز.';
+
+  @override
+  String get publicVerifyResend => 'إعادة إرسال بريد التأكيد';
+
+  @override
+  String get publicVerifyResendAgain => 'أرسله مرة أخرى';
+
+  @override
+  String get publicVerifySent => 'إذا سمح الخادم، فالبريد في طريقه.';
+
+  @override
+  String get publicVerifySessionNote =>
+      'يتطلب إرسال بريد التأكيد جلسة مسجّلة. إذا رفض الخادم، سجّل الدخول مجددًا وأعد المحاولة.';
+
+  @override
+  String get publicHowTitle => 'كيف تعمل Dukavo';
+
+  @override
+  String get publicHowSubtitle =>
+      'من رسالة WhatsApp إلى طلب مكتمل، دون إعادة كتابة أي شيء.';
+
+  @override
+  String get publicHowSetupTitle => 'الإعداد';
+
+  @override
+  String get publicHowSetupSubtitle => 'ثلاث خطوات قصيرة عند وصول دعوتك.';
+
+  @override
+  String get publicHowSetupOneTitle => 'أضف منتجاتك';
+
+  @override
+  String get publicHowSetupOneBody =>
+      'استورد كتالوجك أو أضف المنتجات واحدًا تلو الآخر، مع الأسعار والمخزون.';
+
+  @override
+  String get publicHowSetupTwoTitle => 'ادعُ فريقك';
+
+  @override
+  String get publicHowSetupTwoBody =>
+      'امنح كل شخص الصلاحيات التي يحتاجها عمله، لا أكثر.';
+
+  @override
+  String get publicHowSetupThreeTitle => 'اربط قنواتك';
+
+  @override
+  String get publicHowSetupThreeBody =>
+      'اجمع محادثات WhatsApp في الصندوق نفسه مع الطلبات والعملاء.';
+
+  @override
+  String get publicHowSecurityTitle => 'الصلاحيات يفرضها الخادم';
+
+  @override
+  String get publicHowSecurityBody =>
+      'يخفي التطبيق ما لا يمكنك استخدامه، ويتحقق الخادم من كل طلب بشكل مستقل.';
+
+  @override
+  String get publicHowCtaTitle => 'جاهز لتنظيم تجارتك معنا؟';
+
+  @override
+  String get publicHowCtaBody =>
+      'انضم لقائمة الانتظار وسنجهّز منتجاتك وطلباتك وعملاءك ومحادثاتك معًا.';
+
+  @override
+  String get register => 'إنشاء حساب';
 }

@@ -11,16 +11,19 @@ import '../../features/analytics/presentation/analytics_screen.dart';
 import '../../features/auth/application/auth_controller.dart';
 import '../../features/auth/presentation/forgot_password_screen.dart';
 import '../../features/auth/presentation/login_screen.dart';
+import '../../features/auth/presentation/register_screen.dart';
 import '../../features/auth/presentation/reset_password_screen.dart';
 import '../../features/auth/presentation/splash_screen.dart';
 import '../../features/auth/presentation/tenant_screens.dart';
+import '../../features/auth/presentation/verify_email_screen.dart';
 import '../../features/categories/presentation/categories_screen.dart';
 import '../../features/conversations/presentation/conversations_screen.dart';
 import '../../features/customers/presentation/customer_crm_screen.dart';
 import '../../features/customers/presentation/customers_screen.dart';
 import '../../features/dashboard/presentation/dashboard_screen.dart';
 import '../../features/inventory/presentation/inventory_screen.dart';
-import '../../features/marketing/presentation/marketing_screens.dart';
+import '../../features/marketing/presentation/public_screens.dart';
+import '../../features/marketing/presentation/public_shell.dart';
 import '../../features/merchant/presentation/inventory_intelligence_screen.dart';
 import '../../features/merchant/presentation/merchant_hubs.dart';
 import '../../features/merchant/presentation/merchant_specs.dart';
@@ -73,11 +76,31 @@ class _AuthStatusListenable extends ChangeNotifier {
 
 /// Marketing and public storefront pages are readable without a session.
 bool _isPublicPath(String path) {
-  return path == RoutePaths.site ||
-      path.startsWith('${RoutePaths.site}/') ||
-      path == RoutePaths.shop ||
-      path.startsWith('${RoutePaths.shop}/') ||
-      path == RoutePaths.resetPassword;
+  const exact = <String>{
+    RoutePaths.home,
+    RoutePaths.publicFeatures,
+    RoutePaths.publicPricing,
+    RoutePaths.publicHowItWorks,
+    RoutePaths.publicAbout,
+    RoutePaths.publicFaq,
+    RoutePaths.publicBlog,
+    RoutePaths.publicContact,
+    RoutePaths.waitlist,
+    RoutePaths.register,
+    RoutePaths.resetPassword,
+  };
+  if (exact.contains(path)) return true;
+  if (path.startsWith('${RoutePaths.publicBlog}/')) return true;
+  if (path.startsWith('/pages/')) return true;
+  if (path == RoutePaths.site ||
+      path.startsWith('${RoutePaths.site}/')) {
+    return true;
+  }
+  if (path == RoutePaths.shop ||
+      path.startsWith('${RoutePaths.shop}/')) {
+    return true;
+  }
+  return false;
 }
 
 /// Screens that belong to the person, not to a workspace or the platform.
@@ -181,6 +204,14 @@ String? _permissionRedirect(Permissions permissions, String path) {
   return null;
 }
 
+/// Builds the login URL that remembers where the visitor was going.
+String _loginLocation(GoRouterState state) {
+  return Uri(
+    path: RoutePaths.login,
+    queryParameters: <String, String>{'redirect': state.uri.toString()},
+  ).toString();
+}
+
 String? _redirect(Ref ref, GoRouterState state) {
   final auth = ref.read(authControllerProvider);
   final status = auth.status;
@@ -190,8 +221,9 @@ String? _redirect(Ref ref, GoRouterState state) {
   final onSplash = path == RoutePaths.splash;
   final onAuth = path == RoutePaths.login ||
       path == RoutePaths.forgotPassword ||
-      path == RoutePaths.resetPassword;
+      path == RoutePaths.register;
   final onSetup = path == RoutePaths.setup;
+  final onVerify = path == RoutePaths.verifyEmail;
   final public = _isPublicPath(path);
 
   // The splash owns its own timed exit. It waits for both the animation and the
@@ -205,14 +237,15 @@ String? _redirect(Ref ref, GoRouterState state) {
       return public ? null : RoutePaths.splash;
 
     case AuthStatus.unauthenticated:
-      return onAuth || public ? null : RoutePaths.login;
+      if (onVerify) return _loginLocation(state);
+      return onAuth || public ? null : _loginLocation(state);
 
     case AuthStatus.needsTenant:
       return onSetup || public ? null : RoutePaths.setup;
 
     case AuthStatus.platform:
       if (onAuth || onSetup) return RoutePaths.platformDashboard;
-      if (public || path == RoutePaths.noAccess) return null;
+      if (public || onVerify || path == RoutePaths.noAccess) return null;
       if (path.startsWith(RoutePaths.platform)) {
         return path == RoutePaths.platform
             ? RoutePaths.platformDashboard
@@ -224,10 +257,12 @@ String? _redirect(Ref ref, GoRouterState state) {
     case AuthStatus.authenticated:
       final permissions = ref.read(permissionsProvider);
       final canUsePlatform = session?.isPlatformUser ?? false;
-      if (onAuth || onSetup) {
-        return homePathFor(permissions, platformMode: false);
+      if (onSetup) return homePathFor(permissions, platformMode: false);
+      if (onAuth) {
+        return sanitizeRedirect(state.uri.queryParameters['redirect']) ??
+            homePathFor(permissions, platformMode: false);
       }
-      if (public || path == RoutePaths.noAccess) return null;
+      if (onVerify || public || path == RoutePaths.noAccess) return null;
       if (path.startsWith(RoutePaths.platform)) {
         if (!canUsePlatform) return RoutePaths.noAccess;
         return path == RoutePaths.platform
@@ -286,7 +321,13 @@ List<RouteBase> _routes() {
     ),
     GoRoute(
       path: RoutePaths.login,
-      builder: (context, state) => const LoginScreen(),
+      builder: (context, state) => LoginScreen(
+        redirect: sanitizeRedirect(state.uri.queryParameters['redirect']),
+      ),
+    ),
+    GoRoute(
+      path: RoutePaths.register,
+      builder: (context, state) => const RegisterScreen(),
     ),
     GoRoute(
       path: RoutePaths.forgotPassword,
@@ -298,6 +339,10 @@ List<RouteBase> _routes() {
         token: state.uri.queryParameters['token'] ?? '',
         email: state.uri.queryParameters['email'] ?? '',
       ),
+    ),
+    GoRoute(
+      path: RoutePaths.verifyEmail,
+      builder: (context, state) => const VerifyEmailScreen(),
     ),
     GoRoute(
       path: RoutePaths.setup,
@@ -889,56 +934,123 @@ List<RouteBase> _routes() {
     ),
 
     /*
-     * The public marketing site. Readable with or without a session; the four
-     * primary pages share the site chrome, long-form pages stand alone.
+     * The public experience. Readable with or without a session. Four primary
+     * tabs share the bottom navigation; long-form pages stand alone so they can
+     * scroll without a persistent bar.
      */
-    ShellRoute(
-      builder: (context, state, child) => MarketingSiteShell(
-        location: state.uri.path,
-        child: child,
-      ),
-      routes: [
-        GoRoute(
-          path: RoutePaths.site,
-          builder: (context, state) => const SiteHomeScreen(),
+    StatefulShellRoute.indexedStack(
+      builder: (context, state, navigationShell) =>
+          PublicShell(navigationShell: navigationShell),
+      branches: [
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RoutePaths.home,
+              builder: (context, state) => const PublicHomeScreen(),
+            ),
+          ],
         ),
-        GoRoute(
-          path: RoutePaths.sitePricing,
-          builder: (context, state) => const SitePricingScreen(),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RoutePaths.publicFeatures,
+              builder: (context, state) => const PublicFeaturesScreen(),
+            ),
+          ],
         ),
-        GoRoute(
-          path: RoutePaths.siteFaq,
-          builder: (context, state) => const SiteFaqScreen(),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RoutePaths.publicPricing,
+              builder: (context, state) => const PublicPricingScreen(),
+            ),
+          ],
         ),
-        GoRoute(
-          path: RoutePaths.siteNewsletter,
-          builder: (context, state) => const SiteNewsletterScreen(),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RoutePaths.publicAbout,
+              builder: (context, state) => const PublicAboutScreen(),
+            ),
+          ],
         ),
       ],
     ),
     GoRoute(
-      path: RoutePaths.siteFeatures,
-      builder: (context, state) => const SiteFeaturesScreen(),
+      path: RoutePaths.publicHowItWorks,
+      builder: (context, state) => const PublicHowItWorksScreen(),
     ),
     GoRoute(
-      path: RoutePaths.siteContact,
-      builder: (context, state) => const SiteContactScreen(),
+      path: RoutePaths.publicFaq,
+      builder: (context, state) => const PublicFaqScreen(),
     ),
     GoRoute(
-      path: RoutePaths.siteWaitlist,
-      builder: (context, state) => const SiteWaitlistScreen(),
+      path: RoutePaths.publicBlog,
+      builder: (context, state) => const PublicBlogScreen(),
     ),
     GoRoute(
-      path: '/site/page/:key',
-      builder: (context, state) => SitePageScreen(
+      path: '/blog/:slug',
+      builder: (context, state) => PublicBlogArticleScreen(
+        slug: state.pathParameters['slug'] ?? '',
+      ),
+    ),
+    GoRoute(
+      path: RoutePaths.publicContact,
+      builder: (context, state) => const PublicContactScreen(),
+    ),
+    GoRoute(
+      path: RoutePaths.waitlist,
+      builder: (context, state) => const PublicWaitlistScreen(),
+    ),
+    GoRoute(
+      path: RoutePaths.publicPage(':key'),
+      builder: (context, state) => PublicContentPageScreen(
         pageKey: state.pathParameters['key'] ?? '',
       ),
     ),
+
+    /*
+     * Legacy marketing links. The merchant overflow menu and older shop links
+     * still point at the legacy site paths, so redirect them instead of
+     * breaking the link.
+     */
+    GoRoute(
+      path: RoutePaths.site,
+      redirect: (context, state) => RoutePaths.home,
+    ),
+    GoRoute(
+      path: RoutePaths.siteFeatures,
+      redirect: (context, state) => RoutePaths.publicFeatures,
+    ),
+    GoRoute(
+      path: RoutePaths.sitePricing,
+      redirect: (context, state) => RoutePaths.publicPricing,
+    ),
+    GoRoute(
+      path: RoutePaths.siteFaq,
+      redirect: (context, state) => RoutePaths.publicFaq,
+    ),
+    GoRoute(
+      path: RoutePaths.siteNewsletter,
+      redirect: (context, state) => RoutePaths.publicBlog,
+    ),
+    GoRoute(
+      path: RoutePaths.siteContact,
+      redirect: (context, state) => RoutePaths.publicContact,
+    ),
+    GoRoute(
+      path: RoutePaths.siteWaitlist,
+      redirect: (context, state) => RoutePaths.waitlist,
+    ),
+    GoRoute(
+      path: '/site/page/:key',
+      redirect: (context, state) =>
+          RoutePaths.publicPage(state.pathParameters['key'] ?? ''),
+    ),
     GoRoute(
       path: '/site/newsletter/:slug',
-      builder: (context, state) => SiteNewsletterArticleScreen(
-        slug: state.pathParameters['slug'] ?? '',
-      ),
+      redirect: (context, state) =>
+          RoutePaths.publicArticle(state.pathParameters['slug'] ?? ''),
     ),
 
     /*

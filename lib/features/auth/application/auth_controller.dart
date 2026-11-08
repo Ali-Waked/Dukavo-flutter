@@ -225,6 +225,14 @@ class AuthController extends StateNotifier<AuthState> {
     state = state.copyWith(clearError: true);
   }
 
+  /// Ask Fortify to resend the verification email for the signed-in account.
+  ///
+  /// Failures propagate: the verify screen shows the server's own refusal
+  /// (the endpoint is session-guarded) rather than pretending the mail left.
+  Future<void> resendVerificationEmail() {
+    return _repository.resendVerificationEmail();
+  }
+
   /// The one place that decides what a restored session may open.
   ///
   /// A platform operator without a merchant workspace is authenticated; only a

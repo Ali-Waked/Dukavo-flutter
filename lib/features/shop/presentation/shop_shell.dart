@@ -206,7 +206,7 @@ class ShopShell extends ConsumerWidget {
                 icon: Icons.open_in_new,
                 expand: true,
                 variant: AppButtonVariant.outlined,
-                onPressed: () => context.push(RoutePaths.site),
+                onPressed: () => context.push(RoutePaths.home),
               ),
             ],
           ),
@@ -743,7 +743,7 @@ class ShopLandingScreen extends StatelessWidget {
               AppButton(
                 label: context.tr('aboutDukavo'),
                 icon: Icons.open_in_new,
-                onPressed: () => context.push(RoutePaths.site),
+                onPressed: () => context.push(RoutePaths.home),
               ),
             ],
           ),

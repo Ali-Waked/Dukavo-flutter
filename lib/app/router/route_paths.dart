@@ -8,8 +8,10 @@ class RoutePaths {
 
   static const splash = '/splash';
   static const login = '/login';
+  static const register = '/register';
   static const forgotPassword = '/forgot-password';
   static const resetPassword = '/reset-password';
+  static const verifyEmail = '/verify-email';
   static const setup = '/setup';
 
   static const dashboard = '/dashboard';
@@ -79,7 +81,22 @@ class RoutePaths {
   static const createStore = '/stores/new';
   static const inventoryIntelligence = '/inventory/intelligence';
 
-  // Public marketing site.
+  // Public marketing experience.
+  //
+  // These are the canonical public locations. The legacy `/site/*` paths below
+  // remain only as redirects so old links and the merchant overflow menu keep
+  // working while every new entry point lands on the public route scheme.
+  static const home = '/home';
+  static const publicFeatures = '/features';
+  static const publicPricing = '/pricing';
+  static const publicHowItWorks = '/how-it-works';
+  static const publicAbout = '/about';
+  static const publicFaq = '/faq';
+  static const publicBlog = '/blog';
+  static const publicContact = '/contact';
+  static const waitlist = '/waitlist';
+
+  // Public marketing site (legacy redirects).
   static const site = '/site';
   static const siteFeatures = '/site/features';
   static const sitePricing = '/site/pricing';
@@ -138,6 +155,9 @@ class RoutePaths {
 
   static String sitePage(String key) => '/site/page/$key';
   static String siteNewsletterArticle(String slug) => '/site/newsletter/$slug';
+
+  static String publicPage(String key) => '/pages/$key';
+  static String publicArticle(String slug) => '/blog/$slug';
 
   static String shopStore(String tenant, String store) =>
       '/shop/$tenant/$store';

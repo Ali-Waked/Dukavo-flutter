@@ -13,6 +13,8 @@ class ApiPaths {
   static const currencyCatalogue = '/currencies';
   static const forgotPassword = '/auth/forgot-password';
   static const resetPassword = '/auth/reset-password';
+  static const emailVerificationNotification =
+      '/auth/email/verification-notification';
   static const onboardingTenant = '/onboarding/tenant';
 
   // Profile

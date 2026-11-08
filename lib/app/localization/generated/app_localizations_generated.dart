@@ -5659,6 +5659,900 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'AI automation'**
   String get splashAi;
+
+  /// No description provided for @publicNavHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get publicNavHome;
+
+  /// No description provided for @publicNavFeatures.
+  ///
+  /// In en, this message translates to:
+  /// **'Features'**
+  String get publicNavFeatures;
+
+  /// No description provided for @publicNavPricing.
+  ///
+  /// In en, this message translates to:
+  /// **'Pricing'**
+  String get publicNavPricing;
+
+  /// No description provided for @publicNavAbout.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get publicNavAbout;
+
+  /// No description provided for @publicNavMore.
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get publicNavMore;
+
+  /// No description provided for @publicNavHowItWorks.
+  ///
+  /// In en, this message translates to:
+  /// **'How it works'**
+  String get publicNavHowItWorks;
+
+  /// No description provided for @publicNavFaq.
+  ///
+  /// In en, this message translates to:
+  /// **'FAQ'**
+  String get publicNavFaq;
+
+  /// No description provided for @publicNavBlog.
+  ///
+  /// In en, this message translates to:
+  /// **'Blog'**
+  String get publicNavBlog;
+
+  /// No description provided for @publicNavContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact'**
+  String get publicNavContact;
+
+  /// No description provided for @publicOpenApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Open workspace'**
+  String get publicOpenApp;
+
+  /// No description provided for @publicBackToSite.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to site'**
+  String get publicBackToSite;
+
+  /// No description provided for @publicExplore.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore Dukavo'**
+  String get publicExplore;
+
+  /// No description provided for @publicRegister.
+  ///
+  /// In en, this message translates to:
+  /// **'Register'**
+  String get publicRegister;
+
+  /// No description provided for @publicCopyright.
+  ///
+  /// In en, this message translates to:
+  /// **'© {year} Dukavo. All rights reserved.'**
+  String publicCopyright(Object year);
+
+  /// No description provided for @publicLoginInviteOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Accounts are created by invitation.'**
+  String get publicLoginInviteOnly;
+
+  /// No description provided for @publicRegisterHaveAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account? Sign in'**
+  String get publicRegisterHaveAccount;
+
+  /// No description provided for @publicFooterTagline.
+  ///
+  /// In en, this message translates to:
+  /// **'Commerce operations for growing businesses.'**
+  String get publicFooterTagline;
+
+  /// No description provided for @publicFooterProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'Product'**
+  String get publicFooterProduct;
+
+  /// No description provided for @publicFooterResources.
+  ///
+  /// In en, this message translates to:
+  /// **'Resources'**
+  String get publicFooterResources;
+
+  /// No description provided for @publicFooterCompany.
+  ///
+  /// In en, this message translates to:
+  /// **'Company'**
+  String get publicFooterCompany;
+
+  /// No description provided for @publicFooterLegal.
+  ///
+  /// In en, this message translates to:
+  /// **'Legal'**
+  String get publicFooterLegal;
+
+  /// No description provided for @publicMenuExplore.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore'**
+  String get publicMenuExplore;
+
+  /// No description provided for @publicMenuAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get publicMenuAccount;
+
+  /// No description provided for @publicMenuPreferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferences'**
+  String get publicMenuPreferences;
+
+  /// No description provided for @publicMenuLegal.
+  ///
+  /// In en, this message translates to:
+  /// **'Legal'**
+  String get publicMenuLegal;
+
+  /// No description provided for @publicMenuOpenAppHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue to your workspace'**
+  String get publicMenuOpenAppHint;
+
+  /// No description provided for @publicMenuSignInHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to manage your store'**
+  String get publicMenuSignInHint;
+
+  /// No description provided for @publicHomeBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Arabic-first commerce platform'**
+  String get publicHomeBadge;
+
+  /// No description provided for @publicHomeTitleLine1.
+  ///
+  /// In en, this message translates to:
+  /// **'Run your whole store'**
+  String get publicHomeTitleLine1;
+
+  /// No description provided for @publicHomeTitleFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'from'**
+  String get publicHomeTitleFrom;
+
+  /// No description provided for @publicHomeTitleAccent.
+  ///
+  /// In en, this message translates to:
+  /// **'one place'**
+  String get publicHomeTitleAccent;
+
+  /// No description provided for @publicHomeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Products, inventory, orders, customers and WhatsApp conversations — everything you need to run your store in one place.'**
+  String get publicHomeSubtitle;
+
+  /// No description provided for @publicHomePrimary.
+  ///
+  /// In en, this message translates to:
+  /// **'Join the waitlist'**
+  String get publicHomePrimary;
+
+  /// No description provided for @publicHomeSecondary.
+  ///
+  /// In en, this message translates to:
+  /// **'See how Dukavo works'**
+  String get publicHomeSecondary;
+
+  /// No description provided for @publicHomeTickArabic.
+  ///
+  /// In en, this message translates to:
+  /// **'Arabic-first'**
+  String get publicHomeTickArabic;
+
+  /// No description provided for @publicHomeTickWhatsapp.
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp built in'**
+  String get publicHomeTickWhatsapp;
+
+  /// No description provided for @publicHomeTickTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'Team permissions'**
+  String get publicHomeTickTeam;
+
+  /// No description provided for @publicHomeEcosystemLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'What runs on Dukavo'**
+  String get publicHomeEcosystemLabel;
+
+  /// No description provided for @publicHomeEcosystemProducts.
+  ///
+  /// In en, this message translates to:
+  /// **'Products'**
+  String get publicHomeEcosystemProducts;
+
+  /// No description provided for @publicHomeEcosystemInventory.
+  ///
+  /// In en, this message translates to:
+  /// **'Inventory'**
+  String get publicHomeEcosystemInventory;
+
+  /// No description provided for @publicHomeEcosystemOrders.
+  ///
+  /// In en, this message translates to:
+  /// **'Orders'**
+  String get publicHomeEcosystemOrders;
+
+  /// No description provided for @publicHomeEcosystemCustomers.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers'**
+  String get publicHomeEcosystemCustomers;
+
+  /// No description provided for @publicHomeEcosystemConversations.
+  ///
+  /// In en, this message translates to:
+  /// **'Conversations'**
+  String get publicHomeEcosystemConversations;
+
+  /// No description provided for @publicHomeEcosystemTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'Team'**
+  String get publicHomeEcosystemTeam;
+
+  /// No description provided for @publicHomePillarsEyebrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Features'**
+  String get publicHomePillarsEyebrow;
+
+  /// No description provided for @publicHomePillarsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Five pillars, one system'**
+  String get publicHomePillarsTitle;
+
+  /// No description provided for @publicHomePillarsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'One place for products, stock, orders, customers and conversations.'**
+  String get publicHomePillarsSubtitle;
+
+  /// No description provided for @publicHomeStoryEyebrow.
+  ///
+  /// In en, this message translates to:
+  /// **'From conversation to order'**
+  String get publicHomeStoryEyebrow;
+
+  /// No description provided for @publicHomeStoryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Without the chaos'**
+  String get publicHomeStoryTitle;
+
+  /// No description provided for @publicHomeStorySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The same five steps, every time.'**
+  String get publicHomeStorySubtitle;
+
+  /// No description provided for @publicHomePricingEyebrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Pricing'**
+  String get publicHomePricingEyebrow;
+
+  /// No description provided for @publicHomePricingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Plans that grow with your business'**
+  String get publicHomePricingTitle;
+
+  /// No description provided for @publicHomePricingSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Final pricing is being prepared. Join the waitlist to hear first.'**
+  String get publicHomePricingSubtitle;
+
+  /// No description provided for @publicHomeFaqEyebrow.
+  ///
+  /// In en, this message translates to:
+  /// **'FAQ'**
+  String get publicHomeFaqEyebrow;
+
+  /// No description provided for @publicHomeFaqTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Questions you might have'**
+  String get publicHomeFaqTitle;
+
+  /// No description provided for @publicHomeBlogEyebrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Blog & newsletter'**
+  String get publicHomeBlogEyebrow;
+
+  /// No description provided for @publicHomeBlogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ideas for a more organised business'**
+  String get publicHomeBlogTitle;
+
+  /// No description provided for @publicHomeCtaTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to get organised with us?'**
+  String get publicHomeCtaTitle;
+
+  /// No description provided for @publicHomeCtaBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Join the waitlist and we’ll set up your products, orders, customers and conversations together.'**
+  String get publicHomeCtaBody;
+
+  /// No description provided for @publicHomeCtaAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Join the waitlist'**
+  String get publicHomeCtaAction;
+
+  /// No description provided for @publicStepConversationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The conversation'**
+  String get publicStepConversationTitle;
+
+  /// No description provided for @publicStepConversationBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The customer writes on WhatsApp, and the message lands in your Dukavo inbox.'**
+  String get publicStepConversationBody;
+
+  /// No description provided for @publicStepCustomerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The customer'**
+  String get publicStepCustomerTitle;
+
+  /// No description provided for @publicStepCustomerBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Dukavo recognises the customer and opens their profile with their history.'**
+  String get publicStepCustomerBody;
+
+  /// No description provided for @publicStepOrderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The order'**
+  String get publicStepOrderTitle;
+
+  /// No description provided for @publicStepOrderBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Conversation becomes a structured order, with its items and its status.'**
+  String get publicStepOrderBody;
+
+  /// No description provided for @publicStepInventoryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The inventory'**
+  String get publicStepInventoryTitle;
+
+  /// No description provided for @publicStepInventoryBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantities drop automatically, with an alert when stock runs low.'**
+  String get publicStepInventoryBody;
+
+  /// No description provided for @publicStepTeamTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The team'**
+  String get publicStepTeamTitle;
+
+  /// No description provided for @publicStepTeamBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Every staff member sees and does only what their permissions allow.'**
+  String get publicStepTeamBody;
+
+  /// No description provided for @publicFeaturesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything you need to run your store efficiently'**
+  String get publicFeaturesTitle;
+
+  /// No description provided for @publicFeaturesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The capabilities available today, and what is still on the way.'**
+  String get publicFeaturesSubtitle;
+
+  /// No description provided for @publicFeaturesAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Available now'**
+  String get publicFeaturesAvailable;
+
+  /// No description provided for @publicFeaturesAvailableHint.
+  ///
+  /// In en, this message translates to:
+  /// **'These capabilities are live in the merchant workspace.'**
+  String get publicFeaturesAvailableHint;
+
+  /// No description provided for @publicFeaturesUpcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming soon'**
+  String get publicFeaturesUpcoming;
+
+  /// No description provided for @publicFeaturesUpcomingHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Planned capabilities, shown honestly until they ship.'**
+  String get publicFeaturesUpcomingHint;
+
+  /// No description provided for @publicFeaturesEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'The public feature catalogue is empty.'**
+  String get publicFeaturesEmpty;
+
+  /// No description provided for @publicPricingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Plans that fit how you sell'**
+  String get publicPricingTitle;
+
+  /// No description provided for @publicPricingHeroSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Transparent plans, published from the Dukavo platform.'**
+  String get publicPricingHeroSubtitle;
+
+  /// No description provided for @publicPricingInviteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite-only onboarding'**
+  String get publicPricingInviteTitle;
+
+  /// No description provided for @publicPricingInviteBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Dukavo is onboarding merchants from the waitlist. Join it and we’ll contact you when a place opens.'**
+  String get publicPricingInviteBody;
+
+  /// No description provided for @publicPricingTaxNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Prices shown are before tax unless the plan says otherwise.'**
+  String get publicPricingTaxNote;
+
+  /// No description provided for @publicPricingFaqTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pricing questions'**
+  String get publicPricingFaqTitle;
+
+  /// No description provided for @publicPricingFaqSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What merchants usually ask before choosing a plan.'**
+  String get publicPricingFaqSubtitle;
+
+  /// No description provided for @publicFaqTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Frequently asked questions'**
+  String get publicFaqTitle;
+
+  /// No description provided for @publicFaqSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Short answers about Dukavo, onboarding and the waitlist.'**
+  String get publicFaqSubtitle;
+
+  /// No description provided for @publicFaqContactTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Still have questions?'**
+  String get publicFaqContactTitle;
+
+  /// No description provided for @publicFaqContactBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Send us a message and we’ll reply to the email you provide.'**
+  String get publicFaqContactBody;
+
+  /// No description provided for @publicBlogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Blog'**
+  String get publicBlogTitle;
+
+  /// No description provided for @publicBlogSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Guides and product notes from the Dukavo team.'**
+  String get publicBlogSubtitle;
+
+  /// No description provided for @publicBlogFeatured.
+  ///
+  /// In en, this message translates to:
+  /// **'Latest article'**
+  String get publicBlogFeatured;
+
+  /// No description provided for @publicBlogAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All articles'**
+  String get publicBlogAll;
+
+  /// No description provided for @publicBlogEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No articles yet'**
+  String get publicBlogEmptyTitle;
+
+  /// No description provided for @publicBlogEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'We haven’t published anything yet. Check back soon.'**
+  String get publicBlogEmptyBody;
+
+  /// No description provided for @publicBlogNotFoundTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Article not found'**
+  String get publicBlogNotFoundTitle;
+
+  /// No description provided for @publicBlogNotFoundBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This article may have been unpublished or removed.'**
+  String get publicBlogNotFoundBody;
+
+  /// No description provided for @publicBlogBack.
+  ///
+  /// In en, this message translates to:
+  /// **'All articles'**
+  String get publicBlogBack;
+
+  /// No description provided for @publicContactTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Talk to us'**
+  String get publicContactTitle;
+
+  /// No description provided for @publicContactSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Questions about Dukavo, pricing or onboarding? Send a message.'**
+  String get publicContactSubtitle;
+
+  /// No description provided for @publicContactResponse.
+  ///
+  /// In en, this message translates to:
+  /// **'We usually reply within two business days.'**
+  String get publicContactResponse;
+
+  /// No description provided for @publicContactSuccessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Message sent'**
+  String get publicContactSuccessTitle;
+
+  /// No description provided for @publicContactSuccessBody.
+  ///
+  /// In en, this message translates to:
+  /// **'We reply to the email you provide.'**
+  String get publicContactSuccessBody;
+
+  /// No description provided for @publicContactHoneypot.
+  ///
+  /// In en, this message translates to:
+  /// **'Website'**
+  String get publicContactHoneypot;
+
+  /// No description provided for @publicWaitlistTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Join the waitlist'**
+  String get publicWaitlistTitle;
+
+  /// No description provided for @publicWaitlistSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Be first to know when a place opens.'**
+  String get publicWaitlistSubtitle;
+
+  /// No description provided for @publicWaitlistBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave your email and we’ll contact you when Dukavo is ready for your store.'**
+  String get publicWaitlistBody;
+
+  /// No description provided for @publicWaitlistPrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'We only use this email for your invitation.'**
+  String get publicWaitlistPrivacy;
+
+  /// No description provided for @publicAboutBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'About Dukavo'**
+  String get publicAboutBadge;
+
+  /// No description provided for @publicAboutContactCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Talk to us'**
+  String get publicAboutContactCta;
+
+  /// No description provided for @publicAboutUnavailableTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'This page isn’t available yet'**
+  String get publicAboutUnavailableTitle;
+
+  /// No description provided for @publicAboutUnavailableBody.
+  ///
+  /// In en, this message translates to:
+  /// **'It may still be in preparation. Please check back soon.'**
+  String get publicAboutUnavailableBody;
+
+  /// No description provided for @publicContentUnavailableTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'This page isn’t available yet'**
+  String get publicContentUnavailableTitle;
+
+  /// No description provided for @publicContentUnavailableBody.
+  ///
+  /// In en, this message translates to:
+  /// **'It may still be in preparation. Please check back soon.'**
+  String get publicContentUnavailableBody;
+
+  /// No description provided for @publicContentBackHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to home'**
+  String get publicContentBackHome;
+
+  /// No description provided for @publicRegisterBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite only'**
+  String get publicRegisterBadge;
+
+  /// No description provided for @publicRegisterTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Get an invitation'**
+  String get publicRegisterTitle;
+
+  /// No description provided for @publicRegisterSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Dukavo creates merchant accounts by invitation, so onboarding stays deliberate and personal.'**
+  String get publicRegisterSubtitle;
+
+  /// No description provided for @publicRegisterStepOneTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Join the waitlist'**
+  String get publicRegisterStepOneTitle;
+
+  /// No description provided for @publicRegisterStepOneBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us about your store and the way you sell.'**
+  String get publicRegisterStepOneBody;
+
+  /// No description provided for @publicRegisterStepTwoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Receive your invitation'**
+  String get publicRegisterStepTwoTitle;
+
+  /// No description provided for @publicRegisterStepTwoBody.
+  ///
+  /// In en, this message translates to:
+  /// **'We email an invitation when a place opens for your kind of business.'**
+  String get publicRegisterStepTwoBody;
+
+  /// No description provided for @publicRegisterStepThreeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in and set up'**
+  String get publicRegisterStepThreeTitle;
+
+  /// No description provided for @publicRegisterStepThreeBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Use the email in your invitation to sign in and create your workspace.'**
+  String get publicRegisterStepThreeBody;
+
+  /// No description provided for @publicRegisterNoteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Why invite-only?'**
+  String get publicRegisterNoteTitle;
+
+  /// No description provided for @publicRegisterNoteBody.
+  ///
+  /// In en, this message translates to:
+  /// **'It lets us help each merchant migrate products, stock and customers properly instead of leaving them to a blank screen.'**
+  String get publicRegisterNoteBody;
+
+  /// No description provided for @publicVerifyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify email'**
+  String get publicVerifyTitle;
+
+  /// No description provided for @publicVerifyPendingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your inbox'**
+  String get publicVerifyPendingTitle;
+
+  /// No description provided for @publicVerifyPendingBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify your email so we can send invitations, receipts and account notices.'**
+  String get publicVerifyPendingBody;
+
+  /// No description provided for @publicVerifyVerifiedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Email verified'**
+  String get publicVerifyVerifiedTitle;
+
+  /// No description provided for @publicVerifyVerifiedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your email is verified. You’re all set.'**
+  String get publicVerifyVerifiedBody;
+
+  /// No description provided for @publicVerifyResend.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend verification email'**
+  String get publicVerifyResend;
+
+  /// No description provided for @publicVerifyResendAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Send it again'**
+  String get publicVerifyResendAgain;
+
+  /// No description provided for @publicVerifySent.
+  ///
+  /// In en, this message translates to:
+  /// **'If the server allows it, the email is on its way.'**
+  String get publicVerifySent;
+
+  /// No description provided for @publicVerifySessionNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Sending verification email requires a signed-in session. If the server refuses, sign in again and retry.'**
+  String get publicVerifySessionNote;
+
+  /// No description provided for @publicHowTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How Dukavo works'**
+  String get publicHowTitle;
+
+  /// No description provided for @publicHowSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'From a WhatsApp message to a fulfilled order, without re-typing anything.'**
+  String get publicHowSubtitle;
+
+  /// No description provided for @publicHowSetupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Setting up'**
+  String get publicHowSetupTitle;
+
+  /// No description provided for @publicHowSetupSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Three short steps when your invitation arrives.'**
+  String get publicHowSetupSubtitle;
+
+  /// No description provided for @publicHowSetupOneTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your products'**
+  String get publicHowSetupOneTitle;
+
+  /// No description provided for @publicHowSetupOneBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Import a catalogue or add products one by one, with prices and stock.'**
+  String get publicHowSetupOneBody;
+
+  /// No description provided for @publicHowSetupTwoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite your team'**
+  String get publicHowSetupTwoTitle;
+
+  /// No description provided for @publicHowSetupTwoBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Give each person the permissions their job needs, nothing more.'**
+  String get publicHowSetupTwoBody;
+
+  /// No description provided for @publicHowSetupThreeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect your channels'**
+  String get publicHowSetupThreeTitle;
+
+  /// No description provided for @publicHowSetupThreeBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Bring WhatsApp conversations into the same inbox as orders and customers.'**
+  String get publicHowSetupThreeBody;
+
+  /// No description provided for @publicHowSecurityTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Permissions are enforced by the server'**
+  String get publicHowSecurityTitle;
+
+  /// No description provided for @publicHowSecurityBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The app hides what you cannot use, and the API checks every request independently.'**
+  String get publicHowSecurityBody;
+
+  /// No description provided for @publicHowCtaTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to get organised with us?'**
+  String get publicHowCtaTitle;
+
+  /// No description provided for @publicHowCtaBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Join the waitlist and we’ll set up your products, orders, customers and conversations together.'**
+  String get publicHowCtaBody;
+
+  /// No description provided for @register.
+  ///
+  /// In en, this message translates to:
+  /// **'Register'**
+  String get register;
 }
 
 class _AppLocalizationsDelegate

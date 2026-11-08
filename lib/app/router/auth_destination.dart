@@ -26,7 +26,7 @@ String? splashDestination(AuthState auth) {
     case AuthStatus.unknown:
       return null;
     case AuthStatus.unauthenticated:
-      return RoutePaths.login;
+      return RoutePaths.home;
     case AuthStatus.needsTenant:
       return RoutePaths.setup;
     case AuthStatus.platform:
@@ -36,4 +36,36 @@ String? splashDestination(AuthState auth) {
           auth.session?.permissionSet ?? const Permissions.empty();
       return homePathFor(permissions);
   }
+}
+
+/// Accept only same-origin absolute paths, so a crafted `redirect` query cannot
+/// turn a successful login into an open redirect or a navigation loop.
+String? sanitizeRedirect(String? raw) {
+  if (raw == null) return null;
+  final value = raw.trim();
+  if (value.isEmpty || !value.startsWith('/')) return null;
+  if (value.startsWith('//') || value.contains('\\')) return null;
+  if (RegExp(r'[\x00-\x1F\x7F]').hasMatch(value)) return null;
+
+  final String decoded;
+  try {
+    decoded = Uri.decodeFull(value);
+  } catch (_) {
+    return null;
+  }
+  if (RegExp(r'[\x00-\x1F\x7F]').hasMatch(decoded)) return null;
+
+  final uri = Uri.tryParse(value);
+  if (uri == null || uri.hasScheme || uri.hasAuthority) return null;
+  if (uri.path.isEmpty) return null;
+
+  switch (uri.path) {
+    case RoutePaths.login:
+    case RoutePaths.register:
+    case RoutePaths.forgotPassword:
+    case RoutePaths.resetPassword:
+    case RoutePaths.splash:
+      return null;
+  }
+  return uri.toString();
 }

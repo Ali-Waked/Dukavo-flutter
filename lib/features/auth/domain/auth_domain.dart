@@ -224,6 +224,13 @@ abstract class AuthRepository {
 
   Future<void> forgotPassword(String email);
 
+  /// Ask the server to resend the email-verification link.
+  ///
+  /// Fortify guards this endpoint with the session guard, so a bearer-token
+  /// client can be refused. That refusal is surfaced to the caller instead of
+  /// being hidden behind a fabricated success.
+  Future<void> resendVerificationEmail();
+
   Future<void> resetPassword({
     required String email,
     required String token,
