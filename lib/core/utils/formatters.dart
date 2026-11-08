@@ -10,17 +10,25 @@ class Formatters {
     String currencyCode, {
     String? locale,
     bool compact = false,
+    int? decimals,
   }) {
     final code = currencyCode.isEmpty ? 'USD' : currencyCode.toUpperCase();
     try {
       final format = compact
           ? NumberFormat.compactSimpleCurrency(name: code, locale: locale)
-          : NumberFormat.simpleCurrency(name: code, locale: locale);
+          : NumberFormat.simpleCurrency(
+              name: code,
+              locale: locale,
+              decimalDigits: decimals,
+            );
       return format.format(value);
     } catch (_) {
       final amount = compact
           ? NumberFormat.compact(locale: locale).format(value)
-          : NumberFormat.decimalPattern(locale).format(value);
+          : NumberFormat.decimalPatternDigits(
+              locale: locale,
+              decimalDigits: decimals ?? 2,
+            ).format(value);
       return '$code $amount';
     }
   }

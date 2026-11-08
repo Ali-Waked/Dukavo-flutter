@@ -7,7 +7,9 @@ import '../../../app/localization/app_localizations.dart';
 import '../../../core/api/api_exception.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/widgets/app_widgets.dart';
+import '../../../core/widgets/currency_picker.dart';
 import '../../auth/application/auth_controller.dart';
+import '../../settings/application/settings_controller.dart';
 import '../application/store_controller.dart';
 import '../domain/store_currency_domain.dart';
 
@@ -97,6 +99,17 @@ class _StoreCurrencyScreenState extends ConsumerState<StoreCurrencyScreen> {
       if (!mounted) return;
       ref.invalidate(storeCurrencyProvider(widget.storeId));
       ref.invalidate(storeOptionsProvider);
+      ref.invalidate(workspaceSettingsProvider);
+      // The default store's currency is the workspace currency the shell and
+      // reports format with, so re-read `/me` instead of trusting a stale
+      // session value. The conversion already succeeded; a failed refresh must
+      // not turn it into an error.
+      try {
+        await ref.read(authControllerProvider.notifier).refreshSession();
+      } catch (_) {
+        // The next app boot will read the new currency from `/me`.
+      }
+      if (!mounted) return;
       setState(() {
         _converting = false;
         _preview = null;
@@ -197,30 +210,19 @@ class _StoreCurrencyScreenState extends ConsumerState<StoreCurrencyScreen> {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      DropdownButtonFormField<String>(
-                        initialValue: _selected,
-                        decoration: InputDecoration(
-                          labelText: context.tr('currency'),
-                        ),
-                        hint: Text(context.tr('selectCurrency')),
-                        items: [
-                          for (final currency in choices)
-                            DropdownMenuItem(
-                              value: currency.code,
-                              child: Text(
-                                '${currency.code} · ${currency.name}',
-                              ),
-                            ),
-                        ],
-                        onChanged: _previewing || _converting
-                            ? null
-                            : (value) {
-                                setState(() {
-                                  _selected = value;
-                                  _preview = null;
-                                  _error = null;
-                                });
-                              },
+                      CurrencyPickerField(
+                        currencies: choices,
+                        value: _selected,
+                        label: context.tr('currency'),
+                        placeholder: context.tr('selectCurrency'),
+                        enabled: !_previewing && !_converting,
+                        onChanged: (currency) {
+                          setState(() {
+                            _selected = currency.code;
+                            _preview = null;
+                            _error = null;
+                          });
+                        },
                       ),
                       const SizedBox(height: 12),
                       AppButton(
@@ -250,6 +252,14 @@ class _StoreCurrencyScreenState extends ConsumerState<StoreCurrencyScreen> {
               const SizedBox(height: 12),
               _PreviewCard(
                 preview: _preview!,
+                fromDecimals: _decimalsFor(
+                  options.valueOrNull ?? const <CurrencyOption>[],
+                  _preview!.fromCurrency,
+                ),
+                toDecimals: _decimalsFor(
+                  options.valueOrNull ?? const <CurrencyOption>[],
+                  _preview!.toCurrency,
+                ),
                 canConvert: canManage && !_converting,
                 converting: _converting,
                 onConvert: _convert,
@@ -274,15 +284,26 @@ class _StoreCurrencyScreenState extends ConsumerState<StoreCurrencyScreen> {
   }
 }
 
+int _decimalsFor(List<CurrencyOption> options, String code) {
+  for (final option in options) {
+    if (option.code == code) return option.decimals;
+  }
+  return 2;
+}
+
 class _PreviewCard extends StatelessWidget {
   const _PreviewCard({
     required this.preview,
+    required this.fromDecimals,
+    required this.toDecimals,
     required this.canConvert,
     required this.converting,
     required this.onConvert,
   });
 
   final CurrencyPreview preview;
+  final int fromDecimals;
+  final int toDecimals;
   final bool canConvert;
   final bool converting;
   final VoidCallback onConvert;
@@ -322,6 +343,10 @@ class _PreviewCard extends StatelessWidget {
             label: context.tr('bundles'),
             value: '${preview.bundles}',
           ),
+          KeyValueRow(
+            label: context.tr('shippingZones'),
+            value: '${preview.shippingZones}',
+          ),
           if (preview.noop) ...[
             const SizedBox(height: 8),
             Text(
@@ -350,9 +375,9 @@ class _PreviewCard extends StatelessWidget {
                     ),
                     Text(
                       '${context.tr('before')}: '
-                      '${Formatters.currency(sample.priceBefore, preview.fromCurrency)}'
+                      '${Formatters.currency(sample.priceBefore, preview.fromCurrency, decimals: fromDecimals)}'
                       '  →  ${context.tr('after')}: '
-                      '${Formatters.currency(sample.priceAfter, preview.toCurrency)}',
+                      '${Formatters.currency(sample.priceAfter, preview.toCurrency, decimals: toDecimals)}',
                       style: theme.textTheme.labelSmall?.copyWith(
                         color: theme.colorScheme.onSurfaceVariant,
                       ),
@@ -409,6 +434,9 @@ class _HistoryRow extends StatelessWidget {
                         '${context.tr('products').toLowerCase()}',
                     '${conversion.variantsConverted} '
                         '${context.tr('variants').toLowerCase()}',
+                    if (conversion.shippingZonesConverted > 0)
+                      '${conversion.shippingZonesConverted} '
+                          '${context.tr('shippingZones').toLowerCase()}',
                   ].join(' · '),
                   style: theme.textTheme.labelSmall?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,

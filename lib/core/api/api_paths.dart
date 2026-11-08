@@ -10,6 +10,7 @@ class ApiPaths {
   static const logout = '/auth/logout';
   static const me = '/me';
   static const permissions = '/permissions';
+  static const currencyCatalogue = '/currencies';
   static const forgotPassword = '/auth/forgot-password';
   static const resetPassword = '/auth/reset-password';
   static const onboardingTenant = '/onboarding/tenant';

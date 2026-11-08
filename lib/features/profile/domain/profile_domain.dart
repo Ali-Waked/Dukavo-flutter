@@ -7,6 +7,10 @@ class UserProfile {
     required this.status,
     this.phone,
     this.locale,
+    this.preferredCurrency = 'USD',
+    this.preferredCurrencyName = '',
+    this.preferredCurrencySymbol = '',
+    this.preferredCurrencyDecimals = 2,
     this.avatarUrl,
     this.emailVerifiedAt,
     this.lastLoginAt,
@@ -18,6 +22,10 @@ class UserProfile {
   final String email;
   final String? phone;
   final String? locale;
+  final String preferredCurrency;
+  final String preferredCurrencyName;
+  final String preferredCurrencySymbol;
+  final int preferredCurrencyDecimals;
   final String status;
   final String? avatarUrl;
   final String? emailVerifiedAt;
@@ -88,16 +96,19 @@ class ProfileUpdateDraft {
     this.name,
     this.phone,
     this.locale,
+    this.preferredCurrency,
   });
 
   final String? name;
   final String? phone;
   final String? locale;
+  final String? preferredCurrency;
 
   Map<String, dynamic> toJson() => {
         if (name != null) 'name': name,
         if (phone != null) 'phone': phone,
         if (locale != null) 'locale': locale,
+        if (preferredCurrency != null) 'preferred_currency': preferredCurrency,
       };
 }
 

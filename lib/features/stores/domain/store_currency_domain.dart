@@ -5,28 +5,7 @@
 /// amount itself.
 library;
 
-class CurrencyOption {
-  const CurrencyOption({
-    required this.code,
-    required this.name,
-    required this.symbol,
-    required this.decimals,
-  });
-
-  final String code;
-  final String name;
-  final String symbol;
-  final int decimals;
-
-  static CurrencyOption fromJson(Map<String, dynamic> json) {
-    return CurrencyOption(
-      code: '${json['code'] ?? ''}',
-      name: '${json['name'] ?? json['code'] ?? ''}',
-      symbol: '${json['symbol'] ?? json['code'] ?? ''}',
-      decimals: _int(json['decimals']),
-    );
-  }
-}
+export '../../../core/currency/currency_catalogue.dart' show CurrencyOption;
 
 class CurrencySample {
   const CurrencySample({
@@ -65,6 +44,7 @@ class CurrencyPreview {
     required this.bundles,
     required this.sample,
     required this.noop,
+    this.shippingZones = 0,
     this.rateFetchedAt,
   });
 
@@ -75,6 +55,7 @@ class CurrencyPreview {
   final int products;
   final int variants;
   final int bundles;
+  final int shippingZones;
   final List<CurrencySample> sample;
   final bool noop;
   final DateTime? rateFetchedAt;
@@ -89,6 +70,7 @@ class CurrencyPreview {
       products: _int(json['products']),
       variants: _int(json['variants']),
       bundles: _int(json['bundles']),
+      shippingZones: _int(json['shipping_zones']),
       sample: rawSample is List
           ? rawSample
               .whereType<Map>()
@@ -113,6 +95,7 @@ class CurrencyConversion {
     required this.productsConverted,
     required this.variantsConverted,
     required this.bundlesConverted,
+    this.shippingZonesConverted = 0,
     this.failureReason,
     this.completedAt,
     this.createdAt,
@@ -127,6 +110,7 @@ class CurrencyConversion {
   final int productsConverted;
   final int variantsConverted;
   final int bundlesConverted;
+  final int shippingZonesConverted;
   final String? failureReason;
   final DateTime? completedAt;
   final DateTime? createdAt;
@@ -142,6 +126,7 @@ class CurrencyConversion {
       productsConverted: _int(json['products_converted']),
       variantsConverted: _int(json['variants_converted']),
       bundlesConverted: _int(json['bundles_converted']),
+      shippingZonesConverted: _int(json['shipping_zones_converted']),
       failureReason: json['failure_reason']?.toString(),
       completedAt: _date(json['completed_at']),
       createdAt: _date(json['created_at']),

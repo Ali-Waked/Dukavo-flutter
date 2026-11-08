@@ -1859,7 +1859,7 @@ abstract class AppLocalizations {
   /// No description provided for @storeCurrencyHelp.
   ///
   /// In en, this message translates to:
-  /// **'Converting rewrites current product, variant and bundle prices. Historical orders keep their original currency.'**
+  /// **'Converting rewrites current product, variant, bundle and shipping prices. Historical orders keep their original currency.'**
   String get storeCurrencyHelp;
 
   /// No description provided for @currentCurrency.
@@ -1963,6 +1963,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The store already uses this currency.'**
   String get sameCurrency;
+
+  /// No description provided for @displayCurrency.
+  ///
+  /// In en, this message translates to:
+  /// **'Display currency'**
+  String get displayCurrency;
+
+  /// No description provided for @displayCurrencyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Your own display preference. It never changes workspace prices or past transactions.'**
+  String get displayCurrencyHint;
+
+  /// No description provided for @workspaceCurrencyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'This follows the default store\'s base currency. Change it from the store\'s currency settings.'**
+  String get workspaceCurrencyHint;
+
+  /// No description provided for @changeStoreCurrency.
+  ///
+  /// In en, this message translates to:
+  /// **'Change store currency'**
+  String get changeStoreCurrency;
+
+  /// No description provided for @searchCurrencies.
+  ///
+  /// In en, this message translates to:
+  /// **'Search currencies by name or code'**
+  String get searchCurrencies;
+
+  /// No description provided for @noCurrenciesMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'No currencies match your search.'**
+  String get noCurrenciesMatch;
+
+  /// No description provided for @decimalPlaces.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} decimal places'**
+  String decimalPlaces(Object count);
 
   /// No description provided for @timezone.
   ///

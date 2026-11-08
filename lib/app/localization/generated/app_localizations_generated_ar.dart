@@ -898,7 +898,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get storeCurrencyHelp =>
-      'يؤدي التحويل إلى إعادة كتابة أسعار المنتجات والمتغيرات والحزم الحالية. تحتفظ الطلبات السابقة بعملتها الأصلية.';
+      'يؤدي التحويل إلى إعادة كتابة أسعار المنتجات والمتغيرات والحزم والشحن الحالية. تحتفظ الطلبات السابقة بعملتها الأصلية.';
 
   @override
   String get currentCurrency => 'العملة الحالية';
@@ -951,6 +951,31 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get sameCurrency => 'المتجر يستخدم هذه العملة بالفعل.';
+
+  @override
+  String get displayCurrency => 'عملة العرض';
+
+  @override
+  String get displayCurrencyHint =>
+      'تفضيل خاص بك للعرض فقط. لا يغيّر أسعار مساحة العمل ولا المعاملات السابقة.';
+
+  @override
+  String get workspaceCurrencyHint =>
+      'تتبع عملة المتجر الافتراضي. غيّرها من إعدادات عملة المتجر.';
+
+  @override
+  String get changeStoreCurrency => 'تغيير عملة المتجر';
+
+  @override
+  String get searchCurrencies => 'ابحث عن العملات بالاسم أو الرمز';
+
+  @override
+  String get noCurrenciesMatch => 'لا توجد عملات تطابق بحثك.';
+
+  @override
+  String decimalPlaces(Object count) {
+    return '$count خانة عشرية';
+  }
 
   @override
   String get timezone => 'المنطقة الزمنية';

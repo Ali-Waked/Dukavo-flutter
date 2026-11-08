@@ -5,8 +5,11 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../app/localization/app_localizations.dart';
 import '../../../app/router/route_paths.dart';
+import '../../../core/api/api_exception.dart';
+import '../../../core/currency/currency_catalogue.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/widgets/app_widgets.dart';
+import '../../../core/widgets/currency_picker.dart';
 import '../../auth/application/auth_controller.dart';
 import '../application/profile_controller.dart';
 import '../domain/profile_domain.dart';
@@ -136,6 +139,19 @@ class _ProfileBody extends ConsumerWidget {
               ),
               ListTile(
                 contentPadding: EdgeInsets.zero,
+                leading: const Icon(Icons.currency_exchange),
+                title: Text(context.tr('displayCurrency')),
+                subtitle: Text(
+                  profile.preferredCurrencyName.isEmpty
+                      ? profile.preferredCurrency
+                      : '${profile.preferredCurrency} · '
+                          '${profile.preferredCurrencyName}',
+                ),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () => _editCurrency(context, ref),
+              ),
+              ListTile(
+                contentPadding: EdgeInsets.zero,
                 leading: const Icon(Icons.lock_outline),
                 title: Text(context.tr('changePassword')),
                 trailing: const Icon(Icons.chevron_right),
@@ -223,6 +239,33 @@ class _ProfileBody extends ConsumerWidget {
     } catch (error) {
       if (!context.mounted) return;
       AppSnack.show(context, error.toString(), isError: true);
+    }
+  }
+
+  Future<void> _editCurrency(BuildContext context, WidgetRef ref) async {
+    try {
+      final catalogue = await ref.read(currencyCatalogueProvider.future);
+      if (!context.mounted) return;
+
+      final choice = await showCurrencyPicker(
+        context,
+        currencies: catalogue.currencies,
+        selected: profile.preferredCurrency,
+        title: context.tr('displayCurrency'),
+      );
+      if (choice == null || choice.code == profile.preferredCurrency) return;
+
+      await ref.read(profileActionsProvider).update(
+            ProfileUpdateDraft(preferredCurrency: choice.code),
+          );
+      if (!context.mounted) return;
+      AppSnack.show(context, context.tr('profileUpdated'));
+    } on ApiException catch (error) {
+      if (!context.mounted) return;
+      AppSnack.show(context, error.message, isError: true);
+    } catch (_) {
+      if (!context.mounted) return;
+      AppSnack.show(context, context.tr('errorGeneric'), isError: true);
     }
   }
 

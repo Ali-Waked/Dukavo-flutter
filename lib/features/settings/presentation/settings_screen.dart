@@ -5,25 +5,14 @@ import 'package:go_router/go_router.dart';
 import '../../../app/localization/app_localizations.dart';
 import '../../../app/router/route_paths.dart';
 import '../../../app/theme/theme_controller.dart';
+import '../../../core/currency/currency_catalogue.dart';
 import '../../../core/widgets/app_widgets.dart';
 import '../../auth/application/auth_controller.dart';
 import '../../profile/application/profile_controller.dart';
 import '../../profile/domain/profile_domain.dart';
+import '../../stores/application/store_controller.dart';
 import '../application/settings_controller.dart';
 import '../domain/settings_domain.dart';
-
-const _currencies = <String>[
-  'USD',
-  'EUR',
-  'GBP',
-  'AED',
-  'SAR',
-  'EGP',
-  'NGN',
-  'KES',
-  'ZAR',
-  'INR',
-];
 
 const _timezones = <String>[
   'UTC',
@@ -260,7 +249,6 @@ class _WorkspaceFormState extends ConsumerState<_WorkspaceForm> {
       TextEditingController(text: widget.settings.contactEmail ?? '');
   late final TextEditingController _phone =
       TextEditingController(text: widget.settings.phone ?? '');
-  late String _currency = widget.settings.currency;
   late String _timezone = widget.settings.timezone;
   late String _locale = widget.settings.locale ?? 'en';
   bool _saving = false;
@@ -304,18 +292,7 @@ class _WorkspaceFormState extends ConsumerState<_WorkspaceForm> {
               keyboardType: TextInputType.phone,
             ),
             const SizedBox(height: 10),
-            DropdownButtonFormField<String>(
-              // ignore: deprecated_member_use
-              value: _currency,
-              decoration: InputDecoration(labelText: context.tr('currency')),
-              items: [
-                for (final currency in _currencies)
-                  DropdownMenuItem(value: currency, child: Text(currency)),
-              ],
-              onChanged: widget.canManage
-                  ? (value) => setState(() => _currency = value ?? _currency)
-                  : null,
-            ),
+            _WorkspaceCurrencyField(currency: widget.settings.currency),
             const SizedBox(height: 10),
             DropdownButtonFormField<String>(
               // ignore: deprecated_member_use
@@ -372,7 +349,6 @@ class _WorkspaceFormState extends ConsumerState<_WorkspaceForm> {
               name: _name.text.trim(),
               contactEmail: _email.text.trim(),
               phone: _phone.text.trim(),
-              currency: _currency,
               timezone: _timezone,
               locale: _locale,
             ),
@@ -385,6 +361,48 @@ class _WorkspaceFormState extends ConsumerState<_WorkspaceForm> {
       setState(() => _saving = false);
       AppSnack.show(context, error.toString(), isError: true);
     }
+  }
+}
+
+class _WorkspaceCurrencyField extends ConsumerWidget {
+  const _WorkspaceCurrencyField({required this.currency});
+
+  final String currency;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final permissions = ref.watch(permissionsProvider);
+    final catalogue = ref.watch(currencyCatalogueProvider);
+    // Only ask for stores when the caller may read them; the endpoint is
+    // permission-guarded and a 403 here would be noise, not information.
+    final defaultStore =
+        permissions.canViewStores ? ref.watch(defaultStoreProvider) : null;
+    final option = catalogue.valueOrNull?.find(currency);
+    final theme = Theme.of(context);
+
+    return InputDecorator(
+      decoration: InputDecoration(
+        labelText: context.tr('currency'),
+        helperText: context.tr('workspaceCurrencyHint'),
+        helperMaxLines: 3,
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              option?.label ?? currency,
+              style: theme.textTheme.bodyMedium,
+            ),
+          ),
+          if (defaultStore != null && permissions.canManageStores)
+            TextButton(
+              onPressed: () =>
+                  context.push(RoutePaths.storeCurrency(defaultStore.id)),
+              child: Text(context.tr('changeStoreCurrency')),
+            ),
+        ],
+      ),
+    );
   }
 }
 

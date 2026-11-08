@@ -900,7 +900,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get storeCurrencyHelp =>
-      'Converting rewrites current product, variant and bundle prices. Historical orders keep their original currency.';
+      'Converting rewrites current product, variant, bundle and shipping prices. Historical orders keep their original currency.';
 
   @override
   String get currentCurrency => 'Current currency';
@@ -953,6 +953,31 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sameCurrency => 'The store already uses this currency.';
+
+  @override
+  String get displayCurrency => 'Display currency';
+
+  @override
+  String get displayCurrencyHint =>
+      'Your own display preference. It never changes workspace prices or past transactions.';
+
+  @override
+  String get workspaceCurrencyHint =>
+      'This follows the default store\'s base currency. Change it from the store\'s currency settings.';
+
+  @override
+  String get changeStoreCurrency => 'Change store currency';
+
+  @override
+  String get searchCurrencies => 'Search currencies by name or code';
+
+  @override
+  String get noCurrenciesMatch => 'No currencies match your search.';
+
+  @override
+  String decimalPlaces(Object count) {
+    return '$count decimal places';
+  }
 
   @override
   String get timezone => 'Timezone';

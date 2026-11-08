@@ -12,6 +12,7 @@ void main() {
       'products': 12,
       'variants': 31,
       'bundles': 2,
+      'shipping_zones': 4,
       'noop': false,
       'sample': [
         {
@@ -31,6 +32,7 @@ void main() {
     expect(preview.products, 12);
     expect(preview.variants, 31);
     expect(preview.bundles, 2);
+    expect(preview.shippingZones, 4);
     expect(preview.noop, isFalse);
     expect(preview.sample.single.name, 'Linen shirt');
     expect(preview.sample.single.priceAfter, 24.6);
@@ -51,6 +53,7 @@ void main() {
           'products_converted': 9,
           'variants_converted': 20,
           'bundles_converted': 1,
+          'shipping_zones_converted': 3,
           'completed_at': '2026-10-01T10:00:00+00:00',
         },
       ],
@@ -61,6 +64,7 @@ void main() {
     expect(state.currency, 'EGP');
     expect(state.history.single.fromCurrency, 'USD');
     expect(state.history.single.productsConverted, 9);
+    expect(state.history.single.shippingZonesConverted, 3);
     expect(state.history.single.status, 'completed');
   });
 

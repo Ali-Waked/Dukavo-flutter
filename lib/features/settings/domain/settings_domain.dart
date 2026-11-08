@@ -26,7 +26,6 @@ class WorkspaceSettingsDraft {
     this.name,
     this.contactEmail,
     this.phone,
-    this.currency,
     this.timezone,
     this.locale,
   });
@@ -34,7 +33,6 @@ class WorkspaceSettingsDraft {
   final String? name;
   final String? contactEmail;
   final String? phone;
-  final String? currency;
   final String? timezone;
   final String? locale;
 
@@ -42,7 +40,6 @@ class WorkspaceSettingsDraft {
         if (name != null) 'name': name,
         if (contactEmail != null) 'contact_email': contactEmail,
         if (phone != null) 'phone': phone,
-        if (currency != null) 'currency': currency,
         if (timezone != null) 'timezone': timezone,
         if (locale != null) 'locale': locale,
       };

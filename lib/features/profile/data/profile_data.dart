@@ -14,6 +14,11 @@ class ProfileModel {
       email: '${json['email'] ?? ''}',
       phone: json['phone'] as String?,
       locale: json['locale'] as String?,
+      preferredCurrency: '${json['preferred_currency'] ?? 'USD'}',
+      preferredCurrencyName: '${json['preferred_currency_name'] ?? ''}',
+      preferredCurrencySymbol: '${json['preferred_currency_symbol'] ?? ''}',
+      preferredCurrencyDecimals:
+          _int(json['preferred_currency_decimals'], fallback: 2),
       status: '${json['status'] ?? 'active'}',
       avatarUrl: json['avatar_url'] as String?,
       emailVerifiedAt: json['email_verified_at'] as String?,
@@ -22,10 +27,10 @@ class ProfileModel {
     );
   }
 
-  static int _int(Object? value) {
+  static int _int(Object? value, {int fallback = 0}) {
     if (value is int) return value;
     if (value is num) return value.toInt();
-    return int.tryParse('$value') ?? 0;
+    return int.tryParse('$value') ?? fallback;
   }
 }
 

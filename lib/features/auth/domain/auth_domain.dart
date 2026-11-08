@@ -9,6 +9,10 @@ class AuthUser {
     required this.status,
     this.phone,
     this.locale,
+    this.preferredCurrency = 'USD',
+    this.preferredCurrencyName = '',
+    this.preferredCurrencySymbol = '',
+    this.preferredCurrencyDecimals = 2,
     this.avatarUrl,
     this.emailVerifiedAt,
     this.lastLoginAt,
@@ -22,6 +26,10 @@ class AuthUser {
   final String status;
   final String? phone;
   final String? locale;
+  final String preferredCurrency;
+  final String preferredCurrencyName;
+  final String preferredCurrencySymbol;
+  final int preferredCurrencyDecimals;
   final String? avatarUrl;
   final String? emailVerifiedAt;
   final String? lastLoginAt;

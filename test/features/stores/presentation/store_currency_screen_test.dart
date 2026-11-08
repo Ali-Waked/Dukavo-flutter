@@ -1,4 +1,5 @@
 import 'package:dukavo_mobile/core/auth/permissions.dart';
+import 'package:dukavo_mobile/core/widgets/currency_picker.dart';
 import 'package:dukavo_mobile/features/auth/application/auth_controller.dart';
 import 'package:dukavo_mobile/features/stores/application/store_controller.dart';
 import 'package:dukavo_mobile/features/stores/data/store_currency_data.dart';
@@ -40,6 +41,7 @@ class _FakeCurrencyRepository implements StoreCurrencyRepository {
         products: 12,
         variants: 31,
         bundles: 2,
+        shippingZones: 4,
         sample: const [
           CurrencySample(
             name: 'Linen shirt',
@@ -70,6 +72,7 @@ class _FakeCurrencyRepository implements StoreCurrencyRepository {
       productsConverted: 12,
       variantsConverted: 31,
       bundlesConverted: 2,
+      shippingZonesConverted: 4,
     );
   }
 }
@@ -96,9 +99,9 @@ void main() {
 
     expect(find.text('EGP'), findsOneWidget);
 
-    await tester.tap(find.byType(DropdownButtonFormField<String>));
+    await tester.tap(find.byType(CurrencyPickerField));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('USD · US dollar').last);
+    await tester.tap(find.text('US dollar').last);
     await tester.pumpAndSettle();
 
     await tester.tap(find.text('Preview conversion'));
@@ -106,6 +109,7 @@ void main() {
 
     expect(find.textContaining('1 EGP ='), findsOneWidget);
     expect(find.text('Linen shirt'), findsOneWidget);
+    expect(find.text('4'), findsOneWidget);
 
     await tester.ensureVisible(find.text('Convert currency'));
     await tester.pumpAndSettle();

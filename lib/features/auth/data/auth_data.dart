@@ -17,6 +17,10 @@ class AuthUserModel {
     required this.status,
     this.phone,
     this.locale,
+    this.preferredCurrency = 'USD',
+    this.preferredCurrencyName = '',
+    this.preferredCurrencySymbol = '',
+    this.preferredCurrencyDecimals = 2,
     this.avatarUrl,
     this.emailVerifiedAt,
     this.lastLoginAt,
@@ -30,6 +34,10 @@ class AuthUserModel {
   final String status;
   final String? phone;
   final String? locale;
+  final String preferredCurrency;
+  final String preferredCurrencyName;
+  final String preferredCurrencySymbol;
+  final int preferredCurrencyDecimals;
   final String? avatarUrl;
   final String? emailVerifiedAt;
   final String? lastLoginAt;
@@ -44,6 +52,12 @@ class AuthUserModel {
       status: asString(json['status']) ?? 'active',
       phone: asString(json['phone']),
       locale: asString(json['locale']),
+      preferredCurrency: asString(json['preferred_currency']) ?? 'USD',
+      preferredCurrencyName: asString(json['preferred_currency_name']) ?? '',
+      preferredCurrencySymbol:
+          asString(json['preferred_currency_symbol']) ?? '',
+      preferredCurrencyDecimals:
+          asInt(json['preferred_currency_decimals'], fallback: 2),
       avatarUrl: asString(json['avatar_url']),
       emailVerifiedAt: asString(json['email_verified_at']),
       lastLoginAt: asString(json['last_login_at']),
@@ -59,6 +73,10 @@ class AuthUserModel {
         status: status,
         phone: phone,
         locale: locale,
+        preferredCurrency: preferredCurrency,
+        preferredCurrencyName: preferredCurrencyName,
+        preferredCurrencySymbol: preferredCurrencySymbol,
+        preferredCurrencyDecimals: preferredCurrencyDecimals,
         avatarUrl: avatarUrl,
         emailVerifiedAt: emailVerifiedAt,
         lastLoginAt: lastLoginAt,

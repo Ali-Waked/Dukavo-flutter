@@ -31,6 +31,30 @@ void main() {
       expect(compact, contains(r'$'));
       expect(compact, isNot(contains('1,200,000')));
     });
+
+    test('honours an explicit three-decimal currency', () {
+      final formatted = Formatters.currency(
+        1234.567,
+        'KWD',
+        locale: 'en_US',
+        decimals: 3,
+      );
+
+      expect(formatted, contains('1,234.567'));
+    });
+
+    test('honours an explicit zero-decimal currency', () {
+      final formatted = Formatters.currency(
+        1234.56,
+        'JPY',
+        locale: 'en_US',
+        decimals: 0,
+      );
+
+      expect(formatted, contains('1,235'));
+      expect(formatted, isNot(contains('.56')));
+      expect(formatted, isNot(contains('.00')));
+    });
   });
 
   group('Formatters.number', () {
