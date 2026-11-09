@@ -94,12 +94,10 @@ bool _isPublicPath(String path) {
   if (exact.contains(path)) return true;
   if (path.startsWith('${RoutePaths.publicBlog}/')) return true;
   if (path.startsWith('/pages/')) return true;
-  if (path == RoutePaths.site ||
-      path.startsWith('${RoutePaths.site}/')) {
+  if (path == RoutePaths.site || path.startsWith('${RoutePaths.site}/')) {
     return true;
   }
-  if (path == RoutePaths.shop ||
-      path.startsWith('${RoutePaths.shop}/')) {
+  if (path == RoutePaths.shop || path.startsWith('${RoutePaths.shop}/')) {
     return true;
   }
   return false;
