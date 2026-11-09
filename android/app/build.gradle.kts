@@ -4,6 +4,19 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+// AGP 9.1.0 supports compiling against at most android-36. Keep AndroidX core
+// on the newest release whose AAR metadata accepts 36; newer 1.19.x requires
+// compileSdk 37. This guards against transitive upgrades until the Android
+// toolchain (and Flutter's template) moves to 37.
+configurations.all {
+    resolutionStrategy {
+        force(
+            "androidx.core:core:1.18.0",
+            "androidx.core:core-ktx:1.18.0",
+        )
+    }
+}
+
 android {
     namespace = "com.dukavo.mobile"
     compileSdk = flutter.compileSdkVersion
@@ -12,6 +25,9 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+        // flutter_local_notifications schedules against java.time, so the AAR
+        // metadata requires desugaring on the consuming app.
+        isCoreLibraryDesugaringEnabled = true
     }
 
     defaultConfig {
@@ -46,4 +62,8 @@ kotlin {
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
 }
