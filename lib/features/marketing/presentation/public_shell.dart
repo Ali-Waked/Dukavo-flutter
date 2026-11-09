@@ -28,7 +28,7 @@ class PublicShell extends ConsumerWidget {
         actions: const [PublicChromeActions()],
       ),
       body: navigationShell,
-      bottomNavigationBar: NavigationBar(
+      bottomNavigationBar: AppNavigationBar(
         selectedIndex: navigationShell.currentIndex,
         onDestinationSelected: (index) {
           if (index == 4) {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../app/localization/app_localizations.dart';
-import '../../../app/theme/app_colors.dart';
+import '../../../app/theme/design_tokens.dart';
 import '../../../core/auth/permissions.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/utils/validators.dart';
@@ -128,31 +128,34 @@ class _InventoryTile extends StatelessWidget {
     return Material(
       color: scheme.surface,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(18),
-        side: BorderSide(color: scheme.outline),
+        borderRadius: BorderRadius.circular(AppRadius.md),
+        side: BorderSide(color: context.dukavo.border),
       ),
       child: InkWell(
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(AppRadius.md),
         onTap: onTap,
         child: Padding(
-          padding: const EdgeInsets.all(14),
+          padding: const EdgeInsets.all(AppSpacing.sm),
           child: Row(
             children: [
               Container(
                 width: 44,
                 height: 44,
                 decoration: BoxDecoration(
-                  color:
-                      (item.isLowStock ? AppColors.danger : AppColors.primary)
-                          .withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(12),
+                  color: (item.isLowStock
+                          ? context.dukavo.danger
+                          : context.scheme.primary)
+                      .withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(AppRadius.sm),
                 ),
                 child: Icon(
                   Icons.inventory_2_outlined,
-                  color: item.isLowStock ? AppColors.danger : AppColors.primary,
+                  color: item.isLowStock
+                      ? context.dukavo.danger
+                      : context.scheme.primary,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppSpacing.sm),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -172,7 +175,7 @@ class _InventoryTile extends StatelessWidget {
                         if (item.storeName != null) item.storeName!,
                       ].join(' · '),
                       style: theme.textTheme.labelSmall
-                          ?.copyWith(color: scheme.onSurfaceVariant),
+                          ?.copyWith(color: context.dukavo.textMuted),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -187,7 +190,7 @@ class _InventoryTile extends StatelessWidget {
                     '${item.available}',
                     style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w800,
-                      color: item.isLowStock ? AppColors.danger : null,
+                      color: item.isLowStock ? context.dukavo.danger : null,
                     ),
                   ),
                   StatusChip(
@@ -263,8 +266,8 @@ class _StockSheetState extends ConsumerState<_StockSheet> {
                       label: context.tr('available'),
                       value: Formatters.number(item.available),
                       color: item.available <= 0
-                          ? AppColors.danger
-                          : AppColors.success,
+                          ? context.dukavo.danger
+                          : context.dukavo.success,
                     ),
                   ),
                 ],
@@ -504,7 +507,9 @@ class _MovementRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final color = movement.isInbound ? AppColors.success : AppColors.danger;
+    final color = movement.isInbound
+        ? context.dukavo.success
+        : context.dukavo.danger;
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -578,7 +583,7 @@ class _Stat extends StatelessWidget {
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppRadius.sm),
         border: Border.all(color: theme.colorScheme.outline),
       ),
       child: Column(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../app/localization/app_localizations.dart';
-import '../../../app/theme/app_colors.dart';
+import '../../../app/theme/design_tokens.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/widgets/app_widgets.dart';
 import '../../stores/application/store_controller.dart';
@@ -75,7 +75,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
           onRetry: () => ref.invalidate(analyticsOverviewProvider(_query)),
         ),
         data: (data) => ListView(
-          padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
+          padding: AppSpacing.page,
           children: [
             _Filters(
               days: _days,
@@ -99,7 +99,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                       '${data.from} → ${data.until}',
                   ].join(' · '),
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        color: context.dukavo.textMuted,
                       ),
                 ),
               ),
@@ -111,7 +111,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
             else
               _KpiGrid(kpis: data.kpis, currency: data.currency),
             if (data.salesTrends.isNotEmpty) ...[
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpacing.sm),
               SectionCard(
                 title: context.tr('salesTrend'),
                 child: _TrendChart(
@@ -121,7 +121,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
               ),
             ],
             if (data.productPerformance.isNotEmpty) ...[
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpacing.sm),
               SectionCard(
                 title: context.tr('productPerformance'),
                 child: Column(
@@ -133,7 +133,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
               ),
             ],
             if (data.stockHealth.totalItems > 0) ...[
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpacing.sm),
               SectionCard(
                 title: context.tr('stockHealth'),
                 child: Column(
@@ -145,7 +145,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                           child: _HealthStat(
                             label: context.tr('outOfStock'),
                             value: data.stockHealth.outOfStock,
-                            color: AppColors.danger,
+                            color: context.dukavo.danger,
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -153,7 +153,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                           child: _HealthStat(
                             label: context.tr('lowStock'),
                             value: data.stockHealth.lowStock,
-                            color: AppColors.warning,
+                            color: context.dukavo.warning,
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -161,13 +161,13 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                           child: _HealthStat(
                             label: context.tr('inStock'),
                             value: data.stockHealth.healthy,
-                            color: AppColors.success,
+                            color: context.dukavo.success,
                           ),
                         ),
                       ],
                     ),
                     if (data.stockHealth.items.isNotEmpty) ...[
-                      const SizedBox(height: 12),
+                      const SizedBox(height: AppSpacing.sm),
                       for (final item in data.stockHealth.items.take(6))
                         _StockRow(item: item),
                     ],
@@ -176,7 +176,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
               ),
             ],
             if (data.limitations.isNotEmpty) ...[
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpacing.sm),
               SectionCard(
                 title: context.tr('limitations'),
                 child: Column(
@@ -194,8 +194,8 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                                   : Icons.info_outline,
                               size: 16,
                               color: limitation.severity == 'warning'
-                                  ? AppColors.warning
-                                  : AppColors.info,
+                                  ? context.dukavo.warning
+                                  : context.dukavo.info,
                             ),
                             const SizedBox(width: 8),
                             Expanded(
@@ -353,9 +353,9 @@ class _KpiCard extends StatelessWidget {
     final theme = Theme.of(context);
     final change = kpi.changePercent;
     final color = kpi.direction == 'up'
-        ? AppColors.success
+        ? context.dukavo.success
         : kpi.direction == 'down'
-            ? AppColors.danger
+            ? context.dukavo.danger
             : theme.colorScheme.onSurfaceVariant;
 
     final value = kpi.isCurrency
@@ -441,7 +441,7 @@ class _TrendChart extends StatelessWidget {
             color: theme.colorScheme.onSurfaceVariant,
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppSpacing.sm),
         SizedBox(
           height: 130,
           child: CustomPaint(
@@ -649,8 +649,8 @@ class _StockRow extends StatelessWidget {
             '${item.available}',
             style: theme.textTheme.labelSmall?.copyWith(
               color: item.status == 'out_of_stock'
-                  ? AppColors.danger
-                  : AppColors.warning,
+                  ? context.dukavo.danger
+                  : context.dukavo.warning,
               fontWeight: FontWeight.w700,
             ),
           ),

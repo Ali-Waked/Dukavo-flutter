@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/localization/app_localizations.dart';
 import '../../../app/router/route_paths.dart';
+import '../../../app/theme/design_tokens.dart';
 import '../../../core/api/api_exception.dart';
 import '../../../core/utils/validators.dart';
 import '../../../core/widgets/app_widgets.dart';
@@ -89,39 +90,56 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
         body: SafeArea(
           child: Center(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.check_circle_outline,
-                    size: 64,
-                    color: theme.colorScheme.primary,
+              padding: const EdgeInsets.all(AppSpacing.xl),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 420),
+                child: AppCard(
+                  padding: const EdgeInsets.all(AppSpacing.xl),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: 72,
+                        height: 72,
+                        decoration: BoxDecoration(
+                          color: context.dukavo.success
+                              .withValues(alpha: context.isDark ? 0.18 : 0.10),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.check_rounded,
+                          size: 36,
+                          color: context.dukavo.success,
+                        ),
+                      ),
+                      const SizedBox(height: AppSpacing.md),
+                      Text(
+                        context.tr('passwordResetSuccess'),
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.headlineSmall?.copyWith(
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: -0.3,
+                        ),
+                      ),
+                      const SizedBox(height: AppSpacing.xs),
+                      Text(
+                        context.tr('passwordResetSuccessMessage'),
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: context.dukavo.textSecondary,
+                          height: 1.5,
+                        ),
+                      ),
+                      const SizedBox(height: AppSpacing.xl),
+                      AppButton(
+                        label: context.tr('backToLogin'),
+                        icon: Icons.login,
+                        expand: true,
+                        onPressed: () => context.go(RoutePaths.login),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 16),
-                  Text(
-                    context.tr('passwordResetSuccess'),
-                    textAlign: TextAlign.center,
-                    style: theme.textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    context.tr('passwordResetSuccessMessage'),
-                    textAlign: TextAlign.center,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  AppButton(
-                    label: context.tr('backToLogin'),
-                    icon: Icons.login,
-                    expand: true,
-                    onPressed: () => context.go(RoutePaths.login),
-                  ),
-                ],
+                ),
               ),
             ),
           ),
@@ -137,7 +155,7 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.all(AppSpacing.xl),
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 420),
               child: Form(
@@ -145,102 +163,115 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Text(
-                      context.tr('resetPasswordSubtitle'),
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
+                    AppCard(
+                      padding: const EdgeInsets.all(AppSpacing.lg),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            context.tr('resetPassword'),
+                            style: theme.textTheme.titleLarge?.copyWith(
+                              fontWeight: FontWeight.w800,
+                              letterSpacing: -0.3,
+                            ),
+                          ),
+                          const SizedBox(height: 6),
+                          Text(
+                            context.tr('resetPasswordSubtitle'),
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: context.dukavo.textSecondary,
+                              height: 1.5,
+                            ),
+                          ),
+                          if (incomplete) ...[
+                            const SizedBox(height: AppSpacing.md),
+                            InfoBanner(
+                              message: context.tr('resetTokenMissing'),
+                              tone: InfoBannerTone.warning,
+                            ),
+                          ],
+                          const SizedBox(height: AppSpacing.lg),
+                          AppTextField(
+                            controller: _email,
+                            label: context.tr('email'),
+                            hint: context.tr('emailHint'),
+                            prefixIcon: Icons.alternate_email,
+                            keyboardType: TextInputType.emailAddress,
+                            textInputAction: TextInputAction.next,
+                            autofillHints: const [AutofillHints.email],
+                            validator: (value) {
+                              if (Validators.email(value) != null) {
+                                return context.tr('invalidEmail');
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: AppSpacing.sm),
+                          AppTextField(
+                            controller: _token,
+                            label: context.tr('resetToken'),
+                            prefixIcon: Icons.key_outlined,
+                            textInputAction: TextInputAction.next,
+                            validator: (value) =>
+                                (value == null || value.trim().isEmpty)
+                                    ? context.tr('requiredField')
+                                    : null,
+                          ),
+                          const SizedBox(height: AppSpacing.sm),
+                          AppTextField(
+                            controller: _password,
+                            label: context.tr('newPassword'),
+                            hint: context.tr('passwordHint'),
+                            prefixIcon: Icons.lock_outline,
+                            obscureText: true,
+                            textInputAction: TextInputAction.next,
+                            autofillHints: const [AutofillHints.newPassword],
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return context.tr('requiredField');
+                              }
+                              if (value.length < 8) {
+                                return context.tr('passwordTooShort');
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: AppSpacing.sm),
+                          AppTextField(
+                            controller: _confirmation,
+                            label: context.tr('confirmPassword'),
+                            prefixIcon: Icons.lock_reset,
+                            obscureText: true,
+                            textInputAction: TextInputAction.done,
+                            onSubmitted: (_) => _submit(),
+                            validator: (value) => value != _password.text
+                                ? context.tr('passwordMismatch')
+                                : null,
+                          ),
+                          if (_error != null) ...[
+                            const SizedBox(height: AppSpacing.md),
+                            InfoBanner(
+                              message: _error!,
+                              tone: InfoBannerTone.danger,
+                            ),
+                          ],
+                          const SizedBox(height: AppSpacing.lg),
+                          AppButton(
+                            label: context.tr('resetPassword'),
+                            icon: Icons.check,
+                            expand: true,
+                            loading: _submitting,
+                            onPressed: _submitting ? null : _submit,
+                          ),
+                          const SizedBox(height: AppSpacing.xs),
+                          TextButton(
+                            onPressed: _submitting
+                                ? null
+                                : () => context.go(RoutePaths.forgotPassword),
+                            child: Text(context.tr('forgotPassword')),
+                          ),
+                        ],
                       ),
-                    ),
-                    if (incomplete) ...[
-                      const SizedBox(height: 12),
-                      Text(
-                        context.tr('resetTokenMissing'),
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: theme.colorScheme.error,
-                        ),
-                      ),
-                    ],
-                    const SizedBox(height: 20),
-                    AppTextField(
-                      controller: _email,
-                      label: context.tr('email'),
-                      hint: context.tr('emailHint'),
-                      prefixIcon: Icons.alternate_email,
-                      keyboardType: TextInputType.emailAddress,
-                      textInputAction: TextInputAction.next,
-                      autofillHints: const [AutofillHints.email],
-                      validator: (value) {
-                        if (Validators.email(value) != null) {
-                          return context.tr('invalidEmail');
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 12),
-                    AppTextField(
-                      controller: _token,
-                      label: context.tr('resetToken'),
-                      prefixIcon: Icons.key_outlined,
-                      textInputAction: TextInputAction.next,
-                      validator: (value) =>
-                          (value == null || value.trim().isEmpty)
-                              ? context.tr('requiredField')
-                              : null,
-                    ),
-                    const SizedBox(height: 12),
-                    AppTextField(
-                      controller: _password,
-                      label: context.tr('newPassword'),
-                      hint: context.tr('passwordHint'),
-                      prefixIcon: Icons.lock_outline,
-                      obscureText: true,
-                      textInputAction: TextInputAction.next,
-                      autofillHints: const [AutofillHints.newPassword],
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return context.tr('requiredField');
-                        }
-                        if (value.length < 8) {
-                          return context.tr('passwordTooShort');
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 12),
-                    AppTextField(
-                      controller: _confirmation,
-                      label: context.tr('confirmPassword'),
-                      prefixIcon: Icons.lock_reset,
-                      obscureText: true,
-                      textInputAction: TextInputAction.done,
-                      onSubmitted: (_) => _submit(),
-                      validator: (value) => value != _password.text
-                          ? context.tr('passwordMismatch')
-                          : null,
-                    ),
-                    if (_error != null) ...[
-                      const SizedBox(height: 12),
-                      Text(
-                        _error!,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.error,
-                        ),
-                      ),
-                    ],
-                    const SizedBox(height: 20),
-                    AppButton(
-                      label: context.tr('resetPassword'),
-                      icon: Icons.check,
-                      expand: true,
-                      loading: _submitting,
-                      onPressed: _submitting ? null : _submit,
-                    ),
-                    const SizedBox(height: 8),
-                    TextButton(
-                      onPressed: _submitting
-                          ? null
-                          : () => context.go(RoutePaths.forgotPassword),
-                      child: Text(context.tr('forgotPassword')),
                     ),
                   ],
                 ),

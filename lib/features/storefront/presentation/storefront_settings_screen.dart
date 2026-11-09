@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../app/config/app_config.dart';
 import '../../../app/localization/app_localizations.dart';
+import '../../../app/theme/design_tokens.dart';
 import '../../../core/utils/validators.dart';
 import '../../../core/widgets/app_widgets.dart';
 import '../../auth/application/auth_controller.dart';
@@ -68,7 +69,7 @@ class _StorefrontSettingsScreenState
           final settingsAsync = ref.watch(storefrontSettingsProvider(storeId));
 
           return ListView(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
+            padding: AppSpacing.page,
             children: [
               StoreSelectorField(
                 stores: stores,

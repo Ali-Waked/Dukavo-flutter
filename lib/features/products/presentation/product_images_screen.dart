@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../app/localization/app_localizations.dart';
-import '../../../app/theme/app_colors.dart';
+import '../../../app/theme/design_tokens.dart';
 import '../../../core/api/api_exception.dart';
 import '../../../core/api/api_paths.dart';
 import '../../../core/providers.dart';
@@ -63,7 +63,7 @@ class _ProductImagesScreenState extends ConsumerState<ProductImagesScreen> {
               ref.invalidate(productDetailProvider(widget.slug)),
           child: ListView(
             physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
+            padding: AppSpacing.page,
             children: [
               SectionCard(
                 title: product.name,
@@ -71,11 +71,11 @@ class _ProductImagesScreenState extends ConsumerState<ProductImagesScreen> {
                 child: Text(
                   context.tr('productImagesLimits'),
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        color: context.dukavo.textMuted,
                       ),
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpacing.sm),
               if (product.images.isEmpty)
                 EmptyState(
                   title: context.tr('noImages'),
@@ -108,7 +108,7 @@ class _ProductImagesScreenState extends ConsumerState<ProductImagesScreen> {
     final canMoveUp = index > 0;
     final canMoveDown = index < product.images.length - 1;
     return Card(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: const EdgeInsets.only(bottom: AppSpacing.sm),
       clipBehavior: Clip.antiAlias,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -119,13 +119,13 @@ class _ProductImagesScreenState extends ConsumerState<ProductImagesScreen> {
               image.url,
               fit: BoxFit.cover,
               errorBuilder: (context, error, stack) => Container(
-                color: theme.colorScheme.surfaceContainerHighest,
+                color: context.dukavo.surfaceHigh,
                 child: const Icon(Icons.broken_image_outlined, size: 36),
               ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(12, 8, 4, 4),
+            padding: const EdgeInsetsDirectional.fromSTEB(12, 8, 4, 4),
             child: Row(
               children: [
                 Expanded(
@@ -135,10 +135,10 @@ class _ProductImagesScreenState extends ConsumerState<ProductImagesScreen> {
                       Row(
                         children: [
                           if (image.isPrimary) ...[
-                            const Icon(
-                              Icons.star,
+                            Icon(
+                              Icons.star_rounded,
                               size: 16,
-                              color: AppColors.warning,
+                              color: context.dukavo.warning,
                             ),
                             const SizedBox(width: 4),
                           ],
@@ -157,7 +157,7 @@ class _ProductImagesScreenState extends ConsumerState<ProductImagesScreen> {
                       Text(
                         '${context.tr('position')} ${index + 1}',
                         style: theme.textTheme.labelSmall?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
+                          color: context.dukavo.textMuted,
                         ),
                       ),
                     ],
@@ -204,7 +204,7 @@ class _ProductImagesScreenState extends ConsumerState<ProductImagesScreen> {
                       child: Text(
                         context.tr('delete'),
                         style: TextStyle(
-                          color: Theme.of(context).colorScheme.error,
+                          color: context.dukavo.danger,
                         ),
                       ),
                     ),

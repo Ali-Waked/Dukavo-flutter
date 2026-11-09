@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/localization/app_localizations.dart';
 import '../../../app/router/route_paths.dart';
-import '../../../app/theme/app_colors.dart';
+import '../../../app/theme/design_tokens.dart';
 import '../../../core/widgets/app_widgets.dart';
 import '../../marketing/presentation/public_widgets.dart';
 
@@ -45,15 +45,15 @@ class RegisterScreen extends StatelessWidget {
             secondaryLabel: context.tr('signIn'),
             onSecondary: () => context.push(RoutePaths.login),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppSpacing.lg),
           for (var index = 0; index < steps.length; index++)
             Padding(
-              padding: const EdgeInsets.only(bottom: 12),
+              padding: const EdgeInsets.only(bottom: AppSpacing.sm),
               child: Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppSpacing.md),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surface,
-                  borderRadius: BorderRadius.circular(18),
+                  borderRadius: BorderRadius.circular(AppRadius.lg),
                   border: Border.all(
                     color: Theme.of(context).colorScheme.outlineVariant,
                   ),
@@ -66,9 +66,10 @@ class RegisterScreen extends StatelessWidget {
                       height: 34,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        color: AppColors.tint(
-                          Theme.of(context).colorScheme.primary,
-                        ),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .primary
+                            .withValues(alpha: 0.10),
                         borderRadius: BorderRadius.circular(11),
                       ),
                       child: Text(

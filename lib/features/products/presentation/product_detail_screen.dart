@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/localization/app_localizations.dart';
 import '../../../app/router/route_paths.dart';
-import '../../../app/theme/app_colors.dart';
+import '../../../app/theme/design_tokens.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/widgets/app_widgets.dart';
 import '../../auth/application/auth_controller.dart';
@@ -53,31 +53,30 @@ class ProductDetailScreen extends ConsumerWidget {
           onRetry: () => ref.invalidate(productDetailProvider(slug)),
         ),
         data: (product) => ListView(
-          padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
+          padding: AppSpacing.page,
           children: [
             if (product.images.isNotEmpty)
               SizedBox(
-                height: 220,
+                height: 240,
                 child: PageView.builder(
                   itemCount: product.images.length,
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsetsDirectional.only(end: 8),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(18),
+                        borderRadius: BorderRadius.circular(AppRadius.xl),
                         child: CachedNetworkImage(
                           imageUrl: product.images[index].url,
                           fit: BoxFit.cover,
                           placeholder: (context, url) => Container(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .surfaceContainerHighest,
+                            color: context.dukavo.surfaceHigh,
                           ),
                           errorWidget: (context, url, error) => Container(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .surfaceContainerHighest,
-                            child: const Icon(Icons.broken_image_outlined),
+                            color: context.dukavo.surfaceHigh,
+                            child: Icon(
+                              Icons.broken_image_outlined,
+                              color: context.dukavo.textMuted,
+                            ),
                           ),
                         ),
                       ),
@@ -87,80 +86,98 @@ class ProductDetailScreen extends ConsumerWidget {
               )
             else
               Container(
-                height: 160,
+                height: 180,
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                  borderRadius: BorderRadius.circular(18),
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      context.dukavo.surfaceHigh,
+                      context.dukavo.surfaceLow,
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(AppRadius.xl),
+                  border: Border.all(color: context.dukavo.border),
                 ),
                 child: Icon(
                   Icons.image_outlined,
-                  size: 40,
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  size: 44,
+                  color: context.dukavo.textMuted,
                 ),
               ),
-            const SizedBox(height: 16),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Column(
+            const SizedBox(height: AppSpacing.md),
+            AppCard(
+              padding: const EdgeInsets.all(AppSpacing.md),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        product.name,
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineSmall
-                            ?.copyWith(fontWeight: FontWeight.w800),
-                      ),
-                      if (product.sku != null) ...[
-                        const SizedBox(height: 4),
-                        Text(
-                          product.sku!,
-                          style:
-                              Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSurfaceVariant,
-                                  ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              product.name,
+                              style: context.texts.headlineSmall?.copyWith(
+                                fontWeight: FontWeight.w800,
+                                letterSpacing: -0.4,
+                              ),
+                            ),
+                            if (product.sku != null) ...[
+                              const SizedBox(height: 4),
+                              Text(
+                                product.sku!,
+                                style: context.texts.bodySmall?.copyWith(
+                                  color: context.dukavo.textMuted,
+                                  letterSpacing: 0.3,
+                                ),
+                              ),
+                            ],
+                          ],
                         ),
-                      ],
+                      ),
+                      const SizedBox(width: 8),
+                      StatusChip(status: product.status),
                     ],
                   ),
-                ),
-                StatusChip(status: product.status),
-              ],
+                  const SizedBox(height: AppSpacing.md),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _Stat(
+                          label: context.tr('price'),
+                          value: Formatters.currency(product.price, currency),
+                          color: context.scheme.primary,
+                          icon: Icons.sell_outlined,
+                        ),
+                      ),
+                      const SizedBox(width: AppSpacing.xs),
+                      Expanded(
+                        child: _Stat(
+                          label: context.tr('cost'),
+                          value: Formatters.currency(product.cost, currency),
+                          icon: Icons.payments_outlined,
+                        ),
+                      ),
+                      const SizedBox(width: AppSpacing.xs),
+                      Expanded(
+                        child: _Stat(
+                          label: context.tr('available'),
+                          value: Formatters.number(product.stock.available),
+                          color: product.stock.available <= 0
+                              ? context.dukavo.danger
+                              : context.dukavo.success,
+                          icon: Icons.inventory_2_outlined,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                Expanded(
-                  child: _Stat(
-                    label: context.tr('price'),
-                    value: Formatters.currency(product.price, currency),
-                    color: AppColors.primary,
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: _Stat(
-                    label: context.tr('cost'),
-                    value: Formatters.currency(product.cost, currency),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: _Stat(
-                    label: context.tr('available'),
-                    value: Formatters.number(product.stock.available),
-                    color: product.stock.available <= 0
-                        ? AppColors.danger
-                        : AppColors.success,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 18),
+            const SizedBox(height: AppSpacing.md),
             SectionCard(
               title: context.tr('details'),
               child: Column(
@@ -299,37 +316,58 @@ class ProductDetailScreen extends ConsumerWidget {
 }
 
 class _Stat extends StatelessWidget {
-  const _Stat({required this.label, required this.value, this.color});
+  const _Stat({
+    required this.label,
+    required this.value,
+    this.color,
+    this.icon,
+  });
 
   final String label;
   final String value;
   final Color? color;
+  final IconData? icon;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final accent = color ?? context.dukavo.textSecondary;
+
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(AppSpacing.sm),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: theme.colorScheme.outline),
+        color: accent.withValues(alpha: context.isDark ? 0.14 : 0.08),
+        borderRadius: BorderRadius.circular(AppRadius.md),
+        border: Border.all(color: context.dukavo.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            label,
-            style: theme.textTheme.labelSmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
+          Row(
+            children: [
+              if (icon != null) ...[
+                Icon(icon, size: 13, color: accent),
+                const SizedBox(width: 4),
+              ],
+              Expanded(
+                child: Text(
+                  label,
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: context.dukavo.textMuted,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 6),
           Text(
             value,
             style: theme.textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.w700,
-              color: color,
+              fontWeight: FontWeight.w800,
+              color: color ?? context.dukavo.textPrimary,
+              letterSpacing: -0.2,
             ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,

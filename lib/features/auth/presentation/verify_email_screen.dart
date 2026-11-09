@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../app/localization/app_localizations.dart';
 import '../../../app/router/auth_destination.dart';
 import '../../../app/router/route_paths.dart';
+import '../../../app/theme/design_tokens.dart';
 import '../../../core/api/api_exception.dart';
 import '../../../core/widgets/app_widgets.dart';
 import '../application/auth_controller.dart';
@@ -62,33 +63,37 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.all(AppSpacing.xl),
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 440),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Container(
-                    width: 72,
-                    height: 72,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: verified
-                          ? theme.colorScheme.primaryContainer
-                          : theme.colorScheme.surfaceContainerHighest,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      verified
-                          ? Icons.verified_outlined
-                          : Icons.mark_email_unread_outlined,
-                      size: 32,
-                      color: verified
-                          ? theme.colorScheme.onPrimaryContainer
-                          : theme.colorScheme.onSurfaceVariant,
+                  Center(
+                    child: Container(
+                      width: 76,
+                      height: 76,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: verified
+                            ? context.dukavo.success.withValues(
+                                alpha: context.isDark ? 0.18 : 0.10,
+                              )
+                            : context.dukavo.surfaceHigh,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        verified
+                            ? Icons.verified_rounded
+                            : Icons.mark_email_unread_outlined,
+                        size: 34,
+                        color: verified
+                            ? context.dukavo.success
+                            : context.dukavo.textMuted,
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: AppSpacing.lg),
                   Text(
                     verified
                         ? context.tr('publicVerifyVerifiedTitle')
@@ -96,21 +101,22 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
                     textAlign: TextAlign.center,
                     style: theme.textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.w800,
+                      letterSpacing: -0.3,
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: AppSpacing.sm),
                   Text(
                     verified
                         ? context.tr('publicVerifyVerifiedBody')
                         : context.tr('publicVerifyPendingBody'),
                     textAlign: TextAlign.center,
                     style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
+                      color: context.dukavo.textSecondary,
                       height: 1.55,
                     ),
                   ),
                   if (email != null && email.isNotEmpty) ...[
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppSpacing.xs),
                     Text(
                       email,
                       textAlign: TextAlign.center,
@@ -119,7 +125,7 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
                       ),
                     ),
                   ],
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppSpacing.xl),
                   if (!verified)
                     AppButton(
                       label: _sent
@@ -147,12 +153,12 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
                       );
                     },
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppSpacing.sm),
                   Text(
                     context.tr('publicVerifySessionNote'),
                     textAlign: TextAlign.center,
                     style: theme.textTheme.labelSmall?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
+                      color: context.dukavo.textMuted,
                       height: 1.5,
                     ),
                   ),

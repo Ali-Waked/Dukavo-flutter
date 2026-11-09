@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/localization/app_localizations.dart';
 import '../../../app/router/route_paths.dart';
+import '../../../app/theme/design_tokens.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/widgets/app_widgets.dart';
 import '../application/shop_providers.dart';
@@ -41,7 +42,7 @@ class ShopCartScreen extends ConsumerWidget {
     final subtotal = notifier.subtotal;
 
     return ListView(
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
+      padding: AppSpacing.page,
       children: [
         for (final line in cart)
           _CartLineCard(
@@ -51,7 +52,7 @@ class ShopCartScreen extends ConsumerWidget {
                 notifier.setQuantity(line.variantId, quantity),
             onRemove: () => notifier.remove(line.variantId),
           ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.xs),
         SectionCard(
           title: context.tr('orderSummary'),
           child: Column(
@@ -71,21 +72,22 @@ class ShopCartScreen extends ConsumerWidget {
                 label: context.tr('estimatedTotal'),
                 value: Formatters.currency(subtotal, currency),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.xs),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Icon(
-                    Icons.info_outline,
+                    Icons.info_outline_rounded,
                     size: 16,
-                    color: theme.colorScheme.onSurfaceVariant,
+                    color: context.dukavo.textMuted,
                   ),
                   const SizedBox(width: 6),
                   Expanded(
                     child: Text(
                       context.tr('totalsResolvedAtCheckout'),
                       style: theme.textTheme.labelSmall?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
+                        color: context.dukavo.textMuted,
+                        height: 1.4,
                       ),
                     ),
                   ),
@@ -94,7 +96,7 @@ class ShopCartScreen extends ConsumerWidget {
             ],
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppSpacing.md),
         AppButton(
           label: context.tr('proceedToCheckout'),
           icon: Icons.arrow_forward,
@@ -103,7 +105,7 @@ class ShopCartScreen extends ConsumerWidget {
             RoutePaths.shopCheckout(shop.tenant, shop.store),
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.xs),
         AppButton(
           label: context.tr('continueShopping'),
           variant: AppButtonVariant.text,
@@ -133,108 +135,119 @@ class _CartLineCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final max = line.maxQuantity > 0 ? line.maxQuantity : 99;
-    return Card(
-      margin: const EdgeInsets.only(bottom: 10),
-      clipBehavior: Clip.antiAlias,
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            InkWell(
-              onTap: () => context.push(
-                RoutePaths.shopProduct(
-                    shop.tenant, shop.store, line.productSlug),
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: SizedBox(
-                  width: 76,
-                  height: 76,
-                  child: line.imageUrl == null
-                      ? Container(
-                          color: theme.colorScheme.surfaceContainerHighest,
-                          child: const Icon(Icons.image_outlined),
-                        )
-                      : CachedNetworkImage(
-                          imageUrl: line.imageUrl!,
-                          fit: BoxFit.cover,
-                          errorWidget: (context, url, error) => Container(
-                            color: theme.colorScheme.surfaceContainerHighest,
-                            child: const Icon(Icons.broken_image_outlined),
+    return Container(
+      margin: const EdgeInsets.only(bottom: AppSpacing.xs),
+      padding: const EdgeInsets.all(AppSpacing.sm),
+      decoration: BoxDecoration(
+        color: context.dukavo.surface,
+        borderRadius: BorderRadius.circular(AppRadius.md),
+        border: Border.all(color: context.dukavo.border),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          InkWell(
+            borderRadius: BorderRadius.circular(AppRadius.sm),
+            onTap: () => context.push(
+              RoutePaths.shopProduct(
+                  shop.tenant, shop.store, line.productSlug),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(AppRadius.sm),
+              child: SizedBox(
+                width: 78,
+                height: 78,
+                child: line.imageUrl == null
+                    ? Container(
+                        color: context.dukavo.surfaceHigh,
+                        child: Icon(
+                          Icons.image_outlined,
+                          color: context.dukavo.textMuted,
+                        ),
+                      )
+                    : CachedNetworkImage(
+                        imageUrl: line.imageUrl!,
+                        fit: BoxFit.cover,
+                        errorWidget: (context, url, error) => Container(
+                          color: context.dukavo.surfaceHigh,
+                          child: Icon(
+                            Icons.broken_image_outlined,
+                            color: context.dukavo.textMuted,
                           ),
                         ),
-                ),
+                      ),
               ),
             ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          line.productName,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: theme.textTheme.titleSmall,
-                        ),
-                      ),
-                      IconButton(
-                        tooltip: context.tr('remove'),
-                        visualDensity: VisualDensity.compact,
-                        onPressed: onRemove,
-                        icon: Icon(
-                          Icons.close,
-                          size: 18,
-                          color: theme.colorScheme.error,
-                        ),
-                      ),
-                    ],
-                  ),
-                  if (line.variantName.isNotEmpty)
-                    Text(
-                      line.variantName,
-                      style: theme.textTheme.labelSmall?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                  const SizedBox(height: 6),
-                  Row(
-                    children: [
-                      Text(
-                        Formatters.currency(line.unitPrice, line.currency),
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: theme.colorScheme.primary,
+          ),
+          const SizedBox(width: AppSpacing.sm),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        line.productName,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.w700,
                         ),
                       ),
-                      const Spacer(),
-                      _Stepper(
-                        quantity: line.quantity,
-                        max: max,
-                        onChanged: onQuantityChanged,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 4),
-                  Align(
-                    alignment: AlignmentDirectional.centerEnd,
-                    child: Text(
-                      Formatters.currency(line.lineTotal, line.currency),
-                      style: theme.textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w800,
+                    ),
+                    IconButton(
+                      tooltip: context.tr('remove'),
+                      visualDensity: VisualDensity.compact,
+                      onPressed: onRemove,
+                      icon: Icon(
+                        Icons.close_rounded,
+                        size: 18,
+                        color: context.dukavo.danger,
                       ),
                     ),
+                  ],
+                ),
+                if (line.variantName.isNotEmpty)
+                  Text(
+                    line.variantName,
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: context.dukavo.textMuted,
+                    ),
                   ),
-                ],
-              ),
+                const SizedBox(height: 6),
+                Row(
+                  children: [
+                    Text(
+                      Formatters.currency(line.unitPrice, line.currency),
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: context.scheme.primary,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    const Spacer(),
+                    _Stepper(
+                      quantity: line.quantity,
+                      max: max,
+                      onChanged: onQuantityChanged,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 4),
+                Align(
+                  alignment: AlignmentDirectional.centerEnd,
+                  child: Text(
+                    Formatters.currency(line.lineTotal, line.currency),
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -255,8 +268,8 @@ class _Stepper extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
-        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: context.dukavo.border),
+        borderRadius: BorderRadius.circular(AppRadius.sm),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

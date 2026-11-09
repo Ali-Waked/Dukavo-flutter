@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'localization/app_localizations.dart';
 import 'router/app_router.dart';
 import 'theme/app_theme.dart';
+import 'theme/design_tokens.dart';
 import 'theme/theme_controller.dart';
 
 /// The root widget: theme, language and router, all driven by persisted state.
@@ -24,6 +25,8 @@ class DukavoApp extends ConsumerWidget {
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
       themeMode: themeMode,
+      themeAnimationDuration: AppDurations.normal,
+      themeAnimationCurve: Curves.easeOutCubic,
       locale: locale,
       supportedLocales: AppLocalizations.supportedLocales,
       localizationsDelegates: const [

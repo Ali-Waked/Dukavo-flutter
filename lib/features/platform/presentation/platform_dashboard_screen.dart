@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/localization/app_localizations.dart';
 import '../../../app/router/route_paths.dart';
-import '../../../app/theme/app_colors.dart';
+import '../../../app/theme/design_tokens.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/widgets/app_widgets.dart';
 import '../application/platform_controller.dart';
@@ -41,7 +41,7 @@ class PlatformDashboardScreen extends ConsumerWidget {
         },
         child: ListView(
           physics: const AlwaysScrollableScrollPhysics(),
-          padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
+          padding: AppSpacing.page,
           children: [
             _RangeSelector(
               selected: range,
@@ -301,7 +301,7 @@ class _KpiCard extends StatelessWidget {
                   Text(
                     '+${Formatters.number(metric.newCount!)}',
                     style: theme.textTheme.labelMedium?.copyWith(
-                      color: AppColors.success,
+                      color: context.dukavo.success,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -323,7 +323,9 @@ class _KpiCard extends StatelessWidget {
               Text(
                 '${growth >= 0 ? '+' : ''}${Formatters.percent(growth)}',
                 style: theme.textTheme.labelSmall?.copyWith(
-                  color: growth >= 0 ? AppColors.success : AppColors.danger,
+                  color: growth >= 0
+                      ? context.dukavo.success
+                      : context.dukavo.danger,
                 ),
               )
             else if (metric.newCount != null)

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../app/localization/app_localizations.dart';
+import '../../../app/theme/design_tokens.dart';
 import '../../../core/utils/validators.dart';
 import '../../../core/widgets/app_widgets.dart';
 import '../../categories/application/category_controller.dart';
@@ -136,128 +137,150 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
                   child: Form(
                     key: _formKey,
                     child: ListView(
-                      padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
+                      padding: AppSpacing.page,
                       children: [
-                        AppTextField(
-                          controller: _name,
-                          label: context.tr('productName'),
-                          prefixIcon: Icons.inventory_2_outlined,
-                          textCapitalization: TextCapitalization.words,
-                          textInputAction: TextInputAction.next,
-                          validator: (value) =>
-                              value == null || value.trim().isEmpty
-                                  ? context.tr('requiredField')
-                                  : null,
-                        ),
-                        const SizedBox(height: 12),
-                        AppTextField(
-                          controller: _sku,
-                          label: context.tr('sku'),
-                          helper: context.tr('optional'),
-                          prefixIcon: Icons.qr_code_2,
-                          textInputAction: TextInputAction.next,
-                        ),
-                        const SizedBox(height: 12),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: AppTextField(
-                                controller: _price,
-                                label: context.tr('price'),
-                                prefixIcon: Icons.sell_outlined,
-                                keyboardType:
-                                    const TextInputType.numberWithOptions(
-                                  decimal: true,
-                                ),
+                        SectionCard(
+                          title: context.tr('details'),
+                          child: Column(
+                            children: [
+                              AppTextField(
+                                controller: _name,
+                                label: context.tr('productName'),
+                                prefixIcon: Icons.inventory_2_outlined,
+                                textCapitalization: TextCapitalization.words,
                                 textInputAction: TextInputAction.next,
-                                validator: Validators.positiveNumber,
+                                validator: (value) =>
+                                    value == null || value.trim().isEmpty
+                                        ? context.tr('requiredField')
+                                        : null,
                               ),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: AppTextField(
-                                controller: _cost,
-                                label: context.tr('cost'),
-                                prefixIcon: Icons.payments_outlined,
-                                keyboardType:
-                                    const TextInputType.numberWithOptions(
-                                  decimal: true,
-                                ),
+                              const SizedBox(height: AppSpacing.sm),
+                              AppTextField(
+                                controller: _sku,
+                                label: context.tr('sku'),
+                                helper: context.tr('optional'),
+                                prefixIcon: Icons.qr_code_2,
                                 textInputAction: TextInputAction.next,
-                                validator: Validators.number,
                               ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 12),
-                        DropdownButtonFormField<int?>(
-                          // ignore: deprecated_member_use
-                          value: _categoryId,
-                          decoration: InputDecoration(
-                            labelText: context.tr('category'),
-                            prefixIcon:
-                                const Icon(Icons.category_outlined, size: 20),
+                              const SizedBox(height: AppSpacing.sm),
+                              DropdownButtonFormField<int?>(
+                                // ignore: deprecated_member_use
+                                value: _categoryId,
+                                decoration: InputDecoration(
+                                  labelText: context.tr('category'),
+                                  prefixIcon: const Icon(
+                                    Icons.category_outlined,
+                                    size: 20,
+                                  ),
+                                ),
+                                items: [
+                                  DropdownMenuItem<int?>(
+                                    value: null,
+                                    child: Text(context.tr('none')),
+                                  ),
+                                  for (final category in categoryOptions)
+                                    DropdownMenuItem<int?>(
+                                      value: category.id,
+                                      child: Text(
+                                        category.name,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                ],
+                                onChanged: (value) =>
+                                    setState(() => _categoryId = value),
+                              ),
+                            ],
                           ),
-                          items: [
-                            DropdownMenuItem<int?>(
-                              value: null,
-                              child: Text(context.tr('none')),
-                            ),
-                            for (final category in categoryOptions)
-                              DropdownMenuItem<int?>(
-                                value: category.id,
-                                child: Text(
-                                  category.name,
-                                  overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: AppSpacing.md),
+                        SectionCard(
+                          title: context.tr('price'),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: AppTextField(
+                                  controller: _price,
+                                  label: context.tr('price'),
+                                  prefixIcon: Icons.sell_outlined,
+                                  keyboardType:
+                                      const TextInputType.numberWithOptions(
+                                    decimal: true,
+                                  ),
+                                  textInputAction: TextInputAction.next,
+                                  validator: Validators.positiveNumber,
                                 ),
                               ),
-                          ],
-                          onChanged: (value) =>
-                              setState(() => _categoryId = value),
-                        ),
-                        const SizedBox(height: 12),
-                        DropdownButtonFormField<String>(
-                          // ignore: deprecated_member_use
-                          value: _status,
-                          decoration: InputDecoration(
-                            labelText: context.tr('productStatus'),
-                            prefixIcon: const Icon(Icons.tune, size: 20),
-                          ),
-                          items: [
-                            for (final status in const [
-                              'active',
-                              'draft',
-                              'archived',
-                            ])
-                              DropdownMenuItem(
-                                value: status,
-                                child: Text(context.tr(status)),
+                              const SizedBox(width: AppSpacing.sm),
+                              Expanded(
+                                child: AppTextField(
+                                  controller: _cost,
+                                  label: context.tr('cost'),
+                                  prefixIcon: Icons.payments_outlined,
+                                  keyboardType:
+                                      const TextInputType.numberWithOptions(
+                                    decimal: true,
+                                  ),
+                                  textInputAction: TextInputAction.next,
+                                  validator: Validators.number,
+                                ),
                               ),
-                          ],
-                          onChanged: (value) =>
-                              setState(() => _status = value ?? 'active'),
-                        ),
-                        const SizedBox(height: 12),
-                        AppTextField(
-                          controller: _description,
-                          label: context.tr('description'),
-                          helper: context.tr('optional'),
-                          maxLines: 4,
-                          minLines: 3,
-                        ),
-                        const SizedBox(height: 8),
-                        SwitchListTile(
-                          contentPadding: EdgeInsets.zero,
-                          title: Text(context.tr('tax')),
-                          subtitle: Text(
-                            context.tr('isTaxableHint'),
-                            style: Theme.of(context).textTheme.bodySmall,
+                            ],
                           ),
-                          value: _isTaxable,
-                          onChanged: (value) =>
-                              setState(() => _isTaxable = value),
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppSpacing.md),
+                        SectionCard(
+                          title: context.tr('productStatus'),
+                          child: Column(
+                            children: [
+                              DropdownButtonFormField<String>(
+                                // ignore: deprecated_member_use
+                                value: _status,
+                                decoration: InputDecoration(
+                                  labelText: context.tr('productStatus'),
+                                  prefixIcon:
+                                      const Icon(Icons.tune, size: 20),
+                                ),
+                                items: [
+                                  for (final status in const [
+                                    'active',
+                                    'draft',
+                                    'archived',
+                                  ])
+                                    DropdownMenuItem(
+                                      value: status,
+                                      child: Text(context.tr(status)),
+                                    ),
+                                ],
+                                onChanged: (value) => setState(
+                                  () => _status = value ?? 'active',
+                                ),
+                              ),
+                              const SizedBox(height: AppSpacing.sm),
+                              AppTextField(
+                                controller: _description,
+                                label: context.tr('description'),
+                                helper: context.tr('optional'),
+                                maxLines: 4,
+                                minLines: 3,
+                              ),
+                              SwitchListTile(
+                                contentPadding: EdgeInsets.zero,
+                                title: Text(context.tr('tax')),
+                                subtitle: Text(
+                                  context.tr('isTaxableHint'),
+                                  style: context.texts.bodySmall?.copyWith(
+                                    color: context.dukavo.textMuted,
+                                  ),
+                                ),
+                                value: _isTaxable,
+                                onChanged: (value) =>
+                                    setState(() => _isTaxable = value),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: AppSpacing.lg),
                         AppButton(
                           label: context.tr(
                             _isEditing ? 'saveChanges' : 'createProduct',

@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/localization/app_localizations.dart';
 import '../../../app/router/route_paths.dart';
-import '../../../app/theme/app_colors.dart';
+import '../../../app/theme/design_tokens.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/widgets/app_widgets.dart';
 import '../../auth/application/auth_controller.dart';
@@ -90,7 +90,12 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
+            padding: const EdgeInsetsDirectional.fromSTEB(
+              AppSpacing.md,
+              AppSpacing.xxs,
+              AppSpacing.md,
+              AppSpacing.xxs,
+            ),
             child: SearchField(
               controller: _search,
               hint: context.tr('searchOrders'),
@@ -108,10 +113,14 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
             height: 48,
             child: ListView(
               scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              padding: const EdgeInsetsDirectional.symmetric(
+                horizontal: AppSpacing.md,
+                vertical: AppSpacing.xxs,
+              ),
               children: [
                 Padding(
-                  padding: const EdgeInsetsDirectional.only(end: 8),
+                  padding:
+                      const EdgeInsetsDirectional.only(end: AppSpacing.xs),
                   child: ChoiceChip(
                     label: Text(context.tr('all')),
                     selected: notifier.status == null,
@@ -120,7 +129,8 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
                 ),
                 for (final status in _orderStatuses)
                   Padding(
-                    padding: const EdgeInsetsDirectional.only(end: 8),
+                    padding:
+                        const EdgeInsetsDirectional.only(end: AppSpacing.xs),
                     child: ChoiceChip(
                       label: Text(_statusLabel(context, status)),
                       selected: notifier.status == status,
@@ -137,6 +147,12 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
               state: state,
               onRefresh: notifier.reload,
               onLoadMore: notifier.loadMore,
+              padding: const EdgeInsetsDirectional.fromSTEB(
+                AppSpacing.md,
+                AppSpacing.xs,
+                AppSpacing.md,
+                96,
+              ),
               empty: EmptyState(
                 title: context.tr('noOrders'),
                 icon: Icons.receipt_long_outlined,
@@ -163,62 +179,86 @@ class _OrderTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final colors = context.dukavo;
+    final texts = context.texts;
 
-    return Card(
-      child: InkWell(
-        borderRadius: BorderRadius.circular(18),
-        onTap: () => context.push(RoutePaths.order(order.orderNumber)),
-        child: Padding(
-          padding: const EdgeInsets.all(14),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return AppCard(
+      padding: const EdgeInsets.all(AppSpacing.md),
+      onTap: () => context.push(RoutePaths.order(order.orderNumber)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
             children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      order.orderNumber,
-                      style: theme.textTheme.titleSmall
-                          ?.copyWith(fontWeight: FontWeight.w700),
-                    ),
-                  ),
-                  Text(
-                    Formatters.currency(order.grandTotal, order.currency),
-                    style: theme.textTheme.titleSmall
-                        ?.copyWith(fontWeight: FontWeight.w800),
-                  ),
-                ],
+              Container(
+                width: 34,
+                height: 34,
+                decoration: BoxDecoration(
+                  color: context.scheme.primaryContainer,
+                  borderRadius: BorderRadius.circular(AppRadius.xs),
+                ),
+                child: Icon(
+                  Icons.receipt_long_outlined,
+                  size: 18,
+                  color: context.scheme.onPrimaryContainer,
+                ),
               ),
-              const SizedBox(height: 6),
-              Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      order.displayCustomer,
-                      style: theme.textTheme.bodyMedium,
+              const SizedBox(width: AppSpacing.sm),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      order.orderNumber,
+                      style: texts.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: colors.textPrimary,
+                      ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                  StatusChip(status: order.status, compact: true),
-                  const SizedBox(width: 6),
-                  StatusChip(status: order.paymentStatus, compact: true),
-                ],
+                    Text(
+                      order.displayCustomer,
+                      style: texts.bodySmall?.copyWith(
+                        color: colors.textSecondary,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(height: 6),
+              const SizedBox(width: AppSpacing.xs),
+              Text(
+                Formatters.currency(order.grandTotal, order.currency),
+                style: texts.titleSmall?.copyWith(
+                  fontWeight: FontWeight.w800,
+                  color: colors.textPrimary,
+                  fontFeatures: const [FontFeature.tabularFigures()],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          Container(height: 1, color: colors.border),
+          const SizedBox(height: AppSpacing.xs + 2),
+          Row(
+            children: [
+              StatusChip(status: order.status, compact: true),
+              const SizedBox(width: 6),
+              StatusChip(status: order.paymentStatus, compact: true),
+              const Spacer(),
               Text(
                 [
                   Formatters.dateTime(order.placedAt ?? order.createdAt),
                   if (order.itemCount != null)
                     context.tr('itemsCount', args: {'count': order.itemCount}),
                 ].join(' · '),
-                style: theme.textTheme.labelSmall
-                    ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                style: texts.labelSmall?.copyWith(color: colors.textMuted),
               ),
             ],
           ),
-        ),
+        ],
       ),
     );
   }
@@ -279,101 +319,64 @@ class _OrderDetailBodyState extends ConsumerState<_OrderDetailBody> {
     final theme = Theme.of(context);
 
     return ListView(
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
+      padding: const EdgeInsetsDirectional.fromSTEB(
+        AppSpacing.md,
+        AppSpacing.xs,
+        AppSpacing.md,
+        AppSpacing.xxl,
+      ),
       children: [
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(18),
+        _OrderHero(order: order),
+        if (widget.canUpdate) ...[
+          const SizedBox(height: AppSpacing.sm),
+          AppCard(
+            padding: const EdgeInsets.all(AppSpacing.md),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Row(
                   children: [
                     Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            context.tr('grandTotal'),
-                            style: theme.textTheme.labelMedium?.copyWith(
-                              color: theme.colorScheme.onSurfaceVariant,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            Formatters.currency(
-                              order.grandTotal,
-                              order.currency,
-                            ),
-                            style: theme.textTheme.headlineSmall
-                                ?.copyWith(fontWeight: FontWeight.w800),
-                          ),
-                        ],
+                      child: AppButton(
+                        label: context.tr('changeStatus'),
+                        icon: Icons.swap_horiz_rounded,
+                        loading: _busy,
+                        onPressed: order.allowedTransitions.isEmpty
+                            ? null
+                            : _changeStatus,
                       ),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        StatusChip(status: order.status),
-                        const SizedBox(height: 6),
-                        StatusChip(status: order.paymentStatus),
-                      ],
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  Formatters.dateTime(order.placedAt ?? order.createdAt),
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
-                ),
-                if (widget.canUpdate) ...[
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
+                    if (order.paymentStatus != 'paid' &&
+                        order.paymentStatus != 'refunded') ...[
+                      const SizedBox(width: AppSpacing.sm),
                       Expanded(
                         child: AppButton(
-                          label: context.tr('changeStatus'),
-                          icon: Icons.swap_horiz,
+                          label: context.tr('paymentMarkPaid'),
+                          variant: AppButtonVariant.outlined,
+                          icon: Icons.payments_outlined,
                           loading: _busy,
                           onPressed: order.allowedTransitions.isEmpty
                               ? null
-                              : _changeStatus,
+                              : () => _changeStatus(markPaid: true),
                         ),
                       ),
-                      if (order.paymentStatus != 'paid' &&
-                          order.paymentStatus != 'refunded') ...[
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: AppButton(
-                            label: context.tr('paymentMarkPaid'),
-                            variant: AppButtonVariant.outlined,
-                            icon: Icons.payments_outlined,
-                            loading: _busy,
-                            onPressed: order.allowedTransitions.isEmpty
-                                ? null
-                                : () => _changeStatus(markPaid: true),
-                          ),
-                        ),
-                      ],
                     ],
-                  ),
-                  if (order.allowedTransitions.isEmpty)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8),
-                      child: Text(
-                        context.tr('allowedTransitions'),
-                        style: theme.textTheme.labelSmall?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
-                        ),
+                  ],
+                ),
+                if (order.allowedTransitions.isEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(top: AppSpacing.xs),
+                    child: Text(
+                      context.tr('allowedTransitions'),
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
                       ),
                     ),
-                ],
+                  ),
               ],
             ),
           ),
-        ),
+        ],
         const SizedBox(height: 12),
         SectionCard(
           title: context.tr('orderItems'),
@@ -389,15 +392,15 @@ class _OrderDetailBodyState extends ConsumerState<_OrderDetailBody> {
                         width: 34,
                         height: 34,
                         decoration: BoxDecoration(
-                          color: AppColors.primary.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(10),
+                          color: context.scheme.primaryContainer,
+                          borderRadius: BorderRadius.circular(AppRadius.xs),
                         ),
                         alignment: Alignment.center,
                         child: Text(
                           '${item.quantity}',
-                          style: const TextStyle(
+                          style: context.texts.labelLarge?.copyWith(
                             fontWeight: FontWeight.w700,
-                            color: AppColors.primary,
+                            color: context.scheme.onPrimaryContainer,
                           ),
                         ),
                       ),
@@ -561,6 +564,106 @@ class _OrderDetailBodyState extends ConsumerState<_OrderDetailBody> {
   }
 }
 
+/// The headline of the order detail: total, status and placement date on the
+/// brand gradient.
+class _OrderHero extends StatelessWidget {
+  const _OrderHero({required this.order});
+
+  final Order order;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.dukavo;
+    return Container(
+      padding: const EdgeInsets.all(AppSpacing.lg),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [colors.heroStart, colors.heroEnd],
+        ),
+        borderRadius: BorderRadius.circular(AppRadius.xl),
+        boxShadow: [
+          BoxShadow(
+            color: colors.heroStart.withValues(alpha: 0.22),
+            blurRadius: 26,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Stack(
+        children: [
+          PositionedDirectional(
+            top: -48,
+            end: -32,
+            child: Container(
+              width: 140,
+              height: 140,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white.withValues(alpha: 0.06),
+              ),
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      order.orderNumber,
+                      style: context.texts.labelMedium?.copyWith(
+                        color: Colors.white.withValues(alpha: 0.78),
+                        fontWeight: FontWeight.w600,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  StatusChip(status: order.status),
+                ],
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              Text(
+                Formatters.currency(order.grandTotal, order.currency),
+                style: context.texts.displaySmall?.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: -0.8,
+                  fontFeatures: const [FontFeature.tabularFigures()],
+                ),
+              ),
+              const SizedBox(height: AppSpacing.xs),
+              Row(
+                children: [
+                  Icon(
+                    Icons.schedule_rounded,
+                    size: 14,
+                    color: Colors.white.withValues(alpha: 0.7),
+                  ),
+                  const SizedBox(width: 5),
+                  Expanded(
+                    child: Text(
+                      Formatters.dateTime(
+                        order.placedAt ?? order.createdAt,
+                      ),
+                      style: context.texts.bodySmall?.copyWith(
+                        color: Colors.white.withValues(alpha: 0.78),
+                      ),
+                    ),
+                  ),
+                  StatusChip(status: order.paymentStatus),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class _TimelineEntry extends StatelessWidget {
   const _TimelineEntry({required this.entry});
 
@@ -578,8 +681,8 @@ class _TimelineEntry extends StatelessWidget {
             width: 10,
             height: 10,
             margin: const EdgeInsets.only(top: 5),
-            decoration: const BoxDecoration(
-              color: AppColors.primary,
+            decoration: BoxDecoration(
+              color: context.scheme.primary,
               shape: BoxShape.circle,
             ),
           ),

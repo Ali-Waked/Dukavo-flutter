@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/localization/app_localizations.dart';
 import '../../../app/router/route_paths.dart';
-import '../../../app/theme/app_colors.dart';
+import '../../../app/theme/design_tokens.dart';
 import '../../../core/api/api_exception.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/widgets/app_widgets.dart';
@@ -32,7 +32,7 @@ class DashboardScreen extends ConsumerWidget {
             await ref.read(dashboardProvider.future);
           },
           child: async.when(
-            loading: () => const LoadingView(),
+            loading: () => const ListSkeleton(rows: 4),
             error: (error, stack) => ListView(
               physics: const AlwaysScrollableScrollPhysics(),
               children: [
@@ -69,125 +69,141 @@ class _DashboardBody extends ConsumerWidget {
     final session = ref.watch(currentSessionProvider);
     final permissions = ref.watch(permissionsProvider);
     final summary = bundle.overview.summary;
-    final theme = Theme.of(context);
     final firstName = session?.user.firstName ?? '';
+
+    final quickActions = <_QuickActionData>[
+      if (permissions.canCreateOrders)
+        _QuickActionData(
+          icon: Icons.add_shopping_cart_rounded,
+          label: context.tr('createOrder'),
+          color: context.dukavo.info,
+          onTap: () => context.push(RoutePaths.createOrder),
+        ),
+      if (permissions.canCreateProducts)
+        _QuickActionData(
+          icon: Icons.add_box_outlined,
+          label: context.tr('createProduct'),
+          color: context.scheme.primary,
+          onTap: () => context.push(RoutePaths.createProduct),
+        ),
+      if (permissions.canCreateCustomers)
+        _QuickActionData(
+          icon: Icons.person_add_alt_rounded,
+          label: context.tr('createCustomer'),
+          color: context.dukavo.warning,
+          onTap: () => context.push(RoutePaths.createCustomer),
+        ),
+      if (permissions.canViewAnalytics)
+        _QuickActionData(
+          icon: Icons.insights_rounded,
+          label: context.tr('analytics'),
+          color: context.dukavo.success,
+          onTap: () => context.push(RoutePaths.analytics),
+        ),
+    ];
 
     return ListView(
       physics: const AlwaysScrollableScrollPhysics(),
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
+      padding: AppSpacing.page,
       children: [
-        Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${_greeting(context)}${firstName.isEmpty ? '' : ', $firstName'}',
-                    style: theme.textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: -0.6,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      const Icon(Icons.storefront_outlined, size: 15),
-                      const SizedBox(width: 6),
-                      Flexible(
-                        child: Text(
-                          session?.activeTenant?.name ?? context.tr('noStore'),
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: theme.colorScheme.onSurfaceVariant,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+        PageHeader(
+          eyebrow: context.tr('dashboard'),
+          title:
+              '${_greeting(context)}${firstName.isEmpty ? '' : ', $firstName'}',
+          subtitle:
+              session?.activeTenant?.name ?? context.tr('noStore'),
+          padding: const EdgeInsetsDirectional.only(bottom: AppSpacing.lg),
+          actions: [
             IconButton.filledTonal(
               tooltip: context.tr('notifications'),
               onPressed: () => context.push(RoutePaths.notifications),
-              icon: const Icon(Icons.notifications_none_outlined),
+              icon: const Icon(Icons.notifications_none_rounded),
             ),
           ],
         ),
-        const SizedBox(height: 20),
         _RevenueHero(
           summary: summary,
           currency: currency,
           revenue: bundle.revenue,
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppSpacing.sm + 2),
         GridView.count(
           crossAxisCount: 2,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          mainAxisSpacing: 10,
-          crossAxisSpacing: 10,
-          childAspectRatio: 1.55,
+          mainAxisSpacing: AppSpacing.sm,
+          crossAxisSpacing: AppSpacing.sm,
+          childAspectRatio: 1.32,
           children: [
-            _MetricCard(
+            StatisticCard(
               label: context.tr('ordersToday'),
               value: Formatters.number(summary.ordersToday),
               icon: Icons.receipt_long_outlined,
-              tint: AppColors.info,
+              tint: context.dukavo.info,
+              compact: true,
               onTap: permissions.canViewOrders
                   ? () => context.go(RoutePaths.orders)
                   : null,
             ),
-            _MetricCard(
+            StatisticCard(
               label: context.tr('awaitingFulfilment'),
               value: Formatters.number(summary.awaitingFulfilment),
               icon: Icons.local_shipping_outlined,
-              tint: AppColors.warning,
+              tint: context.dukavo.warning,
+              compact: true,
               onTap: permissions.canViewOrders
                   ? () => context.go(RoutePaths.orders)
                   : null,
             ),
-            _MetricCard(
+            StatisticCard(
               label: context.tr('lowStockItems'),
               value: Formatters.number(summary.lowStockItems),
               icon: Icons.inventory_2_outlined,
               tint: summary.lowStockItems > 0
-                  ? AppColors.danger
-                  : AppColors.success,
+                  ? context.dukavo.danger
+                  : context.dukavo.success,
+              compact: true,
               onTap: permissions.canViewInventory
                   ? () => context.push(RoutePaths.inventory)
                   : null,
             ),
-            _MetricCard(
+            StatisticCard(
               label: context.tr('openConversations'),
               value: Formatters.number(summary.openConversations),
-              icon: Icons.chat_bubble_outline,
-              tint: AppColors.primary,
+              icon: Icons.chat_bubble_outline_rounded,
+              tint: context.scheme.primary,
+              compact: true,
               onTap: permissions.canViewConversations
                   ? () => context.go(RoutePaths.conversations)
                   : null,
             ),
           ],
         ),
-        const SizedBox(height: 22),
-        _SectionHeader(
+        if (quickActions.isNotEmpty) ...[
+          const SizedBox(height: AppSpacing.xl),
+          SectionHeader(title: context.tr('quickActions')),
+          _QuickActionGrid(actions: quickActions),
+        ],
+        const SizedBox(height: AppSpacing.xl),
+        SectionHeader(
           title: context.tr('topProducts'),
           actionLabel: context.tr('viewAll'),
           onAction: permissions.canViewProducts
               ? () => context.go(RoutePaths.products)
               : null,
         ),
-        const SizedBox(height: 10),
-        SectionCard(
-          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+        AppCard(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.xxs,
+            vertical: AppSpacing.xxs,
+          ),
           child: bundle.topProducts.isEmpty
               ? Padding(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(AppSpacing.md),
                   child: Text(
                     context.tr('noTopProducts'),
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
+                    style: context.texts.bodyMedium?.copyWith(
+                      color: context.dukavo.textSecondary,
                     ),
                   ),
                 )
@@ -209,21 +225,31 @@ class _DashboardBody extends ConsumerWidget {
                   ],
                 ),
         ),
-        const SizedBox(height: 22),
-        _SectionHeader(title: context.tr('deadStock')),
-        const SizedBox(height: 10),
-        SectionCard(
+        const SizedBox(height: AppSpacing.xl),
+        SectionHeader(title: context.tr('deadStock')),
+        AppCard(
           child: bundle.deadStock.isEmpty
               ? Row(
                   children: [
-                    const Icon(Icons.check_circle_outline,
-                        color: AppColors.success, size: 20),
-                    const SizedBox(width: 10),
+                    Container(
+                      width: 32,
+                      height: 32,
+                      decoration: BoxDecoration(
+                        color: context.dukavo.successContainer,
+                        borderRadius: BorderRadius.circular(AppRadius.xs),
+                      ),
+                      child: Icon(
+                        Icons.check_rounded,
+                        color: context.dukavo.success,
+                        size: 18,
+                      ),
+                    ),
+                    const SizedBox(width: AppSpacing.sm),
                     Expanded(
                       child: Text(
                         context.tr('noDeadStock'),
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
+                        style: context.texts.bodyMedium?.copyWith(
+                          color: context.dukavo.textSecondary,
                         ),
                       ),
                     ),
@@ -233,7 +259,9 @@ class _DashboardBody extends ConsumerWidget {
                   children: [
                     for (final item in bundle.deadStock)
                       Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 7),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: AppSpacing.xs,
+                        ),
                         child: Row(
                           children: [
                             Expanded(
@@ -242,7 +270,7 @@ class _DashboardBody extends ConsumerWidget {
                                 children: [
                                   Text(
                                     item.name,
-                                    style: theme.textTheme.bodyMedium?.copyWith(
+                                    style: context.texts.bodyMedium?.copyWith(
                                       fontWeight: FontWeight.w600,
                                     ),
                                     maxLines: 1,
@@ -251,15 +279,14 @@ class _DashboardBody extends ConsumerWidget {
                                   if (item.sku != null)
                                     Text(
                                       item.sku!,
-                                      style:
-                                          theme.textTheme.labelSmall?.copyWith(
-                                        color:
-                                            theme.colorScheme.onSurfaceVariant,
+                                      style: context.texts.labelSmall?.copyWith(
+                                        color: context.dukavo.textSecondary,
                                       ),
                                     ),
                                 ],
                               ),
                             ),
+                            const SizedBox(width: AppSpacing.sm),
                             StatusChip(
                               status: 'low_stock',
                               label: '${item.stock} ${context.tr('units')}',
@@ -270,39 +297,6 @@ class _DashboardBody extends ConsumerWidget {
                       ),
                   ],
                 ),
-        ),
-        const SizedBox(height: 22),
-        _SectionHeader(title: context.tr('quickActions')),
-        const SizedBox(height: 10),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: [
-            if (permissions.canCreateOrders)
-              _QuickAction(
-                icon: Icons.add_shopping_cart,
-                label: context.tr('createOrder'),
-                onTap: () => context.push(RoutePaths.createOrder),
-              ),
-            if (permissions.canCreateProducts)
-              _QuickAction(
-                icon: Icons.add_box_outlined,
-                label: context.tr('createProduct'),
-                onTap: () => context.push(RoutePaths.createProduct),
-              ),
-            if (permissions.canCreateCustomers)
-              _QuickAction(
-                icon: Icons.person_add_alt,
-                label: context.tr('createCustomer'),
-                onTap: () => context.push(RoutePaths.createCustomer),
-              ),
-            if (permissions.canViewAnalytics)
-              _QuickAction(
-                icon: Icons.insights_outlined,
-                label: context.tr('analytics'),
-                onTap: () => context.push(RoutePaths.analytics),
-              ),
-          ],
         ),
       ],
     );
@@ -329,73 +323,134 @@ class _RevenueHero extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final colors = context.dukavo;
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
+        gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [AppColors.primary, AppColors.primaryDark],
+          colors: [colors.heroStart, colors.heroEnd],
         ),
-        borderRadius: BorderRadius.circular(22),
+        borderRadius: BorderRadius.circular(AppRadius.xl),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.22),
-            blurRadius: 24,
-            offset: const Offset(0, 10),
+            color: colors.heroStart.withValues(alpha: 0.24),
+            blurRadius: 28,
+            offset: const Offset(0, 12),
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Stack(
         children: [
-          Text(
-            context.tr('revenueToday'),
-            style: theme.textTheme.labelMedium?.copyWith(
-              color: Colors.white.withValues(alpha: 0.8),
-              fontWeight: FontWeight.w600,
+          PositionedDirectional(
+            top: -40,
+            end: -30,
+            child: Container(
+              width: 150,
+              height: 150,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white.withValues(alpha: 0.05),
+              ),
             ),
           ),
-          const SizedBox(height: 6),
-          Text(
-            Formatters.currency(summary.revenueToday, currency),
-            style: theme.textTheme.headlineMedium?.copyWith(
-              color: Colors.white,
-              fontWeight: FontWeight.w800,
-              letterSpacing: -1,
+          PositionedDirectional(
+            bottom: -60,
+            start: -20,
+            child: Container(
+              width: 170,
+              height: 170,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white.withValues(alpha: 0.04),
+              ),
             ),
           ),
-          const SizedBox(height: 16),
-          if (revenue.length > 1)
-            SizedBox(
-              height: 56,
-              child: CustomPaint(
-                size: Size.infinite,
-                painter: _SparklinePainter(
-                  values:
-                      revenue.map((point) => point.total.toDouble()).toList(),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsetsDirectional.fromSTEB(10, 5, 10, 5),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.12),
+                      borderRadius: BorderRadius.circular(AppRadius.pill),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.space_dashboard_outlined,
+                          size: 14,
+                          color: Colors.white,
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          context.tr('revenueToday'),
+                          style: context.texts.labelSmall?.copyWith(
+                            color: Colors.white.withValues(alpha: 0.92),
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              Text(
+                Formatters.currency(summary.revenueToday, currency),
+                style: context.texts.displaySmall?.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: -1,
+                  fontFeatures: const [FontFeature.tabularFigures()],
                 ),
               ),
-            ),
-          const SizedBox(height: 14),
-          Row(
-            children: [
-              _HeroStat(
-                label: context.tr('revenueMonth'),
-                value: Formatters.currency(summary.revenueMonth, currency,
-                    compact: true),
-              ),
-              Container(
-                width: 1,
-                height: 28,
-                margin: const EdgeInsets.symmetric(horizontal: 16),
-                color: Colors.white.withValues(alpha: 0.2),
-              ),
-              _HeroStat(
-                label: context.tr('averageOrderValue'),
-                value: Formatters.currency(summary.averageOrderValue, currency,
-                    compact: true),
+              if (revenue.length > 1) ...[
+                const SizedBox(height: AppSpacing.sm),
+                SizedBox(
+                  height: 54,
+                  child: CustomPaint(
+                    size: Size.infinite,
+                    painter: _SparklinePainter(
+                      values:
+                          revenue.map((point) => point.total.toDouble()).toList(),
+                      accent: context.dukavo.accent,
+                    ),
+                  ),
+                ),
+              ],
+              const SizedBox(height: AppSpacing.md),
+              Row(
+                children: [
+                  _HeroStat(
+                    label: context.tr('revenueMonth'),
+                    value: Formatters.currency(
+                      summary.revenueMonth,
+                      currency,
+                      compact: true,
+                    ),
+                  ),
+                  Container(
+                    width: 1,
+                    height: 30,
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.md,
+                    ),
+                    color: Colors.white.withValues(alpha: 0.18),
+                  ),
+                  _HeroStat(
+                    label: context.tr('averageOrderValue'),
+                    value: Formatters.currency(
+                      summary.averageOrderValue,
+                      currency,
+                      compact: true,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -413,23 +468,23 @@ class _HeroStat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             label,
-            style: theme.textTheme.labelSmall?.copyWith(
-              color: Colors.white.withValues(alpha: 0.7),
+            style: context.texts.labelSmall?.copyWith(
+              color: Colors.white.withValues(alpha: 0.72),
             ),
           ),
           const SizedBox(height: 2),
           Text(
             value,
-            style: theme.textTheme.titleMedium?.copyWith(
+            style: context.texts.titleMedium?.copyWith(
               color: Colors.white,
               fontWeight: FontWeight.w700,
+              fontFeatures: const [FontFeature.tabularFigures()],
             ),
           ),
         ],
@@ -439,9 +494,10 @@ class _HeroStat extends StatelessWidget {
 }
 
 class _SparklinePainter extends CustomPainter {
-  _SparklinePainter({required this.values});
+  _SparklinePainter({required this.values, required this.accent});
 
   final List<double> values;
+  final Color accent;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -476,8 +532,8 @@ class _SparklinePainter extends CustomPainter {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            AppColors.accent.withValues(alpha: 0.35),
-            AppColors.accent.withValues(alpha: 0.02),
+            accent.withValues(alpha: 0.32),
+            accent.withValues(alpha: 0.02),
           ],
         ).createShader(Offset.zero & size),
     );
@@ -485,7 +541,7 @@ class _SparklinePainter extends CustomPainter {
     canvas.drawPath(
       path,
       Paint()
-        ..color = AppColors.accent
+        ..color = accent
         ..style = PaintingStyle.stroke
         ..strokeWidth = 2.2
         ..strokeCap = StrokeCap.round
@@ -495,78 +551,7 @@ class _SparklinePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _SparklinePainter oldDelegate) {
-    return oldDelegate.values != values;
-  }
-}
-
-class _MetricCard extends StatelessWidget {
-  const _MetricCard({
-    required this.label,
-    required this.value,
-    required this.icon,
-    required this.tint,
-    this.onTap,
-  });
-
-  final String label;
-  final String value;
-  final IconData icon;
-  final Color tint;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Material(
-      color: theme.colorScheme.surface,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(18),
-        side: BorderSide(color: theme.colorScheme.outline),
-      ),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(18),
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(14),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    width: 32,
-                    height: 32,
-                    decoration: BoxDecoration(
-                      color: tint.withValues(alpha: 0.12),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Icon(icon, size: 17, color: tint),
-                  ),
-                  const Spacer(),
-                  Text(
-                    value,
-                    style: theme.textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: -0.5,
-                    ),
-                  ),
-                ],
-              ),
-              Text(
-                label,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
-                  fontWeight: FontWeight.w600,
-                ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+    return oldDelegate.values != values || oldDelegate.accent != accent;
   }
 }
 
@@ -585,53 +570,64 @@ class _TopProductRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(AppRadius.sm),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.sm,
+          vertical: 10,
+        ),
         child: Row(
           children: [
             Container(
-              width: 24,
-              height: 24,
+              width: 26,
+              height: 26,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerHighest,
-                borderRadius: BorderRadius.circular(8),
+                color: rank == 1
+                    ? context.scheme.primaryContainer
+                    : context.dukavo.surfaceLow,
+                borderRadius: BorderRadius.circular(AppRadius.xs),
               ),
               child: Text(
                 '$rank',
-                style: theme.textTheme.labelSmall
-                    ?.copyWith(fontWeight: FontWeight.w700),
+                style: context.texts.labelSmall?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: rank == 1
+                      ? context.scheme.onPrimaryContainer
+                      : context.dukavo.textSecondary,
+                ),
               ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppSpacing.sm),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     product.name,
-                    style: theme.textTheme.bodyMedium
+                    style: context.texts.bodyMedium
                         ?.copyWith(fontWeight: FontWeight.w600),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
                     '${product.units} ${context.tr('units')}',
-                    style: theme.textTheme.labelSmall?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
+                    style: context.texts.labelSmall?.copyWith(
+                      color: context.dukavo.textSecondary,
                     ),
                   ),
                 ],
               ),
             ),
+            const SizedBox(width: AppSpacing.sm),
             Text(
               Formatters.currency(product.revenue, currency, compact: true),
-              style: theme.textTheme.bodyMedium
-                  ?.copyWith(fontWeight: FontWeight.w700),
+              style: context.texts.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w700,
+                fontFeatures: const [FontFeature.tabularFigures()],
+              ),
             ),
           ],
         ),
@@ -640,48 +636,71 @@ class _TopProductRow extends StatelessWidget {
   }
 }
 
-class _SectionHeader extends StatelessWidget {
-  const _SectionHeader({
-    required this.title,
-    this.actionLabel,
-    this.onAction,
-  });
-
-  final String title;
-  final String? actionLabel;
-  final VoidCallback? onAction;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: Text(title, style: Theme.of(context).textTheme.titleMedium),
-        ),
-        if (actionLabel != null && onAction != null)
-          TextButton(onPressed: onAction, child: Text(actionLabel!)),
-      ],
-    );
-  }
-}
-
-class _QuickAction extends StatelessWidget {
-  const _QuickAction({
+class _QuickActionData {
+  const _QuickActionData({
     required this.icon,
     required this.label,
+    required this.color,
     required this.onTap,
   });
 
   final IconData icon;
   final String label;
+  final Color color;
   final VoidCallback onTap;
+}
+
+class _QuickActionGrid extends StatelessWidget {
+  const _QuickActionGrid({required this.actions});
+
+  final List<_QuickActionData> actions;
 
   @override
   Widget build(BuildContext context) {
-    return ActionChip(
-      avatar: Icon(icon, size: 18),
-      label: Text(label),
-      onPressed: onTap,
+    return GridView.count(
+      crossAxisCount: 2,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      mainAxisSpacing: AppSpacing.sm,
+      crossAxisSpacing: AppSpacing.sm,
+      childAspectRatio: 2.45,
+      children: [
+        for (final action in actions)
+          AppCard(
+            padding: const EdgeInsetsDirectional.symmetric(
+              horizontal: AppSpacing.sm + 2,
+              vertical: AppSpacing.sm,
+            ),
+            onTap: action.onTap,
+            child: Row(
+              children: [
+                Container(
+                  width: 34,
+                  height: 34,
+                  decoration: BoxDecoration(
+                    color: action.color.withValues(
+                      alpha: context.isDark ? 0.16 : 0.10,
+                    ),
+                    borderRadius: BorderRadius.circular(AppRadius.xs),
+                  ),
+                  child: Icon(action.icon, size: 18, color: action.color),
+                ),
+                const SizedBox(width: AppSpacing.sm),
+                Expanded(
+                  child: Text(
+                    action.label,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: context.texts.bodySmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: context.dukavo.textPrimary,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+      ],
     );
   }
 }

@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/localization/app_localizations.dart';
 import '../../../app/router/route_paths.dart';
-import '../../../app/theme/app_colors.dart';
+import '../../../app/theme/design_tokens.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/widgets/app_widgets.dart';
 import '../application/shop_providers.dart';
@@ -62,22 +62,36 @@ class _OrderBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return ListView(
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
+      padding: AppSpacing.page,
       children: [
         Container(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(AppSpacing.lg),
           decoration: BoxDecoration(
-            color: AppColors.tint(theme.colorScheme.primary),
-            borderRadius: BorderRadius.circular(20),
+            gradient: LinearGradient(
+              begin: AlignmentDirectional.topStart,
+              end: AlignmentDirectional.bottomEnd,
+              colors: [
+                context.dukavo.heroStart,
+                context.dukavo.heroEnd,
+              ],
+            ),
+            borderRadius: BorderRadius.circular(AppRadius.lg),
+            boxShadow: [
+              BoxShadow(
+                color: context.dukavo.shadow,
+                blurRadius: 20,
+                offset: const Offset(0, 10),
+              ),
+            ],
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.receipt_long_outlined,
-                    color: theme.colorScheme.primary,
+                    color: Colors.white,
                   ),
                   const SizedBox(width: 8),
                   Expanded(
@@ -85,6 +99,7 @@ class _OrderBody extends StatelessWidget {
                       context.tr('orderConfirmed'),
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w800,
+                        color: Colors.white,
                       ),
                     ),
                   ),
@@ -96,9 +111,10 @@ class _OrderBody extends StatelessWidget {
                 style: theme.textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.w800,
                   letterSpacing: 1,
+                  color: Colors.white,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.xs),
               Wrap(
                 spacing: 8,
                 runSpacing: 8,
@@ -122,14 +138,14 @@ class _OrderBody extends StatelessWidget {
                 Text(
                   Formatters.dateTime(order.placedAt),
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
+                    color: Colors.white.withValues(alpha: 0.78),
                   ),
                 ),
               ],
             ],
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppSpacing.sm),
         SectionCard(
           title: context.tr('items'),
           child: Column(
@@ -155,7 +171,7 @@ class _OrderBody extends StatelessWidget {
                                 '× ${item.quantity}',
                               ].join(' · '),
                               style: theme.textTheme.labelSmall?.copyWith(
-                                color: theme.colorScheme.onSurfaceVariant,
+                                color: context.dukavo.textMuted,
                               ),
                             ),
                           ],
@@ -173,7 +189,7 @@ class _OrderBody extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppSpacing.sm),
         SectionCard(
           title: context.tr('orderSummary'),
           child: Column(
@@ -187,7 +203,7 @@ class _OrderBody extends StatelessWidget {
                   label: context.tr('discount'),
                   value:
                       '-${Formatters.currency(order.discountTotal, order.currency)}',
-                  valueColor: AppColors.success,
+                  valueColor: context.dukavo.success,
                 ),
               if (order.taxTotal > 0)
                 KeyValueRow(
@@ -211,7 +227,7 @@ class _OrderBody extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppSpacing.sm),
         SectionCard(
           title: context.tr('deliveryAddress'),
           child: Column(
@@ -232,22 +248,22 @@ class _OrderBody extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppSpacing.sm),
         SectionCard(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Icon(
-                Icons.bookmark_outline,
+                Icons.bookmark_outline_rounded,
                 size: 18,
-                color: theme.colorScheme.onSurfaceVariant,
+                color: context.dukavo.textMuted,
               ),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
                   context.tr('saveTrackingLink'),
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
+                    color: Colors.white.withValues(alpha: 0.78),
                   ),
                 ),
               ),

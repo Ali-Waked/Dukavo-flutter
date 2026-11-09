@@ -3,7 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import '../../../../app/localization/app_localizations.dart';
-import '../../../../app/theme/app_colors.dart';
+import '../../../../app/theme/design_tokens.dart';
 
 /// The five parts of the Dukavo ecosystem that orbit the brand mark.
 class _EcosystemNode {
@@ -59,9 +59,8 @@ class EcosystemAnimation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final lineColor = Theme.of(context).colorScheme.primary;
-    const accentColor = AppColors.accent;
+    final accentColor = context.dukavo.accent;
 
     return AnimatedBuilder(
       animation: Listenable.merge([progress, collapse, exit]),
@@ -99,7 +98,6 @@ class EcosystemAnimation extends StatelessWidget {
                 exit: exitValue,
                 radiusX: currentRadiusX,
                 radiusY: currentRadiusY,
-                isDark: isDark,
                 lineColor: lineColor,
               ),
           ],
@@ -116,7 +114,6 @@ class EcosystemAnimation extends StatelessWidget {
     required double exit,
     required double radiusX,
     required double radiusY,
-    required bool isDark,
     required Color lineColor,
   }) {
     final reveal = _nodeProgress(progress, index);
@@ -147,10 +144,10 @@ class EcosystemAnimation extends StatelessWidget {
                   width: nodeSize,
                   height: nodeSize,
                   decoration: BoxDecoration(
-                    color: isDark ? AppColors.darkSurface : AppColors.surface,
+                    color: context.dukavo.surfaceHigh,
                     borderRadius: BorderRadius.circular(nodeSize * 0.34),
                     border: Border.all(
-                      color: isDark ? AppColors.darkBorder : AppColors.border,
+                      color: context.dukavo.border,
                     ),
                     boxShadow: [
                       BoxShadow(

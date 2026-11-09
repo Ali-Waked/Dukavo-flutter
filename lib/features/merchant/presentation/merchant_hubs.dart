@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/localization/app_localizations.dart';
 import '../../../app/router/route_paths.dart';
+import '../../../app/theme/design_tokens.dart';
 import '../../../core/widgets/app_widgets.dart';
 import '../../auth/application/auth_controller.dart';
 
@@ -58,7 +59,7 @@ class MerchantTeamHubScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: Text(context.tr('teamAndAccess'))),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
+        padding: AppSpacing.page,
         children: [
           SectionCard(
             child: Row(
@@ -67,28 +68,32 @@ class MerchantTeamHubScreen extends ConsumerWidget {
                   width: 48,
                   height: 48,
                   decoration: BoxDecoration(
-                    color: theme.colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.circular(14),
+                    color: context.scheme.primary.withValues(
+                      alpha: context.isDark ? 0.18 : 0.10,
+                    ),
+                    borderRadius: BorderRadius.circular(AppRadius.md),
                   ),
                   child: Icon(
                     Icons.groups_outlined,
-                    color: theme.colorScheme.onPrimaryContainer,
+                    color: context.scheme.primary,
                   ),
                 ),
-                const SizedBox(width: 14),
+                const SizedBox(width: AppSpacing.sm),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         context.tr('teamHub'),
-                        style: theme.textTheme.titleMedium,
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         context.tr('teamHubHint'),
                         style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
+                          color: context.dukavo.textMuted,
                         ),
                       ),
                     ],
@@ -97,7 +102,7 @@ class MerchantTeamHubScreen extends ConsumerWidget {
               ],
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           Card(
             clipBehavior: Clip.antiAlias,
             child: Column(
@@ -107,14 +112,17 @@ class MerchantTeamHubScreen extends ConsumerWidget {
                     leading: Icon(entry.icon),
                     title: Text(context.tr(entry.labelKey)),
                     subtitle: Text(context.tr(entry.descriptionKey)),
-                    trailing: const Icon(Icons.chevron_right),
+                    trailing: Icon(
+                      Icons.chevron_right_rounded,
+                      color: context.dukavo.textMuted,
+                    ),
                     onTap: () => context.push(entry.path),
                   ),
               ],
             ),
           ),
           if (permissions.canManageUsers) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.md),
             AppButton(
               label: context.tr('inviteTeamMember'),
               icon: Icons.person_add_alt_1_outlined,
@@ -163,7 +171,7 @@ class MerchantAutomationHubScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: Text(context.tr('automations'))),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
+        padding: AppSpacing.page,
         children: [
           SectionCard(
             child: Row(
@@ -172,28 +180,32 @@ class MerchantAutomationHubScreen extends ConsumerWidget {
                   width: 48,
                   height: 48,
                   decoration: BoxDecoration(
-                    color: theme.colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.circular(14),
+                    color: context.scheme.primary.withValues(
+                      alpha: context.isDark ? 0.18 : 0.10,
+                    ),
+                    borderRadius: BorderRadius.circular(AppRadius.md),
                   ),
                   child: Icon(
                     Icons.bolt_outlined,
-                    color: theme.colorScheme.onPrimaryContainer,
+                    color: context.scheme.primary,
                   ),
                 ),
-                const SizedBox(width: 14),
+                const SizedBox(width: AppSpacing.sm),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         context.tr('automationHub'),
-                        style: theme.textTheme.titleMedium,
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         context.tr('automationHubHint'),
                         style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
+                          color: context.dukavo.textMuted,
                         ),
                       ),
                     ],
@@ -202,7 +214,7 @@ class MerchantAutomationHubScreen extends ConsumerWidget {
               ],
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           Card(
             clipBehavior: Clip.antiAlias,
             child: Column(
@@ -212,14 +224,17 @@ class MerchantAutomationHubScreen extends ConsumerWidget {
                     leading: Icon(entry.icon),
                     title: Text(context.tr(entry.labelKey)),
                     subtitle: Text(context.tr(entry.descriptionKey)),
-                    trailing: const Icon(Icons.chevron_right),
+                    trailing: Icon(
+                      Icons.chevron_right_rounded,
+                      color: context.dukavo.textMuted,
+                    ),
                     onTap: () => context.push(entry.path),
                   ),
               ],
             ),
           ),
           if (permissions.canManageAutomation) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.md),
             AppButton(
               label: context.tr('createAutomation'),
               icon: Icons.add,

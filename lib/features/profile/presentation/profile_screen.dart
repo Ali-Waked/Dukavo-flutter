@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../app/localization/app_localizations.dart';
 import '../../../app/router/route_paths.dart';
+import '../../../app/theme/design_tokens.dart';
 import '../../../core/api/api_exception.dart';
 import '../../../core/currency/currency_catalogue.dart';
 import '../../../core/utils/formatters.dart';
@@ -52,131 +53,124 @@ class _ProfileBody extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final colors = context.dukavo;
 
     return ListView(
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
+      padding: AppSpacing.page,
       children: [
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(18),
-            child: Column(
-              children: [
-                Stack(
-                  children: [
-                    AppAvatar(
-                      url: profile.avatarUrl,
-                      name: profile.name,
-                      size: 88,
-                    ),
-                    PositionedDirectional(
-                      bottom: -4,
-                      end: -4,
-                      child: Material(
-                        color: theme.colorScheme.primary,
-                        shape: const CircleBorder(),
-                        child: InkWell(
-                          customBorder: const CircleBorder(),
-                          onTap: () => _pickAvatar(context, ref),
-                          child: Padding(
-                            padding: const EdgeInsets.all(6),
-                            child: Icon(
-                              Icons.camera_alt_outlined,
-                              size: 16,
-                              color: theme.colorScheme.onPrimary,
-                            ),
+        AppCard(
+          tone: AppCardTone.low,
+          padding: const EdgeInsets.all(AppSpacing.lg),
+          child: Column(
+            children: [
+              Stack(
+                children: [
+                  AppAvatar(
+                    url: profile.avatarUrl,
+                    name: profile.name,
+                    size: 92,
+                  ),
+                  PositionedDirectional(
+                    bottom: -4,
+                    end: -4,
+                    child: Material(
+                      color: theme.colorScheme.primary,
+                      shape: CircleBorder(
+                        side: BorderSide(color: colors.surface, width: 2),
+                      ),
+                      child: InkWell(
+                        customBorder: const CircleBorder(),
+                        onTap: () => _pickAvatar(context, ref),
+                        child: Padding(
+                          padding: const EdgeInsets.all(7),
+                          child: Icon(
+                            Icons.camera_alt_outlined,
+                            size: 16,
+                            color: theme.colorScheme.onPrimary,
                           ),
                         ),
                       ),
                     ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  profile.name,
-                  style: theme.textTheme.titleLarge
-                      ?.copyWith(fontWeight: FontWeight.w700),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  profile.email,
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                StatusChip(status: profile.status),
-                const SizedBox(height: 8),
-                Text(
-                  '${context.tr('lastLogin')}: '
-                  '${Formatters.dateTime(profile.lastLoginAt)}',
-                  style: theme.textTheme.labelSmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
-                ),
-                if (profile.avatarUrl != null) ...[
-                  const SizedBox(height: 8),
-                  TextButton.icon(
-                    onPressed: () => _removeAvatar(context, ref),
-                    icon: const Icon(Icons.delete_outline, size: 18),
-                    label: Text(context.tr('removePhoto')),
                   ),
                 ],
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(height: 12),
-        SectionCard(
-          title: context.tr('account'),
-          child: Column(
-            children: [
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: const Icon(Icons.person_outline),
-                title: Text(context.tr('editProfile')),
-                trailing: const Icon(Icons.chevron_right),
-                onTap: () => _editProfile(context, ref),
               ),
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: const Icon(Icons.currency_exchange),
-                title: Text(context.tr('displayCurrency')),
-                subtitle: Text(
-                  profile.preferredCurrencyName.isEmpty
-                      ? profile.preferredCurrency
-                      : '${profile.preferredCurrency} · '
-                          '${profile.preferredCurrencyName}',
+              const SizedBox(height: AppSpacing.md),
+              Text(
+                profile.name,
+                style: theme.textTheme.titleLarge
+                    ?.copyWith(fontWeight: FontWeight.w800),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 2),
+              Text(
+                profile.email,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: colors.textSecondary,
                 ),
-                trailing: const Icon(Icons.chevron_right),
-                onTap: () => _editCurrency(context, ref),
               ),
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: const Icon(Icons.lock_outline),
-                title: Text(context.tr('changePassword')),
-                trailing: const Icon(Icons.chevron_right),
-                onTap: () => _changePassword(context, ref),
+              const SizedBox(height: AppSpacing.xs),
+              StatusChip(status: profile.status),
+              const SizedBox(height: AppSpacing.xs),
+              Text(
+                '${context.tr('lastLogin')}: '
+                '${Formatters.dateTime(profile.lastLoginAt)}',
+                style: theme.textTheme.labelSmall?.copyWith(
+                  color: colors.textMuted,
+                ),
+                textAlign: TextAlign.center,
               ),
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: const Icon(Icons.notifications_outlined),
-                title: Text(context.tr('notificationPreferences')),
-                trailing: const Icon(Icons.chevron_right),
-                onTap: () => context.push(RoutePaths.settings),
-              ),
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: const Icon(Icons.settings_outlined),
-                title: Text(context.tr('settings')),
-                trailing: const Icon(Icons.chevron_right),
-                onTap: () => context.push(RoutePaths.settings),
-              ),
+              if (profile.avatarUrl != null) ...[
+                const SizedBox(height: AppSpacing.xxs),
+                TextButton.icon(
+                  onPressed: () => _removeAvatar(context, ref),
+                  style: TextButton.styleFrom(
+                    foregroundColor: colors.danger,
+                  ),
+                  icon: const Icon(Icons.delete_outline, size: 18),
+                  label: Text(context.tr('removePhoto')),
+                ),
+              ],
             ],
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppSpacing.md),
+        AppListGroup(
+          title: context.tr('account'),
+          children: [
+            _ProfileTile(
+              icon: Icons.person_outline,
+              label: context.tr('editProfile'),
+              onTap: () => _editProfile(context, ref),
+            ),
+            _ProfileTile(
+              icon: Icons.currency_exchange_rounded,
+              label: context.tr('displayCurrency'),
+              subtitle: profile.preferredCurrencyName.isEmpty
+                  ? profile.preferredCurrency
+                  : '${profile.preferredCurrency} · '
+                      '${profile.preferredCurrencyName}',
+              onTap: () => _editCurrency(context, ref),
+            ),
+            _ProfileTile(
+              icon: Icons.lock_outline_rounded,
+              label: context.tr('changePassword'),
+              onTap: () => _changePassword(context, ref),
+            ),
+            _ProfileTile(
+              icon: Icons.notifications_outlined,
+              label: context.tr('notificationPreferences'),
+              onTap: () => context.push(RoutePaths.settings),
+            ),
+            _ProfileTile(
+              icon: Icons.settings_outlined,
+              label: context.tr('settings'),
+              onTap: () => context.push(RoutePaths.settings),
+            ),
+          ],
+        ),
+        const SizedBox(height: AppSpacing.sm),
         const _SessionsCard(),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppSpacing.sm),
         AppButton(
           label: context.tr('logout'),
           variant: AppButtonVariant.outlined,
@@ -302,6 +296,47 @@ class _ProfileBody extends ConsumerWidget {
     );
     if (!confirmed) return;
     await ref.read(authControllerProvider.notifier).logout();
+  }
+}
+
+class _ProfileTile extends StatelessWidget {
+  const _ProfileTile({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+    this.subtitle,
+  });
+
+  final IconData icon;
+  final String label;
+  final String? subtitle;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Container(
+        width: 38,
+        height: 38,
+        decoration: BoxDecoration(
+          color: context.scheme.primaryContainer,
+          borderRadius: BorderRadius.circular(AppRadius.xs),
+        ),
+        child: Icon(
+          icon,
+          size: 19,
+          color: context.scheme.onPrimaryContainer,
+        ),
+      ),
+      title: Text(label),
+      subtitle: subtitle == null ? null : Text(subtitle!),
+      trailing: Icon(
+        Icons.chevron_right_rounded,
+        size: 20,
+        color: context.dukavo.textMuted,
+      ),
+      onTap: onTap,
+    );
   }
 }
 

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/localization/app_localizations.dart';
 import '../../../app/router/route_paths.dart';
+import '../../../app/theme/design_tokens.dart';
 import '../../../core/widgets/app_widgets.dart';
 import '../../auth/application/auth_controller.dart';
 import '../../auth/presentation/tenant_screens.dart';
@@ -18,7 +19,6 @@ class MoreScreen extends ConsumerWidget {
     final session = ref.watch(currentSessionProvider);
     final permissions = ref.watch(permissionsProvider);
     final unread = ref.watch(notificationUnreadProvider);
-    final theme = Theme.of(context);
 
     final groups = <_MoreGroup>[
       _MoreGroup(
@@ -190,104 +190,56 @@ class MoreScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: Text(context.tr('more'))),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
+        padding: AppSpacing.page,
         children: [
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                children: [
-                  AppAvatar(
-                    name: session?.user.name ?? '?',
-                    url: session?.user.avatarUrl,
-                    size: 52,
-                  ),
-                  const SizedBox(width: 14),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          session?.user.name ?? '',
-                          style: theme.textTheme.titleMedium,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        Text(
-                          session?.user.email ?? '',
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: theme.colorScheme.onSurfaceVariant,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
-                    ),
-                  ),
-                  IconButton(
-                    tooltip: context.tr('switchWorkspace'),
-                    onPressed: () => showTenantSwitcher(context, ref),
-                    icon: const Icon(Icons.swap_horiz),
-                  ),
-                ],
-              ),
-            ),
+          _ProfileCard(
+            name: session?.user.name ?? '',
+            email: session?.user.email ?? '',
+            avatarUrl: session?.user.avatarUrl,
+            onSwitch: () => showTenantSwitcher(context, ref),
           ),
-          const SizedBox(height: 8),
-          Card(
+          const SizedBox(height: AppSpacing.sm),
+          AppCard(
+            padding: EdgeInsets.zero,
+            onTap: () => showTenantSwitcher(context, ref),
             child: ListTile(
-              leading: const Icon(Icons.storefront_outlined),
+              leading: Container(
+                width: 38,
+                height: 38,
+                decoration: BoxDecoration(
+                  color: context.scheme.primaryContainer,
+                  borderRadius: BorderRadius.circular(AppRadius.xs),
+                ),
+                child: Icon(
+                  Icons.storefront_outlined,
+                  size: 20,
+                  color: context.scheme.onPrimaryContainer,
+                ),
+              ),
               title: Text(context.tr('workspace')),
-              subtitle:
-                  Text(session?.activeTenant?.name ?? context.tr('noStore')),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () => showTenantSwitcher(context, ref),
+              subtitle: Text(
+                session?.activeTenant?.name ?? context.tr('noStore'),
+              ),
+              trailing: const Icon(Icons.swap_horiz_rounded),
             ),
           ),
           for (final group in groups)
             if (group.entries.any((entry) => entry.visible)) ...[
-              const SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsetsDirectional.only(start: 4, bottom: 8),
-                child: Text(
-                  context.tr(group.titleKey),
-                  style: theme.textTheme.labelLarge?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
-                ),
-              ),
-              Card(
-                clipBehavior: Clip.antiAlias,
-                child: Column(
-                  children: [
-                    for (final entry in group.entries.where((e) => e.visible))
-                      ListTile(
-                        leading: Icon(entry.icon),
-                        title: Text(context.tr(entry.labelKey)),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            if (entry.badge > 0)
-                              Badge(
-                                label: Text(
-                                  entry.badge > 99 ? '99+' : '${entry.badge}',
-                                ),
-                              ),
-                            const SizedBox(width: 6),
-                            const Icon(Icons.chevron_right),
-                          ],
-                        ),
-                        onTap: () => context.push(entry.path),
-                      ),
-                  ],
-                ),
+              const SizedBox(height: AppSpacing.lg),
+              AppListGroup(
+                title: context.tr(group.titleKey),
+                children: [
+                  for (final entry in group.entries.where((e) => e.visible))
+                    _MoreTile(entry: entry),
+                ],
               ),
             ],
-          const SizedBox(height: 24),
-          OutlinedButton.icon(
-            style: OutlinedButton.styleFrom(
-              foregroundColor: theme.colorScheme.error,
-            ),
+          const SizedBox(height: AppSpacing.xl),
+          AppButton(
+            label: context.tr('logout'),
+            icon: Icons.logout_rounded,
+            variant: AppButtonVariant.outlined,
+            expand: true,
             onPressed: () async {
               final confirmed = await ConfirmDialog.show(
                 context,
@@ -300,20 +252,117 @@ class MoreScreen extends ConsumerWidget {
                 await ref.read(authControllerProvider.notifier).logout();
               }
             },
-            icon: const Icon(Icons.logout),
-            label: Text(context.tr('logout')),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.sm),
           Center(
             child: Text(
               'Dukavo 1.0.0',
-              style: theme.textTheme.labelSmall?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
+              style: context.texts.labelSmall?.copyWith(
+                color: context.dukavo.textMuted,
               ),
             ),
           ),
         ],
       ),
+    );
+  }
+}
+
+class _ProfileCard extends StatelessWidget {
+  const _ProfileCard({
+    required this.name,
+    required this.email,
+    required this.avatarUrl,
+    required this.onSwitch,
+  });
+
+  final String name;
+  final String email;
+  final String? avatarUrl;
+  final VoidCallback onSwitch;
+
+  @override
+  Widget build(BuildContext context) {
+    return AppCard(
+      tone: AppCardTone.low,
+      padding: const EdgeInsets.all(AppSpacing.lg),
+      child: Row(
+        children: [
+          AppAvatar(name: name.isEmpty ? '?' : name, url: avatarUrl, size: 56),
+          const SizedBox(width: AppSpacing.md),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  style: context.texts.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  email,
+                  style: context.texts.bodySmall?.copyWith(
+                    color: context.dukavo.textSecondary,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+          IconButton(
+            tooltip: context.tr('switchWorkspace'),
+            onPressed: onSwitch,
+            icon: const Icon(Icons.swap_horiz_rounded),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _MoreTile extends StatelessWidget {
+  const _MoreTile({required this.entry});
+
+  final _MoreEntry entry;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Container(
+        width: 38,
+        height: 38,
+        decoration: BoxDecoration(
+          color: context.dukavo.surfaceLow,
+          borderRadius: BorderRadius.circular(AppRadius.xs),
+        ),
+        child: Icon(
+          entry.icon,
+          size: 20,
+          color: context.dukavo.textSecondary,
+        ),
+      ),
+      title: Text(context.tr(entry.labelKey)),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (entry.badge > 0)
+            Badge(
+              label: Text(entry.badge > 99 ? '99+' : '${entry.badge}'),
+            ),
+          const SizedBox(width: AppSpacing.xxs),
+          Icon(
+            Icons.chevron_right_rounded,
+            size: 20,
+            color: context.dukavo.textMuted,
+          ),
+        ],
+      ),
+      onTap: () => context.push(entry.path),
     );
   }
 }

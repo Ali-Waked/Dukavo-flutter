@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../app/localization/app_localizations.dart';
+import '../../../app/theme/design_tokens.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/utils/validators.dart';
 import '../../../core/widgets/app_widgets.dart';
@@ -82,7 +83,7 @@ class _ShippingZonesScreenState extends ConsumerState<ShippingZonesScreen> {
           return Column(
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+                padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 4),
                 child: StoreSelectorField(
                   stores: stores,
                   selectedId: storeId,
@@ -118,7 +119,7 @@ class _ShippingZonesScreenState extends ConsumerState<ShippingZonesScreen> {
                         await ref.read(shippingZonesProvider(storeId).future);
                       },
                       child: ListView(
-                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 96),
+                        padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 96),
                         children: [
                           Text(
                             context.tr('shippingZonesIntro'),
@@ -129,7 +130,7 @@ class _ShippingZonesScreenState extends ConsumerState<ShippingZonesScreen> {
                                           .onSurfaceVariant,
                                     ),
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: AppSpacing.xs),
                           for (final zone in zones)
                             Padding(
                               padding: const EdgeInsets.only(bottom: 8),
@@ -244,7 +245,12 @@ class _ZoneCard extends StatelessWidget {
 
     return Card(
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 12, 8, 12),
+        padding: const EdgeInsetsDirectional.fromSTEB(
+          AppSpacing.md,
+          AppSpacing.sm,
+          AppSpacing.xs,
+          AppSpacing.sm,
+        ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -278,7 +284,7 @@ class _ZoneCard extends StatelessWidget {
                       ),
                     ),
                   ],
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppSpacing.xs),
                   Wrap(
                     spacing: 12,
                     runSpacing: 4,
@@ -401,7 +407,7 @@ class _ZoneFormSheetState extends State<_ZoneFormSheet> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+      padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 24),
       child: Form(
         key: _formKey,
         child: SingleChildScrollView(

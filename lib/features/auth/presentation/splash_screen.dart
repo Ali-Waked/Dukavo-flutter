@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 import '../../../app/localization/app_localizations.dart';
 import '../../../app/router/auth_destination.dart';
 import '../../../app/router/route_paths.dart';
-import '../../../app/theme/app_colors.dart';
+import '../../../app/theme/design_tokens.dart';
 import '../application/auth_controller.dart';
 import 'splash/dukavo_logo_animation.dart';
 import 'splash/ecosystem_animation.dart';
@@ -307,7 +307,7 @@ class _SplashTagline extends StatelessWidget {
                   width: 46 * reveal,
                   height: 2,
                   decoration: BoxDecoration(
-                    color: AppColors.accent.withValues(alpha: 0.85),
+                    color: context.dukavo.accent.withValues(alpha: 0.85),
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -363,10 +363,10 @@ class _SplashBackdrop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final base = isDark ? AppColors.darkBackground : AppColors.background;
+    final colors = context.dukavo;
 
     return DecoratedBox(
-      decoration: BoxDecoration(color: base),
+      decoration: BoxDecoration(color: colors.background),
       child: Stack(
         fit: StackFit.expand,
         children: [
@@ -376,10 +376,10 @@ class _SplashBackdrop extends StatelessWidget {
                 center: const Alignment(0, -0.08),
                 radius: 0.95,
                 colors: [
-                  AppColors.primary.withValues(
+                  colors.primary.withValues(
                     alpha: isDark ? 0.22 : 0.13,
                   ),
-                  AppColors.primary.withValues(alpha: 0),
+                  colors.primary.withValues(alpha: 0),
                 ],
               ),
             ),
@@ -390,10 +390,10 @@ class _SplashBackdrop extends StatelessWidget {
                 center: const Alignment(-0.85, 0.9),
                 radius: 0.7,
                 colors: [
-                  AppColors.accent.withValues(
+                  colors.accent.withValues(
                     alpha: isDark ? 0.06 : 0.10,
                   ),
-                  AppColors.accent.withValues(alpha: 0),
+                  colors.accent.withValues(alpha: 0),
                 ],
               ),
             ),

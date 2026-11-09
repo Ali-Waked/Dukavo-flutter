@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../app/localization/app_localizations.dart';
+import '../../../app/theme/design_tokens.dart';
 import '../../../core/widgets/app_widgets.dart';
 import '../../auth/application/auth_controller.dart';
 import '../../stores/application/store_controller.dart';
@@ -65,7 +66,7 @@ class _PaymentSettingsScreenState extends ConsumerState<PaymentSettingsScreen> {
           final settingsAsync = ref.watch(paymentSettingsProvider(storeId));
 
           return ListView(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
+            padding: AppSpacing.page,
             children: [
               StoreSelectorField(
                 stores: stores,

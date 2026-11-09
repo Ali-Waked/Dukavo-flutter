@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/localization/app_localizations.dart';
 import '../../../app/router/route_paths.dart';
-import '../../../app/theme/app_colors.dart';
+import '../../../app/theme/design_tokens.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/widgets/app_widgets.dart';
 import '../../auth/application/auth_controller.dart';
@@ -83,7 +83,12 @@ class _ConversationsScreenState extends ConsumerState<ConversationsScreen> {
             orElse: () => const SizedBox(height: 8),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
+            padding: const EdgeInsetsDirectional.fromSTEB(
+              AppSpacing.md,
+              AppSpacing.xxs,
+              AppSpacing.md,
+              AppSpacing.xxs,
+            ),
             child: SearchField(
               controller: _search,
               hint: context.tr('searchConversations'),
@@ -191,37 +196,43 @@ class _SummaryStrip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.dukavo;
     return SizedBox(
-      height: 72,
+      height: 76,
       child: ListView(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+        padding: const EdgeInsetsDirectional.fromSTEB(
+          AppSpacing.md,
+          AppSpacing.xs,
+          AppSpacing.md,
+          AppSpacing.xxs,
+        ),
         children: [
           _SummaryCard(
             label: context.tr('open'),
             value: summary.open,
-            color: AppColors.primary,
+            color: context.scheme.primary,
             onTap: () => notifier.setStatus('open'),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppSpacing.xs),
           _SummaryCard(
             label: context.tr('pending'),
             value: summary.pending,
-            color: AppColors.warning,
+            color: colors.warning,
             onTap: () => notifier.setStatus('pending'),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppSpacing.xs),
           _SummaryCard(
             label: context.tr('unassigned'),
             value: summary.unassigned,
-            color: AppColors.info,
+            color: colors.info,
             onTap: () => notifier.setUnassigned(true),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppSpacing.xs),
           _SummaryCard(
             label: context.tr('unread'),
             value: summary.unread,
-            color: AppColors.danger,
+            color: colors.danger,
             onTap: () => notifier.setUnread(true),
           ),
         ],
@@ -247,14 +258,20 @@ class _SummaryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return InkWell(
-      borderRadius: BorderRadius.circular(14),
+      borderRadius: BorderRadius.circular(AppRadius.md),
       onTap: onTap,
       child: Container(
-        width: 108,
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        width: 106,
+        padding: const EdgeInsetsDirectional.fromSTEB(
+          AppSpacing.sm,
+          AppSpacing.xs,
+          AppSpacing.sm,
+          AppSpacing.xs,
+        ),
         decoration: BoxDecoration(
-          color: color.withValues(alpha: 0.1),
-          borderRadius: BorderRadius.circular(14),
+          color: color.withValues(alpha: context.isDark ? 0.16 : 0.08),
+          borderRadius: BorderRadius.circular(AppRadius.md),
+          border: Border.all(color: color.withValues(alpha: 0.22)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -262,14 +279,20 @@ class _SummaryCard extends StatelessWidget {
           children: [
             Text(
               '$value',
-              style: theme.textTheme.titleMedium
-                  ?.copyWith(fontWeight: FontWeight.w800, color: color),
+              style: theme.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.w800,
+                color: color,
+                letterSpacing: -0.4,
+              ),
             ),
+            const SizedBox(height: 1),
             Text(
               label,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: theme.textTheme.labelSmall,
+              style: theme.textTheme.labelSmall?.copyWith(
+                color: context.dukavo.textSecondary,
+              ),
             ),
           ],
         ),
@@ -286,105 +309,107 @@ class _ConversationTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final colors = context.dukavo;
     final last = conversation.lastMessage;
 
-    return Card(
-      child: InkWell(
-        borderRadius: BorderRadius.circular(18),
-        onTap: () => context.push(RoutePaths.conversation(conversation.id)),
-        child: Padding(
-          padding: const EdgeInsets.all(14),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Badge(
-                isLabelVisible: conversation.unreadCount > 0,
-                label: Text(
-                  conversation.unreadCount > 99
-                      ? '99+'
-                      : '${conversation.unreadCount}',
-                ),
-                child: AppAvatar(name: conversation.title, size: 46),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+    return AppCard(
+      padding: const EdgeInsets.all(AppSpacing.sm + 2),
+      onTap: () => context.push(RoutePaths.conversation(conversation.id)),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Badge(
+            isLabelVisible: conversation.unreadCount > 0,
+            label: Text(
+              conversation.unreadCount > 99
+                  ? '99+'
+                  : '${conversation.unreadCount}',
+            ),
+            child: AppAvatar(name: conversation.title, size: 46),
+          ),
+          const SizedBox(width: AppSpacing.sm + 2),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
                   children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            conversation.title,
-                            style: theme.textTheme.titleSmall
-                                ?.copyWith(fontWeight: FontWeight.w700),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                    Expanded(
+                      child: Text(
+                        conversation.title,
+                        style: theme.textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: colors.textPrimary,
                         ),
-                        Text(
-                          Formatters.relative(
-                            conversation.lastMessageAt ??
-                                conversation.createdAt,
-                          ),
-                          style: theme.textTheme.labelSmall?.copyWith(
-                            color: theme.colorScheme.onSurfaceVariant,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      last?.body?.trim().isNotEmpty == true
-                          ? last!.body!
-                          : context.tr('noMessages'),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                        fontStyle:
-                            last?.isInternal == true ? FontStyle.italic : null,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    const SizedBox(height: 6),
-                    Row(
-                      children: [
-                        Icon(
-                          conversation.channel == 'whatsapp'
-                              ? Icons.chat_outlined
-                              : Icons.public,
-                          size: 14,
-                          color: theme.colorScheme.onSurfaceVariant,
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          _channelLabel(context, conversation.channel),
-                          style: theme.textTheme.labelSmall?.copyWith(
-                            color: theme.colorScheme.onSurfaceVariant,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        StatusChip(status: conversation.status, compact: true),
-                        const Spacer(),
-                        if (conversation.assignee != null)
-                          Flexible(
-                            child: Text(
-                              conversation.assignee!.name,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: theme.textTheme.labelSmall?.copyWith(
-                                color: theme.colorScheme.onSurfaceVariant,
-                              ),
-                            ),
-                          ),
-                      ],
+                    const SizedBox(width: AppSpacing.xxs),
+                    Text(
+                      Formatters.relative(
+                        conversation.lastMessageAt ?? conversation.createdAt,
+                      ),
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: colors.textMuted,
+                      ),
                     ),
                   ],
                 ),
-              ),
-            ],
+                const SizedBox(height: 2),
+                Text(
+                  last?.body?.trim().isNotEmpty == true
+                      ? last!.body!
+                      : context.tr('noMessages'),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: colors.textSecondary,
+                    fontStyle:
+                        last?.isInternal == true ? FontStyle.italic : null,
+                  ),
+                ),
+                const SizedBox(height: 7),
+                Row(
+                  children: [
+                    Icon(
+                      conversation.channel == 'whatsapp'
+                          ? Icons.chat_outlined
+                          : Icons.public,
+                      size: 14,
+                      color: colors.textMuted,
+                    ),
+                    const SizedBox(width: 4),
+                    Flexible(
+                      child: Text(
+                        _channelLabel(context, conversation.channel),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: colors.textMuted,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: AppSpacing.xs),
+                    StatusChip(status: conversation.status, compact: true),
+                    const Spacer(),
+                    if (conversation.assignee != null)
+                      Flexible(
+                        child: Text(
+                          conversation.assignee!.name,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: theme.textTheme.labelSmall?.copyWith(
+                            color: colors.textMuted,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -714,14 +739,14 @@ class _ThreadHeader extends StatelessWidget {
               padding: const EdgeInsets.only(top: 6),
               child: Row(
                 children: [
-                  const Icon(Icons.lock_clock,
-                      size: 14, color: AppColors.warning),
+                  Icon(Icons.lock_clock,
+                      size: 14, color: context.dukavo.warning),
                   const SizedBox(width: 4),
                   Expanded(
                     child: Text(
                       context.tr('replyWindowClosed'),
                       style: theme.textTheme.labelSmall
-                          ?.copyWith(color: AppColors.warning),
+                          ?.copyWith(color: context.dukavo.warning),
                     ),
                   ),
                 ],
@@ -745,26 +770,27 @@ class _MessageBubble extends StatelessWidget {
     final scheme = theme.colorScheme;
 
     if (message.isNote) {
+      final warning = context.dukavo.warning;
       return Container(
         margin: const EdgeInsets.symmetric(vertical: 6),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: AppColors.warning.withValues(alpha: 0.12),
+          color: warning.withValues(alpha: 0.12),
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: AppColors.warning.withValues(alpha: 0.4)),
+          border: Border.all(color: warning.withValues(alpha: 0.4)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                const Icon(Icons.sticky_note_2_outlined,
-                    size: 14, color: AppColors.warning),
+                Icon(Icons.sticky_note_2_outlined,
+                    size: 14, color: warning),
                 const SizedBox(width: 4),
                 Text(
                   context.tr('internalNote'),
                   style: theme.textTheme.labelSmall?.copyWith(
-                    color: AppColors.warning,
+                    color: warning,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -779,8 +805,9 @@ class _MessageBubble extends StatelessWidget {
     }
 
     final inbound = message.isInbound;
-    final bubbleColor = inbound ? scheme.surface : scheme.primary;
-    final textColor = inbound ? scheme.onSurface : scheme.onPrimary;
+    final colors = context.dukavo;
+    final bubbleColor = inbound ? colors.surfaceLow : scheme.primary;
+    final textColor = inbound ? colors.textPrimary : scheme.onPrimary;
 
     return Align(
       alignment: inbound
@@ -790,17 +817,22 @@ class _MessageBubble extends StatelessWidget {
         constraints: BoxConstraints(
           maxWidth: MediaQuery.sizeOf(context).width * 0.78,
         ),
-        margin: const EdgeInsets.symmetric(vertical: 5),
-        padding: const EdgeInsets.all(12),
+        margin: const EdgeInsets.symmetric(vertical: 4),
+        padding: const EdgeInsetsDirectional.fromSTEB(
+          AppSpacing.sm + 2,
+          AppSpacing.sm,
+          AppSpacing.sm + 2,
+          10,
+        ),
         decoration: BoxDecoration(
           color: bubbleColor,
-          borderRadius: BorderRadius.only(
-            topLeft: const Radius.circular(16),
-            topRight: const Radius.circular(16),
-            bottomLeft: Radius.circular(inbound ? 4 : 16),
-            bottomRight: Radius.circular(inbound ? 16 : 4),
+          borderRadius: BorderRadiusDirectional.only(
+            topStart: const Radius.circular(AppRadius.md),
+            topEnd: const Radius.circular(AppRadius.md),
+            bottomStart: Radius.circular(inbound ? 5 : AppRadius.md),
+            bottomEnd: Radius.circular(inbound ? AppRadius.md : 5),
           ),
-          border: inbound ? Border.all(color: scheme.outline) : null,
+          border: inbound ? Border.all(color: colors.border) : null,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -861,8 +893,11 @@ class _MessageBubble extends StatelessWidget {
                   Expanded(
                     child: Text(
                       message.failureReason ?? context.tr('deliveryFailed'),
-                      style: theme.textTheme.labelSmall
-                          ?.copyWith(color: scheme.onError),
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: inbound
+                            ? context.dukavo.danger
+                            : scheme.onPrimary.withValues(alpha: 0.9),
+                      ),
                     ),
                   ),
                   if (onRetry != null)
@@ -930,15 +965,19 @@ class _Composer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final requiresTemplate = conversation.channel == 'whatsapp' &&
         conversation.replyWindow.requiresTemplate;
 
     return Container(
-      padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+      padding: const EdgeInsetsDirectional.fromSTEB(
+        AppSpacing.sm + 2,
+        AppSpacing.xs,
+        AppSpacing.sm + 2,
+        AppSpacing.xs,
+      ),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        border: Border(top: BorderSide(color: theme.colorScheme.outline)),
+        color: context.dukavo.surface,
+        border: Border(top: BorderSide(color: context.dukavo.border)),
       ),
       child: SafeArea(
         top: false,
@@ -952,7 +991,7 @@ class _Composer extends StatelessWidget {
                   selected: !noteMode,
                   onSelected: canReply ? (_) => onNoteModeChanged(false) : null,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppSpacing.xs),
                 ChoiceChip(
                   label: Text(context.tr('internalNote')),
                   selected: noteMode,
@@ -967,7 +1006,7 @@ class _Composer extends StatelessWidget {
                   ),
               ],
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: AppSpacing.xxs),
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
@@ -984,18 +1023,23 @@ class _Composer extends StatelessWidget {
                     enabled: canReply && !requiresTemplate,
                   ),
                 ),
-                const SizedBox(width: 8),
-                IconButton.filled(
-                  tooltip: context.tr('sendMessage'),
-                  onPressed:
-                      canReply && !requiresTemplate && !sending ? onSend : null,
-                  icon: sending
-                      ? const SizedBox(
-                          width: 18,
-                          height: 18,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
-                      : const Icon(Icons.send),
+                const SizedBox(width: AppSpacing.xs),
+                SizedBox(
+                  width: 48,
+                  height: 48,
+                  child: IconButton.filled(
+                    tooltip: context.tr('sendMessage'),
+                    onPressed: canReply && !requiresTemplate && !sending
+                        ? onSend
+                        : null,
+                    icon: sending
+                        ? const SizedBox(
+                            width: 18,
+                            height: 18,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : const Icon(Icons.send_rounded, size: 20),
+                  ),
                 ),
               ],
             ),

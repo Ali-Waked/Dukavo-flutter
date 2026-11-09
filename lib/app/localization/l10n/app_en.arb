@@ -27,6 +27,8 @@
   "next": "Next",
   "apply": "Apply",
   "clear": "Clear",
+  "showPassword": "Show password",
+  "hidePassword": "Hide password",
   "filter": "Filter",
   "filters": "Filters",
   "refresh": "Refresh",

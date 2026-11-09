@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../app/theme/app_colors.dart';
+import '../../../../app/theme/design_tokens.dart';
 import '../../../../core/widgets/app_widgets.dart';
 
 /// The Dukavo wordmark with its reveal, glow and final-brand highlight.
@@ -37,6 +37,7 @@ class DukavoLogoAnimation extends StatelessWidget {
     return AnimatedBuilder(
       animation: Listenable.merge([reveal, glow, highlight, exit]),
       builder: (context, child) {
+        final colors = context.dukavo;
         // The timeline's intervals already carry their easing curves, so only
         // clamp here instead of easing a second time.
         final revealValue = reveal.value.clamp(0.0, 1.0);
@@ -69,10 +70,10 @@ class DukavoLogoAnimation extends StatelessWidget {
                       shape: BoxShape.circle,
                       gradient: RadialGradient(
                         colors: [
-                          AppColors.primary.withValues(
+                          colors.primary.withValues(
                             alpha: glowAlpha.clamp(0.0, 1.0),
                           ),
-                          AppColors.primary.withValues(alpha: 0),
+                          colors.primary.withValues(alpha: 0),
                         ],
                         stops: const [0.0, 0.72],
                       ),
@@ -88,14 +89,14 @@ class DukavoLogoAnimation extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(size * 0.24),
                         border: Border.all(
-                          color: AppColors.accent.withValues(
+                          color: colors.accent.withValues(
                             alpha: (0.55 * highlightValue).clamp(0.0, 1.0),
                           ),
                           width: 1.2,
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: AppColors.primary.withValues(
+                            color: colors.primary.withValues(
                               alpha: (0.20 * (1 - exitValue)).clamp(0.0, 1.0),
                             ),
                             blurRadius: 28,

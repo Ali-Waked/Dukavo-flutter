@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../app/localization/app_localizations.dart';
+import '../../../app/theme/design_tokens.dart';
 import '../../../core/api/api_exception.dart';
 import '../../../core/utils/validators.dart';
 import '../../../core/widgets/app_widgets.dart';
@@ -60,99 +61,104 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final colors = context.dukavo;
+    final texts = context.texts;
 
     return Scaffold(
       appBar: AppBar(title: Text(context.tr('forgotPassword'))),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsetsDirectional.fromSTEB(
+              AppSpacing.lg,
+              AppSpacing.sm,
+              AppSpacing.lg,
+              AppSpacing.xxl,
+            ),
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 440),
               child: _sent
-                  ? Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          Icons.mark_email_read_outlined,
-                          size: 56,
-                          color: theme.colorScheme.primary,
-                        ),
-                        const SizedBox(height: 18),
-                        Text(
-                          context.tr('resetLinkSent'),
-                          style: theme.textTheme.titleLarge,
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          context.tr('resetLinkSentMessage'),
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.onSurfaceVariant,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: 24),
-                        AppButton(
-                          label: context.tr('back'),
-                          expand: true,
-                          onPressed: () => Navigator.of(context).pop(),
-                        ),
-                      ],
-                    )
+                  ? _SentState(onBack: () => Navigator.of(context).pop())
                   : Form(
                       key: _formKey,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
+                          Container(
+                            width: 52,
+                            height: 52,
+                            decoration: BoxDecoration(
+                              color: context.scheme.primaryContainer,
+                              borderRadius:
+                                  BorderRadius.circular(AppRadius.md),
+                            ),
+                            child: Icon(
+                              Icons.lock_reset_rounded,
+                              color: context.scheme.onPrimaryContainer,
+                              size: 26,
+                            ),
+                          ),
+                          const SizedBox(height: AppSpacing.lg),
                           Text(
                             context.tr('forgotPasswordTitle'),
-                            style: theme.textTheme.headlineSmall?.copyWith(
+                            style: texts.headlineSmall?.copyWith(
                               fontWeight: FontWeight.w800,
+                              letterSpacing: -0.4,
+                              color: colors.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: AppSpacing.xs),
                           Text(
                             context.tr('forgotPasswordSubtitle'),
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.onSurfaceVariant,
+                            style: texts.bodyMedium?.copyWith(
+                              color: colors.textSecondary,
+                              height: 1.5,
                             ),
                           ),
-                          const SizedBox(height: 24),
+                          const SizedBox(height: AppSpacing.xl),
                           if (_error != null) ...[
-                            Text(
-                              _error!,
-                              style: TextStyle(color: theme.colorScheme.error),
+                            InfoBanner(
+                              message: _error!,
+                              tone: InfoBannerTone.danger,
+                              icon: Icons.error_outline_rounded,
                             ),
-                            const SizedBox(height: 12),
+                            const SizedBox(height: AppSpacing.md),
                           ],
-                          AppTextField(
-                            controller: _email,
-                            label: context.tr('email'),
-                            hint: context.tr('emailHint'),
-                            prefixIcon: Icons.alternate_email,
-                            keyboardType: TextInputType.emailAddress,
-                            textInputAction: TextInputAction.done,
-                            onSubmitted: (_) => _submit(),
-                            validator: (value) {
-                              final required = Validators.required(value);
-                              if (required != null) {
-                                return context.tr('requiredField');
-                              }
-                              if (!RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$')
-                                  .hasMatch(value!.trim())) {
-                                return context.tr('invalidEmail');
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 20),
-                          AppButton(
-                            label: context.tr('sendResetLink'),
-                            loading: _submitting,
-                            expand: true,
-                            onPressed: _submit,
+                          AppCard(
+                            padding: const EdgeInsets.all(AppSpacing.md),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                AppTextField(
+                                  controller: _email,
+                                  label: context.tr('email'),
+                                  hint: context.tr('emailHint'),
+                                  prefixIcon: Icons.alternate_email_rounded,
+                                  keyboardType: TextInputType.emailAddress,
+                                  textInputAction: TextInputAction.done,
+                                  onSubmitted: (_) => _submit(),
+                                  validator: (value) {
+                                    final required = Validators.required(value);
+                                    if (required != null) {
+                                      return context.tr('requiredField');
+                                    }
+                                    if (!RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$')
+                                        .hasMatch(value!.trim())) {
+                                      return context.tr('invalidEmail');
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                const SizedBox(height: AppSpacing.md),
+                                AppButton(
+                                  label: context.tr('sendResetLink'),
+                                  loading: _submitting,
+                                  expand: true,
+                                  icon: Icons.send_rounded,
+                                  onPressed: _submit,
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -161,6 +167,62 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _SentState extends StatelessWidget {
+  const _SentState({required this.onBack});
+
+  final VoidCallback onBack;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.dukavo;
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Align(
+          alignment: AlignmentDirectional.centerStart,
+          child: Container(
+            width: 72,
+            height: 72,
+            decoration: BoxDecoration(
+              color: colors.successContainer,
+              borderRadius: BorderRadius.circular(AppRadius.xl),
+            ),
+            child: Icon(
+              Icons.mark_email_read_outlined,
+              size: 34,
+              color: colors.success,
+            ),
+          ),
+        ),
+        const SizedBox(height: AppSpacing.lg),
+        Text(
+          context.tr('resetLinkSent'),
+          style: context.texts.headlineSmall?.copyWith(
+            fontWeight: FontWeight.w800,
+            color: colors.textPrimary,
+          ),
+        ),
+        const SizedBox(height: AppSpacing.xs),
+        Text(
+          context.tr('resetLinkSentMessage'),
+          style: context.texts.bodyMedium?.copyWith(
+            color: colors.textSecondary,
+            height: 1.55,
+          ),
+        ),
+        const SizedBox(height: AppSpacing.xl),
+        AppButton(
+          label: context.tr('back'),
+          expand: true,
+          icon: Icons.arrow_back_rounded,
+          onPressed: onBack,
+        ),
+      ],
     );
   }
 }

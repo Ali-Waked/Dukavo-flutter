@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/localization/app_localizations.dart';
 import '../../../app/router/route_paths.dart';
+import '../../../app/theme/design_tokens.dart';
 import '../../../core/api/api_exception.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/widgets/app_widgets.dart';
@@ -201,15 +202,15 @@ class _CustomerCrmScreenState extends ConsumerState<CustomerCrmScreen> {
         data: (data) => RefreshIndicator(
           onRefresh: () async => _reload(),
           child: ListView(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
+            padding: AppSpacing.page,
             children: [
               _CustomerHeader(customer: data.customer),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.md),
               _StatsGrid(
                 stats: data.stats,
                 fallbackCurrency: sessionCurrency,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpacing.sm),
               _SummaryCard(
                 summary: data.summary,
                 canUseAi: permissions.canUseAi,
@@ -218,7 +219,7 @@ class _CustomerCrmScreenState extends ConsumerState<CustomerCrmScreen> {
                 onRefresh: _refreshSummary,
                 onEdit: () => _editSummary(data.summary),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpacing.sm),
               _MemoriesSection(
                 customerId: widget.id,
                 canUpdate: permissions.canUpdateCustomers,
@@ -228,7 +229,7 @@ class _CustomerCrmScreenState extends ConsumerState<CustomerCrmScreen> {
                 onEdit: _editMemory,
                 onDelete: _deleteMemory,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpacing.sm),
               _TimelineSection(customerId: widget.id),
             ],
           ),
@@ -246,32 +247,57 @@ class _CustomerHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Row(
-      children: [
-        AppAvatar(name: customer.name, size: 56),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                customer.name,
-                style: theme.textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-              if (customer.phone != null || customer.email != null)
-                Text(
-                  customer.phone ?? customer.email ?? '',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
-                ),
-            ],
-          ),
+    return Container(
+      padding: const EdgeInsets.all(AppSpacing.md),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: AlignmentDirectional.topStart,
+          end: AlignmentDirectional.bottomEnd,
+          colors: [
+            context.dukavo.primary.withValues(
+              alpha: context.isDark ? 0.22 : 0.10,
+            ),
+            context.dukavo.surface,
+          ],
         ),
-        StatusChip(status: customer.status),
-      ],
+        borderRadius: BorderRadius.circular(AppRadius.lg),
+        border: Border.all(color: context.dukavo.border),
+      ),
+      child: Row(
+        children: [
+          AppAvatar(name: customer.name, size: 56),
+          const SizedBox(width: AppSpacing.sm),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  customer.name,
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: -0.3,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                if (customer.phone != null || customer.email != null) ...[
+                  const SizedBox(height: 3),
+                  Text(
+                    customer.phone ?? customer.email ?? '',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: context.dukavo.textMuted,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ],
+            ),
+          ),
+          const SizedBox(width: 8),
+          StatusChip(status: customer.status),
+        ],
+      ),
     );
   }
 }
@@ -294,19 +320,21 @@ class _StatsGrid extends StatelessWidget {
                 label: context.tr('ordersCount'),
                 value: '${stats.ordersCount}',
                 icon: Icons.receipt_long_outlined,
+                tint: context.scheme.primary,
               ),
             ),
-            const SizedBox(width: 10),
+            const SizedBox(width: AppSpacing.xs),
             Expanded(
               child: _StatCard(
                 label: context.tr('paidOrders'),
                 value: '${stats.paidOrdersCount}',
                 icon: Icons.verified_outlined,
+                tint: context.dukavo.success,
               ),
             ),
           ],
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: AppSpacing.xs),
         Row(
           children: [
             Expanded(
@@ -314,27 +342,29 @@ class _StatsGrid extends StatelessWidget {
                 label: context.tr('totalSpent'),
                 value: Formatters.currency(stats.totalSpent, currency),
                 icon: Icons.payments_outlined,
+                tint: context.dukavo.info,
               ),
             ),
-            const SizedBox(width: 10),
+            const SizedBox(width: AppSpacing.xs),
             Expanded(
               child: _StatCard(
                 label: context.tr('averageOrderValue'),
                 value: Formatters.currency(stats.averageOrderValue, currency),
                 icon: Icons.analytics_outlined,
+                tint: context.dukavo.warning,
               ),
             ),
           ],
         ),
         if (stats.lastInteractionAt != null) ...[
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.xs),
           Align(
             alignment: AlignmentDirectional.centerStart,
             child: Text(
               '${context.tr('lastInteraction')}: '
               '${Formatters.dateTime(stats.lastInteractionAt)}',
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    color: context.dukavo.textMuted,
                   ),
             ),
           ),
@@ -349,21 +379,32 @@ class _StatCard extends StatelessWidget {
     required this.label,
     required this.value,
     required this.icon,
+    this.tint,
   });
 
   final String label;
   final String value;
   final IconData icon;
+  final Color? tint;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final accent = tint ?? context.scheme.primary;
     return SectionCard(
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.all(AppSpacing.sm),
       child: Row(
         children: [
-          Icon(icon, size: 20, color: theme.colorScheme.primary),
-          const SizedBox(width: 10),
+          Container(
+            width: 34,
+            height: 34,
+            decoration: BoxDecoration(
+              color: accent.withValues(alpha: context.isDark ? 0.16 : 0.09),
+              borderRadius: BorderRadius.circular(AppRadius.sm),
+            ),
+            child: Icon(icon, size: 17, color: accent),
+          ),
+          const SizedBox(width: AppSpacing.xs),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -371,8 +412,10 @@ class _StatCard extends StatelessWidget {
                 Text(
                   label,
                   style: theme.textTheme.labelSmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
+                    color: context.dukavo.textMuted,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 2),
                 Text(
@@ -381,6 +424,7 @@ class _StatCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: theme.textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w800,
+                    letterSpacing: -0.2,
                   ),
                 ),
               ],
@@ -444,15 +488,15 @@ class _SummaryCard extends StatelessWidget {
               _SummaryList(
                 title: context.tr('risks'),
                 items: summary.risks,
-                icon: Icons.warning_amber_outlined,
-                color: theme.colorScheme.error,
+                icon: Icons.warning_amber_rounded,
+                color: context.dukavo.danger,
               ),
             if (summary.opportunities.isNotEmpty)
               _SummaryList(
                 title: context.tr('opportunities'),
                 items: summary.opportunities,
-                icon: Icons.trending_up,
-                color: theme.colorScheme.tertiary,
+                icon: Icons.trending_up_rounded,
+                color: context.dukavo.success,
               ),
             if (summary.refreshedAt != null || summary.model != null) ...[
               const SizedBox(height: 8),
@@ -763,11 +807,12 @@ class _TimelineTile extends StatelessWidget {
       contentPadding: EdgeInsets.zero,
       leading: CircleAvatar(
         radius: 18,
-        backgroundColor: theme.colorScheme.primaryContainer,
+        backgroundColor:
+            context.scheme.primary.withValues(alpha: context.isDark ? 0.18 : 0.10),
         child: Icon(
           isOrder ? Icons.receipt_long_outlined : Icons.chat_bubble_outline,
           size: 18,
-          color: theme.colorScheme.onPrimaryContainer,
+          color: context.scheme.primary,
         ),
       ),
       title: Text(

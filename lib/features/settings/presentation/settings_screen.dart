@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/localization/app_localizations.dart';
 import '../../../app/router/route_paths.dart';
+import '../../../app/theme/design_tokens.dart';
 import '../../../app/theme/theme_controller.dart';
 import '../../../core/currency/currency_catalogue.dart';
 import '../../../core/widgets/app_widgets.dart';
@@ -35,7 +36,12 @@ const _notificationEvents = <String>[
   'approvals',
   'weekly_summary',
   'product_news',
+  'team_activity',
+  'security_alerts',
 ];
+
+/// The account contract, not a preference: the server forces these on.
+const _mandatoryNotificationEvents = <String>{'security_alerts'};
 
 String _eventLabel(BuildContext context, String event) {
   switch (event) {
@@ -55,6 +61,10 @@ String _eventLabel(BuildContext context, String event) {
       return context.tr('weeklySummary');
     case 'product_news':
       return context.tr('productNews');
+    case 'team_activity':
+      return context.tr('teamActivity');
+    case 'security_alerts':
+      return context.tr('securityAlerts');
     default:
       return event.replaceAll('_', ' ');
   }
@@ -70,45 +80,47 @@ class SettingsScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: Text(context.tr('settings'))),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
+        padding: AppSpacing.page,
         children: [
           const _AppearanceCard(),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.sm),
           const _LanguageCard(),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.sm),
           if (permissions.canViewSettings) ...[
             const _WorkspaceCard(),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.sm),
           ],
           const _NotificationsCard(),
-          const SizedBox(height: 12),
-          SectionCard(
+          const SizedBox(height: AppSpacing.sm),
+          AppListGroup(
             title: context.tr('account'),
-            child: Column(
-              children: [
-                ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  leading: const Icon(Icons.person_outline),
-                  title: Text(context.tr('profile')),
-                  trailing: const Icon(Icons.chevron_right),
-                  onTap: () => context.push(RoutePaths.profile),
+            children: [
+              ListTile(
+                leading: const Icon(Icons.person_outline),
+                title: Text(context.tr('profile')),
+                trailing: const Icon(Icons.chevron_right_rounded),
+                onTap: () => context.push(RoutePaths.profile),
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.logout_rounded,
+                  color: context.scheme.error,
                 ),
-                ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  leading: const Icon(Icons.logout),
-                  title: Text(context.tr('logout')),
-                  onTap: () => _signOut(context, ref),
+                title: Text(
+                  context.tr('logout'),
+                  style: TextStyle(color: context.scheme.error),
                 ),
-              ],
-            ),
+                onTap: () => _signOut(context, ref),
+              ),
+            ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.lg),
           Center(
             child: Text(
               '${context.tr('appName')} ${context.tr('version')}',
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
+              style: context.texts.labelSmall?.copyWith(
+                color: context.dukavo.textMuted,
+              ),
             ),
           ),
         ],
@@ -475,6 +487,28 @@ class _NotificationSwitchesState extends ConsumerState<_NotificationSwitches> {
           ),
           const SizedBox(height: 8),
           _ChannelGroup(
+            channel: 'push',
+            title: context.tr('pushNotifications'),
+            state: widget.channels['push'],
+            preferences: _draft,
+            events: _notificationEvents,
+            onChanged: (event, value) => setState(
+              () => _draft = _draft.copyWithEvent('push', event, value),
+            ),
+          ),
+          const SizedBox(height: 8),
+          _ChannelGroup(
+            channel: 'in_app',
+            title: context.tr('inAppNotifications'),
+            state: widget.channels['in_app'],
+            preferences: _draft,
+            events: _notificationEvents,
+            onChanged: (event, value) => setState(
+              () => _draft = _draft.copyWithEvent('in_app', event, value),
+            ),
+          ),
+          const SizedBox(height: 8),
+          _ChannelGroup(
             channel: 'whatsapp',
             title: context.tr('whatsappNotifications'),
             state: widget.channels['whatsapp'],
@@ -565,12 +599,23 @@ class _ChannelGroup extends StatelessWidget {
           ],
         ),
         for (final event in events)
-          SwitchListTile(
-            contentPadding: EdgeInsets.zero,
-            dense: true,
-            title: Text(_eventLabel(context, event)),
-            value: preferences.isEnabled(channel, event),
-            onChanged: available ? (value) => onChanged(event, value) : null,
+          Builder(
+            builder: (context) {
+              final mandatory = _mandatoryNotificationEvents.contains(event);
+
+              return SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                dense: true,
+                title: Text(_eventLabel(context, event)),
+                subtitle: mandatory
+                    ? Text(context.tr('mandatorySecurityHint'))
+                    : null,
+                value: mandatory ? true : preferences.isEnabled(channel, event),
+                onChanged: available && !mandatory
+                    ? (value) => onChanged(event, value)
+                    : null,
+              );
+            },
           ),
       ],
     );

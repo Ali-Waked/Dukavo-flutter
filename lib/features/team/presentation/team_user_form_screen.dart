@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../app/localization/app_localizations.dart';
+import '../../../app/theme/design_tokens.dart';
 import '../../../core/api/api_client.dart';
 import '../../../core/api/api_exception.dart';
 import '../../../core/api/api_paths.dart';
@@ -136,7 +137,7 @@ class _TeamUserFormScreenState extends ConsumerState<TeamUserFormScreen> {
           : Form(
               key: _formKey,
               child: ListView(
-                padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
+                padding: AppSpacing.page,
                 children: [
                   if (_error != null) ...[
                     _ErrorBanner(message: _error!),

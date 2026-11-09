@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/localization/app_localizations.dart';
 import '../../../app/router/route_paths.dart';
+import '../../../app/theme/design_tokens.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/utils/validators.dart';
 import '../../../core/widgets/app_widgets.dart';
@@ -58,7 +59,12 @@ class _CustomersScreenState extends ConsumerState<CustomersScreen> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
+            padding: const EdgeInsetsDirectional.fromSTEB(
+              AppSpacing.md,
+              AppSpacing.xxs,
+              AppSpacing.md,
+              AppSpacing.xs,
+            ),
             child: SearchField(
               controller: _search,
               hint: context.tr('searchCustomers'),
@@ -77,6 +83,12 @@ class _CustomersScreenState extends ConsumerState<CustomersScreen> {
               state: state,
               onRefresh: notifier.reload,
               onLoadMore: notifier.loadMore,
+              padding: const EdgeInsetsDirectional.fromSTEB(
+                AppSpacing.md,
+                AppSpacing.xs,
+                AppSpacing.md,
+                96,
+              ),
               empty: EmptyState(
                 title: context.tr('noCustomers'),
                 icon: Icons.people_outline,
@@ -88,35 +100,72 @@ class _CustomersScreenState extends ConsumerState<CustomersScreen> {
                     : null,
               ),
               itemBuilder: (context, customer, index) {
-                return Card(
-                  child: ListTile(
-                    leading: AppAvatar(name: customer.name, size: 44),
-                    title: Text(
-                      customer.name,
-                      style: const TextStyle(fontWeight: FontWeight.w600),
-                    ),
-                    subtitle: Text(
-                      customer.phone ?? customer.email ?? '—',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    trailing: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        if (customer.totalSpent != null)
-                          Text(
-                            Formatters.currency(customer.totalSpent!, currency,
-                                compact: true),
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(fontWeight: FontWeight.w700),
+                return AppCard(
+                  padding: const EdgeInsets.all(AppSpacing.sm + 2),
+                  onTap: () => context.push(RoutePaths.customer(customer.id)),
+                  child: Row(
+                    children: [
+                      AppAvatar(name: customer.name, size: 46),
+                      const SizedBox(width: AppSpacing.sm + 2),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              customer.name,
+                              style: context.texts.titleSmall?.copyWith(
+                                fontWeight: FontWeight.w700,
+                                color: context.dukavo.textPrimary,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              customer.phone ?? customer.email ?? '—',
+                              style: context.texts.bodySmall?.copyWith(
+                                color: context.dukavo.textSecondary,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: AppSpacing.xs),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          if (customer.totalSpent != null)
+                            Text(
+                              Formatters.currency(
+                                customer.totalSpent!,
+                                currency,
+                                compact: true,
+                              ),
+                              style: context.texts.bodyMedium?.copyWith(
+                                fontWeight: FontWeight.w800,
+                                color: context.dukavo.textPrimary,
+                                fontFeatures: const [
+                                  FontFeature.tabularFigures(),
+                                ],
+                              ),
+                            ),
+                          const SizedBox(height: 3),
+                          StatusChip(
+                            status: customer.status,
+                            compact: true,
                           ),
-                        StatusChip(status: customer.status, compact: true),
-                      ],
-                    ),
-                    onTap: () => context.push(RoutePaths.customer(customer.id)),
+                        ],
+                      ),
+                      const SizedBox(width: AppSpacing.xxs),
+                      Icon(
+                        Icons.chevron_right_rounded,
+                        size: 18,
+                        color: context.dukavo.textMuted,
+                      ),
+                    ],
                   ),
                 );
               },

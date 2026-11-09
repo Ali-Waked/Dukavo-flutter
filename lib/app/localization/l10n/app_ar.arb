@@ -27,6 +27,8 @@
   "next": "التالي",
   "apply": "تطبيق",
   "clear": "مسح",
+  "showPassword": "إظهار كلمة المرور",
+  "hidePassword": "إخفاء كلمة المرور",
   "filter": "تصفية",
   "filters": "التصفية",
   "refresh": "تحديث",

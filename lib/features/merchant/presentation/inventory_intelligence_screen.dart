@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../app/localization/app_localizations.dart';
-import '../../../app/theme/app_colors.dart';
+import '../../../app/theme/design_tokens.dart';
 import '../../../core/api/api_client.dart';
 import '../../../core/api/api_exception.dart';
 import '../../../core/api/api_paths.dart';
@@ -149,7 +149,7 @@ class _InventoryIntelligenceScreenState
         onRefresh: _load,
         child: ListView(
           physics: const AlwaysScrollableScrollPhysics(),
-          padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
+          padding: AppSpacing.page,
           children: [
             SearchField(
               controller: _search,
@@ -267,25 +267,25 @@ class _InventoryIntelligenceScreenState
                 context,
                 context.tr('available'),
                 Formatters.number(summary.number('units_available') ?? 0),
-                AppColors.info,
+                context.dukavo.info,
               ),
               _pill(
                 context,
                 context.tr('lowStock'),
                 Formatters.number(summary.number('low_stock_count') ?? 0),
-                AppColors.warning,
+                context.dukavo.warning,
               ),
               _pill(
                 context,
                 context.tr('outOfStock'),
                 Formatters.number(summary.number('out_of_stock_count') ?? 0),
-                AppColors.danger,
+                context.dukavo.danger,
               ),
               _pill(
                 context,
                 context.tr('reorder'),
                 Formatters.number(summary.number('reorder_count') ?? 0),
-                AppColors.success,
+                context.dukavo.success,
               ),
             ],
           ),
@@ -315,7 +315,7 @@ class _InventoryIntelligenceScreenState
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: AppColors.tint(color),
+        color: color.withValues(alpha: context.isDark ? 0.18 : 0.10),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -430,7 +430,7 @@ class _InventoryIntelligenceScreenState
               Text(
                 context.tr('insufficientHistory'),
                 style: theme.textTheme.labelSmall?.copyWith(
-                  color: AppColors.warning,
+                  color: context.dukavo.warning,
                 ),
               ),
             ],

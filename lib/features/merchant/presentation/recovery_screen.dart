@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../app/localization/app_localizations.dart';
-import '../../../app/theme/app_colors.dart';
+import '../../../app/theme/design_tokens.dart';
 import '../../../core/api/api_client.dart';
 import '../../../core/api/api_paths.dart';
 import '../../../core/providers.dart';
@@ -92,13 +92,13 @@ class _RecoverySummaryCard extends ConsumerWidget {
                     context,
                     context.tr('open'),
                     Formatters.number(counts.number('open') ?? 0),
-                    AppColors.warning,
+                    context.dukavo.warning,
                   ),
                   _pill(
                     context,
                     context.tr('readyToRecover'),
                     Formatters.number(counts.number('eligible') ?? 0),
-                    AppColors.info,
+                    context.dukavo.info,
                   ),
                   _pill(
                     context,
@@ -110,13 +110,13 @@ class _RecoverySummaryCard extends ConsumerWidget {
                     context,
                     context.tr('recovered'),
                     Formatters.number(counts.number('recovered') ?? 0),
-                    AppColors.success,
+                    context.dukavo.success,
                   ),
                   _pill(
                     context,
                     context.tr('responded'),
                     Formatters.number(counts.number('responded') ?? 0),
-                    AppColors.success,
+                    context.dukavo.success,
                   ),
                 ],
               ),
@@ -165,7 +165,7 @@ class _RecoverySummaryCard extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: AppColors.tint(color),
+        color: color.withValues(alpha: context.isDark ? 0.18 : 0.10),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(

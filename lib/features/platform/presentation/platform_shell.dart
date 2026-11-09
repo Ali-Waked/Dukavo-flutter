@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/localization/app_localizations.dart';
 import '../../../app/router/route_paths.dart';
+import '../../../core/widgets/app_widgets.dart';
 
 class _PlatformDestination {
   const _PlatformDestination({
@@ -81,7 +82,7 @@ class PlatformShell extends StatelessWidget {
 
     return Scaffold(
       body: child,
-      bottomNavigationBar: NavigationBar(
+      bottomNavigationBar: AppNavigationBar(
         selectedIndex: selectedIndex,
         onDestinationSelected: (index) {
           if (index == selectedIndex) return;

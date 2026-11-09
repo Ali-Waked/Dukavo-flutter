@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/localization/app_localizations.dart';
 import '../../../app/router/route_paths.dart';
+import '../../../app/theme/design_tokens.dart';
 import '../../../core/widgets/app_widgets.dart';
 
 /// The marketing administration hub: Dukavo's own content, leads and audience.
@@ -70,7 +71,7 @@ class PlatformMarketingScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text(context.tr('marketing'))),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
+        padding: AppSpacing.page,
         children: [
           SectionCard(
             child: Row(
@@ -79,28 +80,33 @@ class PlatformMarketingScreen extends StatelessWidget {
                   width: 48,
                   height: 48,
                   decoration: BoxDecoration(
-                    color: theme.colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.circular(14),
+                    color: context.scheme.primary.withValues(
+                      alpha: context.isDark ? 0.18 : 0.10,
+                    ),
+                    borderRadius: BorderRadius.circular(AppRadius.md),
                   ),
                   child: Icon(
                     Icons.campaign_outlined,
-                    color: theme.colorScheme.onPrimaryContainer,
+                    color: context.scheme.primary,
                   ),
                 ),
-                const SizedBox(width: 14),
+                const SizedBox(width: AppSpacing.sm),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         context.tr('marketingHub'),
-                        style: theme.textTheme.titleMedium,
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         context.tr('marketingHubHint'),
                         style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
+                          color: context.dukavo.textMuted,
+                          height: 1.45,
                         ),
                       ),
                     ],
@@ -110,30 +116,26 @@ class PlatformMarketingScreen extends StatelessWidget {
             ),
           ),
           for (final group in groups) ...[
-            const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsetsDirectional.only(start: 4, bottom: 8),
-              child: Text(
-                context.tr(group.titleKey),
-                style: theme.textTheme.labelLarge?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
-              ),
-            ),
-            Card(
-              clipBehavior: Clip.antiAlias,
-              child: Column(
-                children: [
-                  for (final entry in group.entries)
-                    ListTile(
-                      leading: Icon(entry.icon),
-                      title: Text(context.tr(entry.labelKey)),
-                      subtitle: Text(context.tr(entry.descriptionKey)),
-                      trailing: const Icon(Icons.chevron_right),
-                      onTap: () => context.push(entry.path),
+            const SizedBox(height: AppSpacing.lg),
+            AppListGroup(
+              title: context.tr(group.titleKey),
+              children: [
+                for (final entry in group.entries)
+                  ListTile(
+                    leading: Icon(entry.icon, size: 21),
+                    title: Text(context.tr(entry.labelKey)),
+                    subtitle: Text(
+                      context.tr(entry.descriptionKey),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                ],
-              ),
+                    trailing: Icon(
+                      Icons.chevron_right_rounded,
+                      color: context.dukavo.textMuted,
+                    ),
+                    onTap: () => context.push(entry.path),
+                  ),
+              ],
             ),
           ],
         ],

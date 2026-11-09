@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/localization/app_localizations.dart';
 import '../../../app/router/route_paths.dart';
+import '../../../app/theme/design_tokens.dart';
 import '../../../core/widgets/app_widgets.dart';
 import '../application/shop_providers.dart';
 
@@ -51,50 +52,71 @@ class _ShopTrackScreenState extends State<ShopTrackScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return ListView(
-      padding: const EdgeInsets.fromLTRB(16, 24, 16, 32),
+      padding: const EdgeInsetsDirectional.fromSTEB(20, 28, 20, 32),
       children: [
-        Icon(
-          Icons.local_shipping_outlined,
-          size: 56,
-          color: theme.colorScheme.primary,
+        Center(
+          child: Container(
+            width: 80,
+            height: 80,
+            decoration: BoxDecoration(
+              color: context.scheme.primary.withValues(
+                alpha: context.isDark ? 0.18 : 0.10,
+              ),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              Icons.local_shipping_outlined,
+              size: 36,
+              color: context.scheme.primary,
+            ),
+          ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppSpacing.md),
         Text(
           context.tr('trackOrder'),
           textAlign: TextAlign.center,
           style: theme.textTheme.headlineSmall?.copyWith(
             fontWeight: FontWeight.w800,
+            letterSpacing: -0.3,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.xs),
         Text(
           context.tr('trackOrderHelp'),
           textAlign: TextAlign.center,
           style: theme.textTheme.bodyMedium?.copyWith(
-            color: theme.colorScheme.onSurfaceVariant,
+            color: context.dukavo.textSecondary,
+            height: 1.5,
           ),
         ),
-        const SizedBox(height: 24),
-        Form(
-          key: _formKey,
-          child: AppTextField(
-            controller: _controller,
-            label: context.tr('trackingToken'),
-            hint: context.tr('trackingTokenHint'),
-            prefixIcon: Icons.key_outlined,
-            textInputAction: TextInputAction.go,
-            onSubmitted: (_) => _submit(),
-            validator: (value) => (value == null || value.trim().isEmpty)
-                ? context.tr('requiredField')
-                : null,
+        const SizedBox(height: AppSpacing.xl),
+        AppCard(
+          padding: const EdgeInsets.all(AppSpacing.lg),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                AppTextField(
+                  controller: _controller,
+                  label: context.tr('trackingToken'),
+                  hint: context.tr('trackingTokenHint'),
+                  prefixIcon: Icons.key_outlined,
+                  textInputAction: TextInputAction.go,
+                  onSubmitted: (_) => _submit(),
+                  validator: (value) => (value == null || value.trim().isEmpty)
+                      ? context.tr('requiredField')
+                      : null,
+                ),
+                const SizedBox(height: AppSpacing.md),
+                AppButton(
+                  label: context.tr('findOrder'),
+                  icon: Icons.search,
+                  expand: true,
+                  onPressed: _submit,
+                ),
+              ],
+            ),
           ),
-        ),
-        const SizedBox(height: 16),
-        AppButton(
-          label: context.tr('findOrder'),
-          icon: Icons.search,
-          expand: true,
-          onPressed: _submit,
         ),
       ],
     );

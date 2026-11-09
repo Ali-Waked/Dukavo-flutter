@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/localization/app_localizations.dart';
 import '../../../app/router/route_paths.dart';
+import '../../../app/theme/design_tokens.dart';
 import '../../../core/api/api_exception.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/widgets/app_widgets.dart';
@@ -101,7 +102,7 @@ class _ShopCheckoutScreenState extends ConsumerState<ShopCheckoutScreen> {
       body: Form(
         key: _formKey,
         child: ListView(
-          padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
+          padding: AppSpacing.page,
           children: [
             SectionCard(
               title: context.tr('contactDetails'),
@@ -115,7 +116,7 @@ class _ShopCheckoutScreenState extends ConsumerState<ShopCheckoutScreen> {
                     autofillHints: const [AutofillHints.name],
                     validator: (value) => _required(context, value),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppSpacing.sm),
                   AppTextField(
                     controller: _phone,
                     label: context.tr('phone'),
@@ -124,7 +125,7 @@ class _ShopCheckoutScreenState extends ConsumerState<ShopCheckoutScreen> {
                     autofillHints: const [AutofillHints.telephoneNumber],
                     validator: (value) => _required(context, value),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppSpacing.sm),
                   AppTextField(
                     controller: _email,
                     label: context.tr('email'),
@@ -140,7 +141,7 @@ class _ShopCheckoutScreenState extends ConsumerState<ShopCheckoutScreen> {
                 ],
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.sm),
             SectionCard(
               title: context.tr('deliveryAddress'),
               child: Column(
@@ -155,7 +156,7 @@ class _ShopCheckoutScreenState extends ConsumerState<ShopCheckoutScreen> {
                       child: Text(
                         shopErrorMessage(context, error),
                         style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.error,
+                          color: context.dukavo.danger,
                         ),
                       ),
                     ),
@@ -168,7 +169,7 @@ class _ShopCheckoutScreenState extends ConsumerState<ShopCheckoutScreen> {
                           setState(() => _zoneCity = value),
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppSpacing.sm),
                   AppTextField(
                     controller: _lineOne,
                     label: context.tr('addressLineOne'),
@@ -177,7 +178,7 @@ class _ShopCheckoutScreenState extends ConsumerState<ShopCheckoutScreen> {
                     autofillHints: const [AutofillHints.streetAddressLine1],
                     validator: (value) => _required(context, value),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppSpacing.sm),
                   AppTextField(
                     controller: _lineTwo,
                     label: context.tr('addressLineTwo'),
@@ -185,7 +186,7 @@ class _ShopCheckoutScreenState extends ConsumerState<ShopCheckoutScreen> {
                     textInputAction: TextInputAction.next,
                     autofillHints: const [AutofillHints.streetAddressLine2],
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppSpacing.sm),
                   Row(
                     children: [
                       Expanded(
@@ -207,7 +208,7 @@ class _ShopCheckoutScreenState extends ConsumerState<ShopCheckoutScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppSpacing.sm),
                   AppTextField(
                     controller: _country,
                     label: context.tr('countryCode'),
@@ -216,7 +217,7 @@ class _ShopCheckoutScreenState extends ConsumerState<ShopCheckoutScreen> {
                     maxLines: 1,
                     validator: (value) => _countryError(context, value),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppSpacing.sm),
                   AppTextField(
                     controller: _notes,
                     label: context.tr('orderNotes'),
@@ -227,7 +228,7 @@ class _ShopCheckoutScreenState extends ConsumerState<ShopCheckoutScreen> {
                 ],
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.sm),
             SectionCard(
               title: context.tr('paymentMethod'),
               child: methods.when(
@@ -282,7 +283,7 @@ class _ShopCheckoutScreenState extends ConsumerState<ShopCheckoutScreen> {
                 },
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.sm),
             SectionCard(
               title: context.tr('orderSummary'),
               child: Column(
@@ -311,16 +312,16 @@ class _ShopCheckoutScreenState extends ConsumerState<ShopCheckoutScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Icon(
-                        Icons.info_outline,
+                        Icons.info_outline_rounded,
                         size: 16,
-                        color: theme.colorScheme.onSurfaceVariant,
+                        color: context.dukavo.textMuted,
                       ),
                       const SizedBox(width: 6),
                       Expanded(
                         child: Text(
                           context.tr('finalTotalOnConfirmation'),
                           style: theme.textTheme.labelSmall?.copyWith(
-                            color: theme.colorScheme.onSurfaceVariant,
+                            color: context.dukavo.textMuted,
                           ),
                         ),
                       ),
@@ -330,10 +331,10 @@ class _ShopCheckoutScreenState extends ConsumerState<ShopCheckoutScreen> {
               ),
             ),
             if (_error != null) ...[
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpacing.sm),
               ErrorView(message: _error!, onRetry: _submit),
             ],
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.md),
             AppButton(
               label: context.tr('placeOrder'),
               icon: Icons.check_circle_outline,
@@ -490,7 +491,7 @@ class _ZoneFields extends StatelessWidget {
               : null,
         ),
         if (areas.isNotEmpty) ...[
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.sm),
           DropdownButtonFormField<String>(
             initialValue: areas.contains(area.text) ? area.text : null,
             isExpanded: true,
@@ -508,7 +509,7 @@ class _ZoneFields extends StatelessWidget {
                 : null,
           ),
         ] else ...[
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.sm),
           AppTextField(
             controller: area,
             label: context.tr('area'),
@@ -543,9 +544,7 @@ class _PaymentTile extends StatelessWidget {
             ? method.description
             : (method.unavailableReason ?? method.description),
         style: theme.textTheme.bodySmall?.copyWith(
-          color: enabled
-              ? theme.colorScheme.onSurfaceVariant
-              : theme.colorScheme.error,
+          color: enabled ? context.dukavo.textMuted : context.dukavo.danger,
         ),
       ),
     );

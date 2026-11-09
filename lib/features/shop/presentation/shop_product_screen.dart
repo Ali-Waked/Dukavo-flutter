@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/localization/app_localizations.dart';
 import '../../../app/router/route_paths.dart';
-import '../../../app/theme/app_colors.dart';
+import '../../../app/theme/design_tokens.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/widgets/app_widgets.dart';
 import '../application/shop_providers.dart';
@@ -83,7 +83,7 @@ class _ShopProductScreenState extends ConsumerState<ShopProductScreen> {
       children: [
         Expanded(
           child: ListView(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 20),
+            padding: AppSpacing.page,
             children: [
               if (product.images.isNotEmpty)
                 SizedBox(
@@ -94,16 +94,19 @@ class _ShopProductScreenState extends ConsumerState<ShopProductScreen> {
                         controller: _pageController,
                         itemCount: product.images.length,
                         itemBuilder: (context, index) => ClipRRect(
-                          borderRadius: BorderRadius.circular(18),
+                          borderRadius: BorderRadius.circular(AppRadius.xl),
                           child: CachedNetworkImage(
                             imageUrl: product.images[index].url,
                             fit: BoxFit.cover,
                             placeholder: (context, url) => Container(
-                              color: theme.colorScheme.surfaceContainerHighest,
+                              color: context.dukavo.surfaceHigh,
                             ),
                             errorWidget: (context, url, error) => Container(
-                              color: theme.colorScheme.surfaceContainerHighest,
-                              child: const Icon(Icons.broken_image_outlined),
+                              color: context.dukavo.surfaceHigh,
+                              child: Icon(
+                                Icons.broken_image_outlined,
+                                color: context.dukavo.textMuted,
+                              ),
                             ),
                           ),
                         ),
@@ -142,12 +145,16 @@ class _ShopProductScreenState extends ConsumerState<ShopProductScreen> {
                 Container(
                   height: 220,
                   decoration: BoxDecoration(
-                    color: theme.colorScheme.surfaceContainerHighest,
-                    borderRadius: BorderRadius.circular(18),
+                    color: context.dukavo.surfaceHigh,
+                    borderRadius: BorderRadius.circular(AppRadius.xl),
                   ),
-                  child: const Icon(Icons.image_outlined, size: 48),
+                  child: Icon(
+                    Icons.image_outlined,
+                    size: 48,
+                    color: context.dukavo.textMuted,
+                  ),
                 ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.md),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -171,27 +178,27 @@ class _ShopProductScreenState extends ConsumerState<ShopProductScreen> {
                 Text(
                   product.categoryName!,
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
+                    color: context.dukavo.textMuted,
                   ),
                 ),
               ],
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpacing.sm),
               Text(
                 Formatters.currency(unitPrice, product.currency),
                 style: theme.textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.w800,
-                  color: theme.colorScheme.primary,
+                  color: context.scheme.primary,
                 ),
               ),
               if (selected != null && selected.sku != null)
                 Text(
                   '${context.tr('sku')}: ${selected.sku}',
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
+                    color: context.dukavo.textMuted,
                   ),
                 ),
               if (variants.length > 1) ...[
-                const SizedBox(height: 18),
+                const SizedBox(height: AppSpacing.md),
                 Text(
                   context.tr('chooseVariant'),
                   style: theme.textTheme.titleSmall,
@@ -219,7 +226,7 @@ class _ShopProductScreenState extends ConsumerState<ShopProductScreen> {
                   ],
                 ),
               ],
-              const SizedBox(height: 18),
+              const SizedBox(height: AppSpacing.md),
               Row(
                 children: [
                   Text(
@@ -239,12 +246,12 @@ class _ShopProductScreenState extends ConsumerState<ShopProductScreen> {
                 Text(
                   context.tr('onlyLeft', args: {'count': available}),
                   style: theme.textTheme.labelSmall?.copyWith(
-                    color: AppColors.warning,
+                    color: context.dukavo.warning,
                   ),
                 ),
               ],
               if (product.description?.isNotEmpty == true) ...[
-                const SizedBox(height: 20),
+                const SizedBox(height: AppSpacing.lg),
                 Text(
                   context.tr('description'),
                   style: theme.textTheme.titleSmall,
@@ -261,7 +268,7 @@ class _ShopProductScreenState extends ConsumerState<ShopProductScreen> {
         SafeArea(
           top: false,
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+            padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 12),
             child: Row(
               children: [
                 Expanded(
@@ -272,7 +279,7 @@ class _ShopProductScreenState extends ConsumerState<ShopProductScreen> {
                       Text(
                         context.tr('subtotalEstimate'),
                         style: theme.textTheme.labelSmall?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
+                          color: context.dukavo.textMuted,
                         ),
                       ),
                       Text(

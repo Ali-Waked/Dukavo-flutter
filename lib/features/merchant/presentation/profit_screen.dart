@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../app/localization/app_localizations.dart';
-import '../../../app/theme/app_colors.dart';
+import '../../../app/theme/design_tokens.dart';
 import '../../../core/api/api_client.dart';
 import '../../../core/api/api_exception.dart';
 import '../../../core/api/api_paths.dart';
@@ -108,7 +108,7 @@ class _ProfitScreenState extends ConsumerState<ProfitScreen> {
         onRefresh: _load,
         child: ListView(
           physics: const AlwaysScrollableScrollPhysics(),
-          padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
+          padding: AppSpacing.page,
           children: [
             _filters(
                 context, stores.valueOrNull ?? const [], session?.currency),
@@ -436,7 +436,7 @@ class _ProfitScreenState extends ConsumerState<ProfitScreen> {
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
                           color: product.number('gross_profit') == null
                               ? Theme.of(context).colorScheme.onSurfaceVariant
-                              : AppColors.success,
+                              : context.dukavo.success,
                         ),
                   ),
                 ],
@@ -499,7 +499,7 @@ class _ProfitScreenState extends ConsumerState<ProfitScreen> {
                         : Icons.info_outline,
                     size: 18,
                     color: item['severity'] == 'warning'
-                        ? AppColors.warning
+                        ? context.dukavo.warning
                         : theme.colorScheme.onSurfaceVariant,
                   ),
                   const SizedBox(width: 8),
@@ -621,7 +621,7 @@ class _MetricCard extends StatelessWidget {
               Text(
                 hint!,
                 style: theme.textTheme.labelSmall?.copyWith(
-                  color: AppColors.warning,
+                  color: context.dukavo.warning,
                 ),
                 maxLines: 2,
               ),

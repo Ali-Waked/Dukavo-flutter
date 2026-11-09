@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../app/localization/app_localizations.dart';
+import '../../../app/theme/design_tokens.dart';
 import '../../../core/widgets/app_widgets.dart';
 import '../../auth/application/auth_controller.dart';
 import '../application/category_controller.dart';
@@ -59,7 +60,7 @@ class CategoriesScreen extends ConsumerWidget {
               await ref.read(categoryTreeProvider.future);
             },
             child: ListView(
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 96),
+              padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 96),
               children: [
                 for (final root in roots)
                   _CategoryNode(
@@ -171,55 +172,114 @@ class _CategoryNode extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final active = category.isActive;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Card(
-          margin: EdgeInsetsDirectional.only(
+        Padding(
+          padding: EdgeInsetsDirectional.only(
             start: depth * 16.0,
-            bottom: 8,
+            bottom: AppSpacing.xs,
           ),
-          child: ListTile(
-            leading: Icon(
-              depth == 0
-                  ? Icons.folder_outlined
-                  : Icons.subdirectory_arrow_right,
-              color: category.isActive
-                  ? theme.colorScheme.primary
-                  : theme.colorScheme.onSurfaceVariant,
-            ),
-            title: Text(
-              category.name,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w600,
+          child: Material(
+            color: context.dukavo.surface,
+            borderRadius: BorderRadius.circular(AppRadius.md),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(AppRadius.md),
+              onTap: canManage ? () => onEdit(category) : null,
+              child: Container(
+                padding: const EdgeInsetsDirectional.fromSTEB(12, 10, 6, 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(AppRadius.md),
+                  border: Border.all(color: context.dukavo.border),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: (active
+                                ? context.scheme.primary
+                                : context.dukavo.textMuted)
+                            .withValues(alpha: context.isDark ? 0.16 : 0.09),
+                        borderRadius: BorderRadius.circular(AppRadius.sm),
+                      ),
+                      child: Icon(
+                        depth == 0
+                            ? Icons.folder_rounded
+                            : Icons.subdirectory_arrow_right_rounded,
+                        size: 20,
+                        color: active
+                            ? context.scheme.primary
+                            : context.dukavo.textMuted,
+                      ),
+                    ),
+                    const SizedBox(width: AppSpacing.sm),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            category.name,
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            [
+                              category.slug,
+                              if (category.productsCount != null)
+                                '${category.productsCount} ${context.tr('productsCount')}',
+                            ].join(' · '),
+                            style: theme.textTheme.labelSmall?.copyWith(
+                              color: context.dukavo.textMuted,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                    ),
+                    if (!active) ...[
+                      StatusChip(
+                        status: 'inactive',
+                        label: context.tr('inactive'),
+                        compact: true,
+                      ),
+                      const SizedBox(width: 4),
+                    ],
+                    if (canManage)
+                      PopupMenuButton<String>(
+                        tooltip: context.tr('edit'),
+                        icon: Icon(
+                          Icons.more_vert,
+                          size: 20,
+                          color: context.dukavo.textMuted,
+                        ),
+                        onSelected: (value) {
+                          if (value == 'edit') onEdit(category);
+                          if (value == 'delete') onDelete(category);
+                        },
+                        itemBuilder: (context) => [
+                          PopupMenuItem(
+                            value: 'edit',
+                            child: Text(context.tr('edit')),
+                          ),
+                          PopupMenuItem(
+                            value: 'delete',
+                            child: Text(context.tr('delete')),
+                          ),
+                        ],
+                      ),
+                  ],
+                ),
               ),
             ),
-            subtitle: Text(
-              [
-                category.slug,
-                if (category.productsCount != null)
-                  '${category.productsCount} ${context.tr('productsCount')}',
-              ].join(' · '),
-              style: theme.textTheme.labelSmall,
-            ),
-            trailing: canManage
-                ? PopupMenuButton<String>(
-                    onSelected: (value) {
-                      if (value == 'edit') onEdit(category);
-                      if (value == 'delete') onDelete(category);
-                    },
-                    itemBuilder: (context) => [
-                      PopupMenuItem(
-                        value: 'edit',
-                        child: Text(context.tr('edit')),
-                      ),
-                      PopupMenuItem(
-                        value: 'delete',
-                        child: Text(context.tr('delete')),
-                      ),
-                    ],
-                  )
-                : null,
           ),
         ),
         for (final child in category.children)

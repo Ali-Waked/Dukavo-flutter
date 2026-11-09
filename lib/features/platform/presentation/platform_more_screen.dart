@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/localization/app_localizations.dart';
 import '../../../app/router/route_paths.dart';
+import '../../../app/theme/design_tokens.dart';
 import '../../../core/widgets/app_widgets.dart';
 import '../../auth/application/auth_controller.dart';
 
@@ -80,96 +81,142 @@ class PlatformMoreScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: Text(context.tr('platformConsole'))),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
+        padding: AppSpacing.page,
         children: [
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
+          Container(
+            padding: const EdgeInsets.all(AppSpacing.md),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: AlignmentDirectional.topStart,
+                end: AlignmentDirectional.bottomEnd,
+                colors: [
+                  context.dukavo.primary.withValues(
+                    alpha: context.isDark ? 0.24 : 0.10,
+                  ),
+                  context.dukavo.surface,
+                ],
+              ),
+              borderRadius: BorderRadius.circular(AppRadius.lg),
+              border: Border.all(color: context.dukavo.border),
+            ),
+            child: Row(
+              children: [
+                AppAvatar(
+                  name: session?.user.name ?? '?',
+                  url: session?.user.avatarUrl,
+                  size: 54,
+                ),
+                const SizedBox(width: AppSpacing.sm),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        session?.user.name ?? '',
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        session?.user.email ?? '',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: context.dukavo.textMuted,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      if (session?.user.isSuperAdmin ?? false)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 6),
+                          child: StatusChip(
+                            status: 'active',
+                            label: context.tr('superAdmin'),
+                            compact: true,
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          if (session?.hasTenant ?? false) ...[
+            const SizedBox(height: AppSpacing.md),
+            AppCard(
+              onTap: () => context.go(RoutePaths.dashboard),
               child: Row(
                 children: [
-                  AppAvatar(
-                    name: session?.user.name ?? '?',
-                    url: session?.user.avatarUrl,
-                    size: 52,
+                  Container(
+                    width: 42,
+                    height: 42,
+                    decoration: BoxDecoration(
+                      color: context.scheme.primary.withValues(
+                        alpha: context.isDark ? 0.16 : 0.09,
+                      ),
+                      borderRadius: BorderRadius.circular(AppRadius.sm),
+                    ),
+                    child: Icon(
+                      Icons.storefront_outlined,
+                      size: 21,
+                      color: context.scheme.primary,
+                    ),
                   ),
-                  const SizedBox(width: 14),
+                  const SizedBox(width: AppSpacing.sm),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          session?.user.name ?? '',
-                          style: theme.textTheme.titleMedium,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                          context.tr('merchantWorkspace'),
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                         Text(
-                          session?.user.email ?? '',
+                          session?.activeTenant?.name ?? '',
                           style: theme.textTheme.bodySmall?.copyWith(
-                            color: theme.colorScheme.onSurfaceVariant,
+                            color: context.dukavo.textMuted,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        if (session?.user.isSuperAdmin ?? false)
-                          Padding(
-                            padding: const EdgeInsets.only(top: 6),
-                            child: StatusChip(
-                              status: 'active',
-                              label: context.tr('superAdmin'),
-                              compact: true,
-                            ),
-                          ),
                       ],
                     ),
                   ),
+                  Icon(
+                    Icons.chevron_right_rounded,
+                    color: context.dukavo.textMuted,
+                  ),
                 ],
-              ),
-            ),
-          ),
-          if (session?.hasTenant ?? false) ...[
-            const SizedBox(height: 12),
-            Card(
-              child: ListTile(
-                leading: const Icon(Icons.storefront_outlined),
-                title: Text(context.tr('merchantWorkspace')),
-                subtitle: Text(session?.activeTenant?.name ?? ''),
-                trailing: const Icon(Icons.chevron_right),
-                onTap: () => context.go(RoutePaths.dashboard),
               ),
             ),
           ],
           for (final group in groups)
             if (group.entries.any((entry) => entry.visible)) ...[
-              const SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsetsDirectional.only(start: 4, bottom: 8),
-                child: Text(
-                  context.tr(group.titleKey),
-                  style: theme.textTheme.labelLarge?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
-                ),
-              ),
-              Card(
-                clipBehavior: Clip.antiAlias,
-                child: Column(
-                  children: [
-                    for (final entry in group.entries.where((e) => e.visible))
-                      ListTile(
-                        leading: Icon(entry.icon),
-                        title: Text(context.tr(entry.labelKey)),
-                        trailing: const Icon(Icons.chevron_right),
-                        onTap: () => context.push(entry.path),
+              const SizedBox(height: AppSpacing.lg),
+              AppListGroup(
+                title: context.tr(group.titleKey),
+                children: [
+                  for (final entry in group.entries.where((e) => e.visible))
+                    ListTile(
+                      leading: Icon(entry.icon, size: 21),
+                      title: Text(context.tr(entry.labelKey)),
+                      trailing: Icon(
+                        Icons.chevron_right_rounded,
+                        color: context.dukavo.textMuted,
                       ),
-                  ],
-                ),
+                      onTap: () => context.push(entry.path),
+                    ),
+                ],
               ),
             ],
-          const SizedBox(height: 24),
+          const SizedBox(height: AppSpacing.xl),
           OutlinedButton.icon(
             style: OutlinedButton.styleFrom(
-              foregroundColor: theme.colorScheme.error,
+              foregroundColor: context.dukavo.danger,
+              minimumSize: const Size.fromHeight(AppSizes.buttonHeight),
             ),
             onPressed: () async {
               final confirmed = await ConfirmDialog.show(
@@ -186,12 +233,12 @@ class PlatformMoreScreen extends ConsumerWidget {
             icon: const Icon(Icons.logout),
             label: Text(context.tr('logout')),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.sm),
           Center(
             child: Text(
               'Dukavo 1.0.0',
               style: theme.textTheme.labelSmall?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
+                color: context.dukavo.textMuted,
               ),
             ),
           ),

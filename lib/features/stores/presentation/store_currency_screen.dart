@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../app/localization/app_localizations.dart';
+import '../../../app/theme/design_tokens.dart';
 import '../../../core/api/api_exception.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/widgets/app_widgets.dart';
@@ -159,7 +160,7 @@ class _StoreCurrencyScreenState extends ConsumerState<StoreCurrencyScreen> {
           onRetry: () => ref.invalidate(storeCurrencyProvider(widget.storeId)),
         ),
         data: (data) => ListView(
-          padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
+          padding: AppSpacing.page,
           children: [
             SectionCard(
               title: data.storeName,

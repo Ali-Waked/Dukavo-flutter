@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/localization/app_localizations.dart';
 import '../../../app/router/route_paths.dart';
+import '../../../app/theme/design_tokens.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/widgets/app_widgets.dart';
 import '../../auth/application/auth_controller.dart';
@@ -74,7 +75,12 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
+            padding: const EdgeInsetsDirectional.fromSTEB(
+              AppSpacing.md,
+              AppSpacing.xxs,
+              AppSpacing.md,
+              AppSpacing.xs,
+            ),
             child: SearchField(
               controller: _search,
               hint: context.tr('searchProducts'),
@@ -83,10 +89,12 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
             ),
           ),
           SizedBox(
-            height: 44,
+            height: 46,
             child: ListView(
               scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsetsDirectional.symmetric(
+                horizontal: AppSpacing.md,
+              ),
               children: [
                 for (final entry in const <String?, String>{
                   null: 'active',
@@ -95,7 +103,8 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
                   '': 'all',
                 }.entries)
                   Padding(
-                    padding: const EdgeInsetsDirectional.only(end: 8),
+                    padding:
+                        const EdgeInsetsDirectional.only(end: AppSpacing.xs),
                     child: ChoiceChip(
                       label: Text(context.tr(entry.value)),
                       selected: notifier.status == entry.key,
@@ -105,12 +114,18 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
               ],
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppSpacing.xxs),
           Expanded(
             child: PagedListView<Product>(
               state: state,
               onRefresh: notifier.reload,
               onLoadMore: notifier.loadMore,
+              padding: const EdgeInsetsDirectional.fromSTEB(
+                AppSpacing.md,
+                AppSpacing.xs,
+                AppSpacing.md,
+                96,
+              ),
               empty: EmptyState(
                 title: context.tr('noProducts'),
                 icon: Icons.inventory_2_outlined,
@@ -149,90 +164,103 @@ class _ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final scheme = theme.colorScheme;
+    final colors = context.dukavo;
+    final texts = context.texts;
     final imageUrl = product.primaryImageUrl;
 
-    return Material(
-      color: scheme.surface,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(18),
-        side: BorderSide(color: scheme.outline),
-      ),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(18),
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Row(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: SizedBox(
-                  width: 58,
-                  height: 58,
-                  child: imageUrl == null || imageUrl.isEmpty
-                      ? Container(
-                          color: scheme.surfaceContainerHighest,
-                          child: Icon(
-                            Icons.image_outlined,
-                            color: scheme.onSurfaceVariant,
-                          ),
-                        )
-                      : CachedNetworkImage(
-                          imageUrl: imageUrl,
-                          fit: BoxFit.cover,
-                          placeholder: (context, url) => Container(
-                            color: scheme.surfaceContainerHighest,
-                          ),
-                          errorWidget: (context, url, error) => Container(
-                            color: scheme.surfaceContainerHighest,
-                            child: Icon(
-                              Icons.broken_image_outlined,
-                              color: scheme.onSurfaceVariant,
-                            ),
-                          ),
+    return AppCard(
+      padding: const EdgeInsets.all(AppSpacing.sm + 2),
+      onTap: onTap,
+      child: Row(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(AppRadius.sm + 2),
+            child: SizedBox(
+              width: 64,
+              height: 64,
+              child: imageUrl == null || imageUrl.isEmpty
+                  ? Container(
+                      color: colors.surfaceHigh,
+                      child: Icon(
+                        Icons.image_outlined,
+                        color: colors.textMuted,
+                        size: 22,
+                      ),
+                    )
+                  : CachedNetworkImage(
+                      imageUrl: imageUrl,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) =>
+                          Container(color: colors.surfaceHigh),
+                      errorWidget: (context, url, error) => Container(
+                        color: colors.surfaceHigh,
+                        child: Icon(
+                          Icons.broken_image_outlined,
+                          color: colors.textMuted,
+                          size: 22,
                         ),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      product.name,
-                      style: theme.textTheme.titleSmall
-                          ?.copyWith(fontWeight: FontWeight.w600),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 3),
-                    Text(
-                      product.sku ?? product.slug,
-                      style: theme.textTheme.labelSmall?.copyWith(
-                        color: scheme.onSurfaceVariant,
                       ),
                     ),
-                    const SizedBox(height: 6),
-                    Row(
-                      children: [
-                        Text(
-                          Formatters.currency(product.price, currency),
-                          style: theme.textTheme.bodyMedium
-                              ?.copyWith(fontWeight: FontWeight.w700),
-                        ),
-                        const SizedBox(width: 8),
-                        _StockChip(stock: product.stock),
-                      ],
+            ),
+          ),
+          const SizedBox(width: AppSpacing.sm + 2),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  product.name,
+                  style: texts.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: colors.textPrimary,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  product.sku ??
+                      product.categoryName ??
+                      product.slug,
+                  style: texts.labelSmall?.copyWith(
+                    color: colors.textMuted,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 7),
+                Row(
+                  children: [
+                    Text(
+                      Formatters.currency(product.price, currency),
+                      style: texts.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w800,
+                        color: colors.textPrimary,
+                        fontFeatures: const [FontFeature.tabularFigures()],
+                      ),
                     ),
+                    const SizedBox(width: AppSpacing.xs),
+                    _StockChip(stock: product.stock),
                   ],
                 ),
-              ),
-              Icon(Icons.chevron_right, color: scheme.onSurfaceVariant),
-            ],
+              ],
+            ),
           ),
-        ),
+          const SizedBox(width: AppSpacing.xs),
+          Container(
+            width: 28,
+            height: 28,
+            decoration: BoxDecoration(
+              color: colors.surfaceLow,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              Icons.chevron_right_rounded,
+              size: 18,
+              color: colors.textMuted,
+            ),
+          ),
+        ],
       ),
     );
   }
