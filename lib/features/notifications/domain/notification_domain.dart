@@ -67,6 +67,8 @@ abstract class NotificationRepository {
     int perPage = 20,
   });
 
+  Future<AppNotification> fetch(String id);
+
   Future<int> unreadCount();
 
   Future<AppNotification> markRead(String id);

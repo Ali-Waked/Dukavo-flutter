@@ -26,10 +26,16 @@ class ApiPaths {
   static const profileNotifications = '/profile/notifications';
   static const profileNotificationChannels = '/profile/notifications/channels';
 
+  // Push installations owned by the signed-in account.
+  static const profileDevices = '/profile/devices';
+  static const profileDevicesUnregister = '/profile/devices/unregister';
+  static String profileDevice(int id) => '/profile/devices/$id';
+
   // Notifications
   static const notifications = '/notifications';
   static const notificationsUnreadCount = '/notifications/unread-count';
   static const notificationsReadAll = '/notifications/read-all';
+  static String notification(String id) => '/notifications/$id';
 
   // Tenant
   static const dashboard = '/tenant/dashboard';

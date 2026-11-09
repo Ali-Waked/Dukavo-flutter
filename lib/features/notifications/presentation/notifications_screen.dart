@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../app/localization/app_localizations.dart';
-import '../../../app/theme/app_colors.dart';
+import '../../../app/router/route_paths.dart';
+import '../../../app/theme/design_tokens.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/widgets/app_widgets.dart';
 import '../application/notification_controller.dart';
@@ -58,6 +60,18 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
               if (mounted) setState(() {});
             },
           ),
+          _CategorySeverityFilters(
+            category: notifier.filters.category,
+            severity: notifier.filters.severity,
+            onCategoryChanged: (value) async {
+              await notifier.setCategory(value);
+              if (mounted) setState(() {});
+            },
+            onSeverityChanged: (value) async {
+              await notifier.setSeverity(value);
+              if (mounted) setState(() {});
+            },
+          ),
           Expanded(
             child: PagedListView<AppNotification>(
               state: state,
@@ -73,10 +87,13 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
               itemBuilder: (context, item, index) {
                 return _NotificationTile(
                   notification: item,
-                  onTap: () async {
-                    if (!item.read) {
-                      await notifier.markRead(item);
-                    }
+                  onTap: () {
+                    // The detail screen marks it read and folds that state back
+                    // into this list, so tapping twice cannot double-count.
+                    context.push(
+                      RoutePaths.notificationDetail(item.id),
+                      extra: item,
+                    );
                   },
                   onToggleRead: () async {
                     if (item.read) {
@@ -132,6 +149,130 @@ class _StatusFilters extends StatelessWidget {
   }
 }
 
+const _notificationCategories = <String>[
+  'orders',
+  'inventory',
+  'messages',
+  'customers',
+  'billing',
+  'ai',
+  'approvals',
+  'security',
+  'reports',
+  'announcements',
+  'team',
+];
+
+const _notificationSeverities = <String>[
+  'info',
+  'success',
+  'warning',
+  'critical',
+];
+
+String _categoryLabel(BuildContext context, String value) {
+  return switch (value) {
+    'orders' => context.tr('categoryOrders'),
+    'inventory' => context.tr('categoryInventory'),
+    'messages' || 'conversations' => context.tr('categoryMessages'),
+    'customers' => context.tr('categoryCustomers'),
+    'billing' => context.tr('categoryBilling'),
+    'ai' => context.tr('categoryAi'),
+    'approvals' => context.tr('categoryApprovals'),
+    'security' => context.tr('categorySecurity'),
+    'reports' => context.tr('categoryReports'),
+    'announcements' => context.tr('categoryAnnouncements'),
+    'team' => context.tr('categoryTeam'),
+    _ => value,
+  };
+}
+
+String _severityLabel(BuildContext context, String value) {
+  return switch (value) {
+    'success' => context.tr('severitySuccess'),
+    'warning' => context.tr('severityWarning'),
+    'critical' => context.tr('severityCritical'),
+    _ => context.tr('severityInfo'),
+  };
+}
+
+class _CategorySeverityFilters extends StatelessWidget {
+  const _CategorySeverityFilters({
+    required this.category,
+    required this.severity,
+    required this.onCategoryChanged,
+    required this.onSeverityChanged,
+  });
+
+  final String? category;
+  final String? severity;
+  final ValueChanged<String?> onCategoryChanged;
+  final ValueChanged<String?> onSeverityChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 8),
+      child: Row(
+        children: [
+          Expanded(
+            child: DropdownButton<String>(
+              value: category ?? '',
+              isExpanded: true,
+              underline: const SizedBox.shrink(),
+              hint: Text(context.tr('categoryFilter')),
+              items: [
+                DropdownMenuItem(
+                  value: '',
+                  child: Text(context.tr('allCategories')),
+                ),
+                for (final value in _notificationCategories)
+                  DropdownMenuItem(
+                    value: value,
+                    child: Text(_categoryLabel(context, value)),
+                  ),
+              ],
+              onChanged: (value) => onCategoryChanged(
+                  value == null || value.isEmpty ? null : value),
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: DropdownButton<String>(
+              value: severity ?? '',
+              isExpanded: true,
+              underline: const SizedBox.shrink(),
+              hint: Text(context.tr('severity')),
+              items: [
+                DropdownMenuItem(
+                  value: '',
+                  child: Text(context.tr('allSeverities')),
+                ),
+                for (final value in _notificationSeverities)
+                  DropdownMenuItem(
+                    value: value,
+                    child: Text(_severityLabel(context, value)),
+                  ),
+              ],
+              onChanged: (value) => onSeverityChanged(
+                  value == null || value.isEmpty ? null : value),
+            ),
+          ),
+          if (category != null || severity != null)
+            IconButton(
+              tooltip: context.tr('filters'),
+              onPressed: () {
+                onCategoryChanged(null);
+                onSeverityChanged(null);
+              },
+              icon: const Icon(Icons.filter_alt_off_outlined),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
 class _NotificationTile extends StatelessWidget {
   const _NotificationTile({
     required this.notification,
@@ -150,7 +291,7 @@ class _NotificationTile extends StatelessWidget {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
     final unread = !notification.read;
-    final accent = _severityColor(notification.severity, scheme);
+    final accent = _severityColor(notification.severity, context.dukavo);
 
     return Dismissible(
       key: ValueKey('notification-${notification.id}'),
@@ -215,8 +356,8 @@ class _NotificationTile extends StatelessWidget {
                             Container(
                               width: 8,
                               height: 8,
-                              decoration: const BoxDecoration(
-                                color: AppColors.accent,
+                              decoration: BoxDecoration(
+                                color: context.dukavo.accent,
                                 shape: BoxShape.circle,
                               ),
                             ),
@@ -280,16 +421,16 @@ class _NotificationTile extends StatelessWidget {
     }
   }
 
-  static Color _severityColor(String severity, ColorScheme scheme) {
+  static Color _severityColor(String severity, DukavoColors colors) {
     switch (severity) {
       case 'success':
-        return AppColors.success;
+        return colors.success;
       case 'warning':
-        return AppColors.warning;
+        return colors.warning;
       case 'critical':
-        return AppColors.danger;
+        return colors.danger;
       default:
-        return AppColors.info;
+        return colors.info;
     }
   }
 }

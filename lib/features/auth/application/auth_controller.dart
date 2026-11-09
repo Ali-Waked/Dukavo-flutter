@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/api/api_exception.dart';
 import '../../../core/auth/permissions.dart';
 import '../../../core/providers.dart';
+import '../../notifications/application/push_service.dart';
 import '../data/auth_data.dart';
 import '../domain/auth_domain.dart';
 
@@ -70,14 +71,22 @@ class AuthState {
 }
 
 class AuthController extends StateNotifier<AuthState> {
-  AuthController(this._repository, {bool autoBootstrap = true})
-      : super(const AuthState(status: AuthStatus.unknown)) {
+  AuthController(
+    this._repository, {
+    bool autoBootstrap = true,
+    Future<void> Function()? onBeforeLogout,
+  })  : _onBeforeLogout = onBeforeLogout,
+        super(const AuthState(status: AuthStatus.unknown)) {
     if (autoBootstrap) {
       unawaited(bootstrap());
     }
   }
 
   final AuthRepository _repository;
+
+  /// Runs while the bearer token is still valid. Push uses it to revoke this
+  /// installation before logout destroys the credential.
+  final Future<void> Function()? _onBeforeLogout;
 
   Future<void> bootstrap() async {
     state = const AuthState(status: AuthStatus.unknown);
@@ -202,6 +211,13 @@ class AuthController extends StateNotifier<AuthState> {
 
   Future<void> logout() async {
     state = state.copyWith(isSubmitting: true);
+
+    try {
+      await _onBeforeLogout?.call();
+    } catch (_) {
+      // A failed token revocation must not trap the merchant in the app.
+    }
+
     try {
       await _repository.logout();
     } catch (_) {
@@ -264,7 +280,10 @@ final authRepositoryProvider = Provider<AuthRepository>((ref) {
 
 final authControllerProvider =
     StateNotifierProvider<AuthController, AuthState>((ref) {
-  final controller = AuthController(ref.watch(authRepositoryProvider));
+  final controller = AuthController(
+    ref.watch(authRepositoryProvider),
+    onBeforeLogout: ref.read(pushServiceProvider).unregisterToken,
+  );
   final apiClient = ref.watch(apiClientProvider);
   apiClient.onUnauthorized = controller.handleUnauthorized;
   ref.onDispose(() {

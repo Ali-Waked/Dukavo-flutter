@@ -25,6 +25,8 @@ class RoutePaths {
   static const inventory = '/inventory';
   static const conversations = '/conversations';
   static const notifications = '/notifications';
+  static String notificationDetail(String id) =>
+      '/notifications/${Uri.encodeComponent(id)}';
   static const analytics = '/analytics';
   static const storefront = '/storefront';
   static const shippingZones = '/shipping-zones';

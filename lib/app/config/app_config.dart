@@ -53,6 +53,41 @@ class AppConfig {
     return '$webBaseUrl/shop/$tenantSlug/$storeSlug';
   }
 
+  /*
+   * Firebase is configured at build time, never committed.
+   *
+   * Passing the values with --dart-define keeps service credentials and
+   * `google-services.json` out of the repository while still letting a release
+   * build initialise the official SDK. When any required value is missing the
+   * app runs normally without push instead of crashing at boot.
+   */
+  static const String firebaseProjectId = String.fromEnvironment(
+    'DUKAVO_FIREBASE_PROJECT_ID',
+  );
+  static const String firebaseApiKey = String.fromEnvironment(
+    'DUKAVO_FIREBASE_API_KEY',
+  );
+  static const String firebaseAppId = String.fromEnvironment(
+    'DUKAVO_FIREBASE_APP_ID',
+  );
+  static const String firebaseMessagingSenderId = String.fromEnvironment(
+    'DUKAVO_FIREBASE_MESSAGING_SENDER_ID',
+  );
+  static const String firebaseStorageBucket = String.fromEnvironment(
+    'DUKAVO_FIREBASE_STORAGE_BUCKET',
+  );
+  static const String firebaseIosBundleId = String.fromEnvironment(
+    'DUKAVO_FIREBASE_IOS_BUNDLE_ID',
+    defaultValue: 'com.dukavo.mobile',
+  );
+
+  /// True only when every field [FirebaseOptions] needs is present.
+  static bool get firebaseConfigured =>
+      firebaseProjectId.isNotEmpty &&
+      firebaseApiKey.isNotEmpty &&
+      firebaseAppId.isNotEmpty &&
+      firebaseMessagingSenderId.isNotEmpty;
+
   static const Duration connectTimeout = Duration(seconds: 20);
   static const Duration receiveTimeout = Duration(seconds: 30);
 

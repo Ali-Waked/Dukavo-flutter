@@ -45,6 +45,18 @@ class AppPreferences {
     return _prefs.setString(_localeKey, locale.languageCode);
   }
 
+  static const _installationKey = 'dukavo.push_installation_id';
+
+  /// A stable random id for this installation, created on first push boot.
+  ///
+  /// The FCM token rotates, so it cannot identify the phone; this value lets
+  /// the backend replace the old token row instead of accumulating duplicates.
+  String? get pushInstallationId => _prefs.getString(_installationKey);
+
+  Future<void> setPushInstallationId(String id) {
+    return _prefs.setString(_installationKey, id);
+  }
+
   String? get tenantSlug => _prefs.getString(_tenantKey);
 
   Future<void> setTenantSlug(String? slug) {

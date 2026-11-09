@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../features/notifications/application/push_lifecycle.dart';
 import 'localization/app_localizations.dart';
 import 'router/app_router.dart';
 import 'theme/app_theme.dart';
@@ -14,6 +15,10 @@ class DukavoApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Owning the push lifecycle here keeps it alive for the whole app session
+    // without making every screen think about Firebase.
+    ref.watch(pushLifecycleProvider);
+
     final router = ref.watch(appRouterProvider);
     final themeMode = ref.watch(themeControllerProvider);
     final locale = ref.watch(localeControllerProvider);

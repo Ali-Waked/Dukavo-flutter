@@ -29,6 +29,8 @@ import '../../features/merchant/presentation/merchant_hubs.dart';
 import '../../features/merchant/presentation/merchant_specs.dart';
 import '../../features/merchant/presentation/profit_screen.dart';
 import '../../features/merchant/presentation/recovery_screen.dart';
+import '../../features/notifications/domain/notification_domain.dart';
+import '../../features/notifications/presentation/notification_detail_screen.dart';
 import '../../features/notifications/presentation/notifications_screen.dart';
 import '../../features/orders/presentation/orders_screen.dart';
 import '../../features/payments/presentation/payment_settings_screen.dart';
@@ -458,6 +460,15 @@ List<RouteBase> _routes() {
       path: '/conversations/:id',
       builder: (context, state) => ConversationThreadScreen(
         id: int.tryParse(state.pathParameters['id'] ?? '') ?? 0,
+      ),
+    ),
+    GoRoute(
+      path: '/notifications/:id',
+      builder: (context, state) => NotificationDetailScreen(
+        id: state.pathParameters['id'] ?? '',
+        initial: state.extra is AppNotification
+            ? state.extra! as AppNotification
+            : null,
       ),
     ),
     GoRoute(

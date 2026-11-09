@@ -114,6 +114,19 @@ class NotificationInboxNotifier extends PaginatedNotifier<AppNotification> {
     }
   }
 
+  /// Fold a change made outside the list (the detail screen) into the page.
+  void replaceNotification(AppNotification updated) {
+    _replace(updated);
+  }
+
+  /// Remove a notification dismissed from its detail screen.
+  void removeNotification(String id) {
+    state = state.copyWith(
+      items: state.items.where((item) => item.id != id).toList(),
+      total: state.total > 0 ? state.total - 1 : 0,
+    );
+  }
+
   void _replace(AppNotification updated) {
     state = state.copyWith(
       items: state.items

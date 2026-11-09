@@ -89,6 +89,16 @@ class NotificationRemoteDataSource {
     );
   }
 
+  Future<AppNotification> fetch(String id) async {
+    final data = await _api.get<Map<String, dynamic>>(
+      ApiPaths.notification(id),
+      decode: (raw) => raw is Map
+          ? Map<String, dynamic>.from(raw)
+          : const <String, dynamic>{},
+    );
+    return NotificationModel.fromJson(data).toEntity();
+  }
+
   Future<int> unreadCount() async {
     final data = await _api.get<Map<String, dynamic>>(
       ApiPaths.notificationsUnreadCount,
@@ -182,6 +192,9 @@ class NotificationRepositoryImpl implements NotificationRepository {
       perPage: perPage,
     );
   }
+
+  @override
+  Future<AppNotification> fetch(String id) => _remote.fetch(id);
 
   @override
   Future<int> unreadCount() => _remote.unreadCount();
