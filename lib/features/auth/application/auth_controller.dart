@@ -275,6 +275,8 @@ final authRepositoryProvider = Provider<AuthRepository>((ref) {
     tokenStore: ref.watch(tokenStoreProvider),
     preferences: ref.watch(appPreferencesProvider),
     apiClient: apiClient,
+    cache: ref.watch(cacheManagerProvider),
+    queue: ref.watch(offlineQueueProvider),
   );
 });
 

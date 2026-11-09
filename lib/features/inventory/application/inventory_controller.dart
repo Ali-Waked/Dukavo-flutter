@@ -34,7 +34,10 @@ class InventoryListNotifier extends PaginatedNotifier<InventoryItem> {
 final inventoryListProvider =
     StateNotifierProvider<InventoryListNotifier, PaginatedState<InventoryItem>>(
         (ref) {
-  return InventoryListNotifier(ref.watch(inventoryRepositoryProvider));
+  final notifier =
+      InventoryListNotifier(ref.watch(inventoryRepositoryProvider));
+  refreshOnReconnect(ref, notifier.reload);
+  return notifier;
 });
 
 final inventoryMovementsProvider =

@@ -55,6 +55,49 @@ class AppLocalizationsAr extends AppLocalizations {
       'تعذر الوصول إلى الخادم. تحقق من اتصالك وحاول مرة أخرى.';
 
   @override
+  String get offlineTitle => 'أنت غير متصل';
+
+  @override
+  String get offlineBody =>
+      'نعرض ما تم حفظه على هذا الجهاز. الإجراءات التي تحتاج إلى الخادم متوقفة مؤقتًا.';
+
+  @override
+  String get offlineSyncingTitle => 'عاد الاتصال';
+
+  @override
+  String offlineSyncingBody(Object count) {
+    return 'جارٍ مزامنة $count تغيير محفوظ…';
+  }
+
+  @override
+  String get offlineRefreshing => 'جارٍ تحديث أحدث البيانات…';
+
+  @override
+  String get offlineBackOnline => 'عاد الاتصال بالإنترنت';
+
+  @override
+  String get offlineBackOnlineBody =>
+      'جارٍ مزامنة التغييرات المحفوظة وسيتم تحديث الشاشات.';
+
+  @override
+  String get offlineActionBlocked => 'هذا الإجراء يحتاج إلى اتصال بالإنترنت.';
+
+  @override
+  String get offlineNoSavedData => 'لا توجد نسخة محفوظة بعد';
+
+  @override
+  String get offlineNoSavedDataBody =>
+      'اتصل بالإنترنت مرة واحدة لتبقى هذه الشاشة متاحة دون اتصال.';
+
+  @override
+  String get offlineQueued => 'تم الحفظ للمزامنة لاحقًا';
+
+  @override
+  String offlinePendingChanges(Object count) {
+    return '$count تغيير في انتظار المزامنة';
+  }
+
+  @override
   String get requiredField => 'هذا الحقل مطلوب.';
 
   @override
@@ -1117,6 +1160,88 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get notificationsEmpty => 'لا إشعارات تطابق هذه التصفية.';
+
+  @override
+  String get pushNotifications => 'الإشعارات الفورية';
+
+  @override
+  String get inAppNotifications => 'الإشعارات داخل التطبيق';
+
+  @override
+  String get teamActivity => 'نشاط الفريق';
+
+  @override
+  String get securityAlerts => 'تنبيهات الأمان';
+
+  @override
+  String get mandatorySecurityHint => 'مفعّل دائمًا للحفاظ على أمان حسابك.';
+
+  @override
+  String get allCategories => 'كل الفئات';
+
+  @override
+  String get allSeverities => 'كل الأولويات';
+
+  @override
+  String get notificationNotFound => 'تعذر العثور على هذا الإشعار.';
+
+  @override
+  String get deleteNotificationConfirm =>
+      'حذف هذا الإشعار؟ لا يمكن التراجع عن ذلك.';
+
+  @override
+  String get notificationDeleted => 'تم حذف الإشعار.';
+
+  @override
+  String get notificationDetail => 'تفاصيل الإشعار';
+
+  @override
+  String get openRelated => 'فتح العنصر المرتبط';
+
+  @override
+  String get categoryOrders => 'الطلبات';
+
+  @override
+  String get categoryInventory => 'المخزون';
+
+  @override
+  String get categoryMessages => 'الرسائل';
+
+  @override
+  String get categoryCustomers => 'العملاء';
+
+  @override
+  String get categoryBilling => 'الفوترة';
+
+  @override
+  String get categoryAi => 'رؤى الذكاء الاصطناعي';
+
+  @override
+  String get categoryApprovals => 'الموافقات';
+
+  @override
+  String get categorySecurity => 'الأمان';
+
+  @override
+  String get categoryReports => 'التقارير';
+
+  @override
+  String get categoryAnnouncements => 'الإعلانات';
+
+  @override
+  String get categoryTeam => 'الفريق';
+
+  @override
+  String get severityInfo => 'معلومة';
+
+  @override
+  String get severitySuccess => 'نجاح';
+
+  @override
+  String get severityWarning => 'تحذير';
+
+  @override
+  String get severityCritical => 'حرج';
 
   @override
   String get reply => 'رد';

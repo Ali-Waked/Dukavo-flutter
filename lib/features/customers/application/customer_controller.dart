@@ -42,7 +42,9 @@ class CustomerListNotifier extends PaginatedNotifier<Customer> {
 final customerListProvider =
     StateNotifierProvider<CustomerListNotifier, PaginatedState<Customer>>(
         (ref) {
-  return CustomerListNotifier(ref.watch(customerRepositoryProvider));
+  final notifier = CustomerListNotifier(ref.watch(customerRepositoryProvider));
+  refreshOnReconnect(ref, notifier.reload);
+  return notifier;
 });
 
 final customerDetailProvider = FutureProvider.family<Customer, int>((ref, id) {

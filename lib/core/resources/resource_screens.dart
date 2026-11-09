@@ -57,6 +57,12 @@ class _ResourceListScreenState extends ConsumerState<ResourceListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // A reconnect refreshes the page in place. It never navigates or replaces
+    // the screen the merchant was reading.
+    ref.listen<int>(syncEpochProvider, (previous, next) {
+      if (previous != null && next > previous) _pager.reload();
+    });
+
     final spec = widget.spec;
     return Scaffold(
       appBar: AppBar(

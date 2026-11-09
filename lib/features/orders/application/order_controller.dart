@@ -55,7 +55,9 @@ class OrderListNotifier extends PaginatedNotifier<Order> {
 
 final orderListProvider =
     StateNotifierProvider<OrderListNotifier, PaginatedState<Order>>((ref) {
-  return OrderListNotifier(ref.watch(orderRepositoryProvider), ref);
+  final notifier = OrderListNotifier(ref.watch(orderRepositoryProvider), ref);
+  refreshOnReconnect(ref, notifier.reload);
+  return notifier;
 });
 
 final orderDetailProvider =

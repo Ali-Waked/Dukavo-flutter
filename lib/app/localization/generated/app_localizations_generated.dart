@@ -188,6 +188,78 @@ abstract class AppLocalizations {
   /// **'We couldn\'t reach the server. Check your connection and try again.'**
   String get errorNetwork;
 
+  /// No description provided for @offlineTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re offline'**
+  String get offlineTitle;
+
+  /// No description provided for @offlineBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Showing what was saved on this device. Actions that need the server are paused.'**
+  String get offlineBody;
+
+  /// No description provided for @offlineSyncingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Back online'**
+  String get offlineSyncingTitle;
+
+  /// No description provided for @offlineSyncingBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Syncing {count} saved change(s)…'**
+  String offlineSyncingBody(Object count);
+
+  /// No description provided for @offlineRefreshing.
+  ///
+  /// In en, this message translates to:
+  /// **'Refreshing the latest data…'**
+  String get offlineRefreshing;
+
+  /// No description provided for @offlineBackOnline.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re back online'**
+  String get offlineBackOnline;
+
+  /// No description provided for @offlineBackOnlineBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved changes are syncing and screens will refresh.'**
+  String get offlineBackOnlineBody;
+
+  /// No description provided for @offlineActionBlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'This action needs a connection.'**
+  String get offlineActionBlocked;
+
+  /// No description provided for @offlineNoSavedData.
+  ///
+  /// In en, this message translates to:
+  /// **'No saved copy yet'**
+  String get offlineNoSavedData;
+
+  /// No description provided for @offlineNoSavedDataBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect to the internet once to keep this screen available offline.'**
+  String get offlineNoSavedDataBody;
+
+  /// No description provided for @offlineQueued.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved for later'**
+  String get offlineQueued;
+
+  /// No description provided for @offlinePendingChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} change(s) waiting to sync'**
+  String offlinePendingChanges(Object count);
+
   /// No description provided for @requiredField.
   ///
   /// In en, this message translates to:
@@ -2287,6 +2359,168 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No notifications match this filter.'**
   String get notificationsEmpty;
+
+  /// No description provided for @pushNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Push notifications'**
+  String get pushNotifications;
+
+  /// No description provided for @inAppNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'In-app notifications'**
+  String get inAppNotifications;
+
+  /// No description provided for @teamActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Team activity'**
+  String get teamActivity;
+
+  /// No description provided for @securityAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Security alerts'**
+  String get securityAlerts;
+
+  /// No description provided for @mandatorySecurityHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Always on to keep your account secure.'**
+  String get mandatorySecurityHint;
+
+  /// No description provided for @allCategories.
+  ///
+  /// In en, this message translates to:
+  /// **'All categories'**
+  String get allCategories;
+
+  /// No description provided for @allSeverities.
+  ///
+  /// In en, this message translates to:
+  /// **'All priorities'**
+  String get allSeverities;
+
+  /// No description provided for @notificationNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'This notification could not be found.'**
+  String get notificationNotFound;
+
+  /// No description provided for @deleteNotificationConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this notification? This cannot be undone.'**
+  String get deleteNotificationConfirm;
+
+  /// No description provided for @notificationDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification deleted.'**
+  String get notificationDeleted;
+
+  /// No description provided for @notificationDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification details'**
+  String get notificationDetail;
+
+  /// No description provided for @openRelated.
+  ///
+  /// In en, this message translates to:
+  /// **'Open related'**
+  String get openRelated;
+
+  /// No description provided for @categoryOrders.
+  ///
+  /// In en, this message translates to:
+  /// **'Orders'**
+  String get categoryOrders;
+
+  /// No description provided for @categoryInventory.
+  ///
+  /// In en, this message translates to:
+  /// **'Inventory'**
+  String get categoryInventory;
+
+  /// No description provided for @categoryMessages.
+  ///
+  /// In en, this message translates to:
+  /// **'Messages'**
+  String get categoryMessages;
+
+  /// No description provided for @categoryCustomers.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers'**
+  String get categoryCustomers;
+
+  /// No description provided for @categoryBilling.
+  ///
+  /// In en, this message translates to:
+  /// **'Billing'**
+  String get categoryBilling;
+
+  /// No description provided for @categoryAi.
+  ///
+  /// In en, this message translates to:
+  /// **'AI insights'**
+  String get categoryAi;
+
+  /// No description provided for @categoryApprovals.
+  ///
+  /// In en, this message translates to:
+  /// **'Approvals'**
+  String get categoryApprovals;
+
+  /// No description provided for @categorySecurity.
+  ///
+  /// In en, this message translates to:
+  /// **'Security'**
+  String get categorySecurity;
+
+  /// No description provided for @categoryReports.
+  ///
+  /// In en, this message translates to:
+  /// **'Reports'**
+  String get categoryReports;
+
+  /// No description provided for @categoryAnnouncements.
+  ///
+  /// In en, this message translates to:
+  /// **'Announcements'**
+  String get categoryAnnouncements;
+
+  /// No description provided for @categoryTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'Team'**
+  String get categoryTeam;
+
+  /// No description provided for @severityInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Info'**
+  String get severityInfo;
+
+  /// No description provided for @severitySuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Success'**
+  String get severitySuccess;
+
+  /// No description provided for @severityWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Warning'**
+  String get severityWarning;
+
+  /// No description provided for @severityCritical.
+  ///
+  /// In en, this message translates to:
+  /// **'Critical'**
+  String get severityCritical;
 
   /// No description provided for @reply.
   ///

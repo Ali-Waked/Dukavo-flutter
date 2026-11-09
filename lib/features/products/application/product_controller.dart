@@ -63,7 +63,12 @@ class ProductListNotifier extends PaginatedNotifier<Product> {
 
 final productListProvider =
     StateNotifierProvider<ProductListNotifier, PaginatedState<Product>>((ref) {
-  return ProductListNotifier(ref.watch(productRepositoryProvider), ref);
+  final notifier = ProductListNotifier(
+    ref.watch(productRepositoryProvider),
+    ref,
+  );
+  refreshOnReconnect(ref, notifier.reload);
+  return notifier;
 });
 
 final productDetailProvider =

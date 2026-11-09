@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../core/offline/offline_banner.dart';
+import '../core/providers.dart';
 import '../features/notifications/application/push_lifecycle.dart';
 import 'localization/app_localizations.dart';
 import 'router/app_router.dart';
@@ -18,6 +20,9 @@ class DukavoApp extends ConsumerWidget {
     // Owning the push lifecycle here keeps it alive for the whole app session
     // without making every screen think about Firebase.
     ref.watch(pushLifecycleProvider);
+    // Reconnect handling is independent of auth and navigation: it flushes the
+    // safe queue and publishes a refresh epoch for list screens.
+    ref.watch(syncManagerProvider);
 
     final router = ref.watch(appRouterProvider);
     final themeMode = ref.watch(themeControllerProvider);
@@ -51,7 +56,9 @@ class DukavoApp extends ConsumerWidget {
               maxScaleFactor: 1.3,
             ),
           ),
-          child: child ?? const SizedBox.shrink(),
+          child: OfflineBannerHost(
+            child: child ?? const SizedBox.shrink(),
+          ),
         );
       },
     );

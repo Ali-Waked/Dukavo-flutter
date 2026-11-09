@@ -55,6 +55,49 @@ class AppLocalizationsEn extends AppLocalizations {
       'We couldn\'t reach the server. Check your connection and try again.';
 
   @override
+  String get offlineTitle => 'You\'re offline';
+
+  @override
+  String get offlineBody =>
+      'Showing what was saved on this device. Actions that need the server are paused.';
+
+  @override
+  String get offlineSyncingTitle => 'Back online';
+
+  @override
+  String offlineSyncingBody(Object count) {
+    return 'Syncing $count saved change(s)…';
+  }
+
+  @override
+  String get offlineRefreshing => 'Refreshing the latest data…';
+
+  @override
+  String get offlineBackOnline => 'You\'re back online';
+
+  @override
+  String get offlineBackOnlineBody =>
+      'Saved changes are syncing and screens will refresh.';
+
+  @override
+  String get offlineActionBlocked => 'This action needs a connection.';
+
+  @override
+  String get offlineNoSavedData => 'No saved copy yet';
+
+  @override
+  String get offlineNoSavedDataBody =>
+      'Connect to the internet once to keep this screen available offline.';
+
+  @override
+  String get offlineQueued => 'Saved for later';
+
+  @override
+  String offlinePendingChanges(Object count) {
+    return '$count change(s) waiting to sync';
+  }
+
+  @override
   String get requiredField => 'This field is required.';
 
   @override
@@ -1119,6 +1162,88 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notificationsEmpty => 'No notifications match this filter.';
+
+  @override
+  String get pushNotifications => 'Push notifications';
+
+  @override
+  String get inAppNotifications => 'In-app notifications';
+
+  @override
+  String get teamActivity => 'Team activity';
+
+  @override
+  String get securityAlerts => 'Security alerts';
+
+  @override
+  String get mandatorySecurityHint => 'Always on to keep your account secure.';
+
+  @override
+  String get allCategories => 'All categories';
+
+  @override
+  String get allSeverities => 'All priorities';
+
+  @override
+  String get notificationNotFound => 'This notification could not be found.';
+
+  @override
+  String get deleteNotificationConfirm =>
+      'Delete this notification? This cannot be undone.';
+
+  @override
+  String get notificationDeleted => 'Notification deleted.';
+
+  @override
+  String get notificationDetail => 'Notification details';
+
+  @override
+  String get openRelated => 'Open related';
+
+  @override
+  String get categoryOrders => 'Orders';
+
+  @override
+  String get categoryInventory => 'Inventory';
+
+  @override
+  String get categoryMessages => 'Messages';
+
+  @override
+  String get categoryCustomers => 'Customers';
+
+  @override
+  String get categoryBilling => 'Billing';
+
+  @override
+  String get categoryAi => 'AI insights';
+
+  @override
+  String get categoryApprovals => 'Approvals';
+
+  @override
+  String get categorySecurity => 'Security';
+
+  @override
+  String get categoryReports => 'Reports';
+
+  @override
+  String get categoryAnnouncements => 'Announcements';
+
+  @override
+  String get categoryTeam => 'Team';
+
+  @override
+  String get severityInfo => 'Info';
+
+  @override
+  String get severitySuccess => 'Success';
+
+  @override
+  String get severityWarning => 'Warning';
+
+  @override
+  String get severityCritical => 'Critical';
 
   @override
   String get reply => 'Reply';

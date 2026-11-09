@@ -1,5 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/api/api_exception.dart';
+import '../../../core/api/api_paths.dart';
 import '../../../core/api/paginated.dart';
 import '../../../core/pagination/paginated_notifier.dart';
 import '../../../core/providers.dart';
@@ -81,20 +83,48 @@ class NotificationInboxNotifier extends PaginatedNotifier<AppNotification> {
 
   Future<void> markRead(AppNotification notification) async {
     if (notification.read) return;
-    final updated = await _repository.markRead(notification.id);
-    _replace(updated);
+    try {
+      final updated = await _repository.markRead(notification.id);
+      _replace(updated);
+    } on ApiException catch (error) {
+      if (!error.isNetworkError) rethrow;
+      // Read state is idempotent and safe to replay. Keep the UI truthful now
+      // and let the sync manager send it when the connection returns.
+      await _ref.read(offlineQueueProvider).enqueue(
+            method: 'POST',
+            path: '${ApiPaths.notifications}/${notification.id}/read',
+          );
+      _replace(notification.copyWith(read: true));
+    }
     _ref.read(notificationUnreadProvider.notifier).decrement();
   }
 
   Future<void> markUnread(AppNotification notification) async {
     if (!notification.read) return;
-    final updated = await _repository.markUnread(notification.id);
-    _replace(updated);
+    try {
+      final updated = await _repository.markUnread(notification.id);
+      _replace(updated);
+    } on ApiException catch (error) {
+      if (!error.isNetworkError) rethrow;
+      await _ref.read(offlineQueueProvider).enqueue(
+            method: 'POST',
+            path: '${ApiPaths.notifications}/${notification.id}/unread',
+          );
+      _replace(notification.copyWith(read: false, readAt: ''));
+    }
     _ref.read(notificationUnreadProvider.notifier).increment();
   }
 
   Future<void> markAllRead() async {
-    await _repository.markAllRead();
+    try {
+      await _repository.markAllRead();
+    } on ApiException catch (error) {
+      if (!error.isNetworkError) rethrow;
+      await _ref.read(offlineQueueProvider).enqueue(
+            method: 'POST',
+            path: ApiPaths.notificationsReadAll,
+          );
+    }
     state = state.copyWith(
       items: state.items
           .map((item) => item.read ? item : item.copyWith(read: true))
@@ -138,10 +168,12 @@ class NotificationInboxNotifier extends PaginatedNotifier<AppNotification> {
 
 final notificationInboxProvider = StateNotifierProvider<
     NotificationInboxNotifier, PaginatedState<AppNotification>>((ref) {
-  return NotificationInboxNotifier(
+  final notifier = NotificationInboxNotifier(
     ref.watch(notificationRepositoryProvider),
     ref,
   );
+  refreshOnReconnect(ref, notifier.reload);
+  return notifier;
 });
 
 /// The unread badge. Refreshed on boot, on pull-to-refresh and after mutations.

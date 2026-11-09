@@ -30,6 +30,10 @@ class ApiException implements Exception {
   bool get isNotFound => statusCode == 404;
   bool get isValidation => statusCode == 422 && fields != null;
 
+  /// The app already knows the device cannot reach the server, so the request
+  /// was refused locally instead of waiting for a timeout.
+  bool get isOffline => code == 'offline';
+
   String? fieldError(String field) {
     final messages = fields?[field];
     if (messages == null || messages.isEmpty) return null;

@@ -3,6 +3,8 @@ import 'dart:ui' show PlatformDispatcher;
 
 import 'package:dio/dio.dart';
 
+import '../offline/cache_manager.dart';
+import '../offline/connectivity.dart';
 import '../storage/app_preferences.dart';
 import '../storage/secure_token_store.dart';
 import 'api_exception.dart';
@@ -23,12 +25,16 @@ class ApiClient {
     required String csrfUrl,
     required SecureTokenStore tokenStore,
     required AppPreferences preferences,
+    CacheManager? cache,
+    ConnectivityController? connectivity,
     Dio? dio,
     CookieStore? cookies,
   })  : _baseUrl = baseUrl,
         _csrfUrl = csrfUrl,
         _tokenStore = tokenStore,
         _preferences = preferences,
+        _cache = cache,
+        _connectivity = connectivity,
         _cookies = cookies ?? CookieStore(),
         _dio = dio ??
             Dio(
@@ -48,6 +54,8 @@ class ApiClient {
   final String _csrfUrl;
   final SecureTokenStore _tokenStore;
   final AppPreferences _preferences;
+  final CacheManager? _cache;
+  final ConnectivityController? _connectivity;
   final CookieStore _cookies;
   final Dio _dio;
 
@@ -227,6 +235,24 @@ class ApiClient {
     );
   }
 
+  /// Replay a queued safe mutation without going through the offline guard.
+  ///
+  /// Only [OfflineMutationQueue] calls this, after the connection has returned.
+  Future<void> replayMutation(
+    String method,
+    String path, {
+    Object? body,
+    bool csrf = false,
+  }) async {
+    await _send(
+      method,
+      path,
+      body: body,
+      csrf: csrf,
+      allowOffline: true,
+    );
+  }
+
   Future<JsonMap> _send(
     String method,
     String path, {
@@ -236,7 +262,38 @@ class ApiClient {
     bool csrf = false,
     ResponseType responseType = ResponseType.json,
     bool retryOnCsrfFailure = true,
+    bool allowOffline = false,
   }) async {
+    final upperMethod = method.toUpperCase();
+    final canCache = upperMethod == 'GET' && responseType == ResponseType.json;
+    final offline = _connectivity?.isOffline ?? false;
+
+    // Online-only mutations are refused immediately while offline instead of
+    // waiting for a 20-second timeout. Safe mutations are queued by their
+    // repository before they reach this point.
+    if (!allowOffline &&
+        offline &&
+        upperMethod != 'GET' &&
+        upperMethod != 'HEAD') {
+      throw ApiException(
+        "You're offline. This action needs a connection.",
+        isNetworkError: true,
+        code: 'offline',
+      );
+    }
+
+    // When the device is known to be offline, serve saved data without trying
+    // the network. This is what makes an offline start feel instant.
+    if (canCache && offline) {
+      final cached = await _cache?.read(path, query: query, method: method);
+      if (cached != null) return cached.body;
+      throw ApiException(
+        "You're offline and there's no saved copy of this screen yet.",
+        isNetworkError: true,
+        code: 'offline',
+      );
+    }
+
     if (csrf) {
       await primeCsrf();
     }
@@ -282,6 +339,7 @@ class ApiClient {
       );
 
       _cookies.absorb(response.headers['set-cookie']);
+      _connectivity?.reportSuccess();
 
       final status = response.statusCode ?? 0;
 
@@ -297,6 +355,7 @@ class ApiClient {
           csrf: csrf,
           responseType: responseType,
           retryOnCsrfFailure: false,
+          allowOffline: allowOffline,
         );
       }
 
@@ -315,12 +374,37 @@ class ApiClient {
         return <String, dynamic>{'data': response.data};
       }
 
-      return _envelope(response.data);
+      final envelope = _envelope(response.data);
+
+      if (upperMethod == 'GET') {
+        await _cache?.write(
+          path,
+          envelope,
+          query: query,
+          method: method,
+        );
+      } else {
+        await _cache?.invalidateMutation(method, path);
+      }
+
+      return envelope;
     } on DioException catch (error) {
       final response = error.response;
       if (response != null) {
+        // The server answered, even if it answered with an error.
+        _connectivity?.reportSuccess();
         throw _errorFromResponse(response);
       }
+
+      _connectivity?.reportNetworkFailure();
+
+      // A lost connection is not the same as lost data: return the last saved
+      // response when one exists, including stale-but-within-window data.
+      if (canCache) {
+        final cached = await _cache?.read(path, query: query, method: method);
+        if (cached != null) return cached.body;
+      }
+
       throw ApiException(
         "We couldn't reach the server. Check your connection and try again.",
         isNetworkError: true,

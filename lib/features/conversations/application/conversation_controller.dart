@@ -77,7 +77,10 @@ class ConversationListNotifier extends PaginatedNotifier<Conversation> {
 
 final conversationListProvider = StateNotifierProvider<ConversationListNotifier,
     PaginatedState<Conversation>>((ref) {
-  return ConversationListNotifier(ref.watch(conversationRepositoryProvider));
+  final notifier =
+      ConversationListNotifier(ref.watch(conversationRepositoryProvider));
+  refreshOnReconnect(ref, notifier.reload);
+  return notifier;
 });
 
 final conversationSummaryProvider = FutureProvider<ConversationSummary>((ref) {

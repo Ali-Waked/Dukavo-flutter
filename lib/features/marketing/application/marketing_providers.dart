@@ -15,8 +15,7 @@ JsonMap _asMap(Object? data) =>
 /// The public API localises its prose from `?locale=`, so every read is keyed
 /// by the language currently on screen. Watching [effectiveLocaleProvider]
 /// also invalidates these providers when the visitor switches language.
-String _localeCode(Ref ref) =>
-    ref.watch(effectiveLocaleProvider).languageCode;
+String _localeCode(Ref ref) => ref.watch(effectiveLocaleProvider).languageCode;
 
 final marketingFeaturesProvider =
     FutureProvider.autoDispose<List<MarketingFeature>>((ref) async {
@@ -98,10 +97,12 @@ final newsletterFeedProvider =
     StateNotifierProvider<NewsletterFeedNotifier, PaginatedState<Newsletter>>(
         (ref) {
   final locale = _localeCode(ref);
-  return NewsletterFeedNotifier(
+  final notifier = NewsletterFeedNotifier(
     ref.watch(newsletterRepositoryProvider),
     locale,
   );
+  refreshOnReconnect(ref, notifier.reload);
+  return notifier;
 });
 
 final marketingNewsletterProvider =

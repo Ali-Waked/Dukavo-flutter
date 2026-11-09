@@ -3,6 +3,9 @@ import 'dart:math';
 import '../../../core/api/api_client.dart';
 import '../../../core/api/api_exception.dart';
 import '../../../core/api/api_paths.dart';
+import '../../../core/offline/cache_manager.dart';
+import '../../../core/offline/cache_scope.dart';
+import '../../../core/offline/offline_queue.dart';
 import '../../../core/storage/app_preferences.dart';
 import '../../../core/storage/secure_token_store.dart';
 import '../domain/auth_domain.dart';
@@ -325,11 +328,16 @@ class AuthRemoteDataSource {
   }
 
   Future<Session> me() async {
-    final data = await _api.get<Map<String, dynamic>>(
+    final data = await meRaw();
+    return SessionModel.fromJson(data).toEntity();
+  }
+
+  /// The raw `/me` envelope, saved so an offline start can restore the session.
+  Future<Map<String, dynamic>> meRaw() {
+    return _api.get<Map<String, dynamic>>(
       ApiPaths.me,
       decode: _asMap,
     );
-    return SessionModel.fromJson(data).toEntity();
   }
 
   Future<void> logout() => _api.postVoid(ApiPaths.logout, csrf: true);
@@ -404,38 +412,62 @@ class AuthRepositoryImpl implements AuthRepository {
     required SecureTokenStore tokenStore,
     required AppPreferences preferences,
     required ApiClient apiClient,
+    CacheManager? cache,
+    OfflineMutationQueue? queue,
   })  : _remote = remote,
         _tokenStore = tokenStore,
         _preferences = preferences,
-        _apiClient = apiClient;
+        _apiClient = apiClient,
+        _cache = cache,
+        _queue = queue;
 
   final AuthRemoteDataSource _remote;
   final SecureTokenStore _tokenStore;
   final AppPreferences _preferences;
   final ApiClient _apiClient;
+  final CacheManager? _cache;
+  final OfflineMutationQueue? _queue;
 
   @override
   Future<Session?> restoreSession() async {
     if (_tokenStore.token == null || _tokenStore.token!.isEmpty) {
+      _applyScope(null);
       return null;
     }
 
     final storedSlug = _preferences.tenantSlug;
     _apiClient.setTenantSlug(storedSlug);
 
-    try {
-      var session = await _remote.me();
-      if (session.activeTenant == null && session.tenants.isNotEmpty) {
-        final slug = _chooseTenant(session, storedSlug);
-        if (slug != null) {
-          session = await _activate(slug);
-        }
+    // Restore the last known identity before the network call so the scope is
+    // correct even when the connection never answers.
+    final cachedRaw = await _cache?.readSession();
+    Session? cachedSession;
+    if (cachedRaw != null) {
+      try {
+        cachedSession = SessionModel.fromJson(cachedRaw).toEntity();
+        _applyScope(cachedSession);
+        _apiClient.setTenantSlug(
+          cachedSession.activeTenant?.slug ?? storedSlug,
+        );
+      } catch (_) {
+        cachedSession = null;
       }
-      return session;
+    }
+
+    try {
+      final snapshot = await _loadNetworkSession(storedSlug);
+      await _remember(snapshot);
+      return snapshot.session;
     } on ApiException catch (error) {
       if (error.isUnauthorized) {
         await clearLocalSession();
         return null;
+      }
+      // A network failure is not a logout. The token is still the credential,
+      // and the saved `/me` snapshot carries the same permissions the server
+      // issued on the last successful start.
+      if (error.isNetworkError && cachedSession != null) {
+        return cachedSession;
       }
       rethrow;
     }
@@ -450,30 +482,70 @@ class AuthRepositoryImpl implements AuthRepository {
     await _tokenStore.save(result.token);
 
     try {
-      var session = await _remote.me();
-      final slug = _chooseTenant(session, _preferences.tenantSlug);
-      if (slug != null) {
-        session = await _activate(slug);
-      } else {
+      final snapshot = await _loadNetworkSession(_preferences.tenantSlug);
+      if (snapshot.session.activeTenant == null) {
         await _preferences.setTenantSlug(null);
         _apiClient.setTenantSlug(null);
       }
-      return session;
+      await _remember(snapshot);
+      return snapshot.session;
     } catch (_) {
       await _tokenStore.clear();
+      await _cache?.clearSession();
       rethrow;
     }
   }
 
   @override
-  Future<Session> switchTenant(String slug) {
-    return _activate(slug);
+  Future<Session> switchTenant(String slug) async {
+    final snapshot = await _activate(slug);
+    await _remember(snapshot);
+    return snapshot.session;
   }
 
-  Future<Session> _activate(String slug) async {
+  Future<_SessionSnapshot> _activate(String slug) async {
     await _preferences.setTenantSlug(slug);
     _apiClient.setTenantSlug(slug);
-    return _remote.me();
+    final raw = await _remote.meRaw();
+    return _SessionSnapshot(
+      SessionModel.fromJson(raw).toEntity(),
+      raw,
+    );
+  }
+
+  Future<_SessionSnapshot> _loadNetworkSession(String? preferredSlug) async {
+    var raw = await _remote.meRaw();
+    var session = SessionModel.fromJson(raw).toEntity();
+    if (session.activeTenant == null && session.tenants.isNotEmpty) {
+      final slug = _chooseTenant(session, preferredSlug);
+      if (slug != null) {
+        final activated = await _activate(slug);
+        raw = activated.raw;
+        session = activated.session;
+      }
+    }
+    return _SessionSnapshot(session, raw);
+  }
+
+  Future<void> _remember(_SessionSnapshot snapshot) async {
+    await _cache?.saveSession(snapshot.raw);
+    _applyScope(snapshot.session);
+  }
+
+  /// Point the cache and queue at the identity that just became active.
+  void _applyScope(Session? session) {
+    if (session == null) {
+      _cache?.setScope(CacheScope.public);
+      _queue?.setScope(CacheScope.public.key);
+      return;
+    }
+    final scope = CacheScope.forSession(
+      accountId: session.user.id,
+      isPlatform: session.isPlatformUser,
+      tenantSlug: session.activeTenant?.slug,
+    );
+    _cache?.setScope(scope);
+    _queue?.setScope(scope.key);
   }
 
   @override
@@ -484,10 +556,18 @@ class AuthRepositoryImpl implements AuthRepository {
     final tenant =
         await _remote.provisionTenant(name: name, storeName: storeName);
     final slug = tenant.slug.isNotEmpty ? tenant.slug : null;
+    final _SessionSnapshot snapshot;
     if (slug != null) {
-      return _activate(slug);
+      snapshot = await _activate(slug);
+    } else {
+      final raw = await _remote.meRaw();
+      snapshot = _SessionSnapshot(
+        SessionModel.fromJson(raw).toEntity(),
+        raw,
+      );
     }
-    return _remote.me();
+    await _remember(snapshot);
+    return snapshot.session;
   }
 
   @override
@@ -501,9 +581,16 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<void> clearLocalSession() async {
+    final scope = _cache?.scope;
+    if (scope != null && !scope.isPublic) {
+      await _cache?.clearScope(scope);
+    }
+    await _queue?.clear();
+    await _cache?.clearSession();
     await _tokenStore.clear();
     await _preferences.setTenantSlug(null);
     _apiClient.setTenantSlug(null);
+    _applyScope(null);
   }
 
   @override
@@ -543,6 +630,13 @@ class AuthRepositoryImpl implements AuthRepository {
 }
 
 /* ----------------------------------------------------------------- helpers */
+
+class _SessionSnapshot {
+  const _SessionSnapshot(this.session, this.raw);
+
+  final Session session;
+  final Map<String, dynamic> raw;
+}
 
 Map<String, dynamic> _asMap(Object? data) {
   if (data is Map) return Map<String, dynamic>.from(data);
