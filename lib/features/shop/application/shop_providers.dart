@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../app/theme/theme_controller.dart';
 import '../../../core/providers.dart';
 import '../data/shop_repository.dart';
 import '../domain/shop_models.dart';
@@ -64,6 +65,9 @@ final shopProductProvider = FutureProvider.autoDispose
 
 final shopShippingProvider = FutureProvider.autoDispose
     .family<List<ShopShippingZone>, ShopRef>((ref, shop) {
+  // Shipping copy is resolved by the API from the request language, so a
+  // language switch must reload it. Fees and coverage do not change.
+  ref.watch(effectiveLocaleProvider);
   return ref
       .watch(shopRepositoryProvider)
       .shippingZones(shop.tenant, shop.store);

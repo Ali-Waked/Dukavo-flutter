@@ -223,10 +223,22 @@ class ShopShippingZone {
     required this.areas,
     required this.fee,
     required this.freeShippingThreshold,
+    this.description,
+    this.methodName,
+    this.methodDescription,
+    this.deliveryInstructions,
+    this.terms,
+    this.locale,
   });
 
   final int id;
   final String name;
+  final String? description;
+  final String? methodName;
+  final String? methodDescription;
+  final String? deliveryInstructions;
+  final String? terms;
+  final String? locale;
   final String? city;
   final List<String> areas;
   final num fee;
@@ -237,6 +249,12 @@ class ShopShippingZone {
     return ShopShippingZone(
       id: _int(json['id'], 0),
       name: '${json['name'] ?? ''}',
+      description: _stringOrNull(json['description']),
+      methodName: _stringOrNull(json['method_name']),
+      methodDescription: _stringOrNull(json['method_description']),
+      deliveryInstructions: _stringOrNull(json['delivery_instructions']),
+      terms: _stringOrNull(json['terms']),
+      locale: _stringOrNull(json['locale']),
       city: json['city'] as String?,
       areas: rawAreas is List
           ? rawAreas.map((area) => '$area').toList()
@@ -245,6 +263,12 @@ class ShopShippingZone {
       freeShippingThreshold: _numOrNull(json['free_shipping_threshold']),
     );
   }
+}
+
+String? _stringOrNull(Object? value) {
+  if (value is! String) return null;
+  final trimmed = value.trim();
+  return trimmed.isEmpty ? null : trimmed;
 }
 
 class ShopPaymentMethod {

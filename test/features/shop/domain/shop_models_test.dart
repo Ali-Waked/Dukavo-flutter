@@ -163,5 +163,44 @@ void main() {
       expect(zone.fee, 15);
       expect(zone.freeShippingThreshold, 300);
     });
+
+    test('parses the copy the server already resolved to one language', () {
+      final zone = ShopShippingZone.fromJson(const {
+        'id': 3,
+        'name': 'توصيل الرياض',
+        'description': 'طلبات داخل الرياض.',
+        'method_name': 'التوصيل العادي',
+        'method_description': 'يتم التسليم خلال يومي عمل.',
+        'delivery_instructions': 'اتصل عند الوصول.',
+        'terms': 'التوصيل مجاني فوق ٣٠٠.',
+        'locale': 'ar',
+        'city': 'Riyadh',
+        'areas': ['Olaya'],
+        'fee': 15,
+        'free_shipping_threshold': 300,
+      });
+
+      expect(zone.name, 'توصيل الرياض');
+      expect(zone.methodName, 'التوصيل العادي');
+      expect(zone.methodDescription, 'يتم التسليم خلال يومي عمل.');
+      expect(zone.deliveryInstructions, 'اتصل عند الوصول.');
+      expect(zone.terms, 'التوصيل مجاني فوق ٣٠٠.');
+      expect(zone.locale, 'ar');
+      expect(zone.fee, 15);
+      expect(zone.freeShippingThreshold, 300);
+      expect(zone.areas, ['Olaya']);
+    });
+
+    test('a public zone never exposes a raw translations document', () {
+      final zone = ShopShippingZone.fromJson(const {
+        'name': 'Cairo delivery',
+        'translations': {
+          'ar': {'name': 'توصيل القاهرة'},
+        },
+      });
+
+      expect(zone.name, 'Cairo delivery');
+      expect(zone.locale, isNull);
+    });
   });
 }

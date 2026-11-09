@@ -119,7 +119,8 @@ class _ShippingZonesScreenState extends ConsumerState<ShippingZonesScreen> {
                         await ref.read(shippingZonesProvider(storeId).future);
                       },
                       child: ListView(
-                        padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 96),
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 96),
                         children: [
                           Text(
                             context.tr('shippingZonesIntro'),
@@ -374,6 +375,31 @@ class _ZoneFormSheetState extends State<_ZoneFormSheet> {
   final _formKey = GlobalKey<FormState>();
 
   late final _name = TextEditingController(text: widget.zone?.name ?? '');
+  late final _description =
+      TextEditingController(text: widget.zone?.description ?? '');
+  late final _methodName =
+      TextEditingController(text: widget.zone?.methodName ?? '');
+  late final _methodDescription =
+      TextEditingController(text: widget.zone?.methodDescription ?? '');
+  late final _deliveryInstructions =
+      TextEditingController(text: widget.zone?.deliveryInstructions ?? '');
+  late final _terms = TextEditingController(text: widget.zone?.terms ?? '');
+
+  late final _nameAr =
+      TextEditingController(text: widget.zone?.arabicCopy.name ?? '');
+  late final _descriptionAr =
+      TextEditingController(text: widget.zone?.arabicCopy.description ?? '');
+  late final _methodNameAr =
+      TextEditingController(text: widget.zone?.arabicCopy.methodName ?? '');
+  late final _methodDescriptionAr = TextEditingController(
+    text: widget.zone?.arabicCopy.methodDescription ?? '',
+  );
+  late final _deliveryInstructionsAr = TextEditingController(
+    text: widget.zone?.arabicCopy.deliveryInstructions ?? '',
+  );
+  late final _termsAr =
+      TextEditingController(text: widget.zone?.arabicCopy.terms ?? '');
+
   late final _city = TextEditingController(text: widget.zone?.city ?? '');
   late final _areas =
       TextEditingController(text: widget.zone?.areas.join(', ') ?? '');
@@ -388,11 +414,31 @@ class _ZoneFormSheetState extends State<_ZoneFormSheet> {
   late final _sortOrder =
       TextEditingController(text: '${widget.zone?.sortOrder ?? 0}');
   late bool _isActive = widget.zone?.isActive ?? true;
+  String _language = 'en';
+
+  bool get _hasArabicCopy =>
+      _nameAr.text.trim().isNotEmpty ||
+      _descriptionAr.text.trim().isNotEmpty ||
+      _methodNameAr.text.trim().isNotEmpty ||
+      _methodDescriptionAr.text.trim().isNotEmpty ||
+      _deliveryInstructionsAr.text.trim().isNotEmpty ||
+      _termsAr.text.trim().isNotEmpty;
 
   @override
   void dispose() {
     for (final controller in [
       _name,
+      _description,
+      _methodName,
+      _methodDescription,
+      _deliveryInstructions,
+      _terms,
+      _nameAr,
+      _descriptionAr,
+      _methodNameAr,
+      _methodDescriptionAr,
+      _deliveryInstructionsAr,
+      _termsAr,
       _city,
       _areas,
       _fee,
@@ -422,12 +468,140 @@ class _ZoneFormSheetState extends State<_ZoneFormSheet> {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               const SizedBox(height: 12),
-              AppTextField(
-                controller: _name,
-                label: context.tr('zoneName'),
-                validator: Validators.required,
+              SegmentedButton<String>(
+                segments: [
+                  ButtonSegment(
+                    value: 'en',
+                    label: Text(context.tr('english')),
+                  ),
+                  ButtonSegment(
+                    value: 'ar',
+                    label: Text(context.tr('arabic')),
+                  ),
+                ],
+                selected: {_language},
+                onSelectionChanged: (selection) =>
+                    setState(() => _language = selection.first),
               ),
+              const SizedBox(height: 6),
+              Text(
+                context.tr(_language == 'en' ? 'englishHint' : 'arabicHint'),
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+              ),
+              if (_language == 'ar' &&
+                  !_hasArabicCopy &&
+                  _name.text.trim().isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(top: 6),
+                  child: Text(
+                    context.tr('missingArabic'),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: context.dukavo.warning,
+                        ),
+                  ),
+                ),
               const SizedBox(height: 10),
+              if (_language == 'en') ...[
+                AppTextField(
+                  controller: _name,
+                  label: context.tr('zoneName'),
+                  validator: Validators.required,
+                ),
+                const SizedBox(height: 10),
+                AppTextField(
+                  controller: _methodName,
+                  label: context.tr('shippingMethodName'),
+                  helper: context.tr('shippingMethodNameHint'),
+                ),
+                const SizedBox(height: 10),
+                AppTextField(
+                  controller: _description,
+                  label: context.tr('zoneDescription'),
+                  maxLines: 2,
+                ),
+                const SizedBox(height: 10),
+                AppTextField(
+                  controller: _methodDescription,
+                  label: context.tr('shippingMethodDescription'),
+                  helper: context.tr('shippingMethodDescriptionHint'),
+                  maxLines: 2,
+                ),
+                const SizedBox(height: 10),
+                AppTextField(
+                  controller: _deliveryInstructions,
+                  label: context.tr('deliveryInstructions'),
+                  helper: context.tr('deliveryInstructionsHint'),
+                  maxLines: 2,
+                ),
+                const SizedBox(height: 10),
+                AppTextField(
+                  controller: _terms,
+                  label: context.tr('shippingTerms'),
+                  helper: context.tr('shippingTermsHint'),
+                  maxLines: 2,
+                ),
+              ] else ...[
+                _arabicField(
+                  context,
+                  AppTextField(
+                    controller: _nameAr,
+                    label: context.tr('zoneName'),
+                    onChanged: (_) => setState(() {}),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                _arabicField(
+                  context,
+                  AppTextField(
+                    controller: _methodNameAr,
+                    label: context.tr('shippingMethodName'),
+                    onChanged: (_) => setState(() {}),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                _arabicField(
+                  context,
+                  AppTextField(
+                    controller: _descriptionAr,
+                    label: context.tr('zoneDescription'),
+                    maxLines: 2,
+                    onChanged: (_) => setState(() {}),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                _arabicField(
+                  context,
+                  AppTextField(
+                    controller: _methodDescriptionAr,
+                    label: context.tr('shippingMethodDescription'),
+                    maxLines: 2,
+                    onChanged: (_) => setState(() {}),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                _arabicField(
+                  context,
+                  AppTextField(
+                    controller: _deliveryInstructionsAr,
+                    label: context.tr('deliveryInstructions'),
+                    maxLines: 2,
+                    onChanged: (_) => setState(() {}),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                _arabicField(
+                  context,
+                  AppTextField(
+                    controller: _termsAr,
+                    label: context.tr('shippingTerms'),
+                    maxLines: 2,
+                    onChanged: (_) => setState(() {}),
+                  ),
+                ),
+              ],
+              const Divider(height: 28),
               AppTextField(
                 controller: _city,
                 label: context.tr('city'),
@@ -508,6 +682,12 @@ class _ZoneFormSheetState extends State<_ZoneFormSheet> {
     );
   }
 
+  /// Arabic copy is a view over the same record, so its fields read
+  /// right-to-left even when the merchant's interface is English.
+  Widget _arabicField(BuildContext context, Widget child) {
+    return Directionality(textDirection: TextDirection.rtl, child: child);
+  }
+
   void _submit() {
     if (!(_formKey.currentState?.validate() ?? false)) return;
     final areas = _areas.text
@@ -520,6 +700,21 @@ class _ZoneFormSheetState extends State<_ZoneFormSheet> {
     Navigator.of(context).pop(
       ShippingZoneDraft(
         name: _name.text.trim(),
+        description: _description.text,
+        methodName: _methodName.text,
+        methodDescription: _methodDescription.text,
+        deliveryInstructions: _deliveryInstructions.text,
+        terms: _terms.text,
+        translations: {
+          'ar': ShippingZoneCopy(
+            name: _nameAr.text,
+            description: _descriptionAr.text,
+            methodName: _methodNameAr.text,
+            methodDescription: _methodDescriptionAr.text,
+            deliveryInstructions: _deliveryInstructionsAr.text,
+            terms: _termsAr.text,
+          ),
+        },
         city: _city.text.trim(),
         areas: areas,
         fee: num.parse(_fee.text.trim()),

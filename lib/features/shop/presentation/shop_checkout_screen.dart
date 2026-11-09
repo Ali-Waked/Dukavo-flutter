@@ -468,7 +468,9 @@ class _ZoneFields extends StatelessWidget {
     final selected = selectedCity != null && cities.contains(selectedCity)
         ? selectedCity
         : null;
-    final zone = zones.where((item) => item.city == selected).firstOrNull;
+    final cityZones =
+        zones.where((item) => item.city == selected).toList(growable: false);
+    final zone = cityZones.firstOrNull;
     final areas = zone?.areas ?? const <String>[];
 
     return Column(
@@ -517,7 +519,79 @@ class _ZoneFields extends StatelessWidget {
             textInputAction: TextInputAction.next,
           ),
         ],
+        if (selected != null && cityZones.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.only(top: AppSpacing.sm),
+            child: ValueListenableBuilder<TextEditingValue>(
+              valueListenable: area,
+              builder: (context, value, _) {
+                final needle = value.text.trim().toLowerCase();
+                final matched = cityZones.firstWhere(
+                  (item) =>
+                      item.areas.isEmpty ||
+                      item.areas.any(
+                        (candidate) => candidate.trim().toLowerCase() == needle,
+                      ),
+                  orElse: () => cityZones.first,
+                );
+                return _ShippingCopy(zone: matched);
+              },
+            ),
+          ),
       ],
+    );
+  }
+}
+
+/// Customer-facing copy for the selected delivery option.
+///
+/// The API resolves this to one language; the widget never sees a raw
+/// translations document. Arabic copy is laid out right-to-left even if the
+/// surrounding interface is English.
+class _ShippingCopy extends StatelessWidget {
+  const _ShippingCopy({required this.zone});
+
+  final ShopShippingZone zone;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final direction =
+        zone.locale == 'ar' ? TextDirection.rtl : Directionality.of(context);
+    final items = <(String, String?)>[
+      (context.tr('shippingMethodName'), zone.methodName),
+      (context.tr('shippingMethodDescription'), zone.methodDescription),
+      (context.tr('deliveryInstructions'), zone.deliveryInstructions),
+      (context.tr('shippingTerms'), zone.terms),
+    ].where((item) => item.$2 != null && item.$2!.trim().isNotEmpty).toList();
+
+    if (items.isEmpty) return const SizedBox.shrink();
+
+    return Directionality(
+      textDirection: direction,
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(AppSpacing.sm),
+        decoration: BoxDecoration(
+          color: context.dukavo.surfaceLow,
+          borderRadius: BorderRadius.circular(AppRadius.md),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            for (final item in items) ...[
+              Text(
+                item.$1,
+                style: theme.textTheme.labelSmall?.copyWith(
+                  color: context.dukavo.textMuted,
+                ),
+              ),
+              Text(item.$2!, style: theme.textTheme.bodySmall),
+              if (item != items.last) const SizedBox(height: 6),
+            ],
+          ],
+        ),
+      ),
     );
   }
 }
