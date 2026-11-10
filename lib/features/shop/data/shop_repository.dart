@@ -122,6 +122,27 @@ class ShopRepository {
     return ShopOrder.fromJson(data);
   }
 
+  /// Ask the server for the next payment attempt.
+  ///
+  /// The rail is a preference only. The tracking token authorises the call and
+  /// the server decides whether a retry is allowed and which provider is used.
+  Future<ShopOrder> retryPayment(
+    String tenant,
+    String store,
+    String token, {
+    String? methodCode,
+  }) async {
+    final data = await _api.post<JsonMap>(
+      ApiPaths.publicStorefrontOrderPayment(tenant, store, token),
+      body: {
+        if (methodCode != null && methodCode.isNotEmpty)
+          'payment_method_code': methodCode,
+      },
+      decode: _asMap,
+    );
+    return ShopOrder.fromJson(data);
+  }
+
   JsonMap _asMap(Object? data) =>
       data is Map ? Map<String, dynamic>.from(data) : const <String, dynamic>{};
 }

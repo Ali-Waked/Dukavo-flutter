@@ -1186,5 +1186,22 @@
   "translationRejectReason": "السبب (اختياري)",
   "translationRejectReasonHint": "أخبر المراجع سبب رفض هذا الاقتراح.",
   "translationOverwriteMessage": "سيستبدل هذا المسودة الحالية. النص المعدّل يدويًا والنص المنشور يحتاجان تأكيدك قبل إعادة الإنشاء.",
-  "register": "إنشاء حساب"
+  "register": "إنشاء حساب",
+  "choosePaymentRail": "اختر طريقة الدفع",
+  "onlineRedirectNote": "ستنتقل إلى صفحة المزوّد الآمنة. يبقى الطلب غير مدفوع حتى يؤكده المزوّد.",
+  "bankTransferNote": "حوّل المبلغ إلى المتجر واحتفظ بالإيصال. يؤكد المتجر الطلب عند وصول المبلغ.",
+  "paymentProvider": "المزوّد",
+  "paymentRail": "طريقة الدفع",
+  "paymentAttempt": "المحاولة",
+  "paymentAmount": "المبلغ",
+  "paymentReference": "المرجع",
+  "paymentPendingNote": "بانتظار تأكيد المزوّد. تُحدَّث هذه الصفحة تلقائيًا.",
+  "paymentPaidNote": "أكّد المزوّد هذا الدفع.",
+  "paymentLinkHint": "افتح هذا الرابط في المتصفح للدفع. لا يتحدّث الطلب إلا بعد تأكيد المزوّد.",
+  "paymentLinkCopied": "تم نسخ رابط الدفع.",
+  "copyPaymentLink": "نسخ رابط الدفع",
+  "retryPayment": "إعادة محاولة الدفع",
+  "orderAwaitingPayment": "بانتظار الدفع",
+  "bankTransfer": "التحويل البنكي",
+  "codNote": "ادفع للمندوب عند الاستلام. يبقى الطلب غير مدفوع حتى ذلك الحين."
 }

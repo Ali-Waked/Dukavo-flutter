@@ -145,6 +145,107 @@ void main() {
       expect(order.items.single.lineTotal, 200);
       expect(order.trackingToken, 'tok_123');
     });
+
+    test('parses the latest online attempt without trusting a redirect', () {
+      final order = ShopOrder.fromJson(const {
+        'order_number': 'ORD-000043',
+        'payment_status': 'unpaid',
+        'payment_method': 'online',
+        'payment_method_label': 'Pay online',
+        'currency': 'SAR',
+        'payment': {
+          'status': 'pending',
+          'status_label': 'Pending',
+          'method_code': 'mada',
+          'attempt_number': 2,
+          'amount': '245.00',
+          'currency': 'SAR',
+          'provider_name': 'Tap Payments',
+          'checkout_url': 'https://checkout.tap.test/ch_123',
+          'failure_reason': null,
+          'reference': '••••ch_123',
+          'retry_allowed': false,
+          'expires_at': '2026-01-02T11:00:00Z',
+          'paid_at': null,
+        },
+      });
+
+      expect(order.paymentMethod, 'online');
+      expect(order.payment?.methodCode, 'mada');
+      expect(order.payment?.attemptNumber, 2);
+      expect(order.payment?.checkoutUrl, 'https://checkout.tap.test/ch_123');
+      expect(order.payment?.isPaid, isFalse);
+      expect(order.payment?.isPending, isTrue);
+      expect(order.payment?.retryAllowed, isFalse);
+    });
+
+    test('keeps bank transfer and cash orders free of a payment attempt', () {
+      final order = ShopOrder.fromJson(const {
+        'order_number': 'ORD-000044',
+        'payment_status': 'unpaid',
+        'payment_method': 'bank_transfer',
+        'payment_method_label': 'Bank transfer',
+        'currency': 'SAR',
+      });
+
+      expect(order.paymentMethod, 'bank_transfer');
+      expect(order.payment, isNull);
+    });
+  });
+
+  group('ShopPaymentMethod.fromJson', () {
+    test('parses nested online rails and their provider environment', () {
+      final method = ShopPaymentMethod.fromJson(const {
+        'code': 'online',
+        'label': 'Pay online',
+        'description': 'Pay with a card.',
+        'available': true,
+        'unavailable_reason': null,
+        'instructions': null,
+        'methods': [
+          {
+            'code': 'card',
+            'label': 'Card',
+            'description': 'Pay with a debit or credit card.',
+            'kind': 'card',
+            'provider': 'tap',
+            'provider_name': 'Tap Payments',
+            'environment': 'sandbox',
+          },
+          {
+            'code': 'apple_pay',
+            'label': 'Apple Pay',
+            'description': 'Pay with Apple Pay.',
+            'kind': 'wallet',
+            'provider': 'tap',
+            'provider_name': 'Tap Payments',
+            'environment': 'sandbox',
+          },
+        ],
+      });
+
+      expect(method.available, isTrue);
+      expect(method.methods, hasLength(2));
+      expect(method.methods.first.code, 'card');
+      expect(method.methods.last.provider, 'tap');
+      expect(method.methods.last.environment, 'sandbox');
+    });
+
+    test('a disabled method still carries the server reason', () {
+      final method = ShopPaymentMethod.fromJson(const {
+        'code': 'online',
+        'label': 'Pay online',
+        'description': 'Pay with a card.',
+        'available': false,
+        'unavailable_reason':
+            'No verified sandbox payment provider connection is configured for this store.',
+        'methods': [],
+      });
+
+      expect(method.available, isFalse);
+      expect(method.methods, isEmpty);
+      expect(method.unavailableReason, contains('verified sandbox'));
+    });
   });
 
   group('ShopShippingZone.fromJson', () {

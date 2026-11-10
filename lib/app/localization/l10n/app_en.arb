@@ -1186,5 +1186,22 @@
   "translationRejectReason": "Reason (optional)",
   "translationRejectReasonHint": "Tell the reviewer why this proposal was rejected.",
   "translationOverwriteMessage": "This replaces the current draft. Manually edited text and published copy need your confirmation before regeneration.",
-  "register": "Register"
+  "register": "Register",
+  "choosePaymentRail": "Choose how to pay",
+  "onlineRedirectNote": "You will continue to the provider's secure page. This order stays unpaid until the provider confirms.",
+  "bankTransferNote": "Transfer the total to the store and keep the receipt. The store confirms the order when the money arrives.",
+  "paymentProvider": "Provider",
+  "paymentRail": "Payment method",
+  "paymentAttempt": "Attempt",
+  "paymentAmount": "Amount",
+  "paymentReference": "Reference",
+  "paymentPendingNote": "Waiting for the provider to confirm. This page refreshes automatically.",
+  "paymentPaidNote": "The provider confirmed this payment.",
+  "paymentLinkHint": "Open this link in your browser to pay. The order updates only after the provider confirms.",
+  "paymentLinkCopied": "Payment link copied.",
+  "copyPaymentLink": "Copy payment link",
+  "retryPayment": "Try payment again",
+  "orderAwaitingPayment": "Awaiting payment",
+  "bankTransfer": "Bank transfer",
+  "codNote": "Pay the courier on delivery. The order stays unpaid until then."
 }

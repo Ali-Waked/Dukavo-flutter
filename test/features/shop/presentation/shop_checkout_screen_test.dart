@@ -26,6 +26,8 @@ const _payment = ShopPaymentMethod(
   description: 'Pay the courier.',
   available: true,
   unavailableReason: null,
+  instructions: null,
+  methods: [],
 );
 
 const _arabicZone = ShopShippingZone(

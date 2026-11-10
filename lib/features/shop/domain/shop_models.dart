@@ -271,6 +271,43 @@ String? _stringOrNull(Object? value) {
   return trimmed.isEmpty ? null : trimmed;
 }
 
+/// One online rail behind the high-level `online` method.
+///
+/// The browser/app sends the code back as a *preference*. The server resolves
+/// the provider, connection and source id again, so a tampered client can never
+/// choose a provider account or price.
+class ShopPaymentRail {
+  const ShopPaymentRail({
+    required this.code,
+    required this.label,
+    required this.description,
+    required this.kind,
+    required this.provider,
+    required this.providerName,
+    required this.environment,
+  });
+
+  final String code;
+  final String label;
+  final String description;
+  final String kind;
+  final String provider;
+  final String providerName;
+  final String environment;
+
+  factory ShopPaymentRail.fromJson(Map<String, dynamic> json) {
+    return ShopPaymentRail(
+      code: '${json['code'] ?? ''}',
+      label: '${json['label'] ?? ''}',
+      description: '${json['description'] ?? ''}',
+      kind: '${json['kind'] ?? ''}',
+      provider: '${json['provider'] ?? ''}',
+      providerName: '${json['provider_name'] ?? ''}',
+      environment: '${json['environment'] ?? ''}',
+    );
+  }
+}
+
 class ShopPaymentMethod {
   const ShopPaymentMethod({
     required this.code,
@@ -278,6 +315,8 @@ class ShopPaymentMethod {
     required this.description,
     required this.available,
     required this.unavailableReason,
+    required this.instructions,
+    required this.methods,
   });
 
   final String code;
@@ -286,13 +325,29 @@ class ShopPaymentMethod {
   final bool available;
   final String? unavailableReason;
 
+  /// Merchant copy shown after the method is chosen, such as bank details.
+  final String? instructions;
+
+  /// Sellable online rails. Empty for cash on delivery and bank transfer.
+  final List<ShopPaymentRail> methods;
+
   factory ShopPaymentMethod.fromJson(Map<String, dynamic> json) {
+    final rawMethods = json['methods'];
     return ShopPaymentMethod(
       code: '${json['code'] ?? ''}',
       label: '${json['label'] ?? ''}',
       description: '${json['description'] ?? ''}',
       available: json['available'] == true,
       unavailableReason: json['unavailable_reason'] as String?,
+      instructions: _stringOrNull(json['instructions']),
+      methods: rawMethods is List
+          ? rawMethods
+              .whereType<Map>()
+              .map((entry) => ShopPaymentRail.fromJson(
+                    Map<String, dynamic>.from(entry),
+                  ))
+              .toList(growable: false)
+          : const [],
     );
   }
 }
@@ -337,6 +392,68 @@ class ShopCartLine {
   }
 }
 
+/// Customer-safe state of the latest online payment attempt.
+///
+/// A redirect to the provider page proves nothing. `status` only moves to a
+/// final value after the server verifies a signed webhook or provider lookup,
+/// so this object never treats "customer came back" as payment.
+class ShopOrderPayment {
+  const ShopOrderPayment({
+    required this.status,
+    required this.statusLabel,
+    required this.methodCode,
+    required this.attemptNumber,
+    required this.amount,
+    required this.currency,
+    required this.providerName,
+    required this.checkoutUrl,
+    required this.failureReason,
+    required this.reference,
+    required this.retryAllowed,
+    required this.expiresAt,
+    required this.paidAt,
+  });
+
+  final String status;
+  final String statusLabel;
+  final String? methodCode;
+  final int attemptNumber;
+  final num amount;
+  final String currency;
+  final String? providerName;
+  final String? checkoutUrl;
+  final String? failureReason;
+  final String? reference;
+  final bool retryAllowed;
+  final String? expiresAt;
+  final String? paidAt;
+
+  bool get isPending =>
+      status == 'pending' ||
+      status == 'requires_action' ||
+      status == 'processing';
+
+  bool get isPaid => status == 'succeeded';
+
+  factory ShopOrderPayment.fromJson(Map<String, dynamic> json) {
+    return ShopOrderPayment(
+      status: '${json['status'] ?? ''}',
+      statusLabel: '${json['status_label'] ?? ''}',
+      methodCode: _stringOrNull(json['method_code']),
+      attemptNumber: _int(json['attempt_number'], 1),
+      amount: _num(json['amount']),
+      currency: '${json['currency'] ?? ''}',
+      providerName: _stringOrNull(json['provider_name']),
+      checkoutUrl: _stringOrNull(json['checkout_url']),
+      failureReason: _stringOrNull(json['failure_reason']),
+      reference: _stringOrNull(json['reference']),
+      retryAllowed: json['retry_allowed'] == true,
+      expiresAt: _stringOrNull(json['expires_at']),
+      paidAt: _stringOrNull(json['paid_at']),
+    );
+  }
+}
+
 class ShopOrder {
   const ShopOrder({
     required this.orderNumber,
@@ -344,6 +461,7 @@ class ShopOrder {
     required this.statusLabel,
     required this.paymentStatus,
     required this.paymentStatusLabel,
+    required this.paymentMethod,
     required this.paymentMethodLabel,
     required this.subtotal,
     required this.discountTotal,
@@ -357,6 +475,7 @@ class ShopOrder {
     required this.items,
     required this.placedAt,
     this.trackingToken,
+    this.payment,
   });
 
   final String orderNumber;
@@ -364,6 +483,9 @@ class ShopOrder {
   final String statusLabel;
   final String paymentStatus;
   final String paymentStatusLabel;
+
+  /// High-level method: `cod`, `bank_transfer` or `online`.
+  final String? paymentMethod;
   final String? paymentMethodLabel;
   final num subtotal;
   final num discountTotal;
@@ -378,15 +500,20 @@ class ShopOrder {
   final String? placedAt;
   final String? trackingToken;
 
+  /// Latest online attempt, absent for cash on delivery and bank transfer.
+  final ShopOrderPayment? payment;
+
   factory ShopOrder.fromJson(Map<String, dynamic> json) {
     final rawAddress = json['shipping_address'];
     final rawItems = json['items'];
+    final rawPayment = json['payment'];
     return ShopOrder(
       orderNumber: '${json['order_number'] ?? ''}',
       status: '${json['status'] ?? ''}',
       statusLabel: '${json['status_label'] ?? ''}',
       paymentStatus: '${json['payment_status'] ?? ''}',
       paymentStatusLabel: '${json['payment_status_label'] ?? ''}',
+      paymentMethod: json['payment_method'] as String?,
       paymentMethodLabel: json['payment_method_label'] as String?,
       subtotal: _num(json['subtotal']),
       discountTotal: _num(json['discount_total']),
@@ -409,6 +536,9 @@ class ShopOrder {
           : const [],
       placedAt: json['placed_at'] as String?,
       trackingToken: json['tracking_token'] as String?,
+      payment: rawPayment is Map
+          ? ShopOrderPayment.fromJson(Map<String, dynamic>.from(rawPayment))
+          : null,
     );
   }
 }

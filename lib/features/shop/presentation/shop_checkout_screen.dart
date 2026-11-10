@@ -44,6 +44,10 @@ class _ShopCheckoutScreenState extends ConsumerState<ShopCheckoutScreen> {
 
   late final String _idempotencyKey = _newKey();
   String? _paymentCode;
+
+  /// The online rail behind `online`. It is a preference; the server resolves
+  /// the provider, connection and source id again before charging.
+  String? _railCode;
   String? _zoneCity;
   String? _error;
   bool _sending = false;
@@ -263,22 +267,113 @@ class _ShopCheckoutScreenState extends ConsumerState<ShopCheckoutScreen> {
                       items.where((item) => item.available).toList();
                   final selected = _paymentCode ??
                       (available.isEmpty ? null : available.first.code);
-                  return RadioGroup<String>(
-                    groupValue: selected,
-                    onChanged: (value) {
-                      if (value != null) {
-                        setState(() => _paymentCode = value);
-                      }
-                    },
-                    child: Column(
-                      children: [
-                        for (final method in items)
-                          _PaymentTile(
-                            method: method,
-                            enabled: method.available,
+                  final selectedMethod =
+                      items.where((item) => item.code == selected).firstOrNull;
+                  final rails = selectedMethod?.methods ?? const [];
+
+                  return Column(
+                    children: [
+                      RadioGroup<String>(
+                        groupValue: selected,
+                        onChanged: (value) {
+                          if (value != null) {
+                            setState(() {
+                              _paymentCode = value;
+                              if (value != 'online') _railCode = null;
+                            });
+                          }
+                        },
+                        child: Column(
+                          children: [
+                            for (final method in items)
+                              _PaymentTile(
+                                method: method,
+                                enabled: method.available,
+                              ),
+                          ],
+                        ),
+                      ),
+                      if (selected == 'online' && rails.isNotEmpty) ...[
+                        const SizedBox(height: AppSpacing.sm),
+                        Align(
+                          alignment: AlignmentDirectional.centerStart,
+                          child: Text(
+                            context.tr('choosePaymentRail'),
+                            style: theme.textTheme.labelLarge,
                           ),
+                        ),
+                        RadioGroup<String>(
+                          groupValue:
+                              rails.any((rail) => rail.code == _railCode)
+                                  ? _railCode
+                                  : rails.first.code,
+                          onChanged: (value) {
+                            if (value != null) {
+                              setState(() => _railCode = value);
+                            }
+                          },
+                          child: Column(
+                            children: [
+                              for (final rail in rails)
+                                RadioListTile<String>(
+                                  value: rail.code,
+                                  contentPadding: EdgeInsets.zero,
+                                  title: Text(
+                                    rail.providerName.isEmpty
+                                        ? rail.label
+                                        : '${rail.label} · ${rail.providerName}',
+                                  ),
+                                  subtitle: rail.description.isEmpty
+                                      ? null
+                                      : Text(
+                                          rail.description,
+                                          style: theme.textTheme.bodySmall
+                                              ?.copyWith(
+                                            color: context.dukavo.textMuted,
+                                          ),
+                                        ),
+                                ),
+                            ],
+                          ),
+                        ),
+                        Align(
+                          alignment: AlignmentDirectional.centerStart,
+                          child: Text(
+                            context.tr('onlineRedirectNote'),
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: context.dukavo.textMuted,
+                            ),
+                          ),
+                        ),
                       ],
-                    ),
+                      if (selectedMethod?.instructions != null &&
+                          selectedMethod!.instructions!.trim().isNotEmpty)
+                        Align(
+                          alignment: AlignmentDirectional.centerStart,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: AppSpacing.sm),
+                            child: Text(
+                              selectedMethod.instructions!,
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: context.dukavo.textMuted,
+                              ),
+                            ),
+                          ),
+                        ),
+                      if (selected == 'bank_transfer')
+                        Align(
+                          alignment: AlignmentDirectional.centerStart,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: AppSpacing.xs),
+                            child: Text(
+                              context.tr('bankTransferNote'),
+                              style: theme.textTheme.labelSmall?.copyWith(
+                                color: context.dukavo.textMuted,
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
                   );
                 },
               ),
@@ -358,14 +453,23 @@ class _ShopCheckoutScreenState extends ConsumerState<ShopCheckoutScreen> {
     }
     final cart = ref.read(cartProvider(widget.shop));
     if (cart.isEmpty) return;
+    final methods =
+        ref.read(shopPaymentsProvider(widget.shop)).valueOrNull ?? const [];
     final method = _paymentCode ??
-        ref
-            .read(shopPaymentsProvider(widget.shop))
-            .valueOrNull
-            ?.where((item) => item.available)
-            .firstOrNull
-            ?.code;
+        methods.where((item) => item.available).firstOrNull?.code;
     if (method == null) {
+      setState(() => _error = context.tr('noPaymentMethods'));
+      return;
+    }
+
+    final selectedMethod =
+        methods.where((item) => item.code == method).firstOrNull;
+    final rail = _railCode ??
+        (selectedMethod != null && selectedMethod.methods.isNotEmpty
+            ? selectedMethod.methods.first.code
+            : null);
+
+    if (method == 'online' && rail == null) {
       setState(() => _error = context.tr('noPaymentMethods'));
       return;
     }
@@ -386,6 +490,7 @@ class _ShopCheckoutScreenState extends ConsumerState<ShopCheckoutScreen> {
           if (_area.text.trim().isNotEmpty) 'area': _area.text.trim(),
           if (_notes.text.trim().isNotEmpty) 'notes': _notes.text.trim(),
           'payment_method': method,
+          if (method == 'online') 'payment_method_code': rail,
           'idempotency_key': _idempotencyKey,
           'shipping_address': {
             'contact_name': _name.text.trim(),

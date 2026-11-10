@@ -326,4 +326,7 @@ class ApiPaths {
   static String publicStorefrontOrder(
           String tenant, String store, String token) =>
       '/public/storefront/$tenant/$store/orders/$token';
+  static String publicStorefrontOrderPayment(
+          String tenant, String store, String token) =>
+      '/public/storefront/$tenant/$store/orders/$token/payment';
 }
