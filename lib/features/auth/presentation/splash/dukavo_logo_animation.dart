@@ -5,9 +5,9 @@ import '../../../../core/widgets/app_widgets.dart';
 
 /// The Dukavo wordmark with its reveal, glow and final-brand highlight.
 ///
-/// The asset is the real brand artwork from `assets/images/logo-full.png`; the
-/// widget only scales and lights it, so the logo is never redrawn, stretched or
-/// replaced with a look-alike.
+/// The asset is the real brand artwork selected by [AppLogo] for the active
+/// language and brightness; the widget only scales and lights it, so the logo is
+/// never redrawn, stretched or replaced with a look-alike.
 class DukavoLogoAnimation extends StatelessWidget {
   const DukavoLogoAnimation({
     super.key,
@@ -117,7 +117,6 @@ class DukavoLogoAnimation extends StatelessWidget {
       child: AppLogo(
         size: size,
         showWordmark: true,
-        forceLightBackground: true,
       ),
     );
   }

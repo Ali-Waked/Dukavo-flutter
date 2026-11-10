@@ -13,47 +13,55 @@ import '../utils/formatters.dart';
 ///
 /// The icon-only asset is used in square spots. Set [showWordmark] for headers,
 /// auth screens and other wide spaces that should include the brand name.
+///
+/// The full wordmark ships in four language/theme combinations. Reading the
+/// active [Locale] and [Theme] here means every caller gets the right artwork
+/// and the image rebuilds when either changes; callers never choose an asset
+/// themselves.
 class AppLogo extends StatelessWidget {
   const AppLogo({
     super.key,
     this.size = 48,
     this.showWordmark = false,
-    this.forceLightBackground = false,
   });
 
   final double size;
   final bool showWordmark;
 
-  /// Keeps the dark wordmark readable on branded gradients and dark surfaces.
-  final bool forceLightBackground;
+  static const Map<String, Map<String, String>> _fullLogos = {
+    'en': {
+      'light': 'assets/images/logo-full-en-light.png',
+      'dark': 'assets/images/logo-full-en-dark.png',
+    },
+    'ar': {
+      'light': 'assets/images/logo-full-ar-light.png',
+      'dark': 'assets/images/logo-full-ar-dark.png',
+    },
+  };
+
+  /// The full-logo asset for the current language and brightness.
+  static String fullAssetFor(BuildContext context) {
+    final language =
+        Localizations.localeOf(context).languageCode == 'ar' ? 'ar' : 'en';
+    final theme =
+        Theme.of(context).brightness == Brightness.dark ? 'dark' : 'light';
+
+    return _fullLogos[language]![theme]!;
+  }
 
   @override
   Widget build(BuildContext context) {
     final asset = showWordmark
-        ? 'assets/images/logo-full.png'
+        ? fullAssetFor(context)
         : 'assets/images/logo-icon.png';
-    final needsPlate = showWordmark &&
-        (forceLightBackground ||
-            Theme.of(context).brightness == Brightness.dark);
 
-    final image = Image.asset(
+    return Image.asset(
       asset,
       width: showWordmark ? null : size,
-      height: showWordmark ? (needsPlate ? size * 0.76 : size) : size,
+      height: size,
       fit: BoxFit.contain,
       filterQuality: FilterQuality.medium,
       semanticLabel: 'Dukavo',
-    );
-
-    if (!needsPlate) return image;
-
-    return Container(
-      padding: EdgeInsets.all(size * 0.12),
-      decoration: BoxDecoration(
-        color: context.dukavo.background,
-        borderRadius: BorderRadius.circular(size * 0.22),
-      ),
-      child: image,
     );
   }
 }
