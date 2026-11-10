@@ -70,7 +70,7 @@ class _OfflineBannerHostState extends ConsumerState<OfflineBannerHost> {
         title: context.tr('offlineTitle'),
         message: context.tr('offlineBody'),
         background: context.dukavo.warningContainer,
-        foreground: context.dukavo.onWarning,
+        foreground: context.dukavo.onWarningContainer,
         actionLabel: context.tr('retry'),
         onAction: () => connectivity.check(force: true),
       );
@@ -82,7 +82,7 @@ class _OfflineBannerHostState extends ConsumerState<OfflineBannerHost> {
             ? context.tr('offlineSyncingBody', args: {'count': pending})
             : context.tr('offlineRefreshing'),
         background: context.dukavo.infoContainer,
-        foreground: context.dukavo.onInfo,
+        foreground: context.dukavo.onInfoContainer,
         progress: true,
       );
     } else if (_showBackOnline) {
@@ -91,7 +91,7 @@ class _OfflineBannerHostState extends ConsumerState<OfflineBannerHost> {
         title: context.tr('offlineBackOnline'),
         message: context.tr('offlineBackOnlineBody'),
         background: context.dukavo.successContainer,
-        foreground: context.dukavo.onSuccess,
+        foreground: context.dukavo.onSuccessContainer,
       );
     } else {
       banner = null;
@@ -183,7 +183,7 @@ class _Banner extends StatelessWidget {
                   Text(
                     message,
                     style: texts.bodySmall?.copyWith(
-                      color: foreground.withValues(alpha: 0.86),
+                      color: foreground,
                       height: 1.3,
                     ),
                   ),
@@ -193,7 +193,19 @@ class _Banner extends StatelessWidget {
             if (actionLabel != null && onAction != null)
               TextButton(
                 onPressed: onAction,
-                style: TextButton.styleFrom(foregroundColor: foreground),
+                style: TextButton.styleFrom(
+                  foregroundColor: foreground,
+                  minimumSize: const Size(
+                    AppSizes.touchTarget,
+                    AppSizes.touchTarget,
+                  ),
+                  padding: const EdgeInsetsDirectional.symmetric(
+                    horizontal: AppSpacing.sm,
+                  ),
+                  textStyle: texts.labelLarge?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
                 child: Text(actionLabel!),
               ),
           ],

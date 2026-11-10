@@ -87,15 +87,19 @@ class DukavoColors extends ThemeExtension<DukavoColors> {
     required this.success,
     required this.onSuccess,
     required this.successContainer,
+    required this.onSuccessContainer,
     required this.warning,
     required this.onWarning,
     required this.warningContainer,
+    required this.onWarningContainer,
     required this.danger,
     required this.onDanger,
     required this.dangerContainer,
+    required this.onDangerContainer,
     required this.info,
     required this.onInfo,
     required this.infoContainer,
+    required this.onInfoContainer,
     required this.heroStart,
     required this.heroEnd,
     required this.shadow,
@@ -117,15 +121,19 @@ class DukavoColors extends ThemeExtension<DukavoColors> {
   final Color success;
   final Color onSuccess;
   final Color successContainer;
+  final Color onSuccessContainer;
   final Color warning;
   final Color onWarning;
   final Color warningContainer;
+  final Color onWarningContainer;
   final Color danger;
   final Color onDanger;
   final Color dangerContainer;
+  final Color onDangerContainer;
   final Color info;
   final Color onInfo;
   final Color infoContainer;
+  final Color onInfoContainer;
   final Color heroStart;
   final Color heroEnd;
   final Color shadow;
@@ -147,15 +155,19 @@ class DukavoColors extends ThemeExtension<DukavoColors> {
     success: Color(0xFF047857),
     onSuccess: Color(0xFFFFFFFF),
     successContainer: Color(0xFFD1FAE5),
+    onSuccessContainer: Color(0xFF064E3B),
     warning: Color(0xFFB45309),
     onWarning: Color(0xFFFFFFFF),
     warningContainer: Color(0xFFFEF3C7),
+    onWarningContainer: Color(0xFF78350F),
     danger: Color(0xFFDC2626),
     onDanger: Color(0xFFFFFFFF),
     dangerContainer: Color(0xFFFEE2E2),
+    onDangerContainer: Color(0xFF7F1D1D),
     info: Color(0xFF2563EB),
     onInfo: Color(0xFFFFFFFF),
     infoContainer: Color(0xFFDBEAFE),
+    onInfoContainer: Color(0xFF1E3A8A),
     heroStart: Color(0xFF0F766E),
     heroEnd: Color(0xFF115E59),
     shadow: Color(0x1A0F2A25),
@@ -179,15 +191,19 @@ class DukavoColors extends ThemeExtension<DukavoColors> {
     success: Color(0xFF34D399),
     onSuccess: Color(0xFF042F24),
     successContainer: Color(0xFF123B2E),
+    onSuccessContainer: Color(0xFFA7F3D0),
     warning: Color(0xFFFBBF24),
     onWarning: Color(0xFF3B2500),
     warningContainer: Color(0xFF3E2E0B),
+    onWarningContainer: Color(0xFFFDE68A),
     danger: Color(0xFFF87171),
     onDanger: Color(0xFF3F0D0D),
     dangerContainer: Color(0xFF401C1C),
+    onDangerContainer: Color(0xFFFECACA),
     info: Color(0xFF60A5FA),
     onInfo: Color(0xFF0B2447),
     infoContainer: Color(0xFF172B45),
+    onInfoContainer: Color(0xFFBFDBFE),
     heroStart: Color(0xFF115E59),
     heroEnd: Color(0xFF0F766E),
     shadow: Color(0x66000000),
@@ -213,15 +229,19 @@ class DukavoColors extends ThemeExtension<DukavoColors> {
     Color? success,
     Color? onSuccess,
     Color? successContainer,
+    Color? onSuccessContainer,
     Color? warning,
     Color? onWarning,
     Color? warningContainer,
+    Color? onWarningContainer,
     Color? danger,
     Color? onDanger,
     Color? dangerContainer,
+    Color? onDangerContainer,
     Color? info,
     Color? onInfo,
     Color? infoContainer,
+    Color? onInfoContainer,
     Color? heroStart,
     Color? heroEnd,
     Color? shadow,
@@ -243,15 +263,19 @@ class DukavoColors extends ThemeExtension<DukavoColors> {
       success: success ?? this.success,
       onSuccess: onSuccess ?? this.onSuccess,
       successContainer: successContainer ?? this.successContainer,
+      onSuccessContainer: onSuccessContainer ?? this.onSuccessContainer,
       warning: warning ?? this.warning,
       onWarning: onWarning ?? this.onWarning,
       warningContainer: warningContainer ?? this.warningContainer,
+      onWarningContainer: onWarningContainer ?? this.onWarningContainer,
       danger: danger ?? this.danger,
       onDanger: onDanger ?? this.onDanger,
       dangerContainer: dangerContainer ?? this.dangerContainer,
+      onDangerContainer: onDangerContainer ?? this.onDangerContainer,
       info: info ?? this.info,
       onInfo: onInfo ?? this.onInfo,
       infoContainer: infoContainer ?? this.infoContainer,
+      onInfoContainer: onInfoContainer ?? this.onInfoContainer,
       heroStart: heroStart ?? this.heroStart,
       heroEnd: heroEnd ?? this.heroEnd,
       shadow: shadow ?? this.shadow,
@@ -279,16 +303,24 @@ class DukavoColors extends ThemeExtension<DukavoColors> {
       onSuccess: Color.lerp(onSuccess, other.onSuccess, t)!,
       successContainer:
           Color.lerp(successContainer, other.successContainer, t)!,
+      onSuccessContainer:
+          Color.lerp(onSuccessContainer, other.onSuccessContainer, t)!,
       warning: Color.lerp(warning, other.warning, t)!,
       onWarning: Color.lerp(onWarning, other.onWarning, t)!,
       warningContainer:
           Color.lerp(warningContainer, other.warningContainer, t)!,
+      onWarningContainer:
+          Color.lerp(onWarningContainer, other.onWarningContainer, t)!,
       danger: Color.lerp(danger, other.danger, t)!,
       onDanger: Color.lerp(onDanger, other.onDanger, t)!,
       dangerContainer: Color.lerp(dangerContainer, other.dangerContainer, t)!,
+      onDangerContainer:
+          Color.lerp(onDangerContainer, other.onDangerContainer, t)!,
       info: Color.lerp(info, other.info, t)!,
       onInfo: Color.lerp(onInfo, other.onInfo, t)!,
       infoContainer: Color.lerp(infoContainer, other.infoContainer, t)!,
+      onInfoContainer:
+          Color.lerp(onInfoContainer, other.onInfoContainer, t)!,
       heroStart: Color.lerp(heroStart, other.heroStart, t)!,
       heroEnd: Color.lerp(heroEnd, other.heroEnd, t)!,
       shadow: Color.lerp(shadow, other.shadow, t)!,

@@ -1324,17 +1324,20 @@ class InfoBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = switch (tone) {
-      InfoBannerTone.info => (context.dukavo.info, context.dukavo.infoContainer),
+      InfoBannerTone.info => (
+          context.dukavo.onInfoContainer,
+          context.dukavo.infoContainer
+        ),
       InfoBannerTone.success => (
-          context.dukavo.success,
+          context.dukavo.onSuccessContainer,
           context.dukavo.successContainer
         ),
       InfoBannerTone.warning => (
-          context.dukavo.warning,
+          context.dukavo.onWarningContainer,
           context.dukavo.warningContainer
         ),
       InfoBannerTone.danger => (
-          context.dukavo.danger,
+          context.dukavo.onDangerContainer,
           context.dukavo.dangerContainer
         ),
     };
@@ -1368,7 +1371,7 @@ class InfoBanner extends StatelessWidget {
                 Text(
                   message,
                   style: context.texts.bodySmall?.copyWith(
-                    color: context.dukavo.textSecondary,
+                    color: colors.$1,
                     height: 1.45,
                   ),
                 ),
