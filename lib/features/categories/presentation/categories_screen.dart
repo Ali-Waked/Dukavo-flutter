@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../app/localization/app_localizations.dart';
+import '../../../app/router/route_paths.dart';
 import '../../../app/theme/design_tokens.dart';
 import '../../../core/widgets/app_widgets.dart';
 import '../../auth/application/auth_controller.dart';
@@ -67,9 +69,17 @@ class CategoriesScreen extends ConsumerWidget {
                     category: root,
                     depth: 0,
                     canManage: permissions.canManageCategories,
+                    canTranslate: permissions.canViewTranslations,
                     onEdit: (category) =>
                         _showEditor(context, ref, category: category),
                     onDelete: (category) => _delete(context, ref, category),
+                    onTranslate: (category) => context.push(
+                      RoutePaths.translationAssistant(
+                        surface: 'tenant',
+                        entity: 'category',
+                        id: category.id,
+                      ),
+                    ),
                   ),
               ],
             ),
@@ -159,15 +169,19 @@ class _CategoryNode extends StatelessWidget {
     required this.category,
     required this.depth,
     required this.canManage,
+    required this.canTranslate,
     required this.onEdit,
     required this.onDelete,
+    required this.onTranslate,
   });
 
   final Category category;
   final int depth;
   final bool canManage;
+  final bool canTranslate;
   final void Function(Category category) onEdit;
   final void Function(Category category) onDelete;
+  final void Function(Category category) onTranslate;
 
   @override
   Widget build(BuildContext context) {
@@ -253,7 +267,7 @@ class _CategoryNode extends StatelessWidget {
                       ),
                       const SizedBox(width: 4),
                     ],
-                    if (canManage)
+                    if (canManage || canTranslate)
                       PopupMenuButton<String>(
                         tooltip: context.tr('edit'),
                         icon: Icon(
@@ -264,16 +278,24 @@ class _CategoryNode extends StatelessWidget {
                         onSelected: (value) {
                           if (value == 'edit') onEdit(category);
                           if (value == 'delete') onDelete(category);
+                          if (value == 'translate') onTranslate(category);
                         },
                         itemBuilder: (context) => [
-                          PopupMenuItem(
-                            value: 'edit',
-                            child: Text(context.tr('edit')),
-                          ),
-                          PopupMenuItem(
-                            value: 'delete',
-                            child: Text(context.tr('delete')),
-                          ),
+                          if (canTranslate)
+                            PopupMenuItem(
+                              value: 'translate',
+                              child: Text(context.tr('translationOpen')),
+                            ),
+                          if (canManage)
+                            PopupMenuItem(
+                              value: 'edit',
+                              child: Text(context.tr('edit')),
+                            ),
+                          if (canManage)
+                            PopupMenuItem(
+                              value: 'delete',
+                              child: Text(context.tr('delete')),
+                            ),
                         ],
                       ),
                   ],
@@ -287,8 +309,10 @@ class _CategoryNode extends StatelessWidget {
             category: child,
             depth: depth + 1,
             canManage: canManage,
+            canTranslate: canTranslate,
             onEdit: onEdit,
             onDelete: onDelete,
+            onTranslate: onTranslate,
           ),
       ],
     );

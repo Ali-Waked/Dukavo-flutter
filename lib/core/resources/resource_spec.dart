@@ -117,6 +117,8 @@ class ResourceSpec {
     this.canDelete = false,
     this.deletePath,
     this.actions = const <ResourceActionSpec>[],
+    this.translationEntity,
+    this.translationSurface = 'tenant',
     this.emptyIcon,
     this.emptyTitleKey = 'nothingHereYet',
     this.extraDetail,
@@ -151,6 +153,12 @@ class ResourceSpec {
   final bool canDelete;
   final String? Function(JsonResource resource)? deletePath;
   final List<ResourceActionSpec> actions;
+
+  /// When set, this resource has translatable copy and the shared assistant can
+  /// be opened from its list and detail screens.
+  final String? translationEntity;
+  final String translationSurface;
+
   final IconData? emptyIcon;
   final String emptyTitleKey;
 

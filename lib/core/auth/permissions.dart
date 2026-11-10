@@ -51,6 +51,9 @@ class PermissionSlugs {
   static const whatsappManage = 'whatsapp.manage';
   static const aiUse = 'ai.use';
   static const aiApprove = 'ai.approve';
+  static const translationsView = 'translations.view';
+  static const translationsGenerate = 'translations.generate';
+  static const translationsReview = 'translations.review';
   static const auditView = 'audit.view';
   static const recoveryView = 'recovery.view';
   static const recoveryManage = 'recovery.manage';
@@ -106,6 +109,9 @@ class Permissions {
   bool get canManageRoles => can(PermissionSlugs.rolesManage);
   bool get canUseAi => can(PermissionSlugs.aiUse);
   bool get canApproveAi => can(PermissionSlugs.aiApprove);
+  bool get canViewTranslations => can(PermissionSlugs.translationsView);
+  bool get canGenerateTranslations => can(PermissionSlugs.translationsGenerate);
+  bool get canReviewTranslations => can(PermissionSlugs.translationsReview);
   bool get canViewAudit => can(PermissionSlugs.auditView);
   bool get canViewRecovery => can(PermissionSlugs.recoveryView);
   bool get canManageRecovery => can(PermissionSlugs.recoveryManage);

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../app/localization/app_localizations.dart';
+import '../../../app/router/route_paths.dart';
 import '../../../app/theme/design_tokens.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/utils/validators.dart';
@@ -141,8 +143,16 @@ class _ShippingZonesScreenState extends ConsumerState<ShippingZonesScreen> {
                                     .firstWhere((store) => store.id == storeId)
                                     .currency,
                                 canManage: permissions.canManageShipping,
+                                canTranslate: permissions.canViewTranslations,
                                 onEdit: () => _openEditor(storeId, zone: zone),
                                 onDelete: () => _delete(storeId, zone),
+                                onTranslate: () => context.push(
+                                  RoutePaths.translationAssistant(
+                                    surface: 'tenant',
+                                    entity: 'shipping_zone',
+                                    id: zone.id,
+                                  ),
+                                ),
                               ),
                             ),
                         ],
@@ -228,15 +238,19 @@ class _ZoneCard extends StatelessWidget {
     required this.zone,
     required this.currencyCode,
     required this.canManage,
+    required this.canTranslate,
     required this.onEdit,
     required this.onDelete,
+    required this.onTranslate,
   });
 
   final ShippingZone zone;
   final String currencyCode;
   final bool canManage;
+  final bool canTranslate;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
+  final VoidCallback onTranslate;
 
   @override
   Widget build(BuildContext context) {
@@ -309,21 +323,29 @@ class _ZoneCard extends StatelessWidget {
                 ],
               ),
             ),
-            if (canManage)
+            if (canManage || canTranslate)
               PopupMenuButton<String>(
                 onSelected: (value) {
                   if (value == 'edit') onEdit();
                   if (value == 'delete') onDelete();
+                  if (value == 'translate') onTranslate();
                 },
                 itemBuilder: (context) => [
-                  PopupMenuItem(
-                    value: 'edit',
-                    child: Text(context.tr('edit')),
-                  ),
-                  PopupMenuItem(
-                    value: 'delete',
-                    child: Text(context.tr('delete')),
-                  ),
+                  if (canTranslate)
+                    PopupMenuItem(
+                      value: 'translate',
+                      child: Text(context.tr('translationOpen')),
+                    ),
+                  if (canManage)
+                    PopupMenuItem(
+                      value: 'edit',
+                      child: Text(context.tr('edit')),
+                    ),
+                  if (canManage)
+                    PopupMenuItem(
+                      value: 'delete',
+                      child: Text(context.tr('delete')),
+                    ),
                 ],
               ),
           ],

@@ -177,6 +177,12 @@ class RoutePaths {
   static String order(String orderNumber) => '/orders/$orderNumber';
   static String product(String slug) => '/products/$slug';
   static String productEdit(String slug) => '/products/$slug/edit';
+  static String translationAssistant({
+    required String surface,
+    required String entity,
+    required int id,
+  }) =>
+      '/translations/$surface/$entity/$id';
   static String customer(int id) => '/customers/$id';
   static String customerEdit(int id) => '/customers/$id/edit';
   static String customerCrm(int id) => '/customers/$id/crm';

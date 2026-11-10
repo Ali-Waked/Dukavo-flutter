@@ -166,6 +166,41 @@ class ApiPaths {
   static const auditActions = '/tenant/audit-logs/actions';
   static String auditLog(int id) => '/tenant/audit-logs/$id';
 
+  // AI translation review. The surface selects the merchant or platform half of
+  // the same review ledger; the server resolves the record inside that surface.
+  static String translations(String surface) =>
+      surface == 'platform' ? '/platform/translations' : '/tenant/translations';
+  static String translationEntities(String surface) =>
+      '${translations(surface)}/entities';
+  static String translationUsage(String surface) =>
+      '${translations(surface)}/usage';
+  static String translationOverview(
+    String surface,
+    String entity,
+    int id,
+  ) =>
+      '${translations(surface)}/$entity/$id';
+  static String translationGenerate(
+    String surface,
+    String entity,
+    int id,
+  ) =>
+      '${translations(surface)}/$entity/$id/generate';
+  static String translationApproveAll(
+    String surface,
+    String entity,
+    int id,
+  ) =>
+      '${translations(surface)}/$entity/$id/approve-all';
+  static String translation(String surface, int id) =>
+      '${translations(surface)}/$id';
+  static String translationApprove(String surface, int id) =>
+      '${translation(surface, id)}/approve';
+  static String translationReject(String surface, int id) =>
+      '${translation(surface, id)}/reject';
+  static String translationRegenerate(String surface, int id) =>
+      '${translation(surface, id)}/regenerate';
+
   // Catalogue extras.
   static String productImages(String slug) => '/tenant/products/$slug/images';
   static String productImagesReorder(String slug) =>

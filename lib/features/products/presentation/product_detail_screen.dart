@@ -20,12 +20,25 @@ class ProductDetailScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final async = ref.watch(productDetailProvider(slug));
     final permissions = ref.watch(permissionsProvider);
+    final product = async.valueOrNull;
     final currency = ref.watch(currentSessionProvider)?.currency ?? 'USD';
 
     return Scaffold(
       appBar: AppBar(
         title: Text(context.tr('productDetails')),
         actions: [
+          if (product != null && permissions.canViewTranslations)
+            IconButton(
+              tooltip: context.tr('translationOpen'),
+              onPressed: () => context.push(
+                RoutePaths.translationAssistant(
+                  surface: 'tenant',
+                  entity: 'product',
+                  id: product.id,
+                ),
+              ),
+              icon: const Icon(Icons.translate),
+            ),
           if (permissions.canManageProducts)
             IconButton(
               tooltip: context.tr('productImages'),

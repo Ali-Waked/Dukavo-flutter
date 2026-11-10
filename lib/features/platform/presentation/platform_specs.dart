@@ -403,6 +403,8 @@ final platformFaqSpec = ResourceSpec(
   editPath: (resource) => RoutePaths.platformFaqEdit(resource.id),
   canDelete: true,
   deletePath: (resource) => '${ApiPaths.platformFaqEntries}/${resource.id}',
+  translationEntity: 'faq_entry',
+  translationSurface: 'platform',
   emptyIcon: Icons.help_outline,
   emptyTitleKey: 'noFaqEntries',
 );
@@ -448,6 +450,8 @@ final platformContentPageSpec = ResourceSpec(
   detailRoute: (resource) => RoutePaths.platformContentPage(resource.id),
   canEdit: true,
   editPath: (resource) => RoutePaths.platformContentPageEdit(resource.id),
+  translationEntity: 'content_page',
+  translationSurface: 'platform',
   emptyIcon: Icons.article_outlined,
   emptyTitleKey: 'noContentPages',
 );
@@ -651,6 +655,8 @@ final platformNewsletterSpec = ResourceSpec(
   editPath: (resource) => RoutePaths.platformNewsletterEdit(resource.id),
   canDelete: true,
   deletePath: (resource) => '${ApiPaths.platformNewsletters}/${resource.id}',
+  translationEntity: 'newsletter',
+  translationSurface: 'platform',
   emptyIcon: Icons.newspaper_outlined,
   emptyTitleKey: 'noNewsletters',
 );

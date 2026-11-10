@@ -5,6 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../app/localization/app_localizations.dart';
+import '../../app/router/route_paths.dart';
+import '../../features/auth/application/auth_controller.dart';
 import '../api/api_client.dart';
 import '../api/api_exception.dart';
 import '../providers.dart';
@@ -191,7 +193,7 @@ class _FilterChips extends StatelessWidget {
 }
 
 /// The standard row card shared by every admin list.
-class ResourceCard extends StatelessWidget {
+class ResourceCard extends ConsumerWidget {
   const ResourceCard({
     super.key,
     required this.spec,
@@ -204,10 +206,12 @@ class ResourceCard extends StatelessWidget {
   final VoidCallback? onTap;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final status = spec.status?.call(resource);
     final subtitle = spec.subtitle?.call(resource);
     final scheme = Theme.of(context).colorScheme;
+    final canTranslate = spec.translationEntity != null &&
+        ref.watch(permissionsProvider).canViewTranslations;
 
     return Card(
       clipBehavior: Clip.antiAlias,
@@ -244,6 +248,18 @@ class ResourceCard extends StatelessWidget {
           children: [
             if (status != null && status.isNotEmpty)
               StatusChip(status: status, compact: true),
+            if (canTranslate)
+              IconButton(
+                tooltip: context.tr('translationOpen'),
+                onPressed: () => context.push(
+                  RoutePaths.translationAssistant(
+                    surface: spec.translationSurface,
+                    entity: spec.translationEntity!,
+                    id: resource.id,
+                  ),
+                ),
+                icon: const Icon(Icons.translate, size: 20),
+              ),
             const SizedBox(width: 4),
             const Icon(Icons.chevron_right, size: 20),
           ],
@@ -316,10 +332,24 @@ class _ResourceDetailScreenState extends ConsumerState<ResourceDetailScreen> {
   Widget build(BuildContext context) {
     final spec = widget.spec;
     final resource = _resource;
+    final canTranslate = spec.translationEntity != null &&
+        ref.watch(permissionsProvider).canViewTranslations;
     return Scaffold(
       appBar: AppBar(
         title: Text(context.tr(spec.titleKey)),
         actions: [
+          if (canTranslate && resource != null)
+            IconButton(
+              tooltip: context.tr('translationOpen'),
+              onPressed: () => context.push(
+                RoutePaths.translationAssistant(
+                  surface: spec.translationSurface,
+                  entity: spec.translationEntity!,
+                  id: resource.id,
+                ),
+              ),
+              icon: const Icon(Icons.translate),
+            ),
           if (spec.canEdit && spec.editPath != null && resource != null)
             IconButton(
               tooltip: context.tr('edit'),

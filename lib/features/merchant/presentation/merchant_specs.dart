@@ -526,6 +526,7 @@ final automationRuleSpec = ResourceSpec(
   editPath: (resource) => RoutePaths.automationEdit(resource.id),
   canDelete: true,
   deletePath: (resource) => '${ApiPaths.automationRules}/${resource.id}',
+  translationEntity: 'automation_rule',
   emptyIcon: Icons.bolt_outlined,
   emptyTitleKey: 'noAutomationRules',
 );
@@ -808,6 +809,7 @@ final storeSpec = ResourceSpec(
   editPath: (resource) => RoutePaths.storeEdit(resource.id),
   canDelete: true,
   deletePath: (resource) => '${ApiPaths.stores}/${resource.id}',
+  translationEntity: 'store',
   actions: [
     ResourceActionSpec(
       labelKey: 'makeDefault',

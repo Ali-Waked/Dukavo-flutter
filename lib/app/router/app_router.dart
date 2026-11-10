@@ -57,6 +57,7 @@ import '../../features/shell/presentation/app_shell.dart';
 import '../../features/shell/presentation/more_screen.dart';
 import '../../features/shell/presentation/no_access_screen.dart';
 import '../../features/storefront/presentation/storefront_settings_screen.dart';
+import '../../features/translations/presentation/translation_assistant_screen.dart';
 import '../../features/stores/presentation/store_currency_screen.dart';
 import '../../features/team/presentation/role_permissions_screen.dart';
 import '../../features/team/presentation/team_user_form_screen.dart';
@@ -423,6 +424,20 @@ List<RouteBase> _routes() {
     GoRoute(
       path: RoutePaths.categories,
       builder: (context, state) => const CategoriesScreen(),
+    ),
+
+    // AI translation review. The surface and entity are validated by the server;
+    // this route only carries the target record.
+    GoRoute(
+      path: '/translations/:surface/:entity/:id',
+      builder: (context, state) {
+        final surface = state.pathParameters['surface'] ?? '';
+        return TranslationAssistantScreen(
+          surface: surface == 'platform' ? 'platform' : 'tenant',
+          entity: state.pathParameters['entity'] ?? '',
+          recordId: int.tryParse(state.pathParameters['id'] ?? '') ?? 0,
+        );
+      },
     ),
 
     // Customers.

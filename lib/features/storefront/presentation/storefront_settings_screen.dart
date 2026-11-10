@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../app/config/app_config.dart';
 import '../../../app/localization/app_localizations.dart';
+import '../../../app/router/route_paths.dart';
 import '../../../app/theme/design_tokens.dart';
 import '../../../core/utils/validators.dart';
 import '../../../core/widgets/app_widgets.dart';
@@ -195,6 +197,7 @@ class _StorefrontFormState extends ConsumerState<_StorefrontForm> {
   @override
   Widget build(BuildContext context) {
     final settings = widget.settings;
+    final permissions = ref.watch(permissionsProvider);
     final tenantSlug = ref.watch(currentSessionProvider)?.activeTenant?.slug;
     final shopUrl = tenantSlug == null
         ? null
@@ -209,7 +212,24 @@ class _StorefrontFormState extends ConsumerState<_StorefrontForm> {
           SectionCard(
             title: settings.name,
             subtitle: shopUrl ?? '${context.tr('slug')}: ${settings.slug}',
-            trailing: StatusChip(status: settings.status),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (permissions.canViewTranslations)
+                  IconButton(
+                    tooltip: context.tr('translationOpen'),
+                    onPressed: () => context.push(
+                      RoutePaths.translationAssistant(
+                        surface: 'tenant',
+                        entity: 'store',
+                        id: settings.storeId,
+                      ),
+                    ),
+                    icon: const Icon(Icons.translate),
+                  ),
+                StatusChip(status: settings.status),
+              ],
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
