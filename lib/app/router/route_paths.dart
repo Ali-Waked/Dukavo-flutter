@@ -31,7 +31,10 @@ class RoutePaths {
   static const storefront = '/storefront';
   static const shippingZones = '/shipping-zones';
   static const paymentSettings = '/payments';
+  static const support = '/support';
   static const profile = '/profile';
+  static const security = '/security';
+  static const welcome = '/welcome';
   static const settings = '/settings';
   static const more = '/more';
   static const noAccess = '/no-access';
@@ -58,6 +61,24 @@ class RoutePaths {
   static const platformNewsletters = '/platform/newsletters';
   static const platformCreateNewsletter = '/platform/newsletters/new';
   static const platformSettings = '/platform/settings';
+  static const platformSettingsFeatures = '/platform/settings/features';
+  static const platformSettingsHealth = '/platform/settings/health';
+  static const platformSettingsHistory = '/platform/settings/history';
+  static const platformSettingsInfrastructure =
+      '/platform/settings/infrastructure';
+  static String platformSettingsSection(String category) =>
+      '/platform/settings/$category';
+  static const platformAiAdmin = '/platform/ai';
+  static const platformPayments = '/platform/payments';
+  static const platformIntegrations = '/platform/integrations';
+  static const platformNotifications = '/platform/notifications';
+  static const platformAutomationTemplates = '/platform/automation-templates';
+  static const platformCreateAutomationTemplate =
+      '/platform/automation-templates/new';
+  static String platformAutomationTemplate(int id) =>
+      '/platform/automation-templates/$id';
+  static String platformAutomationTemplateEdit(int id) =>
+      '/platform/automation-templates/$id/edit';
   static const platformMore = '/platform/more';
 
   // Merchant workspace additions.
@@ -71,12 +92,25 @@ class RoutePaths {
   static const createBundle = '/bundles/new';
   static const whatsapp = '/whatsapp';
   static const createWhatsapp = '/whatsapp/new';
+  static const integrations = '/integrations';
   static const aiActions = '/ai-actions';
+  static const aiSettings = '/ai-settings';
   static const automations = '/automations';
   static const createAutomation = '/automations/new';
   static const automationRules = '/automations/rules';
   static const automationRuns = '/automations/runs';
   static const automationTasks = '/automations/tasks';
+  static const automationTemplates = '/automations/templates';
+  static String automationTemplate(int id) => '/automations/templates/$id';
+  static const automationInstallations = '/automations/installations';
+  static String automationInstallation(int id) =>
+      '/automations/installations/$id';
+  static const paymentConnections = '/payments/connections';
+  static const paymentHistory = '/payments/history';
+  static String paymentDetail(int id) => '/payments/history/$id';
+  static const aiCopilot = '/ai/copilot';
+  static const aiInsights = '/ai/insights';
+  static const inventoryTransfer = '/inventory/transfer';
   static const recovery = '/recovery';
   static const profit = '/profit';
   static const stores = '/stores';
@@ -177,6 +211,8 @@ class RoutePaths {
   static String order(String orderNumber) => '/orders/$orderNumber';
   static String product(String slug) => '/products/$slug';
   static String productEdit(String slug) => '/products/$slug/edit';
+  static String supportCategory(String slug) => '/support/categories/$slug';
+  static String supportArticle(String slug) => '/support/articles/$slug';
   static String translationAssistant({
     required String surface,
     required String entity,

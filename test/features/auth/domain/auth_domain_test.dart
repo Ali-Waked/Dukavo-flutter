@@ -119,6 +119,88 @@ void main() {
       expect(session.currency, 'USD');
       expect(session.timezone, 'UTC');
     });
+
+    test('a platform operator without a workspace is in platform mode', () {
+      const operator = AuthUser(
+        id: 9,
+        name: 'Operator',
+        email: 'operator@dukavo.com',
+        status: 'active',
+        isPlatformUser: true,
+        isPlatformOperator: true,
+      );
+      const session = Session(
+        user: operator,
+        tenants: [],
+        roles: [],
+        permissions: [],
+        permissionCatalogue: {},
+      );
+
+      expect(session.canUsePlatform, isTrue);
+      expect(session.isPlatformMode, isTrue);
+      expect(session.isPlatformOnly, isTrue);
+    });
+
+    test('a platform operator inside a workspace is in merchant mode', () {
+      const operator = AuthUser(
+        id: 9,
+        name: 'Operator',
+        email: 'operator@dukavo.com',
+        status: 'active',
+        isPlatformUser: true,
+        isPlatformOperator: true,
+      );
+      const session = Session(
+        user: operator,
+        activeTenant: tenant,
+        tenants: [membership],
+        roles: [],
+        permissions: [],
+        permissionCatalogue: {},
+      );
+
+      expect(session.canUsePlatform, isTrue);
+      expect(session.isPlatformMode, isFalse);
+      expect(session.isPlatformOnly, isFalse);
+    });
+
+    test('a broader platform role never unlocks the operator console', () {
+      const platformUser = AuthUser(
+        id: 10,
+        name: 'Support',
+        email: 'support@dukavo.com',
+        status: 'active',
+        isPlatformUser: true,
+      );
+      const session = Session(
+        user: platformUser,
+        tenants: [],
+        roles: [],
+        permissions: [],
+        permissionCatalogue: {},
+      );
+
+      // The backend's platform route gate only accepts the operator roles.
+      expect(session.isPlatformUser, isTrue);
+      expect(session.canUsePlatform, isFalse);
+      expect(session.isPlatformMode, isFalse);
+    });
+
+    test('a merchant without a workspace has no platform capability', () {
+      const session = Session(
+        user: user,
+        tenants: [],
+        roles: [],
+        permissions: [],
+        permissionCatalogue: {},
+      );
+
+      expect(session.canUsePlatform, isFalse);
+      expect(session.isPlatformOnly, isFalse);
+      expect(session.hasMerchantAccess, isFalse);
+      expect(session.isPlatformMode, isFalse);
+    });
   });
 
   group('TenantMembership', () {

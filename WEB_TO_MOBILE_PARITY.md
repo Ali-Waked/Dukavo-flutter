@@ -9,9 +9,10 @@ exists.
 - **Mobile source:** `mobile/` (Flutter 3.47.9, Dart 3.13.7)
 - **API source of truth:** `backend/routes/api/v1.php`
 - **Web source of truth:** `frontend/src/router/index.ts`
-- **Last verified:** 2026-11-04
-- **Quality gates:** `flutter analyze` clean; `flutter test` 126 passing;
-  `dart format --set-exit-if-changed` clean.
+- **Last verified:** 2026-11-12
+- **Quality gates:** `flutter analyze` clean; `flutter test` 319 passing;
+  `dart format --set-exit-if-changed` clean on the files touched by this
+  change.
 
 ---
 
@@ -37,10 +38,12 @@ can complete the same business task against the same API and permissions.
 | Forgot password | `/forgot-password` | `POST /auth/forgot-password` | ✅ | Sends the reset link; the link itself opens the web reset page |
 | Reset password form | `/reset-password?token=&email=` | `POST /auth/reset-password` | ◐ | Native form validates and submits the token; reset emails still link to the web page until app-link configuration exists |
 | Email verification | `/verify-email` | Laravel verification routes | ✗ | No mobile screen; backend verification link is web-based |
-| Session restore | boot | `GET /me` | ✅ | Silent restore, tenant + permission hydration |
+| Session restore | boot | `GET /me` | ✅ | Silent restore of the saved context: last valid workspace when a slug is stored, otherwise the platform console for an operator |
 | Workspace onboarding | `/setup` | `POST /onboarding/tenant` | ✅ | Name, slug, country, currency, timezone, locale, first store |
 | Account status (pending/suspended) | — | `GET /me`, login errors | ◐ | Server message is surfaced on login; no dedicated status page |
 | Workspace switching | More → workspace | `GET /me` with `X-Tenant` | ✅ | Session, permissions and tenant-scoped caches refresh |
+| Platform context entry | More → Platform console / workspace switcher | `GET /me` without `X-Tenant` | ✅ | Operator-only (`is_platform_operator`); keeps the bearer token, so switching is not a logout |
+| Dual-context switching | workspace switcher | `GET /me` with/without `X-Tenant` | ✅ | Platform Administrator + Merchant accounts move between the console and their workspaces from one sheet |
 | Logout | More/Settings | `POST /auth/logout` | ✅ | Clears token and local state |
 | Profile, avatar, password, sessions | `/profile` | `/profile*` | ✅ | Avatar upload/remove, password change, revoke sessions |
 | Notification preferences | `/settings` | `/profile/notifications*` | ✅ | Channel toggles respect backend capabilities |
@@ -58,9 +61,10 @@ can complete the same business task against the same API and permissions.
 | Analytics | `/analytics` | `/tenant/analytics` | ✅ | Range/store filters, sales, products, stock health, limitations |
 | Profit intelligence | `/profit` | `/tenant/profit` | ✅ | Filters, per-store/product breakdown, cost-completeness flags |
 | Profit CSV export | `/profit` export | `GET /tenant/profit/export` | ✅ | Raw bytes written to a temp CSV; path shown |
-| AI merchant copilot | `/ai/merchant-copilot` | `POST /tenant/ai/merchant-copilot` | ✗ | Endpoint and `ai.use` permission exist; no mobile chat screen |
-| AI insights | dashboard panel | `GET /tenant/ai/insights` | ✗ | No mobile panel |
+| AI merchant copilot | `/ai/copilot` | `POST /tenant/ai/merchant-copilot` | ✅ | Question box with optional store scope, server-computed facts, recommendations and data gaps; `ai.use` gates the screen and the API |
+| AI insights | `/ai/insights` | `GET /tenant/ai/insights` | ✅ | Server briefing with highlights, recommendations and data gaps; optional store filter (“All” queries every store) |
 | AI availability | — | `GET /tenant/ai/availability` | ✗ | No mobile capability probe |
+| AI settings | `/ai/settings` | `/tenant/ai-settings*` (settings, usage, credentials, test) | ✅ | Feature switches, usage stats, BYOK opt-in and key store/test/revoke, gated by `ai_settings.view`/`.manage` |
 
 ### 3.2 Catalogue
 
@@ -84,7 +88,7 @@ can complete the same business task against the same API and permissions.
 | Stock list | `/inventory` | `GET /tenant/inventory` | ✅ | Store filter, low-stock filter, pagination |
 | Movements | inventory item | `/tenant/inventory/{id}/movements` | ✅ | Movement history |
 | Adjust / receive | inventory item | `/tenant/inventory/adjust|receive` | ✅ | Absolute adjustment and additive receiving |
-| Transfers | web | `POST /tenant/inventory/transfers` | ✗ | API path reserved; no transfer form |
+| Transfers | `/inventory/transfer` | `POST /tenant/inventory/transfers` | ✅ | Two-store form: from/to store, product variant picker, quantity, optional note, idempotency key; server validates distinct stores and stock |
 | Intelligence overview | `/inventory/intelligence` | `/tenant/inventory/intelligence` | ✅ | Summary, filters, per-item metrics, export |
 | Intelligence detail | item | `/tenant/inventory/{id}/intelligence` | ✅ | Available/reserved, demand, cover, suggested order |
 | Intelligence export | overview | `/tenant/inventory/intelligence/export` | ✅ | CSV to temp directory |
@@ -137,11 +141,14 @@ can complete the same business task against the same API and permissions.
 | Recovery dismiss / do-not-contact | detail | `POST .../dismiss|do-not-contact` | ✅ | Confirmation dialogs |
 | Recovery contact / assign / snooze | web | `POST .../contact|assign|snooze` | ✗ | Not surfaced in mobile actions |
 | WhatsApp accounts | `/whatsapp` | `/tenant/whatsapp-accounts*` | ✅ | List/create/edit/delete, verify, disconnect (the read-only `configuration` endpoint is not surfaced) |
+| Integration Center | `/integrations` | `/tenant/integrations*` | ✅ | Channel catalogue with capabilities, connect/edit (write-only credentials), test/reconnect/disconnect, webhook copy; TikTok/X show the honest awaiting-access notice |
 | AI approvals | `/ai/approvals` | `/tenant/ai/actions*` | ✅ | List/detail, submit, approve, reject, execute |
 | Automations hub | `/automations` | — | ✅ | Rules, runs, tasks entry points |
 | Automation rules | `/automations` | `/tenant/automation/rules*` | ✅ | CRUD with JSON conditions/actions |
 | Automation runs | runs | `/tenant/automation/runs*` | ✅ | Read-only history |
 | Automation tasks | tasks | `/tenant/automation/tasks*` | ✅ | Complete/dismiss human tasks |
+| Automation templates | `/automations/templates` | `/tenant/automation/templates*` | ✅ | List/detail; version and installation summary |
+| Automation installations | `/automations/installations` | `/tenant/automation/installations*` | ✅ | List/detail; enable/disable and sync actions when the server allows them |
 | Automation metadata | web | `GET /tenant/automation/meta` | ✗ | Hub uses static entries instead of the meta endpoint |
 
 ### 3.8 Stores, storefront, delivery and payments
@@ -153,6 +160,9 @@ can complete the same business task against the same API and permissions.
 | Storefront settings | `/storefront` | `/tenant/stores/{id}/storefront` | ✅ | Visibility, branding, contact, policies, sharing metadata |
 | Shipping zones | `/shipping` | `/tenant/stores/{id}/shipping-zones*` | ✅ | CRUD, fees, free-delivery threshold |
 | Payments | `/payments` | `/tenant/stores/{id}/payments` | ✅ | Cash on delivery; online shown unavailable with server reason |
+| Payment connections | `/payments/connections` | `/tenant/stores/{id}/payment-connections*` | ✅ | Per-store provider connections: list, create (write-only credentials), verify, delete; provider list comes from the store's country |
+| Payment history | `/payments/history` | `GET /tenant/payments` | ✅ | Paginated attempts per store, order reference, amount and status |
+| Payment sync / refund | payment detail | `POST /tenant/payments/{id}/sync|refunds` | ✅ | Sync needs `payments.manage`; refund needs the server's `payments.refund` grant and collects only amount/reason |
 | Store currency conversion | `/stores/:id/currency` | `/tenant/currencies`, `/stores/{id}/currency*` | ✅ | Server-owned rate preview with sample prices, confirmation dialog and idempotent apply; history shows past conversions |
 
 ### 3.9 Team, roles and audit
@@ -164,6 +174,25 @@ can complete the same business task against the same API and permissions.
 | Role permissions | role detail | `PUT /tenant/roles/{id}/permissions` | ✅ | Grouped permission editor |
 | Role assign/revoke | user detail | `POST /tenant/roles/{id}/assign|revoke` | ✅ | Available from user roles section |
 | Audit log | `/audit` | `/tenant/audit-logs*` | ✅ | List/detail, JSON old/new values |
+
+### 3.10 Help Center
+
+The signed-in Help Center, entered from More → About. It reads the
+authenticated reader API, which is deliberately outside the `tenant` group:
+every reader sees the same catalogue, widened to their tier server-side
+(merchant members also see merchant-only guides, platform operators see
+everything). A restricted or unknown article answers 404, never 403.
+
+| Web surface | Mobile route | API | Status | Notes |
+| --- | --- | --- | --- | --- |
+| Help Center home | `/support` (More → About) | `GET /help/categories` + featured/popular articles | ✅ | Topic catalogue with visibility-aware article counts, featured and most-read lists; open to platform-only operators too |
+| Search | `/support?q=` | `GET /help/search` | ✅ | Debounced (350 ms) type-ahead across titles, excerpts, bodies, tags and categories in both languages; `?q=` pre-fills the field |
+| Category listing | web `/help/categories/{slug}` | `GET /help/articles?category={slug}` | ✅ | Paged feed inside one topic, pull-to-refresh |
+| Article reading | web `/help/articles/{slug}` | `GET /help/articles/{slug}` | ✅ | Reader's-language copy (`?locale=`), RTL flow for Arabic, sanitised HTML body via the shared dependency-free renderer, cover image, tags, related guides, previous/next |
+| Article video | web article page | `video_url` field | ◐ | Decoded but not rendered: the app has no player, URL-launcher or webview dependency and none may be added without approval; web only |
+| "Was this helpful?" | web article page | `POST /help/articles/{slug}/feedback` | ✅ | Yes/No plus optional comment; remembered per device via SharedPreferences (server dedupes by account and salted IP hash) |
+| Contextual help links | web merchant screens | — | ✗ | Web-only per-screen deep links (`/support?q=…`); mobile screens do not carry them yet |
+| Public Help Center pages | web `/help` marketing pages | `GET /public/help/*` | ✗ | Intentionally web-only; the Vue pages remain the SEO surface (see §5) |
 
 ---
 
@@ -189,7 +218,21 @@ answer `403`. Platform-only users are never sent to tenant onboarding.
 | Newsletter slug check | form | `/platform/newsletters/slug-availability` | ✗ | No mobile debounced check |
 | Newsletter content images | editor | `/platform/newsletters/content-images` | ✗ | No in-app image insertion for article bodies |
 | AI newsletter content | editor | `POST /platform/ai/newsletter-content` | ✗ | No mobile generation action |
-| Platform AI insights/availability | web panel | `/platform/ai/insights`, `/ai/availability` | ✗ | Backend availability route exists; mobile panel not built |
+| Platform AI insights/availability | web panel | `/platform/ai/insights`, `/ai/availability` | ✗ | Backend availability route exists; these two web panels are not built on mobile |
+| Platform AI administration | `/platform/ai` | `/platform/ai/admin/*` | ◐ | Overview and environment posture, provider catalogue, write-only credential rotation (masked reads), test connection, task caps, prompt templates/versions and attempt-level activity logs. Creating providers, editing task/routing limits and authoring prompt versions stay web-only; `ai_admin.view/manage/rotate` gate each action |
+| Payment catalogue | `/platform/payments` | `/platform/payments/*` | ◐ | Markets with active toggle, providers with capabilities/countries/methods, methods catalogue and redacted webhook evidence. Creating providers or adding provider countries/methods stays web-only; the active-country toggle uses the documented PATCH |
+| Platform integration health | `/platform/integrations` | `/platform/integrations/*` | ✅ | Channel availability, platform configuration, tenant connection counts, unprocessed webhook events and a provider re-check behind `integrations_admin.manage` |
+| Notification operations | `/platform/notifications` | `/platform/notification-campaigns/*`, `/platform/notification-deliveries/*`, `/platform/email-templates/*` | ◐ | Campaigns (preview, audience count, schedule, publish, cancel) and delivery retry for transient failures; email templates are read-only plus test/restore, and bilingual copy editing stays web-only. No private message payload is shown |
+| Platform automation templates | `/platform/automation-templates` | `/platform/automation-templates/*` | ◐ | List/create/edit/delete with trigger, category, conditions and actions JSON validated by the server; publish/archive/restore/version history stay web-only |
+| Help Center management | web `/platform/help/*` | `/platform/help*` (categories, articles, tags, feedback, analytics) | ✗ | Editor tooling is web-first; the mobile app is a Help Center reader |
+| Platform settings hub | `/platform/settings` | `GET /platform/settings` | ✅ | Category cards, override/secret counts, runtime summary, permission-aware entries |
+| Platform settings sections | `/platform/settings/{general,localization,email,storage,whatsapp,security,maintenance}` | `GET/PUT /platform/settings/{category}` | ✅ | One generic typed form: text, textarea, URL, email, integer, decimal, boolean, select, multi-select; source label, reset to environment/default, unsaved count, server-permission gating |
+| Platform AI runtime settings | `/platform/settings/ai` | `GET/PUT /platform/settings/ai` | ◐ | Runtime timeouts/retries only; provider credentials, routing and prompts live in the separate `/platform/ai` console |
+| Platform payment settings | `/platform/settings/payments` | `GET /platform/settings` (summary) | ◐ | Read-only summary here; the full payment catalogue is `/platform/payments` |
+| Platform feature flags | `/platform/settings/features` | `GET /platform/settings/features`; `PUT /platform/settings/features/{flag}` | ✅ | Searchable availability switches; platform availability, not subscription entitlement |
+| Platform integration health | `/platform/settings/health` | `GET /platform/settings/health`; `POST /platform/settings/health/{integration}` | ✅ | Shows the last recorded state; a probe runs only on tap and needs `platform_settings.test` |
+| Platform configuration history | `/platform/settings/history` | `GET /platform/settings/history?key=&limit=` | ✅ | Redacted old/new values, actor and time; secret sides show only a last-four hint |
+| Platform infrastructure | `/platform/settings/infrastructure` | `GET /platform/settings/system`, `GET /platform/settings/infrastructure` | ✅ | Read-only runtime and environment values; secrets show configured/not configured only |
 
 ---
 
@@ -210,7 +253,7 @@ not duplicated in the app.
 | Waitlist | `/site/waitlist` | `POST /public/waitlist` | ✅ | Validation + success state |
 | About / Privacy / Terms | `/site/page/:key` | `GET /public/pages/{key}` | ✅ | Server-rendered content pages |
 | How it works | web `/how-it-works` | content page if published | ◐ | No dedicated link; reachable only if a `how-it-works` content page exists |
-| Help | web `/help` | content page if published | ◐ | Same as above |
+| Help Center | web `/help`, `/help/articles/:slug`, `/help/categories/:slug` | `GET /public/help/*` | ✗ | Public Help Center pages are web-only and remain the SEO surface; the app carries the signed-in Help Center at `/support` (see §3.10) |
 | Acceptable use | web `/acceptable-use` | content page if published | ◐ | Same as above |
 | SEO, sitemap, robots, social cards | web only | — | — | No meaning in a native app; the Vue site remains the SEO surface |
 | Cookie consent banner | web only | — | — | The app uses OS storage, not browser cookies (CSRF cookie is transport-only) |
@@ -269,11 +312,13 @@ iteration can pick them up without re-auditing the backend.
 | Area | Missing mobile surface | Backend status | Why it was deferred |
 | --- | --- | --- | --- |
 | Conversations | Cart lifecycle, voice messages, AI drafts/summaries/copilot | Implemented | Requires media playback/recording and a multi-step cart UI; the text inbox is complete |
-| AI | Merchant copilot, tenant insights, availability probe | Implemented | Conversational UI and capability gating need product copy; AI approvals are implemented |
-| Inventory | Transfers | Implemented | Needs a two-store/item picker workflow; stock adjustments and intelligence are complete |
-| Platform | AI insights/newsletter generation, newsletter slug check, content images | Implemented (availability route added) | Editor/image tooling is web-first; the rest of platform marketing is complete |
+| AI | Availability probe | Implemented | The probe has no mobile entry point yet; copilot, insights, approvals and AI settings are implemented |
+| Inventory | — | Implemented | Stock adjustments, transfers and intelligence are complete |
+| Platform | AI insights/newsletter generation, newsletter slug check, content images; provider/task/prompt authoring and payment-provider authoring | Implemented | Editor/image and authoring tooling is web-first; AI administration, the payment catalogue, integrations, notification operations and the rest of platform marketing are readable or operable on mobile, and the hub states the web-only boundary |
+| Platform | Central configuration write surface | Implemented | General/localization/email/storage/WhatsApp/security/maintenance, feature flags, health, history and infrastructure are implemented on mobile; authoring boundaries above remain web-only by design |
 | Auth | Email-verification screen | Implemented | Verification links complete on the web; mobile sends the reset email and has a native reset form |
 | Marketing | Dedicated how-it-works/help/acceptable-use links | Content pages | Reachable through content pages when published; about/privacy/terms are linked |
+| Help Center | Contextual help links on merchant screens; article video playback | Implemented | Web renders per-screen deep links (`/support?q=…`) and an embedded video; mobile has no player/webview dependency and defers per-screen links — the reader, search and feedback are complete |
 
 None of these gaps fabricates data or bypasses the backend. Every implemented
 screen calls a real endpoint and respects the server permission.
@@ -289,6 +334,19 @@ route/permission style:
   platform AI capability list used by the Vue AI panel. Two feature tests were
   added to `tests/Feature/AiPlatformEndpointTest.php`; the file passes
   **7 tests / 22 assertions**.
+
+The Help Center APIs (`GET /public/help/*` public reader, the signed-in
+`/help/*` reader group and the `/platform/help/*` management group) were built
+in the same task for the web Help Center rather than for mobile parity; the
+mobile app consumes only the signed-in reader subset. The backend Help Center
+feature is covered by 39 feature tests / 184 assertions.
+
+The omnichannel layer (`/tenant/integrations*`, `/platform/integrations*`,
+`/webhooks/channels/*`, `/tenant/customers/{customer}/identities*` and
+`/tenant/conversations/{conversation}/voice-reply`) was built for the whole
+platform; mobile consumes the tenant integration endpoints and the customer
+identity/voice-reply contracts remain available for the web inbox. Its backend
+coverage is recorded in the root `DUKAVO_IMPLEMENTATION_REPORT.md`.
 
 No other backend or frontend behaviour was rewritten. The Vue app and Laravel
 business logic remain authoritative.

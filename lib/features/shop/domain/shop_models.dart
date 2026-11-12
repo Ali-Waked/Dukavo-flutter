@@ -19,6 +19,10 @@ class StorefrontInfo {
     required this.currencyDecimals,
     required this.timezone,
     required this.settings,
+    this.locale,
+    this.direction,
+    this.defaultLocale,
+    this.enabledLocales = const [],
   });
 
   final String name;
@@ -34,6 +38,12 @@ class StorefrontInfo {
   final String timezone;
   final Map<String, dynamic> settings;
 
+  /// The language the response was resolved into, and its writing direction.
+  final String? locale;
+  final String? direction;
+  final String? defaultLocale;
+  final List<String> enabledLocales;
+
   String? get tagline => _string(settings['tagline']);
   String? get about => _string(settings['about']);
   String? get heroImageUrl => _string(settings['hero_image_url']);
@@ -45,6 +55,7 @@ class StorefrontInfo {
 
   factory StorefrontInfo.fromJson(Map<String, dynamic> json) {
     final rawSettings = json['settings'];
+    final rawLocales = json['enabled_locales'];
     return StorefrontInfo(
       name: '${json['name'] ?? ''}',
       slug: '${json['slug'] ?? ''}',
@@ -57,6 +68,12 @@ class StorefrontInfo {
       currencySymbol: json['currency_symbol'] as String?,
       currencyDecimals: _int(json['currency_decimals'], 2),
       timezone: '${json['timezone'] ?? 'UTC'}',
+      locale: _stringOrNull(json['locale']),
+      direction: _stringOrNull(json['direction']),
+      defaultLocale: _stringOrNull(json['default_locale']),
+      enabledLocales: rawLocales is List
+          ? rawLocales.map((entry) => '$entry').toList(growable: false)
+          : const [],
       settings: rawSettings is Map
           ? Map<String, dynamic>.from(rawSettings)
           : const <String, dynamic>{},
@@ -92,16 +109,19 @@ class ShopImage {
     required this.url,
     required this.altText,
     required this.isPrimary,
+    this.caption,
   });
 
   final String url;
   final String? altText;
+  final String? caption;
   final bool isPrimary;
 
   factory ShopImage.fromJson(Map<String, dynamic> json) {
     return ShopImage(
       url: '${json['url'] ?? ''}',
       altText: json['alt_text'] as String?,
+      caption: _stringOrNull(json['caption']),
       isPrimary: json['is_primary'] == true,
     );
   }
@@ -116,10 +136,12 @@ class ShopVariant {
     required this.isDefault,
     required this.available,
     required this.inStock,
+    this.description,
   });
 
   final int id;
   final String name;
+  final String? description;
   final String? sku;
   final num price;
   final bool isDefault;
@@ -130,11 +152,26 @@ class ShopVariant {
     return ShopVariant(
       id: _int(json['id'], 0),
       name: '${json['name'] ?? ''}',
+      description: _stringOrNull(json['description']),
       sku: json['sku'] as String?,
       price: _num(json['price']),
       isDefault: json['is_default'] == true,
       available: _int(json['available'], 0),
       inStock: json['in_stock'] == true,
+    );
+  }
+}
+
+class ShopSpecification {
+  const ShopSpecification({required this.label, required this.value});
+
+  final String label;
+  final String value;
+
+  factory ShopSpecification.fromJson(Map<String, dynamic> json) {
+    return ShopSpecification(
+      label: '${json['label'] ?? ''}',
+      value: '${json['value'] ?? ''}',
     );
   }
 }
@@ -152,11 +189,35 @@ class ShopProduct {
     required this.categorySlug,
     required this.images,
     required this.variants,
+    this.canonicalSlug,
+    this.localizedSlugs = const {},
+    this.shortDescription,
+    this.highlights = const [],
+    this.features = const [],
+    this.specifications = const [],
+    this.tags = const [],
+    this.seoTitle,
+    this.seoDescription,
+    this.seoKeywords,
+    this.locale,
+    this.direction,
+    this.defaultLocale,
+    this.availableLocales = const [],
   });
 
   final String slug;
+  final String? canonicalSlug;
+  final Map<String, String> localizedSlugs;
   final String name;
+  final String? shortDescription;
   final String? description;
+  final List<String> highlights;
+  final List<String> features;
+  final List<ShopSpecification> specifications;
+  final List<String> tags;
+  final String? seoTitle;
+  final String? seoDescription;
+  final String? seoKeywords;
   final num price;
   final String currency;
   final bool inStock;
@@ -165,6 +226,10 @@ class ShopProduct {
   final String? categorySlug;
   final List<ShopImage> images;
   final List<ShopVariant> variants;
+  final String? locale;
+  final String? direction;
+  final String? defaultLocale;
+  final List<String> availableLocales;
 
   String? get primaryImageUrl {
     for (final image in images) {
@@ -172,6 +237,8 @@ class ShopProduct {
     }
     return images.isEmpty ? null : images.first.url;
   }
+
+  String? get summary => shortDescription ?? description;
 
   ShopVariant? get defaultVariant {
     if (variants.isEmpty) return null;
@@ -185,10 +252,38 @@ class ShopProduct {
     final rawCategory = json['category'];
     final rawImages = json['images'];
     final rawVariants = json['variants'];
+    final rawHighlights = json['highlights'];
+    final rawFeatures = json['features'];
+    final rawSpecifications = json['specifications'];
+    final rawTags = json['tags'];
+    final rawSeo = json['seo'];
+    final rawSlugs = json['localized_slugs'];
+    final rawLocales = json['available_locales'];
+
     return ShopProduct(
       slug: '${json['slug'] ?? ''}',
+      canonicalSlug: _stringOrNull(json['canonical_slug']),
+      localizedSlugs: rawSlugs is Map
+          ? rawSlugs.map((key, value) => MapEntry('$key', '$value'))
+          : const {},
       name: '${json['name'] ?? ''}',
-      description: json['description'] as String?,
+      shortDescription: _stringOrNull(json['short_description']),
+      description: _stringOrNull(json['description']),
+      highlights: _stringList(rawHighlights),
+      features: _stringList(rawFeatures),
+      specifications: rawSpecifications is List
+          ? rawSpecifications
+              .whereType<Map>()
+              .map((entry) => ShopSpecification.fromJson(
+                    Map<String, dynamic>.from(entry),
+                  ))
+              .toList(growable: false)
+          : const [],
+      tags: _stringList(rawTags),
+      seoTitle: rawSeo is Map ? _stringOrNull(rawSeo['title']) : null,
+      seoDescription:
+          rawSeo is Map ? _stringOrNull(rawSeo['description']) : null,
+      seoKeywords: rawSeo is Map ? _stringOrNull(rawSeo['keywords']) : null,
       price: _num(json['price']),
       currency: '${json['currency'] ?? 'USD'}',
       inStock: json['in_stock'] == true,
@@ -211,8 +306,20 @@ class ShopProduct {
                   ))
               .toList()
           : const [],
+      locale: _stringOrNull(json['locale']),
+      direction: _stringOrNull(json['direction']),
+      defaultLocale: _stringOrNull(json['default_locale']),
+      availableLocales: _stringList(rawLocales),
     );
   }
+}
+
+List<String> _stringList(Object? value) {
+  if (value is! List) return const [];
+  return value
+      .map((entry) => '$entry'.trim())
+      .where((entry) => entry.isNotEmpty)
+      .toList(growable: false);
 }
 
 class ShopShippingZone {

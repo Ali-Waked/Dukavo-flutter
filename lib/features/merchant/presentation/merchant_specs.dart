@@ -62,6 +62,136 @@ const aiActionStatusOptions = <ResourceOption>[
   ResourceOption('expired', 'expired'),
 ];
 
+const automationInstallationStatusOptions = <ResourceOption>[
+  ResourceOption('installed', 'installed'),
+  ResourceOption('disabled', 'disabled'),
+  ResourceOption('removed', 'removed'),
+];
+
+final automationTemplateSpec = ResourceSpec(
+  titleKey: 'automationTemplates',
+  path: ApiPaths.automationTemplates,
+  icon: Icons.library_books_outlined,
+  fields: const [
+    ResourceFieldSpec(key: 'name', labelKey: 'name'),
+    ResourceFieldSpec(
+      key: 'description',
+      labelKey: 'description',
+      type: ResourceFieldType.multiline,
+      maxLines: 4,
+    ),
+    ResourceFieldSpec(key: 'category', labelKey: 'category'),
+    ResourceFieldSpec(key: 'trigger_label', labelKey: 'trigger'),
+    ResourceFieldSpec(key: 'current_version', labelKey: 'currentVersion'),
+    ResourceFieldSpec(key: 'status_label', labelKey: 'status'),
+    ResourceFieldSpec(
+      key: 'installation',
+      labelKey: 'installation',
+      type: ResourceFieldType.json,
+    ),
+    ResourceFieldSpec(
+      key: 'installations_count',
+      labelKey: 'installations',
+      type: ResourceFieldType.integer,
+    ),
+    ResourceFieldSpec(
+      key: 'conditions',
+      labelKey: 'conditions',
+      type: ResourceFieldType.json,
+    ),
+    ResourceFieldSpec(key: 'actions', labelKey: 'actions', type: ResourceFieldType.json),
+    ResourceFieldSpec(
+      key: 'configuration_schema',
+      labelKey: 'configurationSchema',
+      type: ResourceFieldType.json,
+    ),
+  ],
+  title: (resource) => resource.text('name', fallback: '—'),
+  subtitle: (resource) => [
+    resource.text('trigger_label', fallback: resource.text('trigger')),
+    resource.text('category'),
+  ].where((part) => part.isNotEmpty).join(' · '),
+  status: (resource) => resource.text('status_label', fallback: resource.text('status')),
+  detailRoute: (resource) => RoutePaths.automationTemplate(resource.id),
+  actions: [
+    ResourceActionSpec(
+      labelKey: 'installTemplate',
+      path: (resource) => ApiPaths.automationTemplateInstall(resource.id),
+      confirmKey: 'installTemplateMessage',
+      icon: Icons.download_outlined,
+    ),
+  ],
+  emptyIcon: Icons.library_books_outlined,
+  emptyTitleKey: 'noAutomationTemplates',
+);
+
+final automationInstallationSpec = ResourceSpec(
+  titleKey: 'automationInstallations',
+  path: ApiPaths.automationInstallations,
+  icon: Icons.rule_folder_outlined,
+  fields: const [
+    ResourceFieldSpec(key: 'status_label', labelKey: 'status'),
+    ResourceFieldSpec(key: 'installed_version', labelKey: 'installedVersion'),
+    ResourceFieldSpec(key: 'template_customized', labelKey: 'templateCustomized', type: ResourceFieldType.boolean),
+    ResourceFieldSpec(key: 'scope_key', labelKey: 'scope'),
+    ResourceFieldSpec(key: 'configuration', labelKey: 'configuration', type: ResourceFieldType.json),
+    ResourceFieldSpec(key: 'template', labelKey: 'template', type: ResourceFieldType.json),
+    ResourceFieldSpec(key: 'rule', labelKey: 'rule', type: ResourceFieldType.json),
+    ResourceFieldSpec(key: 'store', labelKey: 'store', type: ResourceFieldType.json),
+    ResourceFieldSpec(key: 'installer', labelKey: 'installer', type: ResourceFieldType.json),
+    ResourceFieldSpec(key: 'installed_at', labelKey: 'installedAt', type: ResourceFieldType.date),
+    ResourceFieldSpec(key: 'enabled_at', labelKey: 'enabledAt', type: ResourceFieldType.date),
+    ResourceFieldSpec(key: 'last_synced_at', labelKey: 'lastSyncedAt', type: ResourceFieldType.date),
+  ],
+  title: (resource) {
+    final template = resource.map('template');
+    return '${template?['name'] ?? resource.text('scope_key', fallback: '—')}';
+  },
+  subtitle: (resource) {
+    final store = resource.map('store');
+    return [
+      resource.text('status_label', fallback: resource.text('status')),
+      store?['name']?.toString(),
+    ].whereType<String>().where((part) => part.isNotEmpty).join(' · ');
+  },
+  status: (resource) => resource.text('status'),
+  detailRoute: (resource) => RoutePaths.automationInstallation(resource.id),
+  actions: [
+    ResourceActionSpec(
+      labelKey: 'enableInstallation',
+      path: (resource) => ApiPaths.automationInstallationEnable(resource.id),
+      icon: Icons.play_circle_outline,
+      visible: (resource) => resource.text('status') == 'disabled',
+    ),
+    ResourceActionSpec(
+      labelKey: 'disableInstallation',
+      path: (resource) => ApiPaths.automationInstallationDisable(resource.id),
+      confirmKey: 'disableInstallationMessage',
+      icon: Icons.pause_circle_outline,
+      destructive: true,
+      visible: (resource) => resource.text('status') == 'installed',
+    ),
+    ResourceActionSpec(
+      labelKey: 'applyTemplateUpdate',
+      path: (resource) =>
+          ApiPaths.automationInstallationApplyUpdate(resource.id),
+      confirmKey: 'applyTemplateUpdateMessage',
+      icon: Icons.sync,
+    ),
+    ResourceActionSpec(
+      labelKey: 'delete',
+      method: 'DELETE',
+      path: (resource) => ApiPaths.automationInstallation(resource.id),
+      confirmKey: 'deleteConfirmMessage',
+      icon: Icons.delete_outline,
+      destructive: true,
+      visible: (resource) => resource.text('status') != 'removed',
+    ),
+  ],
+  emptyIcon: Icons.rule_folder_outlined,
+  emptyTitleKey: 'noAutomationInstallations',
+);
+
 String _nestedName(JsonResource resource, String key) {
   final map = resource.map(key);
   if (map == null) return '—';

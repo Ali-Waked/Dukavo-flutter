@@ -11,6 +11,7 @@ import '../../../core/currency/currency_catalogue.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/widgets/app_widgets.dart';
 import '../../../core/widgets/currency_picker.dart';
+import '../../../core/widgets/search_picker.dart';
 import '../../auth/application/auth_controller.dart';
 import '../application/profile_controller.dart';
 import '../domain/profile_domain.dart';
@@ -58,6 +59,24 @@ class _ProfileBody extends ConsumerWidget {
     return ListView(
       padding: AppSpacing.page,
       children: [
+        if (profile.needsOnboarding) ...[
+          InfoBanner(
+            message: context.tr('onboardingPromptBody'),
+            tone: InfoBannerTone.info,
+            icon: Icons.auto_awesome_outlined,
+          ),
+          const SizedBox(height: AppSpacing.xs),
+          Align(
+            alignment: AlignmentDirectional.centerEnd,
+            child: AppButton(
+              label: context.tr('onboardingPromptAction'),
+              variant: AppButtonVariant.outlined,
+              icon: Icons.arrow_forward_rounded,
+              onPressed: () => context.push(RoutePaths.welcome),
+            ),
+          ),
+          const SizedBox(height: AppSpacing.sm),
+        ],
         AppCard(
           tone: AppCardTone.low,
           padding: const EdgeInsets.all(AppSpacing.lg),
@@ -140,6 +159,7 @@ class _ProfileBody extends ConsumerWidget {
             _ProfileTile(
               icon: Icons.person_outline,
               label: context.tr('editProfile'),
+              subtitle: context.tr('editProfileHint'),
               onTap: () => _editProfile(context, ref),
             ),
             _ProfileTile(
@@ -152,9 +172,12 @@ class _ProfileBody extends ConsumerWidget {
               onTap: () => _editCurrency(context, ref),
             ),
             _ProfileTile(
-              icon: Icons.lock_outline_rounded,
-              label: context.tr('changePassword'),
-              onTap: () => _changePassword(context, ref),
+              icon: Icons.shield_outlined,
+              label: context.tr('securityCenter'),
+              subtitle: profile.twoFactor.enabled
+                  ? context.tr('twoFactorOn')
+                  : context.tr('twoFactorOff'),
+              onTap: () => context.push(RoutePaths.security),
             ),
             _ProfileTile(
               icon: Icons.notifications_outlined,
@@ -169,7 +192,9 @@ class _ProfileBody extends ConsumerWidget {
           ],
         ),
         const SizedBox(height: AppSpacing.sm),
-        const _SessionsCard(),
+        _LocationCard(profile: profile),
+        const SizedBox(height: AppSpacing.sm),
+        _AccountMetaCard(profile: profile),
         const SizedBox(height: AppSpacing.sm),
         AppButton(
           label: context.tr('logout'),
@@ -263,28 +288,6 @@ class _ProfileBody extends ConsumerWidget {
     }
   }
 
-  Future<void> _changePassword(BuildContext context, WidgetRef ref) async {
-    final result = await showModalBottomSheet<_PasswordDraft>(
-      context: context,
-      isScrollControlled: true,
-      showDragHandle: true,
-      builder: (sheetContext) => const _PasswordSheet(),
-    );
-    if (result == null) return;
-    try {
-      await ref.read(profileActionsProvider).changePassword(
-            currentPassword: result.current,
-            password: result.next,
-            passwordConfirmation: result.confirmation,
-          );
-      if (!context.mounted) return;
-      AppSnack.show(context, context.tr('passwordChanged'));
-    } catch (error) {
-      if (!context.mounted) return;
-      AppSnack.show(context, error.toString(), isError: true);
-    }
-  }
-
   Future<void> _signOut(BuildContext context, WidgetRef ref) async {
     final confirmed = await ConfirmDialog.show(
       context,
@@ -340,130 +343,47 @@ class _ProfileTile extends StatelessWidget {
   }
 }
 
-class _SessionsCard extends ConsumerWidget {
-  const _SessionsCard();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final sessions = ref.watch(profileSessionsProvider);
-
-    return SectionCard(
-      title: context.tr('sessions'),
-      trailing: TextButton(
-        onPressed: () => _revokeOthers(context, ref),
-        child: Text(context.tr('revokeOthers')),
-      ),
-      child: sessions.when(
-        loading: () => const Padding(
-          padding: EdgeInsets.symmetric(vertical: 16),
-          child: LoadingView(),
-        ),
-        error: (error, stack) => ErrorView(
-          message: error.toString(),
-          onRetry: () => ref.invalidate(profileSessionsProvider),
-        ),
-        data: (items) => Column(
-          children: [
-            for (final session in items)
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: Icon(
-                  session.isCurrent ? Icons.phone_iphone : Icons.devices_other,
-                ),
-                title: Text(session.name),
-                subtitle: Text(
-                  [
-                    if (session.isCurrent) context.tr('currentSession'),
-                    Formatters.dateTime(
-                      session.lastUsedAt ?? session.createdAt,
-                    ),
-                  ].join(' · '),
-                ),
-                trailing: session.isCurrent
-                    ? null
-                    : IconButton(
-                        tooltip: context.tr('revoke'),
-                        onPressed: () => _revoke(context, ref, session),
-                        icon: const Icon(Icons.logout, size: 20),
-                      ),
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Future<void> _revoke(
-    BuildContext context,
-    WidgetRef ref,
-    ProfileSession session,
-  ) async {
-    final confirmed = await ConfirmDialog.show(
-      context,
-      title: context.tr('revoke'),
-      message: context.tr('sessionRevokeMessage'),
-      confirmLabel: context.tr('revoke'),
-      cancelLabel: context.tr('cancel'),
-      destructive: true,
-    );
-    if (!confirmed) return;
-    try {
-      await ref.read(profileActionsProvider).revokeSession(session.id);
-      if (!context.mounted) return;
-      AppSnack.show(context, context.tr('sessionRevoked'));
-    } catch (error) {
-      if (!context.mounted) return;
-      AppSnack.show(context, error.toString(), isError: true);
-    }
-  }
-
-  Future<void> _revokeOthers(BuildContext context, WidgetRef ref) async {
-    final confirmed = await ConfirmDialog.show(
-      context,
-      title: context.tr('revokeOthers'),
-      message: context.tr('revokeOthersMessage'),
-      confirmLabel: context.tr('revokeOthers'),
-      cancelLabel: context.tr('cancel'),
-      destructive: true,
-    );
-    if (!confirmed) return;
-    try {
-      await ref.read(profileActionsProvider).revokeOtherSessions();
-      if (!context.mounted) return;
-      AppSnack.show(context, context.tr('allSessionsRevoked'));
-    } catch (error) {
-      if (!context.mounted) return;
-      AppSnack.show(context, error.toString(), isError: true);
-    }
-  }
-}
-
-class _ProfileEditSheet extends StatefulWidget {
+class _ProfileEditSheet extends ConsumerStatefulWidget {
   const _ProfileEditSheet({required this.profile});
 
   final UserProfile profile;
 
   @override
-  State<_ProfileEditSheet> createState() => _ProfileEditSheetState();
+  ConsumerState<_ProfileEditSheet> createState() => _ProfileEditSheetState();
 }
 
-class _ProfileEditSheetState extends State<_ProfileEditSheet> {
+class _ProfileEditSheetState extends ConsumerState<_ProfileEditSheet> {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _name =
       TextEditingController(text: widget.profile.name);
+  late final TextEditingController _bio =
+      TextEditingController(text: widget.profile.bio ?? '');
   late final TextEditingController _phone =
       TextEditingController(text: widget.profile.phone ?? '');
+  late final TextEditingController _city =
+      TextEditingController(text: widget.profile.city ?? '');
+  late String? _country = widget.profile.countryCode;
+  late String? _timezone = widget.profile.timezone;
+  late String? _phoneCountry = widget.profile.phoneCountryCode;
   late String _locale = widget.profile.locale ?? 'en';
+  late String _theme = widget.profile.theme;
+  late String _dateFormat = widget.profile.dateFormat;
+  late String _timeFormat = widget.profile.timeFormat;
 
   @override
   void dispose() {
     _name.dispose();
+    _bio.dispose();
     _phone.dispose();
+    _city.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final countries = ref.watch(countriesProvider);
+    final timezones = ref.watch(timezonesProvider);
+
     return SafeArea(
       child: Padding(
         padding: EdgeInsets.fromLTRB(
@@ -474,65 +394,251 @@ class _ProfileEditSheetState extends State<_ProfileEditSheet> {
         ),
         child: Form(
           key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                context.tr('editProfile'),
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(height: 14),
-              AppTextField(
-                controller: _name,
-                label: context.tr('name'),
-                prefixIcon: Icons.person_outline,
-                textCapitalization: TextCapitalization.words,
-                validator: (value) => value == null || value.trim().isEmpty
-                    ? context.tr('requiredField')
-                    : null,
-              ),
-              const SizedBox(height: 10),
-              AppTextField(
-                controller: _phone,
-                label: context.tr('phone'),
-                helper: context.tr('optional'),
-                prefixIcon: Icons.phone_outlined,
-                keyboardType: TextInputType.phone,
-              ),
-              const SizedBox(height: 10),
-              DropdownButtonFormField<String>(
-                // ignore: deprecated_member_use
-                value: _locale,
-                decoration: InputDecoration(labelText: context.tr('locale')),
-                items: [
-                  DropdownMenuItem(
-                    value: 'en',
-                    child: Text(context.tr('english')),
+          child: SizedBox(
+            height: MediaQuery.sizeOf(context).height * 0.8,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    context.tr('editProfile'),
+                    style: Theme.of(context).textTheme.titleLarge,
                   ),
-                  DropdownMenuItem(
-                    value: 'ar',
-                    child: Text(context.tr('arabic')),
+                  const SizedBox(height: 14),
+                  AppTextField(
+                    controller: _name,
+                    label: context.tr('name'),
+                    prefixIcon: Icons.person_outline,
+                    textCapitalization: TextCapitalization.words,
+                    validator: (value) => value == null || value.trim().isEmpty
+                        ? context.tr('requiredField')
+                        : null,
+                  ),
+                  const SizedBox(height: 10),
+                  AppTextField(
+                    controller: _bio,
+                    label: context.tr('bio'),
+                    hint: context.tr('bioHint'),
+                    maxLines: 3,
+                    textCapitalization: TextCapitalization.sentences,
+                  ),
+                  const SizedBox(height: 10),
+                  countries.when(
+                    loading: () => const LinearProgressIndicator(minHeight: 2),
+                    error: (error, stack) => Text(error.toString()),
+                    data: (catalogue) {
+                      CountryOption? selected;
+                      for (final country in catalogue.countries) {
+                        if (country.iso2 == _country) selected = country;
+                      }
+                      return SearchPickerField<CountryOption>(
+                        label: context.tr('country'),
+                        hint: context.tr('countryPlaceholder'),
+                        searchHint: context.tr('countrySearch'),
+                        prefixIcon: Icons.public_rounded,
+                        value: selected,
+                        options: catalogue.countries,
+                        labelOf: (country) =>
+                            '${country.flag}  ${country.name}',
+                        subtitleOf: (country) =>
+                            '${country.iso2} · +${country.dialCode}',
+                        searchTermsOf: (country) =>
+                            '${country.name} ${country.nameEn} '
+                            '${country.nameAr} ${country.native} '
+                            '${country.iso2} ${country.dialCode}',
+                        onSelected: (country) {
+                          setState(() {
+                            if (_country != country.iso2) {
+                              _city.clear();
+                            }
+                            _country = country.iso2;
+                            _phoneCountry ??= country.iso2;
+                          });
+                        },
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  AppTextField(
+                    controller: _city,
+                    label: context.tr('city'),
+                    hint: context.tr('cityHint'),
+                    helper: context.tr('cityManualHint'),
+                    prefixIcon: Icons.location_city_rounded,
+                  ),
+                  const SizedBox(height: 10),
+                  timezones.when(
+                    loading: () => const LinearProgressIndicator(minHeight: 2),
+                    error: (error, stack) => Text(error.toString()),
+                    data: (catalogue) {
+                      TimezoneOption? selected;
+                      for (final zone in catalogue.timezones) {
+                        if (zone.value == _timezone) selected = zone;
+                      }
+                      return SearchPickerField<TimezoneOption>(
+                        label: context.tr('timezone'),
+                        hint: context.tr('timezonePlaceholder'),
+                        searchHint: context.tr('timezoneSearch'),
+                        prefixIcon: Icons.schedule_rounded,
+                        value: selected,
+                        options: catalogue.timezones,
+                        labelOf: (zone) => zone.label,
+                        searchTermsOf: (zone) =>
+                            '${zone.label} ${zone.value}',
+                        onSelected: (zone) =>
+                            setState(() => _timezone = zone.value),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  countries.when(
+                    loading: () => const SizedBox.shrink(),
+                    error: (error, stack) => const SizedBox.shrink(),
+                    data: (catalogue) {
+                      CountryOption? selected;
+                      for (final country in catalogue.countries) {
+                        if (country.iso2 == _phoneCountry) selected = country;
+                      }
+                      return SearchPickerField<CountryOption>(
+                        label: context.tr('phoneCountry'),
+                        hint: context.tr('phoneCountryHint'),
+                        searchHint: context.tr('countrySearch'),
+                        prefixIcon: Icons.call_outlined,
+                        value: selected,
+                        options: catalogue.countries,
+                        labelOf: (country) =>
+                            '${country.flag}  ${country.name} '
+                            '(+${country.dialCode})',
+                        searchTermsOf: (country) =>
+                            '${country.name} ${country.nameEn} '
+                            '${country.nameAr} ${country.native} '
+                            '${country.iso2} ${country.dialCode}',
+                        onSelected: (country) =>
+                            setState(() => _phoneCountry = country.iso2),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  AppTextField(
+                    controller: _phone,
+                    label: context.tr('phone'),
+                    helper: context.tr('optional'),
+                    prefixIcon: Icons.phone_outlined,
+                    keyboardType: TextInputType.phone,
+                  ),
+                  const SizedBox(height: 10),
+                  DropdownButtonFormField<String>(
+                    // ignore: deprecated_member_use
+                    value: _locale,
+                    decoration:
+                        InputDecoration(labelText: context.tr('language')),
+                    items: [
+                      DropdownMenuItem(
+                        value: 'en',
+                        child: Text(context.tr('english')),
+                      ),
+                      DropdownMenuItem(
+                        value: 'ar',
+                        child: Text(context.tr('arabic')),
+                      ),
+                    ],
+                    onChanged: (value) =>
+                        setState(() => _locale = value ?? 'en'),
+                  ),
+                  const SizedBox(height: 10),
+                  DropdownButtonFormField<String>(
+                    // ignore: deprecated_member_use
+                    value: _theme,
+                    decoration:
+                        InputDecoration(labelText: context.tr('theme')),
+                    items: [
+                      DropdownMenuItem(
+                        value: 'system',
+                        child: Text(context.tr('themeSystem')),
+                      ),
+                      DropdownMenuItem(
+                        value: 'light',
+                        child: Text(context.tr('themeLight')),
+                      ),
+                      DropdownMenuItem(
+                        value: 'dark',
+                        child: Text(context.tr('themeDark')),
+                      ),
+                    ],
+                    onChanged: (value) =>
+                        setState(() => _theme = value ?? 'system'),
+                  ),
+                  const SizedBox(height: 10),
+                  DropdownButtonFormField<String>(
+                    // ignore: deprecated_member_use
+                    value: _dateFormat,
+                    decoration:
+                        InputDecoration(labelText: context.tr('dateFormat')),
+                    items: const [
+                      DropdownMenuItem(
+                        value: 'DD/MM/YYYY',
+                        child: Text('DD/MM/YYYY'),
+                      ),
+                      DropdownMenuItem(
+                        value: 'MM/DD/YYYY',
+                        child: Text('MM/DD/YYYY'),
+                      ),
+                      DropdownMenuItem(
+                        value: 'YYYY-MM-DD',
+                        child: Text('YYYY-MM-DD'),
+                      ),
+                    ],
+                    onChanged: (value) =>
+                        setState(() => _dateFormat = value ?? 'DD/MM/YYYY'),
+                  ),
+                  const SizedBox(height: 10),
+                  DropdownButtonFormField<String>(
+                    // ignore: deprecated_member_use
+                    value: _timeFormat,
+                    decoration:
+                        InputDecoration(labelText: context.tr('timeFormat')),
+                    items: [
+                      DropdownMenuItem(
+                        value: '24h',
+                        child: Text(context.tr('timeFormat24')),
+                      ),
+                      DropdownMenuItem(
+                        value: '12h',
+                        child: Text(context.tr('timeFormat12')),
+                      ),
+                    ],
+                    onChanged: (value) =>
+                        setState(() => _timeFormat = value ?? '24h'),
+                  ),
+                  const SizedBox(height: 16),
+                  AppButton(
+                    label: context.tr('saveChanges'),
+                    expand: true,
+                    onPressed: () {
+                      if (!(_formKey.currentState?.validate() ?? false)) {
+                        return;
+                      }
+                      Navigator.of(context).pop(
+                        ProfileUpdateDraft(
+                          name: _name.text.trim(),
+                          bio: _bio.text.trim(),
+                          phone: _phone.text.trim(),
+                          phoneCountryCode: _phoneCountry,
+                          countryCode: _country,
+                          city: _city.text.trim(),
+                          timezone: _timezone,
+                          locale: _locale,
+                          theme: _theme,
+                          dateFormat: _dateFormat,
+                          timeFormat: _timeFormat,
+                        ),
+                      );
+                    },
                   ),
                 ],
-                onChanged: (value) => setState(() => _locale = value ?? 'en'),
               ),
-              const SizedBox(height: 16),
-              AppButton(
-                label: context.tr('saveChanges'),
-                expand: true,
-                onPressed: () {
-                  if (!(_formKey.currentState?.validate() ?? false)) return;
-                  Navigator.of(context).pop(
-                    ProfileUpdateDraft(
-                      name: _name.text.trim(),
-                      phone: _phone.text.trim(),
-                      locale: _locale,
-                    ),
-                  );
-                },
-              ),
-            ],
+            ),
           ),
         ),
       ),
@@ -540,111 +646,137 @@ class _ProfileEditSheetState extends State<_ProfileEditSheet> {
   }
 }
 
-class _PasswordDraft {
-  const _PasswordDraft({
-    required this.current,
-    required this.next,
-    required this.confirmation,
-  });
 
-  final String current;
-  final String next;
-  final String confirmation;
-}
+class _LocationCard extends ConsumerWidget {
+  const _LocationCard({required this.profile});
 
-class _PasswordSheet extends StatefulWidget {
-  const _PasswordSheet();
+  final UserProfile profile;
 
   @override
-  State<_PasswordSheet> createState() => _PasswordSheetState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final country = profile.country;
 
-class _PasswordSheetState extends State<_PasswordSheet> {
-  final _formKey = GlobalKey<FormState>();
-  final _current = TextEditingController();
-  final _next = TextEditingController();
-  final _confirmation = TextEditingController();
-
-  @override
-  void dispose() {
-    _current.dispose();
-    _next.dispose();
-    _confirmation.dispose();
-    super.dispose();
+    return SectionCard(
+      title: context.tr('locationAndPreferences'),
+      subtitle: context.tr('locationAndPreferencesDesc'),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          KeyValueRow(
+            label: context.tr('country'),
+            value: country == null
+                ? '—'
+                : '${country.flag}  ${country.name}',
+          ),
+          KeyValueRow(
+            label: context.tr('city'),
+            value: profile.city ?? '—',
+          ),
+          KeyValueRow(
+            label: context.tr('timezone'),
+            value: profile.timezone ?? '—',
+          ),
+          KeyValueRow(
+            label: context.tr('language'),
+            value: profile.locale == null
+                ? '—'
+                : context.tr(profile.locale == 'ar' ? 'arabic' : 'english'),
+          ),
+          KeyValueRow(
+            label: context.tr('theme'),
+            value: context.tr('theme${_capitalise(profile.theme)}'),
+          ),
+          KeyValueRow(
+            label: context.tr('dateFormat'),
+            value: profile.dateFormat,
+          ),
+          KeyValueRow(
+            label: context.tr('timeFormat'),
+            value: context.tr(
+              profile.timeFormat == '12h' ? 'timeFormat12' : 'timeFormat24',
+            ),
+          ),
+          const SizedBox(height: AppSpacing.xs),
+          Text(
+            context.tr('workspaceSeparationHint'),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: context.dukavo.textMuted,
+                ),
+          ),
+        ],
+      ),
+    );
   }
 
+  String _capitalise(String value) =>
+      value.isEmpty ? value : value[0].toUpperCase() + value.substring(1);
+}
+
+class _AccountMetaCard extends ConsumerWidget {
+  const _AccountMetaCard({required this.profile});
+
+  final UserProfile profile;
+
   @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(
-          20,
-          0,
-          20,
-          20 + MediaQuery.viewInsetsOf(context).bottom,
-        ),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                context.tr('changePassword'),
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(height: 14),
-              AppTextField(
-                controller: _current,
-                label: context.tr('currentPassword'),
-                obscureText: true,
-                validator: (value) => value == null || value.isEmpty
-                    ? context.tr('requiredField')
-                    : null,
-              ),
-              const SizedBox(height: 10),
-              AppTextField(
-                controller: _next,
-                label: context.tr('newPassword'),
-                helper: context.tr('passwordHint'),
-                obscureText: true,
-                validator: (value) {
-                  if (value == null || value.length < 8) {
-                    return context.tr('passwordTooShort');
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 10),
-              AppTextField(
-                controller: _confirmation,
-                label: context.tr('confirmPassword'),
-                obscureText: true,
-                validator: (value) {
-                  if (value != _next.text) {
-                    return context.tr('passwordMismatch');
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              AppButton(
-                label: context.tr('changePassword'),
-                expand: true,
-                onPressed: () {
-                  if (!(_formKey.currentState?.validate() ?? false)) return;
-                  Navigator.of(context).pop(
-                    _PasswordDraft(
-                      current: _current.text,
-                      next: _next.text,
-                      confirmation: _confirmation.text,
-                    ),
-                  );
-                },
-              ),
-            ],
+  Widget build(BuildContext context, WidgetRef ref) {
+    final completion = profile.completion;
+
+    return SectionCard(
+      title: context.tr('accountInformation'),
+      subtitle: context.tr('accountMetaDesc'),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          KeyValueRow(
+            label: context.tr('accountType'),
+            value: context.tr('accountTypeMember'),
           ),
-        ),
+          KeyValueRow(
+            label: context.tr('memberSince'),
+            value: Formatters.date(profile.createdAt),
+          ),
+          KeyValueRow(
+            label: context.tr('lastLogin'),
+            value: Formatters.dateTime(profile.lastLoginAt),
+          ),
+          KeyValueRow(
+            label: context.tr('passwordChanged'),
+            value: profile.passwordChangedAt == null
+                ? context.tr('passwordNever')
+                : Formatters.date(profile.passwordChangedAt),
+          ),
+          KeyValueRow(
+            label: context.tr('twoFactor'),
+            value: context.tr(
+              profile.twoFactor.enabled ? 'twoFactorOn' : 'twoFactorOff',
+            ),
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          Text(
+            context.tr('profileCompletion'),
+            style: Theme.of(context).textTheme.labelLarge,
+          ),
+          const SizedBox(height: 6),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(AppRadius.pill),
+            child: LinearProgressIndicator(
+              value: (completion.percentage / 100).clamp(0, 1),
+              minHeight: 6,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            completion.missing.isEmpty
+                ? context.tr('profileComplete')
+                : context.tr(
+                    'completionMissing',
+                    args: {'count': completion.missing.length},
+                  ),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: context.dukavo.textMuted,
+                ),
+          ),
+        ],
       ),
     );
   }

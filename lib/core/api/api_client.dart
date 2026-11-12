@@ -168,20 +168,23 @@ class ApiClient {
 
   Future<void> delete(
     String path, {
+    Object? body,
     Map<String, dynamic>? query,
     bool csrf = false,
   }) async {
-    await _send('DELETE', path, query: query, csrf: csrf);
+    await _send('DELETE', path, body: body, query: query, csrf: csrf);
   }
 
   /// A delete that returns the resource the server sent back.
   Future<T> deleteJson<T>(
     String path, {
+    Object? body,
     Map<String, dynamic>? query,
     bool csrf = false,
     T Function(Object? data)? decode,
   }) async {
-    final envelope = await _send('DELETE', path, query: query, csrf: csrf);
+    final envelope =
+        await _send('DELETE', path, body: body, query: query, csrf: csrf);
     return _decode<T>(envelope, decode);
   }
 

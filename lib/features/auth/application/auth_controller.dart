@@ -30,6 +30,7 @@ class AuthState {
   const AuthState({
     required this.status,
     this.session,
+    this.twoFactorChallenge,
     this.errorKey,
     this.errorMessage,
     this.isSubmitting = false,
@@ -37,6 +38,10 @@ class AuthState {
 
   final AuthStatus status;
   final Session? session;
+
+  /// Present between a password check and the second step. Never lets the rest
+  /// of the app treat the visitor as signed in.
+  final TwoFactorChallenge? twoFactorChallenge;
 
   /// A localisation key the UI should prefer over [errorMessage].
   final String? errorKey;
@@ -48,13 +53,15 @@ class AuthState {
 
   bool get isAuthenticated =>
       status == AuthStatus.authenticated || status == AuthStatus.platform;
-  bool get isPlatformMode =>
-      status == AuthStatus.platform || (session?.isPlatformOnly ?? false);
+  bool get isPlatformMode => status == AuthStatus.platform;
   bool get isBootstrapping => status == AuthStatus.unknown;
+  bool get awaitingTwoFactor => twoFactorChallenge != null;
 
   AuthState copyWith({
     AuthStatus? status,
     Session? session,
+    TwoFactorChallenge? twoFactorChallenge,
+    bool clearTwoFactorChallenge = false,
     String? errorKey,
     String? errorMessage,
     bool clearError = false,
@@ -63,6 +70,9 @@ class AuthState {
     return AuthState(
       status: status ?? this.status,
       session: session ?? this.session,
+      twoFactorChallenge: clearTwoFactorChallenge
+          ? null
+          : (twoFactorChallenge ?? this.twoFactorChallenge),
       errorKey: clearError ? null : (errorKey ?? this.errorKey),
       errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
       isSubmitting: isSubmitting ?? this.isSubmitting,
@@ -119,7 +129,18 @@ class AuthController extends StateNotifier<AuthState> {
     state = state.copyWith(isSubmitting: true, clearError: true);
 
     try {
-      final session = await _repository.login(email: email, password: password);
+      final outcome = await _repository.login(email: email, password: password);
+
+      final challenge = outcome.challenge;
+      if (challenge != null) {
+        state = AuthState(
+          status: AuthStatus.unauthenticated,
+          twoFactorChallenge: challenge,
+        );
+        return false;
+      }
+
+      final session = outcome.session!;
       state = AuthState(
         status: _statusFor(session),
         session: session,
@@ -139,6 +160,55 @@ class AuthController extends StateNotifier<AuthState> {
       );
       return false;
     }
+  }
+
+  /// Answer the second step. On success the challenge is discarded and the
+  /// normal session state takes over; on failure it stays so the user can retry
+  /// without re-entering their password.
+  Future<bool> completeTwoFactor({
+    String? code,
+    String? recoveryCode,
+  }) async {
+    final challenge = state.twoFactorChallenge;
+    if (challenge == null || state.isSubmitting) return false;
+
+    state = state.copyWith(isSubmitting: true, clearError: true);
+
+    try {
+      final session = await _repository.completeTwoFactor(
+        challengeToken: challenge.challengeToken,
+        code: code,
+        recoveryCode: recoveryCode,
+      );
+      state = AuthState(
+        status: _statusFor(session),
+        session: session,
+      );
+      return true;
+    } on ApiException catch (error) {
+      final expired = error.statusCode == 422 &&
+          (error.message.toLowerCase().contains('expired') ||
+              error.message.toLowerCase().contains('challenge'));
+      state = AuthState(
+        status: AuthStatus.unauthenticated,
+        twoFactorChallenge: expired ? null : challenge,
+        errorKey: _loginErrorKey(error),
+        errorMessage: error.message,
+      );
+      return false;
+    } catch (_) {
+      state = AuthState(
+        status: AuthStatus.unauthenticated,
+        twoFactorChallenge: challenge,
+        errorKey: 'errorGeneric',
+      );
+      return false;
+    }
+  }
+
+  /// Abandon the second step and return to the password form.
+  void cancelTwoFactor() {
+    state = const AuthState(status: AuthStatus.unauthenticated);
   }
 
   Future<bool> provisionTenant({
@@ -180,6 +250,32 @@ class AuthController extends StateNotifier<AuthState> {
       state = AuthState(
         status: _statusFor(session),
         session: session,
+      );
+      return true;
+    } on ApiException catch (error) {
+      state = state.copyWith(isSubmitting: false, errorMessage: error.message);
+      return false;
+    } catch (_) {
+      state = state.copyWith(isSubmitting: false, errorKey: 'errorGeneric');
+      return false;
+    }
+  }
+
+  /// Move the signed-in operator from a merchant workspace back to the
+  /// platform console. The bearer token is untouched, so this is a context
+  /// switch rather than a sign-out.
+  Future<bool> enterPlatformMode() async {
+    final session = state.session;
+    if (session == null || !session.canUsePlatform || state.isSubmitting) {
+      return false;
+    }
+    state = state.copyWith(isSubmitting: true, clearError: true);
+
+    try {
+      final next = await _repository.enterPlatformMode();
+      state = AuthState(
+        status: _statusFor(next),
+        session: next,
       );
       return true;
     } on ApiException catch (error) {
@@ -251,11 +347,12 @@ class AuthController extends StateNotifier<AuthState> {
 
   /// The one place that decides what a restored session may open.
   ///
-  /// A platform operator without a merchant workspace is authenticated; only a
-  /// merchant account with no workspace is sent to tenant onboarding.
+  /// An active workspace always means merchant context. Without one, only a
+  /// backend-confirmed platform operator may enter the platform console; every
+  /// other account belongs in workspace onboarding.
   AuthStatus _statusFor(Session session) {
     if (session.hasTenant) return AuthStatus.authenticated;
-    if (session.isPlatformUser) return AuthStatus.platform;
+    if (session.canUsePlatform) return AuthStatus.platform;
     return AuthStatus.needsTenant;
   }
 

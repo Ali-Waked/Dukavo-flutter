@@ -17,6 +17,15 @@ class ProductModel {
     this.categoryName,
     this.sku,
     this.description,
+    this.shortDescription,
+    this.highlights = const [],
+    this.features = const [],
+    this.specifications = const [],
+    this.tags = const [],
+    this.seoTitle,
+    this.seoDescription,
+    this.seoKeywords,
+    this.localizedSlugs = const {},
     this.statusLabel,
     this.isTaxable = true,
     this.variants = const [],
@@ -34,6 +43,15 @@ class ProductModel {
   final String slug;
   final String? sku;
   final String? description;
+  final String? shortDescription;
+  final List<String> highlights;
+  final List<String> features;
+  final List<ProductSpecification> specifications;
+  final List<String> tags;
+  final String? seoTitle;
+  final String? seoDescription;
+  final String? seoKeywords;
+  final Map<String, String> localizedSlugs;
   final String status;
   final String? statusLabel;
   final num price;
@@ -51,6 +69,11 @@ class ProductModel {
     final rawVariants = json['variants'];
     final rawImages = json['images'];
     final rawStock = json['stock'];
+    final rawHighlights = json['highlights'];
+    final rawFeatures = json['features'];
+    final rawSpecifications = json['specifications'];
+    final rawTags = json['tags'];
+    final rawSlugs = json['localized_slugs'];
 
     return ProductModel(
       id: _int(json['id']),
@@ -61,6 +84,25 @@ class ProductModel {
       slug: '${json['slug'] ?? ''}',
       sku: json['sku'] as String?,
       description: json['description'] as String?,
+      shortDescription: json['short_description'] as String?,
+      highlights: _stringList(rawHighlights),
+      features: _stringList(rawFeatures),
+      specifications: rawSpecifications is List
+          ? rawSpecifications
+              .whereType<Map>()
+              .map((entry) => ProductSpecification(
+                    label: '${entry['label'] ?? ''}',
+                    value: '${entry['value'] ?? ''}',
+                  ))
+              .toList(growable: false)
+          : const [],
+      tags: _stringList(rawTags),
+      seoTitle: json['seo_title'] as String?,
+      seoDescription: json['seo_description'] as String?,
+      seoKeywords: json['seo_keywords'] as String?,
+      localizedSlugs: rawSlugs is Map
+          ? rawSlugs.map((key, value) => MapEntry('$key', '$value'))
+          : const {},
       status: '${json['status'] ?? 'active'}',
       statusLabel: json['status_label'] as String?,
       price: _num(json['price']),
@@ -96,6 +138,15 @@ class ProductModel {
         slug: slug,
         sku: sku,
         description: description,
+        shortDescription: shortDescription,
+        highlights: highlights,
+        features: features,
+        specifications: specifications,
+        tags: tags,
+        seoTitle: seoTitle,
+        seoDescription: seoDescription,
+        seoKeywords: seoKeywords,
+        localizedSlugs: localizedSlugs,
         status: status,
         statusLabel: statusLabel,
         price: price,
@@ -114,6 +165,7 @@ class ProductModel {
     return ProductVariant(
       id: _int(json['id']),
       name: '${json['name'] ?? ''}',
+      description: json['description'] as String?,
       sku: json['sku'] as String?,
       barcode: json['barcode'] as String?,
       price: _num(json['price']),
@@ -130,6 +182,7 @@ class ProductModel {
       id: _int(json['id']),
       url: '${json['url'] ?? ''}',
       altText: json['alt_text'] as String?,
+      caption: json['caption'] as String?,
       isPrimary: json['is_primary'] == true,
     );
   }
@@ -158,6 +211,14 @@ class ProductModel {
   static num _num(Object? value) {
     if (value is num) return value;
     return num.tryParse('$value') ?? 0;
+  }
+
+  static List<String> _stringList(Object? value) {
+    if (value is! List) return const [];
+    return value
+        .map((entry) => '$entry'.trim())
+        .where((entry) => entry.isNotEmpty)
+        .toList(growable: false);
   }
 }
 
@@ -243,6 +304,16 @@ class ProductRemoteDataSource {
         'slug': draft.slug!.trim(),
       if (draft.sku != null) 'sku': draft.sku,
       if (draft.description != null) 'description': draft.description,
+      if (draft.shortDescription != null)
+        'short_description': draft.shortDescription,
+      'highlights': draft.highlights,
+      'features': draft.features,
+      'specifications':
+          draft.specifications.map((entry) => entry.toJson()).toList(),
+      'tags': draft.tags,
+      if (draft.seoTitle != null) 'seo_title': draft.seoTitle,
+      if (draft.seoDescription != null) 'seo_description': draft.seoDescription,
+      if (draft.seoKeywords != null) 'seo_keywords': draft.seoKeywords,
       'status': draft.status,
       'price': draft.price,
       'cost': draft.cost,
@@ -255,6 +326,8 @@ class ProductRemoteDataSource {
             .map((variant) => {
                   if (variant.id != null) 'id': variant.id,
                   'name': variant.name,
+                  if (variant.description != null)
+                    'description': variant.description,
                   'sku': variant.sku,
                   'barcode': variant.barcode,
                   'price': variant.price,

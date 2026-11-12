@@ -17,7 +17,10 @@ class AuthUser {
     this.emailVerifiedAt,
     this.lastLoginAt,
     this.isPlatformUser = false,
+    this.isPlatformOperator = false,
     this.isSuperAdmin = false,
+    this.preferencesInitializedAt,
+    this.twoFactorEnabled = false,
   });
 
   final int id;
@@ -34,7 +37,18 @@ class AuthUser {
   final String? emailVerifiedAt;
   final String? lastLoginAt;
   final bool isPlatformUser;
+
+  /// Confirmed by the backend's platform route gate: the account holds one of
+  /// the two operator roles (super admin or Dukavo admin).
+  ///
+  /// [isPlatformUser] is deliberately broader — any platform-scoped role makes
+  /// it true — so it must never decide whether the console is reachable.
+  final bool isPlatformOperator;
   final bool isSuperAdmin;
+  final String? preferencesInitializedAt;
+  final bool twoFactorEnabled;
+
+  bool get needsOnboarding => preferencesInitializedAt == null;
 
   String get firstName {
     final parts = name.trim().split(RegExp(r'\s+'));
@@ -143,13 +157,32 @@ class Session {
   bool get hasTenant => activeTenant != null;
 
   /// Whether this account may enter the Dukavo platform console.
+  ///
+  /// This mirrors the backend's `platform` middleware exactly: only the two
+  /// system operator roles pass. A null-tenant role assignment alone is not
+  /// enough, and the client never infers the capability from a name or email.
+  bool get canUsePlatform => user.isPlatformOperator;
+
+  /// Whether the account holds at least one merchant workspace.
+  bool get hasMerchantAccess => tenants.isNotEmpty;
+
+  /// Whether this account holds any platform-scoped role.
+  ///
+  /// Kept separate from [canUsePlatform]: it describes the account, while
+  /// [canUsePlatform] describes what the platform API will actually allow.
   bool get isPlatformUser => user.isPlatformUser || user.isSuperAdmin;
 
-  /// A platform operator signed in without a merchant workspace.
+  /// A platform operator currently outside any merchant workspace.
+  ///
+  /// This is the platform console context. A platform operator who deliberately
+  /// opened a workspace is in merchant mode and keeps that workspace's tools.
+  bool get isPlatformMode => !hasTenant && canUsePlatform;
+
+  /// A platform operator with no merchant workspace at all.
   ///
   /// These accounts are fully authenticated: they must land in the platform
   /// console, not the "create a workspace" onboarding screen.
-  bool get isPlatformOnly => !hasTenant && isPlatformUser;
+  bool get isPlatformOnly => canUsePlatform && !hasMerchantAccess;
 
   String get currency =>
       activeTenant?.currency ??
@@ -191,6 +224,33 @@ class LoginResult {
   final String? userEmail;
 }
 
+/// The second step of a sign-in, before any session token exists.
+class TwoFactorChallenge {
+  const TwoFactorChallenge({
+    required this.challengeToken,
+    this.expiresAt,
+    this.methods = const <String>['totp', 'recovery_code'],
+  });
+
+  final String challengeToken;
+  final String? expiresAt;
+  final List<String> methods;
+}
+
+/// Either a completed session or the challenge that must be answered first.
+///
+/// A password-only response never carries a token for a two-factor account, so
+/// the app cannot accidentally treat the first step as signed in.
+class LoginOutcome {
+  const LoginOutcome.session(Session this.session) : challenge = null;
+  const LoginOutcome.challenge(TwoFactorChallenge this.challenge) : session = null;
+
+  final Session? session;
+  final TwoFactorChallenge? challenge;
+
+  bool get requiresTwoFactor => challenge != null;
+}
+
 /// A workspace created during onboarding.
 class ProvisionedTenant {
   const ProvisionedTenant({
@@ -209,13 +269,26 @@ class ProvisionedTenant {
 abstract class AuthRepository {
   Future<Session?> restoreSession();
 
-  Future<Session> login({required String email, required String password});
+  Future<LoginOutcome> login({required String email, required String password});
+
+  /// Exchange a short-lived challenge for a real session after the second step.
+  Future<Session> completeTwoFactor({
+    required String challengeToken,
+    String? code,
+    String? recoveryCode,
+  });
 
   Future<void> logout();
 
   Future<void> clearLocalSession();
 
   Future<Session> switchTenant(String slug);
+
+  /// Leave the active merchant workspace and return to the platform console.
+  ///
+  /// Only a platform operator has a console to return to; the caller checks
+  /// [Session.canUsePlatform] before offering the action.
+  Future<Session> enterPlatformMode();
 
   Future<Session> provisionTenant({
     required String name,

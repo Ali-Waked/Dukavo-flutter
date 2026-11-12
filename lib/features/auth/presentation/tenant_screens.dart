@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../app/localization/app_localizations.dart';
+import '../../../app/router/auth_destination.dart';
+import '../../../app/router/route_paths.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/widgets/app_widgets.dart';
 import '../application/auth_controller.dart';
-import '../domain/auth_domain.dart';
 
 /// Shown when a signed-in account has no workspace yet.
 class TenantSetupScreen extends ConsumerStatefulWidget {
@@ -132,6 +134,11 @@ class _TenantSetupScreenState extends ConsumerState<TenantSetupScreen> {
 }
 
 /// The workspace switcher, shared by the profile and settings screens.
+///
+/// For an account with both capabilities the sheet is also the context
+/// switcher: the platform console and every merchant workspace are listed in
+/// one place. Selecting either refetches `/me` with the matching tenant header,
+/// so the bearer token is never discarded.
 Future<void> showTenantSwitcher(BuildContext context, WidgetRef ref) {
   final session = ref.read(currentSessionProvider);
   if (session == null || session.tenants.isEmpty) {
@@ -148,6 +155,9 @@ Future<void> showTenantSwitcher(BuildContext context, WidgetRef ref) {
           final current = ref.watch(currentSessionProvider);
           final auth = ref.watch(authControllerProvider);
           final activeSlug = current?.activeTenant?.slug;
+          final canUsePlatform = current?.canUsePlatform ?? false;
+          final platformActive = current?.isPlatformMode ?? false;
+          final tenants = current?.tenants ?? session.tenants;
 
           return SafeArea(
             child: ConstrainedBox(
@@ -169,10 +179,48 @@ Future<void> showTenantSwitcher(BuildContext context, WidgetRef ref) {
                     child: ListView.separated(
                       shrinkWrap: true,
                       padding: const EdgeInsets.fromLTRB(12, 0, 12, 16),
-                      itemCount: session.tenants.length,
+                      itemCount: tenants.length + (canUsePlatform ? 1 : 0),
                       separatorBuilder: (_, __) => const SizedBox(height: 4),
                       itemBuilder: (context, index) {
-                        final TenantMembership tenant = session.tenants[index];
+                        if (canUsePlatform && index == 0) {
+                          return ListTile(
+                            leading: CircleAvatar(
+                              backgroundColor: Theme.of(context)
+                                  .colorScheme
+                                  .primaryContainer,
+                              foregroundColor: Theme.of(context)
+                                  .colorScheme
+                                  .onPrimaryContainer,
+                              child: const Icon(Icons.space_dashboard_outlined),
+                            ),
+                            title: Text(context.tr('platformConsole')),
+                            subtitle: Text(context.tr('platformOverview')),
+                            trailing: platformActive
+                                ? Icon(
+                                    Icons.check_circle,
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                  )
+                                : null,
+                            onTap: platformActive || auth.isSubmitting
+                                ? null
+                                : () async {
+                                    final ok = await ref
+                                        .read(authControllerProvider.notifier)
+                                        .enterPlatformMode();
+                                    if (!ok) return;
+                                    if (sheetContext.mounted) {
+                                      Navigator.of(sheetContext).pop();
+                                    }
+                                    if (context.mounted) {
+                                      context.go(RoutePaths.platformDashboard);
+                                    }
+                                  },
+                          );
+                        }
+
+                        final tenant =
+                            tenants[canUsePlatform ? index - 1 : index];
                         final isActive = tenant.slug == activeSlug;
                         return ListTile(
                           leading: CircleAvatar(
@@ -197,8 +245,14 @@ Future<void> showTenantSwitcher(BuildContext context, WidgetRef ref) {
                                   final ok = await ref
                                       .read(authControllerProvider.notifier)
                                       .switchTenant(tenant.slug);
-                                  if (ok && sheetContext.mounted) {
+                                  if (!ok) return;
+                                  if (sheetContext.mounted) {
                                     Navigator.of(sheetContext).pop();
+                                  }
+                                  if (context.mounted) {
+                                    context.go(homePathFor(
+                                      ref.read(permissionsProvider),
+                                    ));
                                   }
                                 },
                         );

@@ -7,6 +7,7 @@ import '../../../app/router/route_paths.dart';
 import '../../../app/theme/design_tokens.dart';
 import '../../../core/widgets/app_widgets.dart';
 import '../../auth/application/auth_controller.dart';
+import '../../auth/presentation/tenant_screens.dart';
 
 /// Platform-only destinations that do not deserve a primary tab.
 class PlatformMoreScreen extends ConsumerWidget {
@@ -17,8 +18,55 @@ class PlatformMoreScreen extends ConsumerWidget {
     final session = ref.watch(currentSessionProvider);
     final permissions = ref.watch(permissionsProvider);
     final theme = Theme.of(context);
+    final tenantCount = session?.tenants.length ?? 0;
 
     final groups = <_MoreGroup>[
+      _MoreGroup(
+        titleKey: 'operations',
+        entries: [
+          _MoreEntry(
+            labelKey: 'aiAdministration',
+            icon: Icons.auto_awesome_outlined,
+            path: RoutePaths.platformAiAdmin,
+            visible: permissions.canViewAiAdmin,
+          ),
+          _MoreEntry(
+            labelKey: 'paymentCatalogue',
+            icon: Icons.account_balance_outlined,
+            path: RoutePaths.platformPayments,
+            visible: permissions.canViewPlatformPayments,
+          ),
+          _MoreEntry(
+            labelKey: 'integrationHealth',
+            icon: Icons.hub_outlined,
+            path: RoutePaths.platformIntegrations,
+            visible: permissions.canViewPlatformIntegrations,
+          ),
+          _MoreEntry(
+            labelKey: 'notificationOperations',
+            icon: Icons.notifications_active_outlined,
+            path: RoutePaths.platformNotifications,
+            visible: permissions.canViewNotifications,
+          ),
+          _MoreEntry(
+            labelKey: 'automationTemplates',
+            icon: Icons.bolt_outlined,
+            path: RoutePaths.platformAutomationTemplates,
+            visible: permissions.canViewAutomation,
+          ),
+        ],
+      ),
+      _MoreGroup(
+        titleKey: 'configuration',
+        entries: [
+          _MoreEntry(
+            labelKey: 'platformSettings',
+            icon: Icons.tune_rounded,
+            path: RoutePaths.platformSettings,
+            visible: permissions.canViewPlatformSettings,
+          ),
+        ],
+      ),
       _MoreGroup(
         titleKey: 'accessControl',
         entries: [
@@ -142,10 +190,10 @@ class PlatformMoreScreen extends ConsumerWidget {
               ],
             ),
           ),
-          if (session?.hasTenant ?? false) ...[
+          if (tenantCount > 0) ...[
             const SizedBox(height: AppSpacing.md),
             AppCard(
-              onTap: () => context.go(RoutePaths.dashboard),
+              onTap: () => showTenantSwitcher(context, ref),
               child: Row(
                 children: [
                   Container(
@@ -175,7 +223,9 @@ class PlatformMoreScreen extends ConsumerWidget {
                           ),
                         ),
                         Text(
-                          session?.activeTenant?.name ?? '',
+                          tenantCount == 1
+                              ? session!.tenants.first.name
+                              : '$tenantCount ${context.tr('workspaces')}',
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: context.dukavo.textMuted,
                           ),

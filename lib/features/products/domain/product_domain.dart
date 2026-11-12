@@ -22,6 +22,7 @@ class ProductVariant {
     required this.price,
     required this.cost,
     required this.isDefault,
+    this.description,
     this.sku,
     this.barcode,
     this.stock = ProductStock.empty,
@@ -29,6 +30,7 @@ class ProductVariant {
 
   final int id;
   final String name;
+  final String? description;
   final String? sku;
   final String? barcode;
   final num price;
@@ -43,12 +45,23 @@ class ProductImage {
     required this.url,
     required this.isPrimary,
     this.altText,
+    this.caption,
   });
 
   final int id;
   final String url;
   final String? altText;
+  final String? caption;
   final bool isPrimary;
+}
+
+class ProductSpecification {
+  const ProductSpecification({required this.label, required this.value});
+
+  final String label;
+  final String value;
+
+  Map<String, dynamic> toJson() => {'label': label, 'value': value};
 }
 
 class Product {
@@ -65,6 +78,15 @@ class Product {
     this.categoryName,
     this.sku,
     this.description,
+    this.shortDescription,
+    this.highlights = const [],
+    this.features = const [],
+    this.specifications = const [],
+    this.tags = const [],
+    this.seoTitle,
+    this.seoDescription,
+    this.seoKeywords,
+    this.localizedSlugs = const {},
     this.statusLabel,
     this.isTaxable = true,
     this.variants = const [],
@@ -82,6 +104,15 @@ class Product {
   final String slug;
   final String? sku;
   final String? description;
+  final String? shortDescription;
+  final List<String> highlights;
+  final List<String> features;
+  final List<ProductSpecification> specifications;
+  final List<String> tags;
+  final String? seoTitle;
+  final String? seoDescription;
+  final String? seoKeywords;
+  final Map<String, String> localizedSlugs;
   final String status;
   final String? statusLabel;
   final num price;
@@ -109,6 +140,7 @@ class ProductVariantDraft {
     required this.name,
     required this.price,
     this.id,
+    this.description,
     this.sku,
     this.barcode,
     this.cost,
@@ -118,6 +150,7 @@ class ProductVariantDraft {
 
   final int? id;
   final String name;
+  final String? description;
   final String? sku;
   final String? barcode;
   final num price;
@@ -132,6 +165,14 @@ class ProductDraft {
     this.slug,
     this.sku,
     this.description,
+    this.shortDescription,
+    this.highlights = const [],
+    this.features = const [],
+    this.specifications = const [],
+    this.tags = const [],
+    this.seoTitle,
+    this.seoDescription,
+    this.seoKeywords,
     this.status = 'active',
     this.price = 0,
     this.cost = 0,
@@ -146,6 +187,14 @@ class ProductDraft {
   final String? slug;
   final String? sku;
   final String? description;
+  final String? shortDescription;
+  final List<String> highlights;
+  final List<String> features;
+  final List<ProductSpecification> specifications;
+  final List<String> tags;
+  final String? seoTitle;
+  final String? seoDescription;
+  final String? seoKeywords;
   final String status;
   final num price;
   final num cost;

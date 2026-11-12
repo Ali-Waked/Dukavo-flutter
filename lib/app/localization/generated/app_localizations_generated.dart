@@ -1760,6 +1760,60 @@ abstract class AppLocalizations {
   /// **'Highlights'**
   String get highlights;
 
+  /// No description provided for @specifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Specifications'**
+  String get specifications;
+
+  /// No description provided for @tags.
+  ///
+  /// In en, this message translates to:
+  /// **'Tags'**
+  String get tags;
+
+  /// No description provided for @shortDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Short description'**
+  String get shortDescription;
+
+  /// No description provided for @seoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'SEO title'**
+  String get seoTitle;
+
+  /// No description provided for @seoDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'SEO description'**
+  String get seoDescription;
+
+  /// No description provided for @seoKeywords.
+  ///
+  /// In en, this message translates to:
+  /// **'SEO keywords'**
+  String get seoKeywords;
+
+  /// No description provided for @linesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'One item per line.'**
+  String get linesHint;
+
+  /// No description provided for @specificationsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'One specification per line, as Label: value.'**
+  String get specificationsHint;
+
+  /// No description provided for @tagsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Separate tags with commas.'**
+  String get tagsHint;
+
   /// No description provided for @risks.
   ///
   /// In en, this message translates to:
@@ -3614,6 +3668,78 @@ abstract class AppLocalizations {
   /// **'Zone name'**
   String get zoneName;
 
+  /// No description provided for @englishHint.
+  ///
+  /// In en, this message translates to:
+  /// **'English is the canonical copy customers see when a translation is missing.'**
+  String get englishHint;
+
+  /// No description provided for @arabicHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional. Arabic readers see the English copy when a field is empty.'**
+  String get arabicHint;
+
+  /// No description provided for @missingArabic.
+  ///
+  /// In en, this message translates to:
+  /// **'Arabic missing'**
+  String get missingArabic;
+
+  /// No description provided for @zoneDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Zone description'**
+  String get zoneDescription;
+
+  /// No description provided for @shippingMethodName.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery method name'**
+  String get shippingMethodName;
+
+  /// No description provided for @shippingMethodNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The delivery option customers see at checkout.'**
+  String get shippingMethodNameHint;
+
+  /// No description provided for @shippingMethodDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery method description'**
+  String get shippingMethodDescription;
+
+  /// No description provided for @shippingMethodDescriptionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional detail shown under the delivery option.'**
+  String get shippingMethodDescriptionHint;
+
+  /// No description provided for @deliveryInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery instructions'**
+  String get deliveryInstructions;
+
+  /// No description provided for @deliveryInstructionsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'What the customer should know before the courier arrives.'**
+  String get deliveryInstructionsHint;
+
+  /// No description provided for @shippingTerms.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery terms'**
+  String get shippingTerms;
+
+  /// No description provided for @shippingTermsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional customer-facing terms for this delivery option.'**
+  String get shippingTermsHint;
+
   /// No description provided for @city.
   ///
   /// In en, this message translates to:
@@ -3835,6 +3961,252 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'AI actions'**
   String get aiActions;
+
+  /// No description provided for @aiSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'AI settings'**
+  String get aiSettings;
+
+  /// No description provided for @aiSettingsByokLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Route through my own keys'**
+  String get aiSettingsByokLabel;
+
+  /// No description provided for @aiSettingsByokOff.
+  ///
+  /// In en, this message translates to:
+  /// **'The platform has not enabled bring-your-own-key, so this workspace cannot store its own provider keys.'**
+  String get aiSettingsByokOff;
+
+  /// No description provided for @aiSettingsByokOptedIn.
+  ///
+  /// In en, this message translates to:
+  /// **'This workspace now prefers its own keys.'**
+  String get aiSettingsByokOptedIn;
+
+  /// No description provided for @aiSettingsByokOptedOut.
+  ///
+  /// In en, this message translates to:
+  /// **'This workspace is back on platform keys.'**
+  String get aiSettingsByokOptedOut;
+
+  /// No description provided for @aiSettingsByokSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'When on, tasks in this workspace prefer your own provider credentials over the platform\'s, with the platform\'s providers as fallback.'**
+  String get aiSettingsByokSubtitle;
+
+  /// No description provided for @aiSettingsByokTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Bring your own key'**
+  String get aiSettingsByokTitle;
+
+  /// No description provided for @aiSettingsFeatureDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Feature disabled for this workspace.'**
+  String get aiSettingsFeatureDisabled;
+
+  /// No description provided for @aiSettingsFeatureEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Feature enabled for this workspace.'**
+  String get aiSettingsFeatureEnabled;
+
+  /// No description provided for @aiSettingsFeaturePlatformOff.
+  ///
+  /// In en, this message translates to:
+  /// **'The platform has this feature off, so it cannot be enabled here.'**
+  String get aiSettingsFeaturePlatformOff;
+
+  /// No description provided for @aiSettingsFeaturesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn a feature off for this workspace only; other workspaces are unaffected.'**
+  String get aiSettingsFeaturesSubtitle;
+
+  /// No description provided for @aiSettingsFeaturesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Features'**
+  String get aiSettingsFeaturesTitle;
+
+  /// No description provided for @aiSettingsKeyApiKeyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Paste the key once; it is never shown again.'**
+  String get aiSettingsKeyApiKeyHint;
+
+  /// No description provided for @aiSettingsKeyApiKeyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'API key'**
+  String get aiSettingsKeyApiKeyLabel;
+
+  /// No description provided for @aiSettingsKeyBaseUrlHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional. Must be a public provider endpoint — local or private addresses are refused.'**
+  String get aiSettingsKeyBaseUrlHint;
+
+  /// No description provided for @aiSettingsKeyBaseUrlLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Base URL'**
+  String get aiSettingsKeyBaseUrlLabel;
+
+  /// No description provided for @aiSettingsKeyFormHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Storing again for the same provider replaces that provider\'s key.'**
+  String get aiSettingsKeyFormHint;
+
+  /// No description provided for @aiSettingsKeyFormTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Store or rotate a key'**
+  String get aiSettingsKeyFormTitle;
+
+  /// No description provided for @aiSettingsKeyModelLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Default model'**
+  String get aiSettingsKeyModelLabel;
+
+  /// No description provided for @aiSettingsKeyProviderLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Provider'**
+  String get aiSettingsKeyProviderLabel;
+
+  /// No description provided for @aiSettingsKeyRevokeBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Revoke {masked} on {provider}? Routing falls back to the platform\'s providers.'**
+  String aiSettingsKeyRevokeBody(Object masked, Object provider);
+
+  /// No description provided for @aiSettingsKeyRevokeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Revoke this key'**
+  String get aiSettingsKeyRevokeTitle;
+
+  /// No description provided for @aiSettingsKeyRevoked.
+  ///
+  /// In en, this message translates to:
+  /// **'Key revoked.'**
+  String get aiSettingsKeyRevoked;
+
+  /// No description provided for @aiSettingsKeyStored.
+  ///
+  /// In en, this message translates to:
+  /// **'Key stored.'**
+  String get aiSettingsKeyStored;
+
+  /// No description provided for @aiSettingsKeyTest.
+  ///
+  /// In en, this message translates to:
+  /// **'Test'**
+  String get aiSettingsKeyTest;
+
+  /// No description provided for @aiSettingsKeyTestFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The connection check failed.'**
+  String get aiSettingsKeyTestFailed;
+
+  /// No description provided for @aiSettingsKeyTestOk.
+  ///
+  /// In en, this message translates to:
+  /// **'Your key answered in {latency} ms.'**
+  String aiSettingsKeyTestOk(Object latency);
+
+  /// No description provided for @aiSettingsKeyTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Use at least 8 characters.'**
+  String get aiSettingsKeyTooShort;
+
+  /// No description provided for @aiSettingsKeysEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No keys stored.'**
+  String get aiSettingsKeysEmpty;
+
+  /// No description provided for @aiSettingsKeysSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your key is encrypted at rest and shown only as its last characters.'**
+  String get aiSettingsKeysSubtitle;
+
+  /// No description provided for @aiSettingsKeysTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'My keys'**
+  String get aiSettingsKeysTitle;
+
+  /// No description provided for @aiSettingsNoProviders.
+  ///
+  /// In en, this message translates to:
+  /// **'No providers are available for a workspace key.'**
+  String get aiSettingsNoProviders;
+
+  /// No description provided for @aiSettingsPlatformOffBody.
+  ///
+  /// In en, this message translates to:
+  /// **'AI is turned off for the whole platform. Nothing here will run until the Dukavo team enables it.'**
+  String get aiSettingsPlatformOffBody;
+
+  /// No description provided for @aiSettingsPlatformOffTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Off platform-wide'**
+  String get aiSettingsPlatformOffTitle;
+
+  /// No description provided for @aiSettingsUsageCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated cost'**
+  String get aiSettingsUsageCost;
+
+  /// No description provided for @aiSettingsUsageEstimatesNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Costs are estimates from declared model prices — operational signal, never a billing figure.'**
+  String get aiSettingsUsageEstimatesNote;
+
+  /// No description provided for @aiSettingsUsageFailures.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed requests'**
+  String get aiSettingsUsageFailures;
+
+  /// No description provided for @aiSettingsUsageRow.
+  ///
+  /// In en, this message translates to:
+  /// **'{requests} requests · {tokens} tokens'**
+  String aiSettingsUsageRow(Object requests, Object tokens);
+
+  /// No description provided for @aiSettingsUsageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'AI usage'**
+  String get aiSettingsUsageTitle;
+
+  /// No description provided for @aiSettingsUsageTodayRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Requests today'**
+  String get aiSettingsUsageTodayRequests;
+
+  /// No description provided for @aiSettingsUsageTodayTokens.
+  ///
+  /// In en, this message translates to:
+  /// **'Tokens today'**
+  String get aiSettingsUsageTodayTokens;
 
   /// No description provided for @altText.
   ///
@@ -6794,11 +7166,3605 @@ abstract class AppLocalizations {
   /// **'Join the waitlist and we’ll set up your products, orders, customers and conversations together.'**
   String get publicHowCtaBody;
 
+  /// No description provided for @translationAssistant.
+  ///
+  /// In en, this message translates to:
+  /// **'AI translations'**
+  String get translationAssistant;
+
+  /// No description provided for @translationOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Translations'**
+  String get translationOpen;
+
+  /// No description provided for @translationReviewHint.
+  ///
+  /// In en, this message translates to:
+  /// **'AI drafts stay private until you approve them.'**
+  String get translationReviewHint;
+
+  /// No description provided for @translationNoSelection.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing selected'**
+  String get translationNoSelection;
+
+  /// No description provided for @translationSelectedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} selected'**
+  String translationSelectedCount(Object count);
+
+  /// No description provided for @translationApproveSelectedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve {count}'**
+  String translationApproveSelectedCount(Object count);
+
+  /// No description provided for @translationGenerateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate translations'**
+  String get translationGenerateTitle;
+
+  /// No description provided for @translationGenerateHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick the fields and languages to translate. The result is a proposal, not a published change.'**
+  String get translationGenerateHint;
+
+  /// No description provided for @translationSourceLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Source language'**
+  String get translationSourceLanguage;
+
+  /// No description provided for @translationSourceUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'The source language could not be detected. Choose it explicitly.'**
+  String get translationSourceUnknown;
+
+  /// No description provided for @translationDetectedLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Detected {language} ({confidence}% confidence)'**
+  String translationDetectedLanguage(Object confidence, Object language);
+
+  /// No description provided for @translationSourceRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Source language required'**
+  String get translationSourceRequired;
+
+  /// No description provided for @translationSourceRequiredHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the language this copy is written in so Dukavo translates from the right language.'**
+  String get translationSourceRequiredHint;
+
+  /// No description provided for @translationFields.
+  ///
+  /// In en, this message translates to:
+  /// **'Fields'**
+  String get translationFields;
+
+  /// No description provided for @translationTargets.
+  ///
+  /// In en, this message translates to:
+  /// **'Target languages'**
+  String get translationTargets;
+
+  /// No description provided for @translationNoTargets.
+  ///
+  /// In en, this message translates to:
+  /// **'No other enabled language is available yet.'**
+  String get translationNoTargets;
+
+  /// No description provided for @translationGenerate.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate'**
+  String get translationGenerate;
+
+  /// No description provided for @translationUsageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'AI usage today'**
+  String get translationUsageTitle;
+
+  /// No description provided for @translationUsageSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{requests} requests · {tokens} tokens · about {cost} estimated cost'**
+  String translationUsageSummary(Object cost, Object requests, Object tokens);
+
+  /// No description provided for @translationReviewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Review'**
+  String get translationReviewTitle;
+
+  /// No description provided for @translationStale.
+  ///
+  /// In en, this message translates to:
+  /// **'Stale'**
+  String get translationStale;
+
+  /// No description provided for @translationManuallyEdited.
+  ///
+  /// In en, this message translates to:
+  /// **'Manually edited'**
+  String get translationManuallyEdited;
+
+  /// No description provided for @translationSourceCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Source'**
+  String get translationSourceCopy;
+
+  /// No description provided for @translationNotTranslatedYet.
+  ///
+  /// In en, this message translates to:
+  /// **'Not translated yet.'**
+  String get translationNotTranslatedYet;
+
+  /// No description provided for @translationRejectionReasonValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected: {reason}'**
+  String translationRejectionReasonValue(Object reason);
+
+  /// No description provided for @translationPublishedCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Still public'**
+  String get translationPublishedCopy;
+
+  /// No description provided for @translationApprove.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve'**
+  String get translationApprove;
+
+  /// No description provided for @translationEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get translationEdit;
+
+  /// No description provided for @translationReject.
+  ///
+  /// In en, this message translates to:
+  /// **'Reject'**
+  String get translationReject;
+
+  /// No description provided for @translationRegenerate.
+  ///
+  /// In en, this message translates to:
+  /// **'Regenerate'**
+  String get translationRegenerate;
+
+  /// No description provided for @translationStatusNotTranslated.
+  ///
+  /// In en, this message translates to:
+  /// **'Not translated'**
+  String get translationStatusNotTranslated;
+
+  /// No description provided for @translationStatusGenerating.
+  ///
+  /// In en, this message translates to:
+  /// **'Generating'**
+  String get translationStatusGenerating;
+
+  /// No description provided for @translationStatusGenerated.
+  ///
+  /// In en, this message translates to:
+  /// **'Generated'**
+  String get translationStatusGenerated;
+
+  /// No description provided for @translationStatusNeedsReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs review'**
+  String get translationStatusNeedsReview;
+
+  /// No description provided for @translationStatusApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'Approved'**
+  String get translationStatusApproved;
+
+  /// No description provided for @translationStatusRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get translationStatusRejected;
+
+  /// No description provided for @translationStatusFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed'**
+  String get translationStatusFailed;
+
+  /// No description provided for @translationStatusStale.
+  ///
+  /// In en, this message translates to:
+  /// **'Stale'**
+  String get translationStatusStale;
+
+  /// No description provided for @translationGenerated.
+  ///
+  /// In en, this message translates to:
+  /// **'Translations generated for review.'**
+  String get translationGenerated;
+
+  /// No description provided for @translationApprovedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Translation approved and published.'**
+  String get translationApprovedMessage;
+
+  /// No description provided for @translationUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Translation updated and returned to review.'**
+  String get translationUpdated;
+
+  /// No description provided for @translationRejectedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Translation rejected.'**
+  String get translationRejectedMessage;
+
+  /// No description provided for @translationNothingSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Select at least one translation first.'**
+  String get translationNothingSelected;
+
+  /// No description provided for @translationTextRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the translated text.'**
+  String get translationTextRequired;
+
+  /// No description provided for @translationEditApprovedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit published translation?'**
+  String get translationEditApprovedTitle;
+
+  /// No description provided for @translationEditApprovedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The current public copy stays live until you approve the new text.'**
+  String get translationEditApprovedMessage;
+
+  /// No description provided for @translationEditHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit the translation'**
+  String get translationEditHint;
+
+  /// No description provided for @translationRejectReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason (optional)'**
+  String get translationRejectReason;
+
+  /// No description provided for @translationRejectReasonHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell the reviewer why this proposal was rejected.'**
+  String get translationRejectReasonHint;
+
+  /// No description provided for @translationOverwriteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This replaces the current draft. Manually edited text and published copy need your confirmation before regeneration.'**
+  String get translationOverwriteMessage;
+
   /// No description provided for @register.
   ///
   /// In en, this message translates to:
   /// **'Register'**
   String get register;
+
+  /// No description provided for @choosePaymentRail.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose how to pay'**
+  String get choosePaymentRail;
+
+  /// No description provided for @onlineRedirectNote.
+  ///
+  /// In en, this message translates to:
+  /// **'You will continue to the provider\'s secure page. This order stays unpaid until the provider confirms.'**
+  String get onlineRedirectNote;
+
+  /// No description provided for @bankTransferNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer the total to the store and keep the receipt. The store confirms the order when the money arrives.'**
+  String get bankTransferNote;
+
+  /// No description provided for @paymentProvider.
+  ///
+  /// In en, this message translates to:
+  /// **'Provider'**
+  String get paymentProvider;
+
+  /// No description provided for @paymentRail.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment method'**
+  String get paymentRail;
+
+  /// No description provided for @paymentAttempt.
+  ///
+  /// In en, this message translates to:
+  /// **'Attempt'**
+  String get paymentAttempt;
+
+  /// No description provided for @paymentAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get paymentAmount;
+
+  /// No description provided for @paymentReference.
+  ///
+  /// In en, this message translates to:
+  /// **'Reference'**
+  String get paymentReference;
+
+  /// No description provided for @paymentPendingNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for the provider to confirm. This page refreshes automatically.'**
+  String get paymentPendingNote;
+
+  /// No description provided for @paymentPaidNote.
+  ///
+  /// In en, this message translates to:
+  /// **'The provider confirmed this payment.'**
+  String get paymentPaidNote;
+
+  /// No description provided for @paymentLinkHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Open this link in your browser to pay. The order updates only after the provider confirms.'**
+  String get paymentLinkHint;
+
+  /// No description provided for @paymentLinkCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment link copied.'**
+  String get paymentLinkCopied;
+
+  /// No description provided for @copyPaymentLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy payment link'**
+  String get copyPaymentLink;
+
+  /// No description provided for @retryPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Try payment again'**
+  String get retryPayment;
+
+  /// No description provided for @orderAwaitingPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Awaiting payment'**
+  String get orderAwaitingPayment;
+
+  /// No description provided for @bankTransfer.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank transfer'**
+  String get bankTransfer;
+
+  /// No description provided for @codNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay the courier on delivery. The order stays unpaid until then.'**
+  String get codNote;
+
+  /// No description provided for @twoFactorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Two-step verification'**
+  String get twoFactorTitle;
+
+  /// No description provided for @twoFactorSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm it\'s you to finish signing in.'**
+  String get twoFactorSubtitle;
+
+  /// No description provided for @twoFactorPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the 6-digit code from your authenticator app.'**
+  String get twoFactorPrompt;
+
+  /// No description provided for @twoFactorCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Authentication code'**
+  String get twoFactorCode;
+
+  /// No description provided for @twoFactorCodePlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'000000'**
+  String get twoFactorCodePlaceholder;
+
+  /// No description provided for @twoFactorCodeLength.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the 6-digit code.'**
+  String get twoFactorCodeLength;
+
+  /// No description provided for @twoFactorVerify.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify and sign in'**
+  String get twoFactorVerify;
+
+  /// No description provided for @verifying.
+  ///
+  /// In en, this message translates to:
+  /// **'Verifying'**
+  String get verifying;
+
+  /// No description provided for @twoFactorUseRecovery.
+  ///
+  /// In en, this message translates to:
+  /// **'Use a recovery code'**
+  String get twoFactorUseRecovery;
+
+  /// No description provided for @twoFactorUseCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Use an authenticator code'**
+  String get twoFactorUseCode;
+
+  /// No description provided for @twoFactorRecoveryCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Recovery code'**
+  String get twoFactorRecoveryCode;
+
+  /// No description provided for @twoFactorRecoveryHint.
+  ///
+  /// In en, this message translates to:
+  /// **'One of the single-use codes you saved when you turned on two-step verification.'**
+  String get twoFactorRecoveryHint;
+
+  /// No description provided for @onboardingPreferencesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'A few things about you'**
+  String get onboardingPreferencesTitle;
+
+  /// No description provided for @onboardingPreferencesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'We guessed these from your network and browser to save you time. Check them, change anything that is wrong, or skip for now.'**
+  String get onboardingPreferencesSubtitle;
+
+  /// No description provided for @onboardingPersonalTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal information'**
+  String get onboardingPersonalTitle;
+
+  /// No description provided for @onboardingPersonalHint.
+  ///
+  /// In en, this message translates to:
+  /// **'How your name and photo appear to your team.'**
+  String get onboardingPersonalHint;
+
+  /// No description provided for @onboardingLocationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Location helps us show local times. A guess from your network is approximate, never verified.'**
+  String get onboardingLocationHint;
+
+  /// No description provided for @onboardingDisplayHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose how Dukavo looks and reads for you.'**
+  String get onboardingDisplayHint;
+
+  /// No description provided for @onboardingDetectedBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Detected for you'**
+  String get onboardingDetectedBadge;
+
+  /// No description provided for @onboardingApproximateBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Some values are an estimate from your network. Review them before saving.'**
+  String get onboardingApproximateBadge;
+
+  /// No description provided for @onboardingSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save preferences'**
+  String get onboardingSave;
+
+  /// No description provided for @onboardingSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip for now'**
+  String get onboardingSkip;
+
+  /// No description provided for @onboardingSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferences saved.'**
+  String get onboardingSaved;
+
+  /// No description provided for @onboardingSkipped.
+  ///
+  /// In en, this message translates to:
+  /// **'No problem — you can change these any time in your profile.'**
+  String get onboardingSkipped;
+
+  /// No description provided for @onboardingFootnote.
+  ///
+  /// In en, this message translates to:
+  /// **'These are personal settings. They never change a store\'s currency, prices or past orders.'**
+  String get onboardingFootnote;
+
+  /// No description provided for @onboardingPromptBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm your language, currency and time zone so Dukavo feels right.'**
+  String get onboardingPromptBody;
+
+  /// No description provided for @onboardingPromptAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Review preferences'**
+  String get onboardingPromptAction;
+
+  /// No description provided for @nameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Your full name.'**
+  String get nameHint;
+
+  /// No description provided for @bio.
+  ///
+  /// In en, this message translates to:
+  /// **'Bio'**
+  String get bio;
+
+  /// No description provided for @bioHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A sentence or two about you. Optional.'**
+  String get bioHint;
+
+  /// No description provided for @location.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get location;
+
+  /// No description provided for @country.
+  ///
+  /// In en, this message translates to:
+  /// **'Country'**
+  String get country;
+
+  /// No description provided for @countryPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a country'**
+  String get countryPlaceholder;
+
+  /// No description provided for @countrySearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by name, code or dial code'**
+  String get countrySearch;
+
+  /// No description provided for @cityManualHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Can\'t find it? Type the name — manual entry is always accepted.'**
+  String get cityManualHint;
+
+  /// No description provided for @phoneCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone country code'**
+  String get phoneCountry;
+
+  /// No description provided for @phoneCountryHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The country your phone number belongs to.'**
+  String get phoneCountryHint;
+
+  /// No description provided for @timezonePlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a time zone'**
+  String get timezonePlaceholder;
+
+  /// No description provided for @timezoneSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search time zones'**
+  String get timezoneSearch;
+
+  /// No description provided for @dateFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Date format'**
+  String get dateFormat;
+
+  /// No description provided for @timeFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Time format'**
+  String get timeFormat;
+
+  /// No description provided for @timeFormat24.
+  ///
+  /// In en, this message translates to:
+  /// **'24-hour (14:30)'**
+  String get timeFormat24;
+
+  /// No description provided for @timeFormat12.
+  ///
+  /// In en, this message translates to:
+  /// **'12-hour (2:30 PM)'**
+  String get timeFormat12;
+
+  /// No description provided for @themeSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get themeSystem;
+
+  /// No description provided for @themeLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get themeLight;
+
+  /// No description provided for @themeDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get themeDark;
+
+  /// No description provided for @preferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Display preferences'**
+  String get preferences;
+
+  /// No description provided for @accountInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Account information'**
+  String get accountInformation;
+
+  /// No description provided for @accountMetaDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Membership and security at a glance.'**
+  String get accountMetaDesc;
+
+  /// No description provided for @accountType.
+  ///
+  /// In en, this message translates to:
+  /// **'Account type'**
+  String get accountType;
+
+  /// No description provided for @accountTypeMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Member'**
+  String get accountTypeMember;
+
+  /// No description provided for @memberSince.
+  ///
+  /// In en, this message translates to:
+  /// **'Member since'**
+  String get memberSince;
+
+  /// No description provided for @passwordNever.
+  ///
+  /// In en, this message translates to:
+  /// **'Never changed'**
+  String get passwordNever;
+
+  /// No description provided for @profileComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Your profile is complete.'**
+  String get profileComplete;
+
+  /// No description provided for @profileCompletion.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile completeness'**
+  String get profileCompletion;
+
+  /// No description provided for @workspaceSeparationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Changing these never changes a store\'s currency, prices or past orders.'**
+  String get workspaceSeparationHint;
+
+  /// No description provided for @locationAndPreferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Location and preferences'**
+  String get locationAndPreferences;
+
+  /// No description provided for @locationAndPreferencesDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal to you — separate from any workspace settings.'**
+  String get locationAndPreferencesDesc;
+
+  /// No description provided for @securityCenter.
+  ///
+  /// In en, this message translates to:
+  /// **'Security centre'**
+  String get securityCenter;
+
+  /// No description provided for @securityActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Security activity'**
+  String get securityActivity;
+
+  /// No description provided for @securityActivityDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign-ins, password changes and session changes on your account.'**
+  String get securityActivityDesc;
+
+  /// No description provided for @securityActivityEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No security activity yet.'**
+  String get securityActivityEmpty;
+
+  /// No description provided for @sessionsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Every device currently signed in to your account.'**
+  String get sessionsDesc;
+
+  /// No description provided for @twoFactor.
+  ///
+  /// In en, this message translates to:
+  /// **'Two-step verification'**
+  String get twoFactor;
+
+  /// No description provided for @twoFactorDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask for a code from your authenticator app when signing in.'**
+  String get twoFactorDesc;
+
+  /// No description provided for @twoFactorOn.
+  ///
+  /// In en, this message translates to:
+  /// **'On'**
+  String get twoFactorOn;
+
+  /// No description provided for @twoFactorOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get twoFactorOff;
+
+  /// No description provided for @twoFactorEnable.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on'**
+  String get twoFactorEnable;
+
+  /// No description provided for @twoFactorEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Two-step verification is on.'**
+  String get twoFactorEnabled;
+
+  /// No description provided for @twoFactorDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Two-step verification is off.'**
+  String get twoFactorDisabled;
+
+  /// No description provided for @twoFactorConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on verification'**
+  String get twoFactorConfirm;
+
+  /// No description provided for @twoFactorSetupIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Open your authenticator app, add this key, then enter the code it shows.'**
+  String get twoFactorSetupIntro;
+
+  /// No description provided for @twoFactorSecret.
+  ///
+  /// In en, this message translates to:
+  /// **'Setup key'**
+  String get twoFactorSecret;
+
+  /// No description provided for @twoFactorSecretOnce.
+  ///
+  /// In en, this message translates to:
+  /// **'This key is shown once. Store it somewhere safe.'**
+  String get twoFactorSecretOnce;
+
+  /// No description provided for @twoFactorProvisioningUri.
+  ///
+  /// In en, this message translates to:
+  /// **'Setup link'**
+  String get twoFactorProvisioningUri;
+
+  /// No description provided for @twoFactorActiveSince.
+  ///
+  /// In en, this message translates to:
+  /// **'On since {time}'**
+  String twoFactorActiveSince(Object time);
+
+  /// No description provided for @recoveryCodesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Recovery codes'**
+  String get recoveryCodesTitle;
+
+  /// No description provided for @recoveryCodesOnce.
+  ///
+  /// In en, this message translates to:
+  /// **'Save these now. Each code works once, and they will not be shown again.'**
+  String get recoveryCodesOnce;
+
+  /// No description provided for @recoveryCodesRegenerated.
+  ///
+  /// In en, this message translates to:
+  /// **'New recovery codes created.'**
+  String get recoveryCodesRegenerated;
+
+  /// No description provided for @recoveryCodesRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} recovery codes left'**
+  String recoveryCodesRemaining(Object count);
+
+  /// No description provided for @regenerateRecoveryCodes.
+  ///
+  /// In en, this message translates to:
+  /// **'New recovery codes'**
+  String get regenerateRecoveryCodes;
+
+  /// No description provided for @regenerateIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a current authenticator code to replace your recovery codes. The old ones stop working.'**
+  String get regenerateIntro;
+
+  /// No description provided for @disableTwoFactor.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn off'**
+  String get disableTwoFactor;
+
+  /// No description provided for @currentPasswordRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your current password.'**
+  String get currentPasswordRequired;
+
+  /// No description provided for @requiresAuthenticationCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter an authenticator code or a recovery code.'**
+  String get requiresAuthenticationCode;
+
+  /// No description provided for @useAuthenticatorCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Use an authenticator code'**
+  String get useAuthenticatorCode;
+
+  /// No description provided for @useRecoveryCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Use a recovery code'**
+  String get useRecoveryCode;
+
+  /// No description provided for @recoveryCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Recovery code'**
+  String get recoveryCode;
+
+  /// No description provided for @editProfileHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Name, photo, bio and contact details.'**
+  String get editProfileHint;
+
+  /// No description provided for @changePasswordDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Use a strong password you do not use anywhere else.'**
+  String get changePasswordDesc;
+
+  /// No description provided for @helpCenter.
+  ///
+  /// In en, this message translates to:
+  /// **'Help Center'**
+  String get helpCenter;
+
+  /// No description provided for @supportSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search guides and topics'**
+  String get supportSearchHint;
+
+  /// No description provided for @supportBrowseTopics.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse by topic'**
+  String get supportBrowseTopics;
+
+  /// No description provided for @supportFeatured.
+  ///
+  /// In en, this message translates to:
+  /// **'Featured guides'**
+  String get supportFeatured;
+
+  /// No description provided for @supportPopular.
+  ///
+  /// In en, this message translates to:
+  /// **'Most read guides'**
+  String get supportPopular;
+
+  /// No description provided for @supportArticlesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} articles'**
+  String supportArticlesCount(Object count);
+
+  /// No description provided for @supportSearchEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No matching guides'**
+  String get supportSearchEmptyTitle;
+
+  /// No description provided for @supportSearchEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Try a shorter term, or clear the search and browse by topic.'**
+  String get supportSearchEmptyBody;
+
+  /// No description provided for @supportEmptyCategoryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No articles yet'**
+  String get supportEmptyCategoryTitle;
+
+  /// No description provided for @supportEmptyCategoryBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing has been published in this topic yet.'**
+  String get supportEmptyCategoryBody;
+
+  /// No description provided for @supportNotFoundTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'We could not find this guide'**
+  String get supportNotFoundTitle;
+
+  /// No description provided for @supportNotFoundBody.
+  ///
+  /// In en, this message translates to:
+  /// **'It may have moved or been renamed, or it is not available to you.'**
+  String get supportNotFoundBody;
+
+  /// No description provided for @supportRelated.
+  ///
+  /// In en, this message translates to:
+  /// **'Related guides'**
+  String get supportRelated;
+
+  /// No description provided for @supportAllTopics.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to all topics'**
+  String get supportAllTopics;
+
+  /// No description provided for @supportFeedbackTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Was this guide helpful?'**
+  String get supportFeedbackTitle;
+
+  /// No description provided for @supportFeedbackYes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get supportFeedbackYes;
+
+  /// No description provided for @supportFeedbackNo.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get supportFeedbackNo;
+
+  /// No description provided for @supportFeedbackCommentLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Anything to add? (optional)'**
+  String get supportFeedbackCommentLabel;
+
+  /// No description provided for @supportFeedbackCommentHint.
+  ///
+  /// In en, this message translates to:
+  /// **'What were you trying to do?'**
+  String get supportFeedbackCommentHint;
+
+  /// No description provided for @supportFeedbackSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send answer'**
+  String get supportFeedbackSend;
+
+  /// No description provided for @supportFeedbackThanks.
+  ///
+  /// In en, this message translates to:
+  /// **'Your answer helps us improve this guide.'**
+  String get supportFeedbackThanks;
+
+  /// No description provided for @supportFeedbackFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not send your answer. Please try again.'**
+  String get supportFeedbackFailed;
+
+  /// No description provided for @integrations.
+  ///
+  /// In en, this message translates to:
+  /// **'Integrations'**
+  String get integrations;
+
+  /// No description provided for @integrationsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Every channel your customers can reach you on.'**
+  String get integrationsSubtitle;
+
+  /// No description provided for @integrationsRefresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get integrationsRefresh;
+
+  /// No description provided for @integrationsConnect.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect'**
+  String get integrationsConnect;
+
+  /// No description provided for @integrationsConnectChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect {channel}'**
+  String integrationsConnectChannel(Object channel);
+
+  /// No description provided for @integrationsEditConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit connection'**
+  String get integrationsEditConnection;
+
+  /// No description provided for @integrationsAvailabilityAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get integrationsAvailabilityAvailable;
+
+  /// No description provided for @integrationsAvailabilityAwaitingConfiguration.
+  ///
+  /// In en, this message translates to:
+  /// **'Awaiting configuration'**
+  String get integrationsAvailabilityAwaitingConfiguration;
+
+  /// No description provided for @integrationsAvailabilityAwaitingProviderAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Awaiting provider access'**
+  String get integrationsAvailabilityAwaitingProviderAccess;
+
+  /// No description provided for @integrationsStatusPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get integrationsStatusPending;
+
+  /// No description provided for @integrationsStatusConnected.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected'**
+  String get integrationsStatusConnected;
+
+  /// No description provided for @integrationsStatusDisconnected.
+  ///
+  /// In en, this message translates to:
+  /// **'Disconnected'**
+  String get integrationsStatusDisconnected;
+
+  /// No description provided for @integrationsStatusError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get integrationsStatusError;
+
+  /// No description provided for @integrationsHealthUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Not checked'**
+  String get integrationsHealthUnknown;
+
+  /// No description provided for @integrationsHealthHealthy.
+  ///
+  /// In en, this message translates to:
+  /// **'Healthy'**
+  String get integrationsHealthHealthy;
+
+  /// No description provided for @integrationsHealthDegraded.
+  ///
+  /// In en, this message translates to:
+  /// **'Degraded'**
+  String get integrationsHealthDegraded;
+
+  /// No description provided for @integrationsHealthFailing.
+  ///
+  /// In en, this message translates to:
+  /// **'Failing'**
+  String get integrationsHealthFailing;
+
+  /// No description provided for @integrationsCapabilities.
+  ///
+  /// In en, this message translates to:
+  /// **'Capabilities'**
+  String get integrationsCapabilities;
+
+  /// No description provided for @integrationsConnections.
+  ///
+  /// In en, this message translates to:
+  /// **'Connections'**
+  String get integrationsConnections;
+
+  /// No description provided for @integrationsNoConnections.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing connected yet.'**
+  String get integrationsNoConnections;
+
+  /// No description provided for @integrationsAllStores.
+  ///
+  /// In en, this message translates to:
+  /// **'All stores'**
+  String get integrationsAllStores;
+
+  /// No description provided for @integrationsName.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection name'**
+  String get integrationsName;
+
+  /// No description provided for @integrationsNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Sales line'**
+  String get integrationsNameHint;
+
+  /// No description provided for @integrationsStore.
+  ///
+  /// In en, this message translates to:
+  /// **'Store'**
+  String get integrationsStore;
+
+  /// No description provided for @integrationsCredentials.
+  ///
+  /// In en, this message translates to:
+  /// **'Credentials'**
+  String get integrationsCredentials;
+
+  /// No description provided for @integrationsCredentialsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Values are encrypted at rest and never shown again. Leave a secret blank to keep the stored value.'**
+  String get integrationsCredentialsHint;
+
+  /// No description provided for @integrationsRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Required'**
+  String get integrationsRequired;
+
+  /// No description provided for @integrationsOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional'**
+  String get integrationsOptional;
+
+  /// No description provided for @integrationsConfigured.
+  ///
+  /// In en, this message translates to:
+  /// **'Stored'**
+  String get integrationsConfigured;
+
+  /// No description provided for @integrationsSecretHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Stored — leave blank to keep it'**
+  String get integrationsSecretHint;
+
+  /// No description provided for @integrationsAwaitingAccessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Provider access not granted yet'**
+  String get integrationsAwaitingAccessTitle;
+
+  /// No description provided for @integrationsAwaitingAccessBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This channel is declared but Dukavo has no approved access to its API. You can save credentials now; the connection stays pending until access is granted and a real test succeeds.'**
+  String get integrationsAwaitingAccessBody;
+
+  /// No description provided for @integrationsAwaitingConfigTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Platform configuration missing'**
+  String get integrationsAwaitingConfigTitle;
+
+  /// No description provided for @integrationsAwaitingConfigBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The installation is missing the platform-level keys this channel needs. Ask a platform administrator to configure it.'**
+  String get integrationsAwaitingConfigBody;
+
+  /// No description provided for @integrationsWebhook.
+  ///
+  /// In en, this message translates to:
+  /// **'Webhook URL'**
+  String get integrationsWebhook;
+
+  /// No description provided for @integrationsCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Copied.'**
+  String get integrationsCopied;
+
+  /// No description provided for @integrationsCopyFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'This device blocked clipboard access — copy it by hand.'**
+  String get integrationsCopyFailed;
+
+  /// No description provided for @integrationsTest.
+  ///
+  /// In en, this message translates to:
+  /// **'Test'**
+  String get integrationsTest;
+
+  /// No description provided for @integrationsReconnect.
+  ///
+  /// In en, this message translates to:
+  /// **'Reconnect'**
+  String get integrationsReconnect;
+
+  /// No description provided for @integrationsDisconnect.
+  ///
+  /// In en, this message translates to:
+  /// **'Disconnect'**
+  String get integrationsDisconnect;
+
+  /// No description provided for @integrationsDisconnectTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Disconnect {name}?'**
+  String integrationsDisconnectTitle(Object name);
+
+  /// No description provided for @integrationsDisconnectBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers will no longer reach you through this connection. Conversations stay in the inbox.'**
+  String get integrationsDisconnectBody;
+
+  /// No description provided for @integrationsSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection saved.'**
+  String get integrationsSaved;
+
+  /// No description provided for @integrationsDisconnected.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection disconnected.'**
+  String get integrationsDisconnected;
+
+  /// No description provided for @integrationsTested.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection tested.'**
+  String get integrationsTested;
+
+  /// No description provided for @integrationsReconnected.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection re-established.'**
+  String get integrationsReconnected;
+
+  /// No description provided for @integrationsError.
+  ///
+  /// In en, this message translates to:
+  /// **'This connection reported an error.'**
+  String get integrationsError;
+
+  /// No description provided for @integrationsEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No channels available'**
+  String get integrationsEmptyTitle;
+
+  /// No description provided for @integrationsEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'No messaging channels are declared in this installation.'**
+  String get integrationsEmptyBody;
+
+  /// No description provided for @integrationsNeverChecked.
+  ///
+  /// In en, this message translates to:
+  /// **'Never checked'**
+  String get integrationsNeverChecked;
+
+  /// No description provided for @integrationsCapabilityText.
+  ///
+  /// In en, this message translates to:
+  /// **'Text'**
+  String get integrationsCapabilityText;
+
+  /// No description provided for @integrationsCapabilityImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Images'**
+  String get integrationsCapabilityImage;
+
+  /// No description provided for @integrationsCapabilityDocument.
+  ///
+  /// In en, this message translates to:
+  /// **'Documents'**
+  String get integrationsCapabilityDocument;
+
+  /// No description provided for @integrationsCapabilityAudio.
+  ///
+  /// In en, this message translates to:
+  /// **'Audio'**
+  String get integrationsCapabilityAudio;
+
+  /// No description provided for @integrationsCapabilityVoice.
+  ///
+  /// In en, this message translates to:
+  /// **'Voice notes'**
+  String get integrationsCapabilityVoice;
+
+  /// No description provided for @integrationsCapabilityVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Video'**
+  String get integrationsCapabilityVideo;
+
+  /// No description provided for @integrationsCapabilityTemplate.
+  ///
+  /// In en, this message translates to:
+  /// **'Templates'**
+  String get integrationsCapabilityTemplate;
+
+  /// No description provided for @integrationsCapabilityDeliveryStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery status'**
+  String get integrationsCapabilityDeliveryStatus;
+
+  /// No description provided for @integrationsCapabilityReadStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Read receipts'**
+  String get integrationsCapabilityReadStatus;
+
+  /// No description provided for @integrationsCapabilityMediaDownload.
+  ///
+  /// In en, this message translates to:
+  /// **'Media download'**
+  String get integrationsCapabilityMediaDownload;
+
+  /// No description provided for @integrationsCapabilityTyping.
+  ///
+  /// In en, this message translates to:
+  /// **'Typing indicator'**
+  String get integrationsCapabilityTyping;
+
+  /// No description provided for @enabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Enabled'**
+  String get enabled;
+
+  /// No description provided for @disabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Disabled'**
+  String get disabled;
+
+  /// No description provided for @environment.
+  ///
+  /// In en, this message translates to:
+  /// **'Environment'**
+  String get environment;
+
+  /// No description provided for @configuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Configuration'**
+  String get configuration;
+
+  /// No description provided for @platformSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Platform settings'**
+  String get platformSettings;
+
+  /// No description provided for @platformSettingsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'One place for the configuration the whole platform shares. Tenant and store settings stay separate.'**
+  String get platformSettingsSubtitle;
+
+  /// No description provided for @platformSettingsSpecialists.
+  ///
+  /// In en, this message translates to:
+  /// **'AI provider credentials and prompts, and the payment catalogue, are administered in the web platform console. This screen links to what the phone can safely change.'**
+  String get platformSettingsSpecialists;
+
+  /// No description provided for @platformSettingsAuditNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Every save is recorded in the audit log with the operator, the previous value and the new one. Secrets are redacted.'**
+  String get platformSettingsAuditNote;
+
+  /// No description provided for @platformSettingsSections.
+  ///
+  /// In en, this message translates to:
+  /// **'Configuration sections'**
+  String get platformSettingsSections;
+
+  /// No description provided for @platformSettingsControls.
+  ///
+  /// In en, this message translates to:
+  /// **'Platform controls'**
+  String get platformSettingsControls;
+
+  /// No description provided for @platformSettingsOperations.
+  ///
+  /// In en, this message translates to:
+  /// **'Operations'**
+  String get platformSettingsOperations;
+
+  /// No description provided for @platformSettingsSectionMeta.
+  ///
+  /// In en, this message translates to:
+  /// **'{settings} settings · {overrides} overridden'**
+  String platformSettingsSectionMeta(Object overrides, Object settings);
+
+  /// No description provided for @platformSettingsSecretCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} secret'**
+  String platformSettingsSecretCount(Object count);
+
+  /// No description provided for @platformSettingsOverrides.
+  ///
+  /// In en, this message translates to:
+  /// **'Overrides'**
+  String get platformSettingsOverrides;
+
+  /// No description provided for @platformSettingsSecrets.
+  ///
+  /// In en, this message translates to:
+  /// **'Secrets'**
+  String get platformSettingsSecrets;
+
+  /// No description provided for @platformSettingsDefinitions.
+  ///
+  /// In en, this message translates to:
+  /// **'Definitions'**
+  String get platformSettingsDefinitions;
+
+  /// No description provided for @platformSettingsRuntime.
+  ///
+  /// In en, this message translates to:
+  /// **'Runtime'**
+  String get platformSettingsRuntime;
+
+  /// No description provided for @platformSettingsMaintenanceActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Maintenance mode is on'**
+  String get platformSettingsMaintenanceActive;
+
+  /// No description provided for @platformSettingsOpenMaintenance.
+  ///
+  /// In en, this message translates to:
+  /// **'Open maintenance'**
+  String get platformSettingsOpenMaintenance;
+
+  /// No description provided for @platformSettingsSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings saved.'**
+  String get platformSettingsSaved;
+
+  /// No description provided for @platformSettingsReadOnlyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Read-only for your role'**
+  String get platformSettingsReadOnlyTitle;
+
+  /// No description provided for @platformSettingsReadOnlyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'You can read this section but not change it. Ask a platform administrator for the matching permission.'**
+  String get platformSettingsReadOnlyBody;
+
+  /// No description provided for @platformSettingsEmptySection.
+  ///
+  /// In en, this message translates to:
+  /// **'No settings are defined for this section.'**
+  String get platformSettingsEmptySection;
+
+  /// No description provided for @platformSettingsUnsaved.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} unsaved change(s)'**
+  String platformSettingsUnsaved(Object count);
+
+  /// No description provided for @platformSettingsClearOverride.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset to the environment or application default'**
+  String get platformSettingsClearOverride;
+
+  /// No description provided for @platformSettingsRequiresRestart.
+  ///
+  /// In en, this message translates to:
+  /// **'Applies on next request'**
+  String get platformSettingsRequiresRestart;
+
+  /// No description provided for @platformSettingsSecretHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends in {hint}'**
+  String platformSettingsSecretHint(Object hint);
+
+  /// No description provided for @platformSettingsSecretPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a new value to replace the stored secret'**
+  String get platformSettingsSecretPlaceholder;
+
+  /// No description provided for @platformSettingsSecretConfigured.
+  ///
+  /// In en, this message translates to:
+  /// **'Configured'**
+  String get platformSettingsSecretConfigured;
+
+  /// No description provided for @platformSettingsSecretMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'Not configured'**
+  String get platformSettingsSecretMissing;
+
+  /// No description provided for @platformSettingsChooseOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose an option'**
+  String get platformSettingsChooseOption;
+
+  /// No description provided for @platformSettingsRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Range {min}–{max}'**
+  String platformSettingsRange(Object max, Object min);
+
+  /// No description provided for @platformSettingsSourceDatabase.
+  ///
+  /// In en, this message translates to:
+  /// **'Platform setting'**
+  String get platformSettingsSourceDatabase;
+
+  /// No description provided for @platformSettingsSourceEnvironment.
+  ///
+  /// In en, this message translates to:
+  /// **'Environment'**
+  String get platformSettingsSourceEnvironment;
+
+  /// No description provided for @platformSettingsSourceDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Application default'**
+  String get platformSettingsSourceDefault;
+
+  /// No description provided for @settingsGroupIdentity.
+  ///
+  /// In en, this message translates to:
+  /// **'Identity'**
+  String get settingsGroupIdentity;
+
+  /// No description provided for @settingsGroupApplication.
+  ///
+  /// In en, this message translates to:
+  /// **'Application'**
+  String get settingsGroupApplication;
+
+  /// No description provided for @settingsGroupBrand.
+  ///
+  /// In en, this message translates to:
+  /// **'Brand'**
+  String get settingsGroupBrand;
+
+  /// No description provided for @settingsGroupContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact'**
+  String get settingsGroupContact;
+
+  /// No description provided for @settingsGroupFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Formats'**
+  String get settingsGroupFormat;
+
+  /// No description provided for @settingsGroupLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Languages'**
+  String get settingsGroupLanguage;
+
+  /// No description provided for @settingsGroupNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Numbers'**
+  String get settingsGroupNumber;
+
+  /// No description provided for @settingsGroupPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Password policy'**
+  String get settingsGroupPassword;
+
+  /// No description provided for @settingsGroupRateLimits.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate limits'**
+  String get settingsGroupRateLimits;
+
+  /// No description provided for @settingsGroupRegion.
+  ///
+  /// In en, this message translates to:
+  /// **'Region'**
+  String get settingsGroupRegion;
+
+  /// No description provided for @settingsGroupRouting.
+  ///
+  /// In en, this message translates to:
+  /// **'Routing'**
+  String get settingsGroupRouting;
+
+  /// No description provided for @settingsGroupRuntime.
+  ///
+  /// In en, this message translates to:
+  /// **'Runtime'**
+  String get settingsGroupRuntime;
+
+  /// No description provided for @settingsGroupSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Sessions'**
+  String get settingsGroupSession;
+
+  /// No description provided for @settingsGroupSocial.
+  ///
+  /// In en, this message translates to:
+  /// **'Social'**
+  String get settingsGroupSocial;
+
+  /// No description provided for @settingsGroupState.
+  ///
+  /// In en, this message translates to:
+  /// **'State'**
+  String get settingsGroupState;
+
+  /// No description provided for @settingsGroupTransport.
+  ///
+  /// In en, this message translates to:
+  /// **'Transport'**
+  String get settingsGroupTransport;
+
+  /// No description provided for @settingsGroupDriver.
+  ///
+  /// In en, this message translates to:
+  /// **'Driver'**
+  String get settingsGroupDriver;
+
+  /// No description provided for @settingsGroupGeneral.
+  ///
+  /// In en, this message translates to:
+  /// **'General'**
+  String get settingsGroupGeneral;
+
+  /// No description provided for @platformSettingsFeaturesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Platform features'**
+  String get platformSettingsFeaturesTitle;
+
+  /// No description provided for @platformSettingsFeaturesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Platform-wide availability switches.'**
+  String get platformSettingsFeaturesSubtitle;
+
+  /// No description provided for @platformSettingsFeaturesNoteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Availability, not entitlement'**
+  String get platformSettingsFeaturesNoteTitle;
+
+  /// No description provided for @platformSettingsFeaturesNoteBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Turning a feature off removes it for every tenant, regardless of plan or permission. Data is preserved and the switch is reversible.'**
+  String get platformSettingsFeaturesNoteBody;
+
+  /// No description provided for @platformSettingsFeaturesEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} enabled'**
+  String platformSettingsFeaturesEnabled(Object count);
+
+  /// No description provided for @platformSettingsFeaturesTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'of {count}'**
+  String platformSettingsFeaturesTotal(Object count);
+
+  /// No description provided for @platformSettingsFeaturesSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search features'**
+  String get platformSettingsFeaturesSearch;
+
+  /// No description provided for @platformSettingsFeaturesEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No features match'**
+  String get platformSettingsFeaturesEmptyTitle;
+
+  /// No description provided for @platformSettingsFeaturesEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Try a different search term.'**
+  String get platformSettingsFeaturesEmptyBody;
+
+  /// No description provided for @platformSettingsFeatureEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is now available.'**
+  String platformSettingsFeatureEnabled(Object name);
+
+  /// No description provided for @platformSettingsFeatureDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} has been withdrawn.'**
+  String platformSettingsFeatureDisabled(Object name);
+
+  /// No description provided for @featureGroupIntelligence.
+  ///
+  /// In en, this message translates to:
+  /// **'Intelligence'**
+  String get featureGroupIntelligence;
+
+  /// No description provided for @featureGroupChannels.
+  ///
+  /// In en, this message translates to:
+  /// **'Channels'**
+  String get featureGroupChannels;
+
+  /// No description provided for @featureGroupCommunication.
+  ///
+  /// In en, this message translates to:
+  /// **'Communication'**
+  String get featureGroupCommunication;
+
+  /// No description provided for @featureGroupOperations.
+  ///
+  /// In en, this message translates to:
+  /// **'Operations'**
+  String get featureGroupOperations;
+
+  /// No description provided for @featureGroupCommerce.
+  ///
+  /// In en, this message translates to:
+  /// **'Commerce'**
+  String get featureGroupCommerce;
+
+  /// No description provided for @featureGroupGrowth.
+  ///
+  /// In en, this message translates to:
+  /// **'Growth'**
+  String get featureGroupGrowth;
+
+  /// No description provided for @platformSettingsHealthTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Integration health'**
+  String get platformSettingsHealthTitle;
+
+  /// No description provided for @platformSettingsHealthSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Last recorded state and on-demand probes.'**
+  String get platformSettingsHealthSubtitle;
+
+  /// No description provided for @platformSettingsHealthReadTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading does not probe'**
+  String get platformSettingsHealthReadTitle;
+
+  /// No description provided for @platformSettingsHealthReadBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This screen shows the last recorded state. A probe calls the provider, so it only runs when you ask for it.'**
+  String get platformSettingsHealthReadBody;
+
+  /// No description provided for @platformSettingsHealthEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No integrations are registered.'**
+  String get platformSettingsHealthEmpty;
+
+  /// No description provided for @platformSettingsHealthStateConnected.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected'**
+  String get platformSettingsHealthStateConnected;
+
+  /// No description provided for @platformSettingsHealthStateDisconnected.
+  ///
+  /// In en, this message translates to:
+  /// **'Disconnected'**
+  String get platformSettingsHealthStateDisconnected;
+
+  /// No description provided for @platformSettingsHealthStateInvalidCredentials.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid credentials'**
+  String get platformSettingsHealthStateInvalidCredentials;
+
+  /// No description provided for @platformSettingsHealthStateRateLimited.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate limited'**
+  String get platformSettingsHealthStateRateLimited;
+
+  /// No description provided for @platformSettingsHealthStateServiceUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Service unavailable'**
+  String get platformSettingsHealthStateServiceUnavailable;
+
+  /// No description provided for @platformSettingsHealthStateConfigurationRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Configuration required'**
+  String get platformSettingsHealthStateConfigurationRequired;
+
+  /// No description provided for @platformSettingsHealthStateNotTested.
+  ///
+  /// In en, this message translates to:
+  /// **'Not tested'**
+  String get platformSettingsHealthStateNotTested;
+
+  /// No description provided for @platformSettingsHealthStateDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Disabled'**
+  String get platformSettingsHealthStateDisabled;
+
+  /// No description provided for @platformSettingsHealthChecked.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} probe completed.'**
+  String platformSettingsHealthChecked(Object name);
+
+  /// No description provided for @platformSettingsHealthCheckedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Checked {when}'**
+  String platformSettingsHealthCheckedAt(Object when);
+
+  /// No description provided for @platformSettingsHealthNever.
+  ///
+  /// In en, this message translates to:
+  /// **'Never checked'**
+  String get platformSettingsHealthNever;
+
+  /// No description provided for @platformSettingsHealthTest.
+  ///
+  /// In en, this message translates to:
+  /// **'Run check'**
+  String get platformSettingsHealthTest;
+
+  /// No description provided for @platformSettingsHistoryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Configuration history'**
+  String get platformSettingsHistoryTitle;
+
+  /// No description provided for @platformSettingsHistorySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Who changed what, and what it replaced.'**
+  String get platformSettingsHistorySubtitle;
+
+  /// No description provided for @platformSettingsHistoryFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'Setting key'**
+  String get platformSettingsHistoryFilter;
+
+  /// No description provided for @platformSettingsHistoryFilterHint.
+  ///
+  /// In en, this message translates to:
+  /// **'email.mail_host'**
+  String get platformSettingsHistoryFilterHint;
+
+  /// No description provided for @platformSettingsHistoryRows.
+  ///
+  /// In en, this message translates to:
+  /// **'Rows'**
+  String get platformSettingsHistoryRows;
+
+  /// No description provided for @platformSettingsHistoryEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No changes yet'**
+  String get platformSettingsHistoryEmpty;
+
+  /// No description provided for @platformSettingsHistoryEmptyFiltered.
+  ///
+  /// In en, this message translates to:
+  /// **'No change matches this key.'**
+  String get platformSettingsHistoryEmptyFiltered;
+
+  /// No description provided for @platformSettingsHistoryEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving a setting will record it here.'**
+  String get platformSettingsHistoryEmptyBody;
+
+  /// No description provided for @platformSettingsHistoryNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get platformSettingsHistoryNone;
+
+  /// No description provided for @platformSettingsHistorySecret.
+  ///
+  /// In en, this message translates to:
+  /// **'Secret · ends in {hint}'**
+  String platformSettingsHistorySecret(Object hint);
+
+  /// No description provided for @platformSettingsHistorySystem.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get platformSettingsHistorySystem;
+
+  /// No description provided for @platformSettingsInfrastructureTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Infrastructure'**
+  String get platformSettingsInfrastructureTitle;
+
+  /// No description provided for @platformSettingsInfrastructureSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Read-only values managed by the deployment environment.'**
+  String get platformSettingsInfrastructureSubtitle;
+
+  /// No description provided for @platformSettingsInfraReadOnlyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Managed by the deployment environment'**
+  String get platformSettingsInfraReadOnlyTitle;
+
+  /// No description provided for @platformSettingsInfraReadOnlyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'These values are read-only here by design. Change them in the deployment environment and redeploy; secrets are shown as configured or not configured only.'**
+  String get platformSettingsInfraReadOnlyBody;
+
+  /// No description provided for @platformSettingsInfraRuntimeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Running process'**
+  String get platformSettingsInfraRuntimeTitle;
+
+  /// No description provided for @platformSettingsInfraVariablesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Environment variables'**
+  String get platformSettingsInfraVariablesTitle;
+
+  /// No description provided for @platformSettingsInfraPhp.
+  ///
+  /// In en, this message translates to:
+  /// **'PHP'**
+  String get platformSettingsInfraPhp;
+
+  /// No description provided for @platformSettingsInfraLaravel.
+  ///
+  /// In en, this message translates to:
+  /// **'Laravel'**
+  String get platformSettingsInfraLaravel;
+
+  /// No description provided for @platformSettingsInfraDatabase.
+  ///
+  /// In en, this message translates to:
+  /// **'Database'**
+  String get platformSettingsInfraDatabase;
+
+  /// No description provided for @platformSettingsInfraCache.
+  ///
+  /// In en, this message translates to:
+  /// **'Cache'**
+  String get platformSettingsInfraCache;
+
+  /// No description provided for @platformSettingsInfraQueue.
+  ///
+  /// In en, this message translates to:
+  /// **'Queue'**
+  String get platformSettingsInfraQueue;
+
+  /// No description provided for @platformSettingsInfraSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Session'**
+  String get platformSettingsInfraSession;
+
+  /// No description provided for @platformSettingsInfraMailer.
+  ///
+  /// In en, this message translates to:
+  /// **'Mailer'**
+  String get platformSettingsInfraMailer;
+
+  /// No description provided for @platformSettingsInfraFilesystem.
+  ///
+  /// In en, this message translates to:
+  /// **'Filesystem'**
+  String get platformSettingsInfraFilesystem;
+
+  /// No description provided for @actionPreviews.
+  ///
+  /// In en, this message translates to:
+  /// **'Action previews'**
+  String get actionPreviews;
+
+  /// No description provided for @actionUrl.
+  ///
+  /// In en, this message translates to:
+  /// **'Action URL'**
+  String get actionUrl;
+
+  /// No description provided for @activateTenantMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Activate this tenant?'**
+  String get activateTenantMessage;
+
+  /// No description provided for @activeVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Active version'**
+  String get activeVersion;
+
+  /// No description provided for @activityLog.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity log'**
+  String get activityLog;
+
+  /// No description provided for @adapter.
+  ///
+  /// In en, this message translates to:
+  /// **'Adapter'**
+  String get adapter;
+
+  /// No description provided for @addPaymentConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'Add payment connection'**
+  String get addPaymentConnection;
+
+  /// No description provided for @aiAdminReadOnlyNote.
+  ///
+  /// In en, this message translates to:
+  /// **'This surface is read-only apart from credential rotation.'**
+  String get aiAdminReadOnlyNote;
+
+  /// No description provided for @aiAdministration.
+  ///
+  /// In en, this message translates to:
+  /// **'AI administration'**
+  String get aiAdministration;
+
+  /// No description provided for @aiCopilot.
+  ///
+  /// In en, this message translates to:
+  /// **'AI copilot'**
+  String get aiCopilot;
+
+  /// No description provided for @aiCopilotHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The copilot answers only from the dashboard\'s real figures and never invents numbers.'**
+  String get aiCopilotHint;
+
+  /// No description provided for @aiCopilotQuestionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Example: what should I focus on this week?'**
+  String get aiCopilotQuestionHint;
+
+  /// No description provided for @aiFeatureLimits.
+  ///
+  /// In en, this message translates to:
+  /// **'AI feature limits'**
+  String get aiFeatureLimits;
+
+  /// No description provided for @aiInsights.
+  ///
+  /// In en, this message translates to:
+  /// **'AI insights'**
+  String get aiInsights;
+
+  /// No description provided for @aiPrompts.
+  ///
+  /// In en, this message translates to:
+  /// **'Prompts'**
+  String get aiPrompts;
+
+  /// No description provided for @aiServing.
+  ///
+  /// In en, this message translates to:
+  /// **'AI serving'**
+  String get aiServing;
+
+  /// No description provided for @aiTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'AI tasks'**
+  String get aiTasks;
+
+  /// No description provided for @aiTestConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'Test connection'**
+  String get aiTestConnection;
+
+  /// No description provided for @aiUsage30Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Usage over 30 days'**
+  String get aiUsage30Days;
+
+  /// No description provided for @apiKey.
+  ///
+  /// In en, this message translates to:
+  /// **'API key'**
+  String get apiKey;
+
+  /// No description provided for @applyTemplateUpdate.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply template update'**
+  String get applyTemplateUpdate;
+
+  /// No description provided for @applyTemplateUpdateMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply the newer template version to this installation?'**
+  String get applyTemplateUpdateMessage;
+
+  /// No description provided for @approveAiActionMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve this AI action?'**
+  String get approveAiActionMessage;
+
+  /// No description provided for @archiveTemplate.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive template'**
+  String get archiveTemplate;
+
+  /// No description provided for @archiveTemplateMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive this template? New stores will no longer see it.'**
+  String get archiveTemplateMessage;
+
+  /// No description provided for @askCopilot.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask copilot'**
+  String get askCopilot;
+
+  /// No description provided for @attempt.
+  ///
+  /// In en, this message translates to:
+  /// **'Attempt'**
+  String get attempt;
+
+  /// No description provided for @attempts.
+  ///
+  /// In en, this message translates to:
+  /// **'Attempts'**
+  String get attempts;
+
+  /// No description provided for @audience.
+  ///
+  /// In en, this message translates to:
+  /// **'Audience'**
+  String get audience;
+
+  /// No description provided for @automationInstallations.
+  ///
+  /// In en, this message translates to:
+  /// **'Automation installations'**
+  String get automationInstallations;
+
+  /// No description provided for @automationInstallationsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Rules installed from platform templates.'**
+  String get automationInstallationsHint;
+
+  /// No description provided for @automationTemplates.
+  ///
+  /// In en, this message translates to:
+  /// **'Automation templates'**
+  String get automationTemplates;
+
+  /// No description provided for @automationTemplatesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready-made platform blueprints you can install in your store.'**
+  String get automationTemplatesHint;
+
+  /// No description provided for @availability.
+  ///
+  /// In en, this message translates to:
+  /// **'Availability'**
+  String get availability;
+
+  /// No description provided for @baseUrl.
+  ///
+  /// In en, this message translates to:
+  /// **'Base URL'**
+  String get baseUrl;
+
+  /// No description provided for @byokDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Platform key is active'**
+  String get byokDisabled;
+
+  /// No description provided for @byokEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Tenant key is active'**
+  String get byokEnabled;
+
+  /// No description provided for @cacheHit.
+  ///
+  /// In en, this message translates to:
+  /// **'Cache hit'**
+  String get cacheHit;
+
+  /// No description provided for @cacheHits.
+  ///
+  /// In en, this message translates to:
+  /// **'Cache hits'**
+  String get cacheHits;
+
+  /// No description provided for @campaigns.
+  ///
+  /// In en, this message translates to:
+  /// **'Campaigns'**
+  String get campaigns;
+
+  /// No description provided for @cancelCampaign.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel campaign'**
+  String get cancelCampaign;
+
+  /// No description provided for @cancelCampaignMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel this campaign?'**
+  String get cancelCampaignMessage;
+
+  /// No description provided for @cancelledAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled at'**
+  String get cancelledAt;
+
+  /// No description provided for @capabilities.
+  ///
+  /// In en, this message translates to:
+  /// **'Capabilities'**
+  String get capabilities;
+
+  /// No description provided for @changelog.
+  ///
+  /// In en, this message translates to:
+  /// **'Changelog'**
+  String get changelog;
+
+  /// No description provided for @channel.
+  ///
+  /// In en, this message translates to:
+  /// **'Channel'**
+  String get channel;
+
+  /// No description provided for @channelKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Channel key'**
+  String get channelKey;
+
+  /// No description provided for @channels.
+  ///
+  /// In en, this message translates to:
+  /// **'Channels'**
+  String get channels;
+
+  /// No description provided for @configurationSchema.
+  ///
+  /// In en, this message translates to:
+  /// **'Configuration schema'**
+  String get configurationSchema;
+
+  /// No description provided for @connectionVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection verified'**
+  String get connectionVerified;
+
+  /// No description provided for @connections.
+  ///
+  /// In en, this message translates to:
+  /// **'Connections'**
+  String get connections;
+
+  /// No description provided for @correlationId.
+  ///
+  /// In en, this message translates to:
+  /// **'Correlation ID'**
+  String get correlationId;
+
+  /// No description provided for @countries.
+  ///
+  /// In en, this message translates to:
+  /// **'Countries'**
+  String get countries;
+
+  /// No description provided for @counts.
+  ///
+  /// In en, this message translates to:
+  /// **'Counts'**
+  String get counts;
+
+  /// No description provided for @credentialFields.
+  ///
+  /// In en, this message translates to:
+  /// **'Credential fields'**
+  String get credentialFields;
+
+  /// No description provided for @credentialSource.
+  ///
+  /// In en, this message translates to:
+  /// **'Credential source'**
+  String get credentialSource;
+
+  /// No description provided for @credentials.
+  ///
+  /// In en, this message translates to:
+  /// **'Credentials'**
+  String get credentials;
+
+  /// No description provided for @currentVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Current version'**
+  String get currentVersion;
+
+  /// No description provided for @dailyPerTenant.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily per tenant'**
+  String get dailyPerTenant;
+
+  /// No description provided for @dailyPerUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily per user'**
+  String get dailyPerUser;
+
+  /// No description provided for @dataGaps.
+  ///
+  /// In en, this message translates to:
+  /// **'Data gaps'**
+  String get dataGaps;
+
+  /// No description provided for @deliveredAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered at'**
+  String get deliveredAt;
+
+  /// No description provided for @deliveries.
+  ///
+  /// In en, this message translates to:
+  /// **'Deliveries'**
+  String get deliveries;
+
+  /// No description provided for @descriptionAr.
+  ///
+  /// In en, this message translates to:
+  /// **'Description (Arabic)'**
+  String get descriptionAr;
+
+  /// No description provided for @disableInstallation.
+  ///
+  /// In en, this message translates to:
+  /// **'Disable installation'**
+  String get disableInstallation;
+
+  /// No description provided for @disableInstallationMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Disable this installation? It will stop running.'**
+  String get disableInstallationMessage;
+
+  /// No description provided for @disconnectAccountMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Disconnect this account?'**
+  String get disconnectAccountMessage;
+
+  /// No description provided for @dismissRecoveryMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Dismiss this recovery opportunity?'**
+  String get dismissRecoveryMessage;
+
+  /// No description provided for @dismissTaskMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Dismiss this task?'**
+  String get dismissTaskMessage;
+
+  /// No description provided for @doNotContactMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark this customer as do-not-contact?'**
+  String get doNotContactMessage;
+
+  /// No description provided for @docsUrl.
+  ///
+  /// In en, this message translates to:
+  /// **'Documentation URL'**
+  String get docsUrl;
+
+  /// No description provided for @draftMessageMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a message draft?'**
+  String get draftMessageMessage;
+
+  /// No description provided for @driver.
+  ///
+  /// In en, this message translates to:
+  /// **'Driver'**
+  String get driver;
+
+  /// No description provided for @durationMs.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration (ms)'**
+  String get durationMs;
+
+  /// No description provided for @effectiveCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Effective copy'**
+  String get effectiveCopy;
+
+  /// No description provided for @emailTemplates.
+  ///
+  /// In en, this message translates to:
+  /// **'Email templates'**
+  String get emailTemplates;
+
+  /// No description provided for @enableInstallation.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable installation'**
+  String get enableInstallation;
+
+  /// No description provided for @enabledAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Enabled at'**
+  String get enabledAt;
+
+  /// No description provided for @errorCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Error category'**
+  String get errorCategory;
+
+  /// No description provided for @estimatedCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated cost'**
+  String get estimatedCost;
+
+  /// No description provided for @estimatesAndRecommendations.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimates and recommendations'**
+  String get estimatesAndRecommendations;
+
+  /// No description provided for @eventId.
+  ///
+  /// In en, this message translates to:
+  /// **'Event ID'**
+  String get eventId;
+
+  /// No description provided for @eventKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Event key'**
+  String get eventKey;
+
+  /// No description provided for @eventType.
+  ///
+  /// In en, this message translates to:
+  /// **'Event type'**
+  String get eventType;
+
+  /// No description provided for @executeAiActionMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Execute this AI action now?'**
+  String get executeAiActionMessage;
+
+  /// No description provided for @factsUsed.
+  ///
+  /// In en, this message translates to:
+  /// **'Facts used'**
+  String get factsUsed;
+
+  /// No description provided for @failedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed at'**
+  String get failedAt;
+
+  /// No description provided for @failing.
+  ///
+  /// In en, this message translates to:
+  /// **'Failing'**
+  String get failing;
+
+  /// No description provided for @failureReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Failure reason'**
+  String get failureReason;
+
+  /// No description provided for @failureType.
+  ///
+  /// In en, this message translates to:
+  /// **'Failure type'**
+  String get failureType;
+
+  /// No description provided for @failures.
+  ///
+  /// In en, this message translates to:
+  /// **'Failures'**
+  String get failures;
+
+  /// No description provided for @fallbackAttempts.
+  ///
+  /// In en, this message translates to:
+  /// **'Fallback attempts'**
+  String get fallbackAttempts;
+
+  /// No description provided for @fallbackRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Fallback requests'**
+  String get fallbackRequests;
+
+  /// No description provided for @feature.
+  ///
+  /// In en, this message translates to:
+  /// **'Feature'**
+  String get feature;
+
+  /// No description provided for @fromStore.
+  ///
+  /// In en, this message translates to:
+  /// **'From store'**
+  String get fromStore;
+
+  /// No description provided for @group.
+  ///
+  /// In en, this message translates to:
+  /// **'Group'**
+  String get group;
+
+  /// No description provided for @headingAr.
+  ///
+  /// In en, this message translates to:
+  /// **'Heading (Arabic)'**
+  String get headingAr;
+
+  /// No description provided for @headingEn.
+  ///
+  /// In en, this message translates to:
+  /// **'Heading (English)'**
+  String get headingEn;
+
+  /// No description provided for @httpStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'HTTP status'**
+  String get httpStatus;
+
+  /// No description provided for @icon.
+  ///
+  /// In en, this message translates to:
+  /// **'Icon'**
+  String get icon;
+
+  /// No description provided for @inputTokens.
+  ///
+  /// In en, this message translates to:
+  /// **'Input tokens'**
+  String get inputTokens;
+
+  /// No description provided for @installTemplate.
+  ///
+  /// In en, this message translates to:
+  /// **'Install template'**
+  String get installTemplate;
+
+  /// No description provided for @installTemplateMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Install this template in your workspace?'**
+  String get installTemplateMessage;
+
+  /// No description provided for @installation.
+  ///
+  /// In en, this message translates to:
+  /// **'Installation'**
+  String get installation;
+
+  /// No description provided for @installations.
+  ///
+  /// In en, this message translates to:
+  /// **'Installations'**
+  String get installations;
+
+  /// No description provided for @installed.
+  ///
+  /// In en, this message translates to:
+  /// **'Installed'**
+  String get installed;
+
+  /// No description provided for @installedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Installed at'**
+  String get installedAt;
+
+  /// No description provided for @installedVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Installed version'**
+  String get installedVersion;
+
+  /// No description provided for @installer.
+  ///
+  /// In en, this message translates to:
+  /// **'Installer'**
+  String get installer;
+
+  /// No description provided for @integrationEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Integration enabled'**
+  String get integrationEnabled;
+
+  /// No description provided for @integrationHealth.
+  ///
+  /// In en, this message translates to:
+  /// **'Integration health'**
+  String get integrationHealth;
+
+  /// No description provided for @introAr.
+  ///
+  /// In en, this message translates to:
+  /// **'Intro (Arabic)'**
+  String get introAr;
+
+  /// No description provided for @introEn.
+  ///
+  /// In en, this message translates to:
+  /// **'Intro (English)'**
+  String get introEn;
+
+  /// No description provided for @inventoryTransfer.
+  ///
+  /// In en, this message translates to:
+  /// **'Inventory transfer'**
+  String get inventoryTransfer;
+
+  /// No description provided for @inventoryTransferHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Move a product variant between two stores in the same workspace. The server checks both stores and the stock.'**
+  String get inventoryTransferHint;
+
+  /// No description provided for @isMarketing.
+  ///
+  /// In en, this message translates to:
+  /// **'Marketing message'**
+  String get isMarketing;
+
+  /// No description provided for @key.
+  ///
+  /// In en, this message translates to:
+  /// **'Key'**
+  String get key;
+
+  /// No description provided for @kind.
+  ///
+  /// In en, this message translates to:
+  /// **'Kind'**
+  String get kind;
+
+  /// No description provided for @lastSyncedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Last synced'**
+  String get lastSyncedAt;
+
+  /// No description provided for @lastVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Last verified'**
+  String get lastVerified;
+
+  /// No description provided for @live.
+  ///
+  /// In en, this message translates to:
+  /// **'Live'**
+  String get live;
+
+  /// No description provided for @makeDefaultMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Make this the default?'**
+  String get makeDefaultMessage;
+
+  /// No description provided for @markCompletedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark this as completed?'**
+  String get markCompletedMessage;
+
+  /// No description provided for @maxOutputTokens.
+  ///
+  /// In en, this message translates to:
+  /// **'Max output tokens'**
+  String get maxOutputTokens;
+
+  /// No description provided for @maxRetries.
+  ///
+  /// In en, this message translates to:
+  /// **'Max retries'**
+  String get maxRetries;
+
+  /// No description provided for @merchantReference.
+  ///
+  /// In en, this message translates to:
+  /// **'Merchant reference'**
+  String get merchantReference;
+
+  /// No description provided for @methodCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Method code'**
+  String get methodCode;
+
+  /// No description provided for @metricExplanations.
+  ///
+  /// In en, this message translates to:
+  /// **'Metric explanations'**
+  String get metricExplanations;
+
+  /// No description provided for @missingData.
+  ///
+  /// In en, this message translates to:
+  /// **'Missing data'**
+  String get missingData;
+
+  /// No description provided for @model.
+  ///
+  /// In en, this message translates to:
+  /// **'Model'**
+  String get model;
+
+  /// No description provided for @models.
+  ///
+  /// In en, this message translates to:
+  /// **'Models'**
+  String get models;
+
+  /// No description provided for @monthlyPerTenant.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly per tenant'**
+  String get monthlyPerTenant;
+
+  /// No description provided for @monthlyPlatformRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly platform requests'**
+  String get monthlyPlatformRequests;
+
+  /// No description provided for @nameAr.
+  ///
+  /// In en, this message translates to:
+  /// **'Name (Arabic)'**
+  String get nameAr;
+
+  /// No description provided for @noAiPrompts.
+  ///
+  /// In en, this message translates to:
+  /// **'No prompts yet'**
+  String get noAiPrompts;
+
+  /// No description provided for @noAiTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'No AI tasks yet'**
+  String get noAiTasks;
+
+  /// No description provided for @noAnswerReturned.
+  ///
+  /// In en, this message translates to:
+  /// **'The copilot returned no answer.'**
+  String get noAnswerReturned;
+
+  /// No description provided for @noAutomationInstallations.
+  ///
+  /// In en, this message translates to:
+  /// **'No automation installations'**
+  String get noAutomationInstallations;
+
+  /// No description provided for @noAutomationTemplates.
+  ///
+  /// In en, this message translates to:
+  /// **'No automation templates'**
+  String get noAutomationTemplates;
+
+  /// No description provided for @noCampaigns.
+  ///
+  /// In en, this message translates to:
+  /// **'No campaigns'**
+  String get noCampaigns;
+
+  /// No description provided for @noConnections.
+  ///
+  /// In en, this message translates to:
+  /// **'No connections'**
+  String get noConnections;
+
+  /// No description provided for @noCountries.
+  ///
+  /// In en, this message translates to:
+  /// **'No countries'**
+  String get noCountries;
+
+  /// No description provided for @noCredentials.
+  ///
+  /// In en, this message translates to:
+  /// **'No credentials'**
+  String get noCredentials;
+
+  /// No description provided for @noDeliveries.
+  ///
+  /// In en, this message translates to:
+  /// **'No deliveries'**
+  String get noDeliveries;
+
+  /// No description provided for @noEmailTemplates.
+  ///
+  /// In en, this message translates to:
+  /// **'No email templates'**
+  String get noEmailTemplates;
+
+  /// No description provided for @noIntegrations.
+  ///
+  /// In en, this message translates to:
+  /// **'No integrations'**
+  String get noIntegrations;
+
+  /// No description provided for @noPaymentConnections.
+  ///
+  /// In en, this message translates to:
+  /// **'No payment connections'**
+  String get noPaymentConnections;
+
+  /// No description provided for @noPaymentConnectionsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a connection so the store can collect payments.'**
+  String get noPaymentConnectionsMessage;
+
+  /// No description provided for @noPayments.
+  ///
+  /// In en, this message translates to:
+  /// **'No payments'**
+  String get noPayments;
+
+  /// No description provided for @noProviders.
+  ///
+  /// In en, this message translates to:
+  /// **'No providers'**
+  String get noProviders;
+
+  /// No description provided for @noVariantsToTransfer.
+  ///
+  /// In en, this message translates to:
+  /// **'No product variants to transfer'**
+  String get noVariantsToTransfer;
+
+  /// No description provided for @noWebhookEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'No webhook events'**
+  String get noWebhookEvents;
+
+  /// No description provided for @nothingHereYet.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing here yet'**
+  String get nothingHereYet;
+
+  /// No description provided for @notificationOperations.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification operations'**
+  String get notificationOperations;
+
+  /// No description provided for @operations.
+  ///
+  /// In en, this message translates to:
+  /// **'Operations'**
+  String get operations;
+
+  /// No description provided for @outputTokens.
+  ///
+  /// In en, this message translates to:
+  /// **'Output tokens'**
+  String get outputTokens;
+
+  /// No description provided for @paidAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid at'**
+  String get paidAt;
+
+  /// No description provided for @payment.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment'**
+  String get payment;
+
+  /// No description provided for @paymentCatalogue.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment catalogue'**
+  String get paymentCatalogue;
+
+  /// No description provided for @paymentConnections.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment connections'**
+  String get paymentConnections;
+
+  /// No description provided for @paymentHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment history'**
+  String get paymentHistory;
+
+  /// No description provided for @payments.
+  ///
+  /// In en, this message translates to:
+  /// **'Payments'**
+  String get payments;
+
+  /// No description provided for @period.
+  ///
+  /// In en, this message translates to:
+  /// **'Period'**
+  String get period;
+
+  /// No description provided for @platformConfigured.
+  ///
+  /// In en, this message translates to:
+  /// **'Configured on the platform'**
+  String get platformConfigured;
+
+  /// No description provided for @processedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Processed at'**
+  String get processedAt;
+
+  /// No description provided for @productVariant.
+  ///
+  /// In en, this message translates to:
+  /// **'Product variant'**
+  String get productVariant;
+
+  /// No description provided for @promptKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Prompt key'**
+  String get promptKey;
+
+  /// No description provided for @provider.
+  ///
+  /// In en, this message translates to:
+  /// **'Provider'**
+  String get provider;
+
+  /// No description provided for @providerCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Provider code'**
+  String get providerCode;
+
+  /// No description provided for @providerCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Provider count'**
+  String get providerCount;
+
+  /// No description provided for @providerCoverage.
+  ///
+  /// In en, this message translates to:
+  /// **'Provider coverage'**
+  String get providerCoverage;
+
+  /// No description provided for @providerKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Provider key'**
+  String get providerKey;
+
+  /// No description provided for @providerMessageId.
+  ///
+  /// In en, this message translates to:
+  /// **'Provider message ID'**
+  String get providerMessageId;
+
+  /// No description provided for @providers.
+  ///
+  /// In en, this message translates to:
+  /// **'Providers'**
+  String get providers;
+
+  /// No description provided for @publicKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Public key'**
+  String get publicKey;
+
+  /// No description provided for @publishCampaign.
+  ///
+  /// In en, this message translates to:
+  /// **'Publish campaign'**
+  String get publishCampaign;
+
+  /// No description provided for @publishCampaignMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Publish this campaign now?'**
+  String get publishCampaignMessage;
+
+  /// No description provided for @publishTemplate.
+  ///
+  /// In en, this message translates to:
+  /// **'Publish template'**
+  String get publishTemplate;
+
+  /// No description provided for @publishTemplateMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Publish this template to stores?'**
+  String get publishTemplateMessage;
+
+  /// No description provided for @questionTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Your question is too long (1000 characters max).'**
+  String get questionTooLong;
+
+  /// No description provided for @queuedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Queued at'**
+  String get queuedAt;
+
+  /// No description provided for @recheckComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Re-check complete'**
+  String get recheckComplete;
+
+  /// No description provided for @recheckIntegration.
+  ///
+  /// In en, this message translates to:
+  /// **'Re-check integration'**
+  String get recheckIntegration;
+
+  /// No description provided for @recheckIntegrationMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Re-check this integration now?'**
+  String get recheckIntegrationMessage;
+
+  /// No description provided for @recipient.
+  ///
+  /// In en, this message translates to:
+  /// **'Recipient'**
+  String get recipient;
+
+  /// No description provided for @recommendations.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommendations'**
+  String get recommendations;
+
+  /// No description provided for @refundAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Refund amount'**
+  String get refundAmount;
+
+  /// No description provided for @refundPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Refund payment'**
+  String get refundPayment;
+
+  /// No description provided for @refundReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Refund reason'**
+  String get refundReason;
+
+  /// No description provided for @refundSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Refund submitted'**
+  String get refundSubmitted;
+
+  /// No description provided for @rejectAiActionMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Reject this AI action?'**
+  String get rejectAiActionMessage;
+
+  /// No description provided for @removed.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed'**
+  String get removed;
+
+  /// No description provided for @requests.
+  ///
+  /// In en, this message translates to:
+  /// **'Requests'**
+  String get requests;
+
+  /// No description provided for @restoreTemplate.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore template'**
+  String get restoreTemplate;
+
+  /// No description provided for @restoreTemplateMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore this template\'s default copy?'**
+  String get restoreTemplateMessage;
+
+  /// No description provided for @retryDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry delivery'**
+  String get retryDelivery;
+
+  /// No description provided for @retryDeliveryMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry delivering this message?'**
+  String get retryDeliveryMessage;
+
+  /// No description provided for @revokeConnectionMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Revoke this connection? The store will stop using it.'**
+  String get revokeConnectionMessage;
+
+  /// No description provided for @rotateCredential.
+  ///
+  /// In en, this message translates to:
+  /// **'Rotate credential'**
+  String get rotateCredential;
+
+  /// No description provided for @routes.
+  ///
+  /// In en, this message translates to:
+  /// **'Routes'**
+  String get routes;
+
+  /// No description provided for @rule.
+  ///
+  /// In en, this message translates to:
+  /// **'Rule'**
+  String get rule;
+
+  /// No description provided for @sandbox.
+  ///
+  /// In en, this message translates to:
+  /// **'Sandbox'**
+  String get sandbox;
+
+  /// No description provided for @scheduleCampaign.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule campaign'**
+  String get scheduleCampaign;
+
+  /// No description provided for @scheduledAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled at'**
+  String get scheduledAt;
+
+  /// No description provided for @secretKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Secret key'**
+  String get secretKey;
+
+  /// No description provided for @seedAiTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Seed AI tasks'**
+  String get seedAiTasks;
+
+  /// No description provided for @seedAiTasksMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Create the missing default AI tasks?'**
+  String get seedAiTasksMessage;
+
+  /// No description provided for @selectPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'Select period'**
+  String get selectPeriod;
+
+  /// No description provided for @sendTestEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Send test email'**
+  String get sendTestEmail;
+
+  /// No description provided for @sentAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent at'**
+  String get sentAt;
+
+  /// No description provided for @signatureValid.
+  ///
+  /// In en, this message translates to:
+  /// **'Signature valid'**
+  String get signatureValid;
+
+  /// No description provided for @stockTransferred.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock transferred'**
+  String get stockTransferred;
+
+  /// No description provided for @subjectAr.
+  ///
+  /// In en, this message translates to:
+  /// **'Subject (Arabic)'**
+  String get subjectAr;
+
+  /// No description provided for @subjectEn.
+  ///
+  /// In en, this message translates to:
+  /// **'Subject (English)'**
+  String get subjectEn;
+
+  /// No description provided for @submitForApprovalMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit for approval?'**
+  String get submitForApprovalMessage;
+
+  /// No description provided for @suspendTenantMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Suspend this tenant?'**
+  String get suspendTenantMessage;
+
+  /// No description provided for @syncPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync payment'**
+  String get syncPayment;
+
+  /// No description provided for @taskKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Task key'**
+  String get taskKey;
+
+  /// No description provided for @temperature.
+  ///
+  /// In en, this message translates to:
+  /// **'Temperature'**
+  String get temperature;
+
+  /// No description provided for @template.
+  ///
+  /// In en, this message translates to:
+  /// **'Template'**
+  String get template;
+
+  /// No description provided for @templateActionsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A JSON array of actions, for example the send_notification type.'**
+  String get templateActionsHint;
+
+  /// No description provided for @templateCategoryHint.
+  ///
+  /// In en, this message translates to:
+  /// **'One of the template categories the server defines.'**
+  String get templateCategoryHint;
+
+  /// No description provided for @templateCustomized.
+  ///
+  /// In en, this message translates to:
+  /// **'Template customised'**
+  String get templateCustomized;
+
+  /// No description provided for @templateKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Template key'**
+  String get templateKey;
+
+  /// No description provided for @templateKeyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A unique lowercase identifier with dashes.'**
+  String get templateKeyHint;
+
+  /// No description provided for @templateTriggerHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A trigger from the automation trigger list.'**
+  String get templateTriggerHint;
+
+  /// No description provided for @timeoutSeconds.
+  ///
+  /// In en, this message translates to:
+  /// **'Timeout (seconds)'**
+  String get timeoutSeconds;
+
+  /// No description provided for @toStore.
+  ///
+  /// In en, this message translates to:
+  /// **'To store'**
+  String get toStore;
+
+  /// No description provided for @toggleCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'Toggle country'**
+  String get toggleCountry;
+
+  /// No description provided for @toggleCountryMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Change whether this country is active?'**
+  String get toggleCountryMessage;
+
+  /// No description provided for @toggleMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'Toggle method'**
+  String get toggleMethod;
+
+  /// No description provided for @toggleMethodMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Change whether this payment method is active?'**
+  String get toggleMethodMessage;
+
+  /// No description provided for @tokens.
+  ///
+  /// In en, this message translates to:
+  /// **'Tokens'**
+  String get tokens;
+
+  /// No description provided for @transferNeedsTwoStores.
+  ///
+  /// In en, this message translates to:
+  /// **'Two stores are required'**
+  String get transferNeedsTwoStores;
+
+  /// No description provided for @transferNeedsTwoStoresMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a second store before transferring stock between stores.'**
+  String get transferNeedsTwoStoresMessage;
+
+  /// No description provided for @transferStock.
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer stock'**
+  String get transferStock;
+
+  /// No description provided for @transferStockConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Move this quantity between the two stores?'**
+  String get transferStockConfirm;
+
+  /// No description provided for @unprocessedEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'Unprocessed events'**
+  String get unprocessedEvents;
+
+  /// No description provided for @unregisteredProviders.
+  ///
+  /// In en, this message translates to:
+  /// **'Unregistered providers'**
+  String get unregisteredProviders;
+
+  /// No description provided for @variables.
+  ///
+  /// In en, this message translates to:
+  /// **'Variables'**
+  String get variables;
+
+  /// No description provided for @verifyAccountMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify this account?'**
+  String get verifyAccountMessage;
+
+  /// No description provided for @verifyConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify connection'**
+  String get verifyConnection;
+
+  /// No description provided for @versions.
+  ///
+  /// In en, this message translates to:
+  /// **'Versions'**
+  String get versions;
+
+  /// No description provided for @webhookDocsUrl.
+  ///
+  /// In en, this message translates to:
+  /// **'Webhook documentation URL'**
+  String get webhookDocsUrl;
+
+  /// No description provided for @webhookEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'Webhook events'**
+  String get webhookEvents;
+
+  /// No description provided for @webhookSecret.
+  ///
+  /// In en, this message translates to:
+  /// **'Webhook secret'**
+  String get webhookSecret;
+
+  /// No description provided for @yourQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Your question'**
+  String get yourQuestion;
 }
 
 class _AppLocalizationsDelegate

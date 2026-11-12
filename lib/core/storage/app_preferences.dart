@@ -65,4 +65,18 @@ class AppPreferences {
     }
     return _prefs.setString(_tenantKey, slug);
   }
+
+  /// Help articles this account already answered "was this helpful?" for, so
+  /// the question is not asked again on a later visit. The server dedupes the
+  /// vote itself; this only keeps the widget quiet.
+  static const _helpFeedbackKey = 'dukavo.help_feedback_answered';
+
+  bool hasAnsweredHelpFeedback(String slug) =>
+      (_prefs.getStringList(_helpFeedbackKey) ?? const <String>[])
+          .contains(slug);
+
+  Future<void> markHelpFeedbackAnswered(String slug) {
+    final answered = _prefs.getStringList(_helpFeedbackKey) ?? <String>[];
+    return _prefs.setStringList(_helpFeedbackKey, [...answered, slug]);
+  }
 }

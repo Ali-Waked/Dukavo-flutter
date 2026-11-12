@@ -28,7 +28,10 @@ class AuthUserModel {
     this.emailVerifiedAt,
     this.lastLoginAt,
     this.isPlatformUser = false,
+    this.isPlatformOperator = false,
     this.isSuperAdmin = false,
+    this.preferencesInitializedAt,
+    this.twoFactorEnabled = false,
   });
 
   final int id;
@@ -45,9 +48,14 @@ class AuthUserModel {
   final String? emailVerifiedAt;
   final String? lastLoginAt;
   final bool isPlatformUser;
+  final bool isPlatformOperator;
   final bool isSuperAdmin;
+  final String? preferencesInitializedAt;
+  final bool twoFactorEnabled;
 
   factory AuthUserModel.fromJson(Map<String, dynamic> json) {
+    final isPlatformUser = asBool(json['is_platform_user']);
+
     return AuthUserModel(
       id: asInt(json['id']),
       name: asString(json['name']) ?? '',
@@ -64,8 +72,16 @@ class AuthUserModel {
       avatarUrl: asString(json['avatar_url']),
       emailVerifiedAt: asString(json['email_verified_at']),
       lastLoginAt: asString(json['last_login_at']),
-      isPlatformUser: asBool(json['is_platform_user']),
+      isPlatformUser: isPlatformUser,
+      // Older backend builds did not expose the operator flag. Falling back to
+      // the broader platform flag keeps those clients working without ever
+      // inventing a capability the server did not send.
+      isPlatformOperator: json['is_platform_operator'] == null
+          ? isPlatformUser
+          : asBool(json['is_platform_operator']),
       isSuperAdmin: asBool(json['is_super_admin']),
+      preferencesInitializedAt: asString(json['preferences_initialized_at']),
+      twoFactorEnabled: asBool(json['two_factor_enabled']),
     );
   }
 
@@ -84,7 +100,10 @@ class AuthUserModel {
         emailVerifiedAt: emailVerifiedAt,
         lastLoginAt: lastLoginAt,
         isPlatformUser: isPlatformUser,
+        isPlatformOperator: isPlatformOperator,
         isSuperAdmin: isSuperAdmin,
+        preferencesInitializedAt: preferencesInitializedAt,
+        twoFactorEnabled: twoFactorEnabled,
       );
 }
 
@@ -294,15 +313,77 @@ class SessionModel {
 
 /* ------------------------------------------------------------- data source */
 
+/// Either the credentials that finished the password step or the challenge that
+/// still stands between the client and a token.
+class AuthAttempt {
+  const AuthAttempt.result(LoginResult this.result) : challenge = null;
+  const AuthAttempt.challenge(TwoFactorChallenge this.challenge)
+      : result = null;
+
+  final LoginResult? result;
+  final TwoFactorChallenge? challenge;
+}
+
 class AuthRemoteDataSource {
   AuthRemoteDataSource(this._api);
 
   final ApiClient _api;
 
-  Future<LoginResult> login(String email, String password) async {
+  Future<AuthAttempt> login(String email, String password) async {
     final data = await _api.post<Map<String, dynamic>>(
       ApiPaths.login,
       body: {'email': email, 'password': password},
+      csrf: true,
+      decode: _asMap,
+    );
+
+    if (data['two_factor_required'] == true) {
+      return AuthAttempt.challenge(
+        TwoFactorChallenge(
+          challengeToken: asString(data['challenge_token']) ?? '',
+          expiresAt: asString(data['expires_at']),
+          methods: asStringList(data['methods']),
+        ),
+      );
+    }
+
+    final token = asString(data['token']);
+    if (token == null || token.isEmpty) {
+      throw ApiException(
+        'The server did not return a sign-in token.',
+        statusCode: 500,
+      );
+    }
+
+    final rawUser = data['user'];
+    final user = rawUser is Map ? Map<String, dynamic>.from(rawUser) : null;
+
+    return AuthAttempt.result(
+      LoginResult(
+        token: token,
+        tokenType: asString(data['token_type']) ?? 'Bearer',
+        userId: user == null ? null : asInt(user['id']),
+        userName: user == null ? null : asString(user['name']),
+        userEmail: user == null ? null : asString(user['email']),
+      ),
+    );
+  }
+
+  /// The second step. The response uses the same authenticated payload as a
+  /// password-only sign-in, so the caller has one session shape to handle.
+  Future<LoginResult> completeTwoFactor({
+    required String challengeToken,
+    String? code,
+    String? recoveryCode,
+  }) async {
+    final data = await _api.post<Map<String, dynamic>>(
+      ApiPaths.twoFactorChallenge,
+      body: {
+        'challenge_token': challengeToken,
+        if (code != null && code.isNotEmpty) 'code': code,
+        if (recoveryCode != null && recoveryCode.isNotEmpty)
+          'recovery_code': recoveryCode,
+      },
       csrf: true,
       decode: _asMap,
     );
@@ -447,7 +528,8 @@ class AuthRepositoryImpl implements AuthRepository {
         cachedSession = SessionModel.fromJson(cachedRaw).toEntity();
         _applyScope(cachedSession);
         _apiClient.setTenantSlug(
-          cachedSession.activeTenant?.slug ?? storedSlug,
+          cachedSession.activeTenant?.slug ??
+              (cachedSession.canUsePlatform ? null : storedSlug),
         );
       } catch (_) {
         cachedSession = null;
@@ -474,19 +556,75 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Session> login({
+  Future<LoginOutcome> login({
     required String email,
     required String password,
   }) async {
-    final result = await _remote.login(email.trim(), password);
-    await _tokenStore.save(result.token);
+    final attempt = await _remote.login(email.trim(), password);
 
+    final challenge = attempt.challenge;
+    if (challenge != null) {
+      // No token exists yet. Keeping the previous one out of storage is what
+      // makes the second factor mandatory rather than advisory.
+      await _tokenStore.clear();
+      return LoginOutcome.challenge(challenge);
+    }
+
+    final result = attempt.result!;
+    await _tokenStore.save(result.token);
+    return LoginOutcome.session(await _finishSignIn());
+  }
+
+  @override
+  Future<Session> completeTwoFactor({
+    required String challengeToken,
+    String? code,
+    String? recoveryCode,
+  }) async {
+    final result = await _remote.completeTwoFactor(
+      challengeToken: challengeToken,
+      code: code,
+      recoveryCode: recoveryCode,
+    );
+    await _tokenStore.save(result.token);
+    return _finishSignIn();
+  }
+
+  Future<Session> _finishSignIn() async {
     try {
-      final snapshot = await _loadNetworkSession(_preferences.tenantSlug);
-      if (snapshot.session.activeTenant == null) {
+      // Boot the identity without assuming a workspace. The slug left in
+      // storage may belong to a different account, and a platform operator
+      // always starts at platform level on a fresh sign-in.
+      _apiClient.setTenantSlug(null);
+      var raw = await _remote.meRaw();
+      var session = SessionModel.fromJson(raw).toEntity();
+
+      if (session.canUsePlatform) {
+        // A platform operator lands in the platform console, never in a
+        // membership picked on their behalf. They can open a workspace from
+        // the context switcher afterwards.
+        await _preferences.setTenantSlug(null);
+        _apiClient.setTenantSlug(null);
+        final snapshot = _SessionSnapshot(session, raw);
+        await _remember(snapshot);
+        return snapshot.session;
+      }
+
+      if (session.activeTenant == null && session.tenants.isNotEmpty) {
+        final slug = _chooseTenant(session, _preferences.tenantSlug);
+        if (slug != null) {
+          final activated = await _activate(slug);
+          raw = activated.raw;
+          session = activated.session;
+        }
+      }
+
+      if (session.activeTenant == null) {
         await _preferences.setTenantSlug(null);
         _apiClient.setTenantSlug(null);
       }
+
+      final snapshot = _SessionSnapshot(session, raw);
       await _remember(snapshot);
       return snapshot.session;
     } catch (_) {
@@ -503,20 +641,61 @@ class AuthRepositoryImpl implements AuthRepository {
     return snapshot.session;
   }
 
+  @override
+  Future<Session> enterPlatformMode() async {
+    // Clearing the header is what makes `/me` answer at platform level: the
+    // backend deliberately does not pick a tenant for an operator. The token is
+    // untouched, so this is a context switch, not a sign-out.
+    final previousSlug = _preferences.tenantSlug;
+    await _preferences.setTenantSlug(null);
+    _apiClient.setTenantSlug(null);
+    try {
+      final raw = await _remote.meRaw();
+      final snapshot = _SessionSnapshot(
+        SessionModel.fromJson(raw).toEntity(),
+        raw,
+      );
+      await _remember(snapshot);
+      return snapshot.session;
+    } catch (_) {
+      // A refused switch must leave the caller in the workspace it was in,
+      // including the header every subsequent merchant request carries.
+      await _preferences.setTenantSlug(previousSlug);
+      _apiClient.setTenantSlug(previousSlug);
+      rethrow;
+    }
+  }
+
   Future<_SessionSnapshot> _activate(String slug) async {
+    final previousSlug = _preferences.tenantSlug;
     await _preferences.setTenantSlug(slug);
     _apiClient.setTenantSlug(slug);
-    final raw = await _remote.meRaw();
-    return _SessionSnapshot(
-      SessionModel.fromJson(raw).toEntity(),
-      raw,
-    );
+    try {
+      final raw = await _remote.meRaw();
+      return _SessionSnapshot(
+        SessionModel.fromJson(raw).toEntity(),
+        raw,
+      );
+    } catch (_) {
+      // The workspace did not resolve (suspended, revoked, network): keep the
+      // previous context so the UI and the request header never disagree.
+      await _preferences.setTenantSlug(previousSlug);
+      _apiClient.setTenantSlug(previousSlug);
+      rethrow;
+    }
   }
 
   Future<_SessionSnapshot> _loadNetworkSession(String? preferredSlug) async {
     var raw = await _remote.meRaw();
     var session = SessionModel.fromJson(raw).toEntity();
-    if (session.activeTenant == null && session.tenants.isNotEmpty) {
+
+    // Only a merchant is auto-placed inside a membership. A platform operator
+    // without an active workspace stays at platform level — auto-activating
+    // their first membership is exactly what hid the platform console behind a
+    // merchant dashboard.
+    if (!session.canUsePlatform &&
+        session.activeTenant == null &&
+        session.tenants.isNotEmpty) {
       final slug = _chooseTenant(session, preferredSlug);
       if (slug != null) {
         final activated = await _activate(slug);
@@ -524,11 +703,20 @@ class AuthRepositoryImpl implements AuthRepository {
         session = activated.session;
       }
     }
+
     return _SessionSnapshot(session, raw);
   }
 
   Future<void> _remember(_SessionSnapshot snapshot) async {
     await _cache?.saveSession(snapshot.raw);
+
+    // The selected workspace *is* the persisted context: an active tenant
+    // means merchant mode, no active tenant means platform mode for an
+    // operator. Keeping the header and preference in sync here means a restart
+    // restores exactly the context the user last had.
+    final activeSlug = snapshot.session.activeTenant?.slug;
+    await _preferences.setTenantSlug(activeSlug);
+    _apiClient.setTenantSlug(activeSlug);
     _applyScope(snapshot.session);
   }
 
@@ -541,7 +729,7 @@ class AuthRepositoryImpl implements AuthRepository {
     }
     final scope = CacheScope.forSession(
       accountId: session.user.id,
-      isPlatform: session.isPlatformUser,
+      isPlatform: session.canUsePlatform,
       tenantSlug: session.activeTenant?.slug,
     );
     _cache?.setScope(scope);
@@ -620,12 +808,22 @@ class AuthRepositoryImpl implements AuthRepository {
 
   String? _chooseTenant(Session session, String? preferredSlug) {
     if (session.tenants.isEmpty) return null;
+
+    // Suspended workspaces are never selected: the backend resolves no tenant
+    // for them, so picking one would strand the account on onboarding even
+    // though another live membership exists.
+    final active = session.tenants
+        .where((tenant) => tenant.isActive && tenant.status == 'active')
+        .toList(growable: false);
+    final candidates = active.isEmpty ? session.tenants : active;
+
     if (preferredSlug != null && preferredSlug.isNotEmpty) {
-      final preferred = session.membershipForSlug(preferredSlug);
-      if (preferred != null) return preferred.slug;
+      for (final tenant in candidates) {
+        if (tenant.slug == preferredSlug) return tenant.slug;
+      }
     }
     if (session.activeTenant != null) return session.activeTenant!.slug;
-    return session.tenants.first.slug;
+    return candidates.first.slug;
   }
 }
 

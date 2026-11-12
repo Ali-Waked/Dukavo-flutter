@@ -24,14 +24,36 @@ class LoginScreen extends ConsumerStatefulWidget {
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
+  final _challengeFormKey = GlobalKey<FormState>();
   final _email = TextEditingController();
   final _password = TextEditingController();
+  final _code = TextEditingController();
+  final _recoveryCode = TextEditingController();
+  bool _useRecovery = false;
 
   @override
   void dispose() {
     _email.dispose();
     _password.dispose();
+    _code.dispose();
+    _recoveryCode.dispose();
     super.dispose();
+  }
+
+  void _goAfterSignIn() {
+    final state = ref.read(authControllerProvider);
+    final session = state.session;
+    final redirect = sanitizeRedirect(widget.redirect);
+    final target = switch (state.status) {
+      AuthStatus.needsTenant => RoutePaths.setup,
+      AuthStatus.platform => RoutePaths.platformDashboard,
+      AuthStatus.authenticated => redirect ??
+          (session?.user.needsOnboarding == true
+              ? RoutePaths.welcome
+              : homePathFor(ref.read(permissionsProvider))),
+      AuthStatus.unknown || AuthStatus.unauthenticated => RoutePaths.home,
+    };
+    context.go(target);
   }
 
   Future<void> _submit() async {
@@ -42,15 +64,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           password: _password.text,
         );
     if (!success || !mounted) return;
+    _goAfterSignIn();
+  }
 
-    final target = switch (ref.read(authControllerProvider).status) {
-      AuthStatus.needsTenant => RoutePaths.setup,
-      AuthStatus.platform => RoutePaths.platformDashboard,
-      AuthStatus.authenticated => sanitizeRedirect(widget.redirect) ??
-          homePathFor(ref.read(permissionsProvider)),
-      AuthStatus.unknown || AuthStatus.unauthenticated => RoutePaths.home,
-    };
-    context.go(target);
+  Future<void> _submitChallenge() async {
+    if (!(_challengeFormKey.currentState?.validate() ?? false)) return;
+    FocusScope.of(context).unfocus();
+    final success =
+        await ref.read(authControllerProvider.notifier).completeTwoFactor(
+              code: _useRecovery ? null : _code.text,
+              recoveryCode: _useRecovery ? _recoveryCode.text : null,
+            );
+    if (!success || !mounted) return;
+    _goAfterSignIn();
   }
 
   @override
@@ -123,7 +149,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                     const SizedBox(height: AppSpacing.xl),
                     Text(
-                      context.tr('welcomeBack'),
+                      context.tr(auth.awaitingTwoFactor
+                          ? 'twoFactorTitle'
+                          : 'welcomeBack'),
                       style: texts.displaySmall?.copyWith(
                         fontWeight: FontWeight.w800,
                         letterSpacing: -0.9,
@@ -132,13 +160,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                     const SizedBox(height: AppSpacing.xs),
                     Text(
-                      context.tr('loginSubtitle'),
+                      context.tr(auth.awaitingTwoFactor
+                          ? 'twoFactorSubtitle'
+                          : 'loginSubtitle'),
                       style: texts.bodyLarge?.copyWith(
                         color: colors.textSecondary,
                         height: 1.45,
                       ),
                     ),
-                    const SizedBox(height: AppSpacing.xl),
+                    const SizedBox(height: AppSpacing.md),
                     if (error != null && error.isNotEmpty) ...[
                       InfoBanner(
                         message: error,
@@ -147,6 +177,24 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                       const SizedBox(height: AppSpacing.md),
                     ],
+                    if (auth.awaitingTwoFactor)
+                      _ChallengeCard(
+                        formKey: _challengeFormKey,
+                        useRecovery: _useRecovery,
+                        code: _code,
+                        recoveryCode: _recoveryCode,
+                        submitting: auth.isSubmitting,
+                        onToggleMode: () {
+                          setState(() => _useRecovery = !_useRecovery);
+                        },
+                        onSubmit: _submitChallenge,
+                        onCancel: () {
+                          ref
+                              .read(authControllerProvider.notifier)
+                              .cancelTwoFactor();
+                        },
+                      )
+                    else
                     AppCard(
                       padding: const EdgeInsets.all(AppSpacing.md),
                       child: Column(
@@ -216,25 +264,26 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                     ),
                     const SizedBox(height: AppSpacing.md),
-                    Wrap(
-                      alignment: WrapAlignment.center,
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      spacing: 4,
-                      children: [
-                        TextButton(
-                          onPressed: auth.isSubmitting
-                              ? null
-                              : () => context.push(RoutePaths.register),
-                          child: Text(context.tr('register')),
-                        ),
-                        TextButton(
-                          onPressed: auth.isSubmitting
-                              ? null
-                              : () => context.push(RoutePaths.waitlist),
-                          child: Text(context.tr('joinWaitlist')),
-                        ),
-                      ],
-                    ),
+                    if (!auth.awaitingTwoFactor)
+                      Wrap(
+                        alignment: WrapAlignment.center,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        spacing: 4,
+                        children: [
+                          TextButton(
+                            onPressed: auth.isSubmitting
+                                ? null
+                                : () => context.push(RoutePaths.register),
+                            child: Text(context.tr('register')),
+                          ),
+                          TextButton(
+                            onPressed: auth.isSubmitting
+                                ? null
+                                : () => context.push(RoutePaths.waitlist),
+                            child: Text(context.tr('joinWaitlist')),
+                          ),
+                        ],
+                      ),
                     const SizedBox(height: AppSpacing.xl),
                     Wrap(
                       alignment: WrapAlignment.center,
@@ -270,6 +319,107 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ChallengeCard extends StatelessWidget {
+  const _ChallengeCard({
+    required this.formKey,
+    required this.useRecovery,
+    required this.code,
+    required this.recoveryCode,
+    required this.submitting,
+    required this.onToggleMode,
+    required this.onSubmit,
+    required this.onCancel,
+  });
+
+  final GlobalKey<FormState> formKey;
+  final bool useRecovery;
+  final TextEditingController code;
+  final TextEditingController recoveryCode;
+  final bool submitting;
+  final VoidCallback onToggleMode;
+  final VoidCallback onSubmit;
+  final VoidCallback onCancel;
+
+  @override
+  Widget build(BuildContext context) {
+    return AppCard(
+      padding: const EdgeInsets.all(AppSpacing.md),
+      child: Form(
+        key: formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            if (!useRecovery) ...[
+              Text(
+                context.tr('twoFactorPrompt'),
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              AppTextField(
+                controller: code,
+                label: context.tr('twoFactorCode'),
+                hint: context.tr('twoFactorCodePlaceholder'),
+                prefixIcon: Icons.shield_outlined,
+                keyboardType: TextInputType.number,
+                textInputAction: TextInputAction.done,
+                autofillHints: const [AutofillHints.oneTimeCode],
+                onSubmitted: (_) => onSubmit(),
+                validator: (value) {
+                  final digits = (value ?? '').trim();
+                  if (digits.isEmpty) return context.tr('requiredField');
+                  if (digits.length != 6) {
+                    return context.tr('twoFactorCodeLength');
+                  }
+                  return null;
+                },
+              ),
+            ] else ...[
+              Text(
+                context.tr('twoFactorRecoveryHint'),
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              AppTextField(
+                controller: recoveryCode,
+                label: context.tr('twoFactorRecoveryCode'),
+                prefixIcon: Icons.key_outlined,
+                textInputAction: TextInputAction.done,
+                onSubmitted: (_) => onSubmit(),
+                validator: (value) => (value ?? '').trim().isEmpty
+                    ? context.tr('requiredField')
+                    : null,
+              ),
+            ],
+            const SizedBox(height: AppSpacing.sm),
+            AppButton(
+              label: submitting
+                  ? context.tr('verifying')
+                  : context.tr('twoFactorVerify'),
+              loading: submitting,
+              expand: true,
+              icon: Icons.verified_user_outlined,
+              onPressed: submitting ? null : onSubmit,
+            ),
+            const SizedBox(height: AppSpacing.xxs),
+            TextButton(
+              onPressed: submitting ? null : onToggleMode,
+              child: Text(
+                context.tr(
+                  useRecovery ? 'twoFactorUseCode' : 'twoFactorUseRecovery',
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: submitting ? null : onCancel,
+              child: Text(context.tr('cancel')),
+            ),
+          ],
         ),
       ),
     );

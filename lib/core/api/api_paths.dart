@@ -7,6 +7,7 @@ class ApiPaths {
 
   // Auth & boot
   static const login = '/auth/login';
+  static const twoFactorChallenge = '/auth/two-factor-challenge';
   static const logout = '/auth/logout';
   static const me = '/me';
   static const permissions = '/permissions';
@@ -19,6 +20,19 @@ class ApiPaths {
 
   // Profile
   static const profile = '/profile';
+  static const profileOverview = '/profile/overview';
+  static const profileOnboarding = '/profile/onboarding';
+  static const profileOnboardingSkip = '/profile/onboarding/skip';
+  static const profileCountries = '/profile/locations/countries';
+  static String profileCities(String iso2) =>
+      '/profile/locations/countries/$iso2/cities';
+  static const profileTimezones = '/profile/locations/timezones';
+  static const profileSecurityActivity = '/profile/security/activity';
+  static const profileTwoFactor = '/profile/two-factor';
+  static const profileTwoFactorSetup = '/profile/two-factor/setup';
+  static const profileTwoFactorConfirm = '/profile/two-factor/confirm';
+  static const profileTwoFactorRecoveryCodes =
+      '/profile/two-factor/recovery-codes';
   static const profileAvatar = '/profile/avatar';
   static const profilePassword = '/profile/password';
   static const profileSessions = '/profile/sessions';
@@ -36,6 +50,16 @@ class ApiPaths {
   static const notificationsUnreadCount = '/notifications/unread-count';
   static const notificationsReadAll = '/notifications/read-all';
   static String notification(String id) => '/notifications/$id';
+
+  // Help Center, readable by every signed-in account and widened to the
+  // reader's tier: merchants also see merchant-only guides, platform
+  // operators see everything.
+  static const helpCategories = '/help/categories';
+  static const helpArticles = '/help/articles';
+  static String helpArticle(String slug) => '/help/articles/$slug';
+  static const helpSearch = '/help/search';
+  static String helpArticleFeedback(String slug) =>
+      '/help/articles/$slug/feedback';
 
   // Tenant
   static const dashboard = '/tenant/dashboard';
@@ -154,6 +178,135 @@ class ApiPaths {
   static const platformAiInsights = '/platform/ai/insights';
   static const platformAiNewsletterContent = '/platform/ai/newsletter-content';
 
+  // Platform AI infrastructure administration. Credentials are write-only and
+  // every read is masked by the server.
+  static const platformAiAdminOverview = '/platform/ai/admin/overview';
+  static const platformAiAdminSettings = '/platform/ai/admin/settings';
+  static const platformAiAdminUsage = '/platform/ai/admin/usage';
+  static const platformAiAdminActivity = '/platform/ai/admin/activity-logs';
+  static const platformAiAdminActivityCategories =
+      '/platform/ai/admin/activity-logs/categories';
+  static const platformAiAdminProviders = '/platform/ai/admin/providers';
+  static const platformAiAdminProviderCatalog =
+      '/platform/ai/admin/providers/catalog';
+  static String platformAiAdminProvider(int id) =>
+      '/platform/ai/admin/providers/$id';
+  static String platformAiAdminProviderCredentials(int id) =>
+      '/platform/ai/admin/providers/$id/credentials';
+  static String platformAiAdminProviderCredential(int providerId, int id) =>
+      '/platform/ai/admin/providers/$providerId/credentials/$id';
+  static String platformAiAdminProviderModels(int id) =>
+      '/platform/ai/admin/providers/$id/models';
+  static String platformAiAdminProviderTest(int id) =>
+      '/platform/ai/admin/providers/$id/test-connection';
+  static const platformAiAdminTasks = '/platform/ai/admin/tasks';
+  static const platformAiAdminTasksSeed = '/platform/ai/admin/tasks/seed';
+  static String platformAiAdminTask(int id) => '/platform/ai/admin/tasks/$id';
+  static String platformAiAdminTaskRoutes(int id) =>
+      '/platform/ai/admin/tasks/$id/routes';
+  static const platformAiAdminPrompts = '/platform/ai/admin/prompts';
+  static String platformAiAdminPrompt(int id) =>
+      '/platform/ai/admin/prompts/$id';
+  static String platformAiAdminPromptVersions(int id) =>
+      '/platform/ai/admin/prompts/$id/versions';
+  static String platformAiAdminPromptVersionActivate(int id, int version) =>
+      '/platform/ai/admin/prompts/$id/versions/$version/activate';
+  static String platformAiAdminModel(int id) => '/platform/ai/admin/models/$id';
+
+  // Platform payment catalogue administration.
+  static const platformPaymentCountries = '/platform/payments/countries';
+  static String platformPaymentCountry(String code) =>
+      '/platform/payments/countries/$code';
+  static const platformPaymentProviders = '/platform/payments/providers';
+  static String platformPaymentProvider(String code) =>
+      '/platform/payments/providers/$code';
+  static String platformPaymentProviderCountries(String code) =>
+      '/platform/payments/providers/$code/countries';
+  static String platformPaymentProviderCountry(String code, int coverage) =>
+      '/platform/payments/providers/$code/countries/$coverage';
+  static String platformPaymentProviderMethods(String code) =>
+      '/platform/payments/providers/$code/methods';
+  static String platformPaymentProviderMethod(String code, int method) =>
+      '/platform/payments/providers/$code/methods/$method';
+  static const platformPaymentMethods = '/platform/payments/methods';
+  static String platformPaymentMethod(int id) =>
+      '/platform/payments/methods/$id';
+  static const platformPaymentWebhookEvents =
+      '/platform/payments/webhook-events';
+  static String platformPaymentWebhookEvent(int id) =>
+      '/platform/payments/webhook-events/$id';
+
+  // Platform omnichannel integration health.
+  static const platformIntegrations = '/platform/integrations';
+  static String platformIntegration(String channel) =>
+      '/platform/integrations/$channel';
+  static String platformIntegrationRecheck(String channel) =>
+      '/platform/integrations/$channel/recheck';
+
+  // Platform notifications: campaigns, email templates and delivery attempts.
+  static const platformNotificationCampaigns =
+      '/platform/notification-campaigns';
+  static String platformNotificationCampaign(int id) =>
+      '/platform/notification-campaigns/$id';
+  static String platformNotificationCampaignSchedule(int id) =>
+      '/platform/notification-campaigns/$id/schedule';
+  static String platformNotificationCampaignPublish(int id) =>
+      '/platform/notification-campaigns/$id/publish';
+  static String platformNotificationCampaignCancel(int id) =>
+      '/platform/notification-campaigns/$id/cancel';
+  static String platformNotificationCampaignRecipients(int id) =>
+      '/platform/notification-campaigns/$id/recipients';
+  static String platformNotificationCampaignStats(int id) =>
+      '/platform/notification-campaigns/$id/stats';
+  static const platformNotificationCampaignPreview =
+      '/platform/notification-campaigns/preview';
+  static const platformNotificationCampaignAudience =
+      '/platform/notification-campaigns/audience-count';
+  static const platformEmailTemplates = '/platform/email-templates';
+  static String platformEmailTemplate(String key) =>
+      '/platform/email-templates/$key';
+  static String platformEmailTemplateRestore(String key) =>
+      '/platform/email-templates/$key/restore';
+  static String platformEmailTemplatePreview(String key) =>
+      '/platform/email-templates/$key/preview';
+  static String platformEmailTemplateTest(String key) =>
+      '/platform/email-templates/$key/test';
+  static const platformNotificationDeliveries =
+      '/platform/notification-deliveries';
+  static String platformNotificationDelivery(int id) =>
+      '/platform/notification-deliveries/$id';
+  static String platformNotificationDeliveryRetry(int id) =>
+      '/platform/notification-deliveries/$id/retry';
+
+  // Platform automation templates.
+  static const platformAutomationTemplates = '/platform/automation-templates';
+  static const platformAutomationTemplatesMeta =
+      '/platform/automation-templates/meta';
+  static String platformAutomationTemplate(int id) =>
+      '/platform/automation-templates/$id';
+  static String platformAutomationTemplatePublish(int id) =>
+      '/platform/automation-templates/$id/publish';
+  static String platformAutomationTemplateArchive(int id) =>
+      '/platform/automation-templates/$id/archive';
+  static String platformAutomationTemplateRestore(int id) =>
+      '/platform/automation-templates/$id/restore';
+  static String platformAutomationTemplateVersions(int id) =>
+      '/platform/automation-templates/$id/versions';
+
+  // Centralised platform configuration. Secrets are never returned: a read
+  // carries `configured` and a last-four hint only.
+  static const platformSettings = '/platform/settings';
+  static const platformSettingsSystem = '/platform/settings/system';
+  static const platformSettingsHistory = '/platform/settings/history';
+  static const platformSettingsHealth = '/platform/settings/health';
+  static const platformSettingsFeatures = '/platform/settings/features';
+  static String platformSettingsSection(String category) =>
+      '/platform/settings/$category';
+  static String platformSettingsFeature(String flag) =>
+      '/platform/settings/features/$flag';
+  static String platformSettingsHealthCheck(String integration) =>
+      '/platform/settings/health/$integration';
+
   // Tenant team, roles and audit.
   static const users = '/tenant/users';
   static String user(int id) => '/tenant/users/$id';
@@ -216,6 +369,17 @@ class ApiPaths {
 
   // Inventory intelligence and transfers.
   static const inventoryIntelligence = '/tenant/inventory/intelligence';
+  static String storePaymentConnections(int storeId) =>
+      '/tenant/stores/$storeId/payment-connections';
+  static String storePaymentConnection(int storeId, int accountId) =>
+      '/tenant/stores/$storeId/payment-connections/$accountId';
+  static String storePaymentConnectionVerify(int storeId, int accountId) =>
+      '/tenant/stores/$storeId/payment-connections/$accountId/verify';
+  static const merchantPayments = '/tenant/payments';
+  static String merchantPayment(int id) => '/tenant/payments/$id';
+  static String merchantPaymentSync(int id) => '/tenant/payments/$id/sync';
+  static String merchantPaymentRefund(int id) =>
+      '/tenant/payments/$id/refunds';
   static const inventoryIntelligenceExport =
       '/tenant/inventory/intelligence/export';
   static String inventoryIntelligenceItem(int id) =>
@@ -263,6 +427,13 @@ class ApiPaths {
   static String whatsappDisconnect(int id) =>
       '/tenant/whatsapp-accounts/$id/disconnect';
 
+  // Omnichannel integrations. A credential value never travels back out.
+  static const integrations = '/tenant/integrations';
+  static String integration(int id) => '/tenant/integrations/$id';
+  static String integrationTest(int id) => '/tenant/integrations/$id/test';
+  static String integrationReconnect(int id) =>
+      '/tenant/integrations/$id/reconnect';
+
   // Reporting.
   static const profit = '/tenant/profit';
   static const profitExport = '/tenant/profit/export';
@@ -279,6 +450,14 @@ class ApiPaths {
   static String aiActionReject(int id) => '/tenant/ai/actions/$id/reject';
   static String aiActionExecute(int id) => '/tenant/ai/actions/$id/execute';
 
+  // The workspace's own AI settings: feature switches, BYOK keys and usage.
+  static const tenantAiSettings = '/tenant/ai-settings';
+  static const tenantAiUsage = '/tenant/ai-settings/usage';
+  static const tenantAiCredentials = '/tenant/ai-settings/credentials';
+  static const tenantAiCredentialTest = '/tenant/ai-settings/credentials/test';
+  static String tenantAiCredential(int id) =>
+      '/tenant/ai-settings/credentials/$id';
+
   // Automation rules, runs and the human task queue.
   static const automationMeta = '/tenant/automation/meta';
   static const automationRules = '/tenant/automation/rules';
@@ -287,6 +466,22 @@ class ApiPaths {
   static String automationRun(int id) => '/tenant/automation/runs/$id';
   static const automationTasks = '/tenant/automation/tasks';
   static String automationTask(int id) => '/tenant/automation/tasks/$id';
+  static const automationTemplates = '/tenant/automation/templates';
+  static String automationTemplate(int id) =>
+      '/tenant/automation/templates/$id';
+  static String automationTemplateInstall(int id) =>
+      '/tenant/automation/templates/$id/install';
+  static const automationInstallations = '/tenant/automation/installations';
+  static String automationInstallation(int id) =>
+      '/tenant/automation/installations/$id';
+  static String automationInstallationPreview(int id) =>
+      '/tenant/automation/installations/$id/update-preview';
+  static String automationInstallationApplyUpdate(int id) =>
+      '/tenant/automation/installations/$id/apply-update';
+  static String automationInstallationEnable(int id) =>
+      '/tenant/automation/installations/$id/enable';
+  static String automationInstallationDisable(int id) =>
+      '/tenant/automation/installations/$id/disable';
 
   // Store currency conversion.
   static const currencies = '/tenant/currencies';

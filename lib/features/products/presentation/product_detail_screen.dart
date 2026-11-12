@@ -244,6 +244,19 @@ class ProductDetailScreen extends ConsumerWidget {
                                           fontWeight: FontWeight.w600,
                                         ),
                                   ),
+                                  if (variant.description != null &&
+                                      variant.description!.trim().isNotEmpty)
+                                    Text(
+                                      variant.description!,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSurfaceVariant,
+                                          ),
+                                    ),
                                   if (variant.sku != null)
                                     Text(
                                       variant.sku!,
@@ -295,6 +308,96 @@ class ProductDetailScreen extends ConsumerWidget {
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         height: 1.5,
                       ),
+                ),
+              ),
+            ],
+            if (product.shortDescription != null &&
+                product.shortDescription!.trim().isNotEmpty) ...[
+              const SizedBox(height: 16),
+              SectionCard(
+                title: context.tr('shortDescription'),
+                child: Text(
+                  product.shortDescription!,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ),
+            ],
+            if (product.highlights.isNotEmpty) ...[
+              const SizedBox(height: 16),
+              SectionCard(
+                title: context.tr('highlights'),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    for (final highlight in product.highlights)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 4),
+                        child: Text('• $highlight'),
+                      ),
+                  ],
+                ),
+              ),
+            ],
+            if (product.features.isNotEmpty) ...[
+              const SizedBox(height: 16),
+              SectionCard(
+                title: context.tr('features'),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    for (final feature in product.features)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 4),
+                        child: Text('• $feature'),
+                      ),
+                  ],
+                ),
+              ),
+            ],
+            if (product.specifications.isNotEmpty) ...[
+              const SizedBox(height: 16),
+              SectionCard(
+                title: context.tr('specifications'),
+                child: Column(
+                  children: [
+                    for (final specification in product.specifications)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 6),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: Text(
+                                specification.label,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              flex: 3,
+                              child: Text(specification.value),
+                            ),
+                          ],
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ],
+            if (product.tags.isNotEmpty) ...[
+              const SizedBox(height: 16),
+              SectionCard(
+                title: context.tr('tags'),
+                child: Wrap(
+                  spacing: 6,
+                  runSpacing: 6,
+                  children: [
+                    for (final tag in product.tags) Chip(label: Text(tag)),
+                  ],
                 ),
               ),
             ],

@@ -19,9 +19,18 @@ class _FakeAuthRepository implements AuthRepository {
   Future<Session?> restoreSession() async => null;
 
   @override
-  Future<Session> login({required String email, required String password}) {
+  Future<LoginOutcome> login(
+      {required String email, required String password}) {
     throw UnimplementedError();
   }
+
+  @override
+  Future<Session> completeTwoFactor({
+    required String challengeToken,
+    String? code,
+    String? recoveryCode,
+  }) =>
+      throw UnimplementedError();
 
   @override
   Future<void> logout() async {}
@@ -34,6 +43,9 @@ class _FakeAuthRepository implements AuthRepository {
 
   @override
   Future<Session> switchTenant(String slug) => throw UnimplementedError();
+
+  @override
+  Future<Session> enterPlatformMode() => throw UnimplementedError();
 
   @override
   Future<Session> provisionTenant({
@@ -55,10 +67,10 @@ class _FakeAuthRepository implements AuthRepository {
 }
 
 class _TestAuthController extends AuthController {
-  _TestAuthController()
-      : super(_FakeAuthRepository(), autoBootstrap: false);
+  _TestAuthController() : super(_FakeAuthRepository(), autoBootstrap: false);
 
-  void signedOut() => state = const AuthState(status: AuthStatus.unauthenticated);
+  void signedOut() =>
+      state = const AuthState(status: AuthStatus.unauthenticated);
 }
 
 const _features = <MarketingFeature>[
@@ -132,7 +144,8 @@ const _articles = <Newsletter>[
     readingMinutes: 3,
     publishedAt: null,
     locale: 'en',
-    body: '<h2>Start with the inbox</h2><p>Every order begins as a message.</p>',
+    body:
+        '<h2>Start with the inbox</h2><p>Every order begins as a message.</p>',
   ),
 ];
 
@@ -259,8 +272,7 @@ void main() {
     expect(find.text('This field is required.'), findsNWidgets(4));
   });
 
-  testWidgets('waitlist validates the email before submitting',
-      (tester) async {
+  testWidgets('waitlist validates the email before submitting', (tester) async {
     await pumpPublic(tester, const PublicWaitlistScreen());
 
     final submit = find.widgetWithText(AppButton, 'Join the waitlist').last;

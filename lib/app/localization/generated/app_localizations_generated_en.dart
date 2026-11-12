@@ -857,6 +857,34 @@ class AppLocalizationsEn extends AppLocalizations {
   String get highlights => 'Highlights';
 
   @override
+  String get specifications => 'Specifications';
+
+  @override
+  String get tags => 'Tags';
+
+  @override
+  String get shortDescription => 'Short description';
+
+  @override
+  String get seoTitle => 'SEO title';
+
+  @override
+  String get seoDescription => 'SEO description';
+
+  @override
+  String get seoKeywords => 'SEO keywords';
+
+  @override
+  String get linesHint => 'One item per line.';
+
+  @override
+  String get specificationsHint =>
+      'One specification per line, as Label: value.';
+
+  @override
+  String get tagsHint => 'Separate tags with commas.';
+
+  @override
   String get risks => 'Risks';
 
   @override
@@ -1818,6 +1846,48 @@ class AppLocalizationsEn extends AppLocalizations {
   String get zoneName => 'Zone name';
 
   @override
+  String get englishHint =>
+      'English is the canonical copy customers see when a translation is missing.';
+
+  @override
+  String get arabicHint =>
+      'Optional. Arabic readers see the English copy when a field is empty.';
+
+  @override
+  String get missingArabic => 'Arabic missing';
+
+  @override
+  String get zoneDescription => 'Zone description';
+
+  @override
+  String get shippingMethodName => 'Delivery method name';
+
+  @override
+  String get shippingMethodNameHint =>
+      'The delivery option customers see at checkout.';
+
+  @override
+  String get shippingMethodDescription => 'Delivery method description';
+
+  @override
+  String get shippingMethodDescriptionHint =>
+      'Optional detail shown under the delivery option.';
+
+  @override
+  String get deliveryInstructions => 'Delivery instructions';
+
+  @override
+  String get deliveryInstructionsHint =>
+      'What the customer should know before the courier arrives.';
+
+  @override
+  String get shippingTerms => 'Delivery terms';
+
+  @override
+  String get shippingTermsHint =>
+      'Optional customer-facing terms for this delivery option.';
+
+  @override
   String get city => 'City';
 
   @override
@@ -1933,6 +2003,149 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aiActions => 'AI actions';
+
+  @override
+  String get aiSettings => 'AI settings';
+
+  @override
+  String get aiSettingsByokLabel => 'Route through my own keys';
+
+  @override
+  String get aiSettingsByokOff =>
+      'The platform has not enabled bring-your-own-key, so this workspace cannot store its own provider keys.';
+
+  @override
+  String get aiSettingsByokOptedIn =>
+      'This workspace now prefers its own keys.';
+
+  @override
+  String get aiSettingsByokOptedOut =>
+      'This workspace is back on platform keys.';
+
+  @override
+  String get aiSettingsByokSubtitle =>
+      'When on, tasks in this workspace prefer your own provider credentials over the platform\'s, with the platform\'s providers as fallback.';
+
+  @override
+  String get aiSettingsByokTitle => 'Bring your own key';
+
+  @override
+  String get aiSettingsFeatureDisabled =>
+      'Feature disabled for this workspace.';
+
+  @override
+  String get aiSettingsFeatureEnabled => 'Feature enabled for this workspace.';
+
+  @override
+  String get aiSettingsFeaturePlatformOff =>
+      'The platform has this feature off, so it cannot be enabled here.';
+
+  @override
+  String get aiSettingsFeaturesSubtitle =>
+      'Turn a feature off for this workspace only; other workspaces are unaffected.';
+
+  @override
+  String get aiSettingsFeaturesTitle => 'Features';
+
+  @override
+  String get aiSettingsKeyApiKeyHint =>
+      'Paste the key once; it is never shown again.';
+
+  @override
+  String get aiSettingsKeyApiKeyLabel => 'API key';
+
+  @override
+  String get aiSettingsKeyBaseUrlHint =>
+      'Optional. Must be a public provider endpoint — local or private addresses are refused.';
+
+  @override
+  String get aiSettingsKeyBaseUrlLabel => 'Base URL';
+
+  @override
+  String get aiSettingsKeyFormHint =>
+      'Storing again for the same provider replaces that provider\'s key.';
+
+  @override
+  String get aiSettingsKeyFormTitle => 'Store or rotate a key';
+
+  @override
+  String get aiSettingsKeyModelLabel => 'Default model';
+
+  @override
+  String get aiSettingsKeyProviderLabel => 'Provider';
+
+  @override
+  String aiSettingsKeyRevokeBody(Object masked, Object provider) {
+    return 'Revoke $masked on $provider? Routing falls back to the platform\'s providers.';
+  }
+
+  @override
+  String get aiSettingsKeyRevokeTitle => 'Revoke this key';
+
+  @override
+  String get aiSettingsKeyRevoked => 'Key revoked.';
+
+  @override
+  String get aiSettingsKeyStored => 'Key stored.';
+
+  @override
+  String get aiSettingsKeyTest => 'Test';
+
+  @override
+  String get aiSettingsKeyTestFailed => 'The connection check failed.';
+
+  @override
+  String aiSettingsKeyTestOk(Object latency) {
+    return 'Your key answered in $latency ms.';
+  }
+
+  @override
+  String get aiSettingsKeyTooShort => 'Use at least 8 characters.';
+
+  @override
+  String get aiSettingsKeysEmpty => 'No keys stored.';
+
+  @override
+  String get aiSettingsKeysSubtitle =>
+      'Your key is encrypted at rest and shown only as its last characters.';
+
+  @override
+  String get aiSettingsKeysTitle => 'My keys';
+
+  @override
+  String get aiSettingsNoProviders =>
+      'No providers are available for a workspace key.';
+
+  @override
+  String get aiSettingsPlatformOffBody =>
+      'AI is turned off for the whole platform. Nothing here will run until the Dukavo team enables it.';
+
+  @override
+  String get aiSettingsPlatformOffTitle => 'Off platform-wide';
+
+  @override
+  String get aiSettingsUsageCost => 'Estimated cost';
+
+  @override
+  String get aiSettingsUsageEstimatesNote =>
+      'Costs are estimates from declared model prices — operational signal, never a billing figure.';
+
+  @override
+  String get aiSettingsUsageFailures => 'Failed requests';
+
+  @override
+  String aiSettingsUsageRow(Object requests, Object tokens) {
+    return '$requests requests · $tokens tokens';
+  }
+
+  @override
+  String get aiSettingsUsageTitle => 'AI usage';
+
+  @override
+  String get aiSettingsUsageTodayRequests => 'Requests today';
+
+  @override
+  String get aiSettingsUsageTodayTokens => 'Tokens today';
 
   @override
   String get altText => 'Alt text';
@@ -3487,5 +3700,1941 @@ class AppLocalizationsEn extends AppLocalizations {
       'Join the waitlist and we’ll set up your products, orders, customers and conversations together.';
 
   @override
+  String get translationAssistant => 'AI translations';
+
+  @override
+  String get translationOpen => 'Translations';
+
+  @override
+  String get translationReviewHint =>
+      'AI drafts stay private until you approve them.';
+
+  @override
+  String get translationNoSelection => 'Nothing selected';
+
+  @override
+  String translationSelectedCount(Object count) {
+    return '$count selected';
+  }
+
+  @override
+  String translationApproveSelectedCount(Object count) {
+    return 'Approve $count';
+  }
+
+  @override
+  String get translationGenerateTitle => 'Generate translations';
+
+  @override
+  String get translationGenerateHint =>
+      'Pick the fields and languages to translate. The result is a proposal, not a published change.';
+
+  @override
+  String get translationSourceLanguage => 'Source language';
+
+  @override
+  String get translationSourceUnknown =>
+      'The source language could not be detected. Choose it explicitly.';
+
+  @override
+  String translationDetectedLanguage(Object confidence, Object language) {
+    return 'Detected $language ($confidence% confidence)';
+  }
+
+  @override
+  String get translationSourceRequired => 'Source language required';
+
+  @override
+  String get translationSourceRequiredHint =>
+      'Choose the language this copy is written in so Dukavo translates from the right language.';
+
+  @override
+  String get translationFields => 'Fields';
+
+  @override
+  String get translationTargets => 'Target languages';
+
+  @override
+  String get translationNoTargets =>
+      'No other enabled language is available yet.';
+
+  @override
+  String get translationGenerate => 'Generate';
+
+  @override
+  String get translationUsageTitle => 'AI usage today';
+
+  @override
+  String translationUsageSummary(Object cost, Object requests, Object tokens) {
+    return '$requests requests · $tokens tokens · about $cost estimated cost';
+  }
+
+  @override
+  String get translationReviewTitle => 'Review';
+
+  @override
+  String get translationStale => 'Stale';
+
+  @override
+  String get translationManuallyEdited => 'Manually edited';
+
+  @override
+  String get translationSourceCopy => 'Source';
+
+  @override
+  String get translationNotTranslatedYet => 'Not translated yet.';
+
+  @override
+  String translationRejectionReasonValue(Object reason) {
+    return 'Rejected: $reason';
+  }
+
+  @override
+  String get translationPublishedCopy => 'Still public';
+
+  @override
+  String get translationApprove => 'Approve';
+
+  @override
+  String get translationEdit => 'Edit';
+
+  @override
+  String get translationReject => 'Reject';
+
+  @override
+  String get translationRegenerate => 'Regenerate';
+
+  @override
+  String get translationStatusNotTranslated => 'Not translated';
+
+  @override
+  String get translationStatusGenerating => 'Generating';
+
+  @override
+  String get translationStatusGenerated => 'Generated';
+
+  @override
+  String get translationStatusNeedsReview => 'Needs review';
+
+  @override
+  String get translationStatusApproved => 'Approved';
+
+  @override
+  String get translationStatusRejected => 'Rejected';
+
+  @override
+  String get translationStatusFailed => 'Failed';
+
+  @override
+  String get translationStatusStale => 'Stale';
+
+  @override
+  String get translationGenerated => 'Translations generated for review.';
+
+  @override
+  String get translationApprovedMessage =>
+      'Translation approved and published.';
+
+  @override
+  String get translationUpdated =>
+      'Translation updated and returned to review.';
+
+  @override
+  String get translationRejectedMessage => 'Translation rejected.';
+
+  @override
+  String get translationNothingSelected =>
+      'Select at least one translation first.';
+
+  @override
+  String get translationTextRequired => 'Enter the translated text.';
+
+  @override
+  String get translationEditApprovedTitle => 'Edit published translation?';
+
+  @override
+  String get translationEditApprovedMessage =>
+      'The current public copy stays live until you approve the new text.';
+
+  @override
+  String get translationEditHint => 'Edit the translation';
+
+  @override
+  String get translationRejectReason => 'Reason (optional)';
+
+  @override
+  String get translationRejectReasonHint =>
+      'Tell the reviewer why this proposal was rejected.';
+
+  @override
+  String get translationOverwriteMessage =>
+      'This replaces the current draft. Manually edited text and published copy need your confirmation before regeneration.';
+
+  @override
   String get register => 'Register';
+
+  @override
+  String get choosePaymentRail => 'Choose how to pay';
+
+  @override
+  String get onlineRedirectNote =>
+      'You will continue to the provider\'s secure page. This order stays unpaid until the provider confirms.';
+
+  @override
+  String get bankTransferNote =>
+      'Transfer the total to the store and keep the receipt. The store confirms the order when the money arrives.';
+
+  @override
+  String get paymentProvider => 'Provider';
+
+  @override
+  String get paymentRail => 'Payment method';
+
+  @override
+  String get paymentAttempt => 'Attempt';
+
+  @override
+  String get paymentAmount => 'Amount';
+
+  @override
+  String get paymentReference => 'Reference';
+
+  @override
+  String get paymentPendingNote =>
+      'Waiting for the provider to confirm. This page refreshes automatically.';
+
+  @override
+  String get paymentPaidNote => 'The provider confirmed this payment.';
+
+  @override
+  String get paymentLinkHint =>
+      'Open this link in your browser to pay. The order updates only after the provider confirms.';
+
+  @override
+  String get paymentLinkCopied => 'Payment link copied.';
+
+  @override
+  String get copyPaymentLink => 'Copy payment link';
+
+  @override
+  String get retryPayment => 'Try payment again';
+
+  @override
+  String get orderAwaitingPayment => 'Awaiting payment';
+
+  @override
+  String get bankTransfer => 'Bank transfer';
+
+  @override
+  String get codNote =>
+      'Pay the courier on delivery. The order stays unpaid until then.';
+
+  @override
+  String get twoFactorTitle => 'Two-step verification';
+
+  @override
+  String get twoFactorSubtitle => 'Confirm it\'s you to finish signing in.';
+
+  @override
+  String get twoFactorPrompt =>
+      'Enter the 6-digit code from your authenticator app.';
+
+  @override
+  String get twoFactorCode => 'Authentication code';
+
+  @override
+  String get twoFactorCodePlaceholder => '000000';
+
+  @override
+  String get twoFactorCodeLength => 'Enter the 6-digit code.';
+
+  @override
+  String get twoFactorVerify => 'Verify and sign in';
+
+  @override
+  String get verifying => 'Verifying';
+
+  @override
+  String get twoFactorUseRecovery => 'Use a recovery code';
+
+  @override
+  String get twoFactorUseCode => 'Use an authenticator code';
+
+  @override
+  String get twoFactorRecoveryCode => 'Recovery code';
+
+  @override
+  String get twoFactorRecoveryHint =>
+      'One of the single-use codes you saved when you turned on two-step verification.';
+
+  @override
+  String get onboardingPreferencesTitle => 'A few things about you';
+
+  @override
+  String get onboardingPreferencesSubtitle =>
+      'We guessed these from your network and browser to save you time. Check them, change anything that is wrong, or skip for now.';
+
+  @override
+  String get onboardingPersonalTitle => 'Personal information';
+
+  @override
+  String get onboardingPersonalHint =>
+      'How your name and photo appear to your team.';
+
+  @override
+  String get onboardingLocationHint =>
+      'Location helps us show local times. A guess from your network is approximate, never verified.';
+
+  @override
+  String get onboardingDisplayHint =>
+      'Choose how Dukavo looks and reads for you.';
+
+  @override
+  String get onboardingDetectedBadge => 'Detected for you';
+
+  @override
+  String get onboardingApproximateBadge =>
+      'Some values are an estimate from your network. Review them before saving.';
+
+  @override
+  String get onboardingSave => 'Save preferences';
+
+  @override
+  String get onboardingSkip => 'Skip for now';
+
+  @override
+  String get onboardingSaved => 'Preferences saved.';
+
+  @override
+  String get onboardingSkipped =>
+      'No problem — you can change these any time in your profile.';
+
+  @override
+  String get onboardingFootnote =>
+      'These are personal settings. They never change a store\'s currency, prices or past orders.';
+
+  @override
+  String get onboardingPromptBody =>
+      'Confirm your language, currency and time zone so Dukavo feels right.';
+
+  @override
+  String get onboardingPromptAction => 'Review preferences';
+
+  @override
+  String get nameHint => 'Your full name.';
+
+  @override
+  String get bio => 'Bio';
+
+  @override
+  String get bioHint => 'A sentence or two about you. Optional.';
+
+  @override
+  String get location => 'Location';
+
+  @override
+  String get country => 'Country';
+
+  @override
+  String get countryPlaceholder => 'Choose a country';
+
+  @override
+  String get countrySearch => 'Search by name, code or dial code';
+
+  @override
+  String get cityManualHint =>
+      'Can\'t find it? Type the name — manual entry is always accepted.';
+
+  @override
+  String get phoneCountry => 'Phone country code';
+
+  @override
+  String get phoneCountryHint => 'The country your phone number belongs to.';
+
+  @override
+  String get timezonePlaceholder => 'Choose a time zone';
+
+  @override
+  String get timezoneSearch => 'Search time zones';
+
+  @override
+  String get dateFormat => 'Date format';
+
+  @override
+  String get timeFormat => 'Time format';
+
+  @override
+  String get timeFormat24 => '24-hour (14:30)';
+
+  @override
+  String get timeFormat12 => '12-hour (2:30 PM)';
+
+  @override
+  String get themeSystem => 'System';
+
+  @override
+  String get themeLight => 'Light';
+
+  @override
+  String get themeDark => 'Dark';
+
+  @override
+  String get preferences => 'Display preferences';
+
+  @override
+  String get accountInformation => 'Account information';
+
+  @override
+  String get accountMetaDesc => 'Membership and security at a glance.';
+
+  @override
+  String get accountType => 'Account type';
+
+  @override
+  String get accountTypeMember => 'Member';
+
+  @override
+  String get memberSince => 'Member since';
+
+  @override
+  String get passwordNever => 'Never changed';
+
+  @override
+  String get profileComplete => 'Your profile is complete.';
+
+  @override
+  String get profileCompletion => 'Profile completeness';
+
+  @override
+  String get workspaceSeparationHint =>
+      'Changing these never changes a store\'s currency, prices or past orders.';
+
+  @override
+  String get locationAndPreferences => 'Location and preferences';
+
+  @override
+  String get locationAndPreferencesDesc =>
+      'Personal to you — separate from any workspace settings.';
+
+  @override
+  String get securityCenter => 'Security centre';
+
+  @override
+  String get securityActivity => 'Security activity';
+
+  @override
+  String get securityActivityDesc =>
+      'Sign-ins, password changes and session changes on your account.';
+
+  @override
+  String get securityActivityEmpty => 'No security activity yet.';
+
+  @override
+  String get sessionsDesc =>
+      'Every device currently signed in to your account.';
+
+  @override
+  String get twoFactor => 'Two-step verification';
+
+  @override
+  String get twoFactorDesc =>
+      'Ask for a code from your authenticator app when signing in.';
+
+  @override
+  String get twoFactorOn => 'On';
+
+  @override
+  String get twoFactorOff => 'Off';
+
+  @override
+  String get twoFactorEnable => 'Turn on';
+
+  @override
+  String get twoFactorEnabled => 'Two-step verification is on.';
+
+  @override
+  String get twoFactorDisabled => 'Two-step verification is off.';
+
+  @override
+  String get twoFactorConfirm => 'Turn on verification';
+
+  @override
+  String get twoFactorSetupIntro =>
+      'Open your authenticator app, add this key, then enter the code it shows.';
+
+  @override
+  String get twoFactorSecret => 'Setup key';
+
+  @override
+  String get twoFactorSecretOnce =>
+      'This key is shown once. Store it somewhere safe.';
+
+  @override
+  String get twoFactorProvisioningUri => 'Setup link';
+
+  @override
+  String twoFactorActiveSince(Object time) {
+    return 'On since $time';
+  }
+
+  @override
+  String get recoveryCodesTitle => 'Recovery codes';
+
+  @override
+  String get recoveryCodesOnce =>
+      'Save these now. Each code works once, and they will not be shown again.';
+
+  @override
+  String get recoveryCodesRegenerated => 'New recovery codes created.';
+
+  @override
+  String recoveryCodesRemaining(Object count) {
+    return '$count recovery codes left';
+  }
+
+  @override
+  String get regenerateRecoveryCodes => 'New recovery codes';
+
+  @override
+  String get regenerateIntro =>
+      'Enter a current authenticator code to replace your recovery codes. The old ones stop working.';
+
+  @override
+  String get disableTwoFactor => 'Turn off';
+
+  @override
+  String get currentPasswordRequired => 'Enter your current password.';
+
+  @override
+  String get requiresAuthenticationCode =>
+      'Enter an authenticator code or a recovery code.';
+
+  @override
+  String get useAuthenticatorCode => 'Use an authenticator code';
+
+  @override
+  String get useRecoveryCode => 'Use a recovery code';
+
+  @override
+  String get recoveryCode => 'Recovery code';
+
+  @override
+  String get editProfileHint => 'Name, photo, bio and contact details.';
+
+  @override
+  String get changePasswordDesc =>
+      'Use a strong password you do not use anywhere else.';
+
+  @override
+  String get helpCenter => 'Help Center';
+
+  @override
+  String get supportSearchHint => 'Search guides and topics';
+
+  @override
+  String get supportBrowseTopics => 'Browse by topic';
+
+  @override
+  String get supportFeatured => 'Featured guides';
+
+  @override
+  String get supportPopular => 'Most read guides';
+
+  @override
+  String supportArticlesCount(Object count) {
+    return '$count articles';
+  }
+
+  @override
+  String get supportSearchEmptyTitle => 'No matching guides';
+
+  @override
+  String get supportSearchEmptyBody =>
+      'Try a shorter term, or clear the search and browse by topic.';
+
+  @override
+  String get supportEmptyCategoryTitle => 'No articles yet';
+
+  @override
+  String get supportEmptyCategoryBody =>
+      'Nothing has been published in this topic yet.';
+
+  @override
+  String get supportNotFoundTitle => 'We could not find this guide';
+
+  @override
+  String get supportNotFoundBody =>
+      'It may have moved or been renamed, or it is not available to you.';
+
+  @override
+  String get supportRelated => 'Related guides';
+
+  @override
+  String get supportAllTopics => 'Back to all topics';
+
+  @override
+  String get supportFeedbackTitle => 'Was this guide helpful?';
+
+  @override
+  String get supportFeedbackYes => 'Yes';
+
+  @override
+  String get supportFeedbackNo => 'No';
+
+  @override
+  String get supportFeedbackCommentLabel => 'Anything to add? (optional)';
+
+  @override
+  String get supportFeedbackCommentHint => 'What were you trying to do?';
+
+  @override
+  String get supportFeedbackSend => 'Send answer';
+
+  @override
+  String get supportFeedbackThanks =>
+      'Your answer helps us improve this guide.';
+
+  @override
+  String get supportFeedbackFailed =>
+      'Could not send your answer. Please try again.';
+
+  @override
+  String get integrations => 'Integrations';
+
+  @override
+  String get integrationsSubtitle =>
+      'Every channel your customers can reach you on.';
+
+  @override
+  String get integrationsRefresh => 'Refresh';
+
+  @override
+  String get integrationsConnect => 'Connect';
+
+  @override
+  String integrationsConnectChannel(Object channel) {
+    return 'Connect $channel';
+  }
+
+  @override
+  String get integrationsEditConnection => 'Edit connection';
+
+  @override
+  String get integrationsAvailabilityAvailable => 'Available';
+
+  @override
+  String get integrationsAvailabilityAwaitingConfiguration =>
+      'Awaiting configuration';
+
+  @override
+  String get integrationsAvailabilityAwaitingProviderAccess =>
+      'Awaiting provider access';
+
+  @override
+  String get integrationsStatusPending => 'Pending';
+
+  @override
+  String get integrationsStatusConnected => 'Connected';
+
+  @override
+  String get integrationsStatusDisconnected => 'Disconnected';
+
+  @override
+  String get integrationsStatusError => 'Error';
+
+  @override
+  String get integrationsHealthUnknown => 'Not checked';
+
+  @override
+  String get integrationsHealthHealthy => 'Healthy';
+
+  @override
+  String get integrationsHealthDegraded => 'Degraded';
+
+  @override
+  String get integrationsHealthFailing => 'Failing';
+
+  @override
+  String get integrationsCapabilities => 'Capabilities';
+
+  @override
+  String get integrationsConnections => 'Connections';
+
+  @override
+  String get integrationsNoConnections => 'Nothing connected yet.';
+
+  @override
+  String get integrationsAllStores => 'All stores';
+
+  @override
+  String get integrationsName => 'Connection name';
+
+  @override
+  String get integrationsNameHint => 'e.g. Sales line';
+
+  @override
+  String get integrationsStore => 'Store';
+
+  @override
+  String get integrationsCredentials => 'Credentials';
+
+  @override
+  String get integrationsCredentialsHint =>
+      'Values are encrypted at rest and never shown again. Leave a secret blank to keep the stored value.';
+
+  @override
+  String get integrationsRequired => 'Required';
+
+  @override
+  String get integrationsOptional => 'Optional';
+
+  @override
+  String get integrationsConfigured => 'Stored';
+
+  @override
+  String get integrationsSecretHint => 'Stored — leave blank to keep it';
+
+  @override
+  String get integrationsAwaitingAccessTitle =>
+      'Provider access not granted yet';
+
+  @override
+  String get integrationsAwaitingAccessBody =>
+      'This channel is declared but Dukavo has no approved access to its API. You can save credentials now; the connection stays pending until access is granted and a real test succeeds.';
+
+  @override
+  String get integrationsAwaitingConfigTitle =>
+      'Platform configuration missing';
+
+  @override
+  String get integrationsAwaitingConfigBody =>
+      'The installation is missing the platform-level keys this channel needs. Ask a platform administrator to configure it.';
+
+  @override
+  String get integrationsWebhook => 'Webhook URL';
+
+  @override
+  String get integrationsCopied => 'Copied.';
+
+  @override
+  String get integrationsCopyFailed =>
+      'This device blocked clipboard access — copy it by hand.';
+
+  @override
+  String get integrationsTest => 'Test';
+
+  @override
+  String get integrationsReconnect => 'Reconnect';
+
+  @override
+  String get integrationsDisconnect => 'Disconnect';
+
+  @override
+  String integrationsDisconnectTitle(Object name) {
+    return 'Disconnect $name?';
+  }
+
+  @override
+  String get integrationsDisconnectBody =>
+      'Customers will no longer reach you through this connection. Conversations stay in the inbox.';
+
+  @override
+  String get integrationsSaved => 'Connection saved.';
+
+  @override
+  String get integrationsDisconnected => 'Connection disconnected.';
+
+  @override
+  String get integrationsTested => 'Connection tested.';
+
+  @override
+  String get integrationsReconnected => 'Connection re-established.';
+
+  @override
+  String get integrationsError => 'This connection reported an error.';
+
+  @override
+  String get integrationsEmptyTitle => 'No channels available';
+
+  @override
+  String get integrationsEmptyBody =>
+      'No messaging channels are declared in this installation.';
+
+  @override
+  String get integrationsNeverChecked => 'Never checked';
+
+  @override
+  String get integrationsCapabilityText => 'Text';
+
+  @override
+  String get integrationsCapabilityImage => 'Images';
+
+  @override
+  String get integrationsCapabilityDocument => 'Documents';
+
+  @override
+  String get integrationsCapabilityAudio => 'Audio';
+
+  @override
+  String get integrationsCapabilityVoice => 'Voice notes';
+
+  @override
+  String get integrationsCapabilityVideo => 'Video';
+
+  @override
+  String get integrationsCapabilityTemplate => 'Templates';
+
+  @override
+  String get integrationsCapabilityDeliveryStatus => 'Delivery status';
+
+  @override
+  String get integrationsCapabilityReadStatus => 'Read receipts';
+
+  @override
+  String get integrationsCapabilityMediaDownload => 'Media download';
+
+  @override
+  String get integrationsCapabilityTyping => 'Typing indicator';
+
+  @override
+  String get enabled => 'Enabled';
+
+  @override
+  String get disabled => 'Disabled';
+
+  @override
+  String get environment => 'Environment';
+
+  @override
+  String get configuration => 'Configuration';
+
+  @override
+  String get platformSettings => 'Platform settings';
+
+  @override
+  String get platformSettingsSubtitle =>
+      'One place for the configuration the whole platform shares. Tenant and store settings stay separate.';
+
+  @override
+  String get platformSettingsSpecialists =>
+      'AI provider credentials and prompts, and the payment catalogue, are administered in the web platform console. This screen links to what the phone can safely change.';
+
+  @override
+  String get platformSettingsAuditNote =>
+      'Every save is recorded in the audit log with the operator, the previous value and the new one. Secrets are redacted.';
+
+  @override
+  String get platformSettingsSections => 'Configuration sections';
+
+  @override
+  String get platformSettingsControls => 'Platform controls';
+
+  @override
+  String get platformSettingsOperations => 'Operations';
+
+  @override
+  String platformSettingsSectionMeta(Object overrides, Object settings) {
+    return '$settings settings · $overrides overridden';
+  }
+
+  @override
+  String platformSettingsSecretCount(Object count) {
+    return '$count secret';
+  }
+
+  @override
+  String get platformSettingsOverrides => 'Overrides';
+
+  @override
+  String get platformSettingsSecrets => 'Secrets';
+
+  @override
+  String get platformSettingsDefinitions => 'Definitions';
+
+  @override
+  String get platformSettingsRuntime => 'Runtime';
+
+  @override
+  String get platformSettingsMaintenanceActive => 'Maintenance mode is on';
+
+  @override
+  String get platformSettingsOpenMaintenance => 'Open maintenance';
+
+  @override
+  String get platformSettingsSaved => 'Settings saved.';
+
+  @override
+  String get platformSettingsReadOnlyTitle => 'Read-only for your role';
+
+  @override
+  String get platformSettingsReadOnlyBody =>
+      'You can read this section but not change it. Ask a platform administrator for the matching permission.';
+
+  @override
+  String get platformSettingsEmptySection =>
+      'No settings are defined for this section.';
+
+  @override
+  String platformSettingsUnsaved(Object count) {
+    return '$count unsaved change(s)';
+  }
+
+  @override
+  String get platformSettingsClearOverride =>
+      'Reset to the environment or application default';
+
+  @override
+  String get platformSettingsRequiresRestart => 'Applies on next request';
+
+  @override
+  String platformSettingsSecretHint(Object hint) {
+    return 'Ends in $hint';
+  }
+
+  @override
+  String get platformSettingsSecretPlaceholder =>
+      'Enter a new value to replace the stored secret';
+
+  @override
+  String get platformSettingsSecretConfigured => 'Configured';
+
+  @override
+  String get platformSettingsSecretMissing => 'Not configured';
+
+  @override
+  String get platformSettingsChooseOption => 'Choose an option';
+
+  @override
+  String platformSettingsRange(Object max, Object min) {
+    return 'Range $min–$max';
+  }
+
+  @override
+  String get platformSettingsSourceDatabase => 'Platform setting';
+
+  @override
+  String get platformSettingsSourceEnvironment => 'Environment';
+
+  @override
+  String get platformSettingsSourceDefault => 'Application default';
+
+  @override
+  String get settingsGroupIdentity => 'Identity';
+
+  @override
+  String get settingsGroupApplication => 'Application';
+
+  @override
+  String get settingsGroupBrand => 'Brand';
+
+  @override
+  String get settingsGroupContact => 'Contact';
+
+  @override
+  String get settingsGroupFormat => 'Formats';
+
+  @override
+  String get settingsGroupLanguage => 'Languages';
+
+  @override
+  String get settingsGroupNumber => 'Numbers';
+
+  @override
+  String get settingsGroupPassword => 'Password policy';
+
+  @override
+  String get settingsGroupRateLimits => 'Rate limits';
+
+  @override
+  String get settingsGroupRegion => 'Region';
+
+  @override
+  String get settingsGroupRouting => 'Routing';
+
+  @override
+  String get settingsGroupRuntime => 'Runtime';
+
+  @override
+  String get settingsGroupSession => 'Sessions';
+
+  @override
+  String get settingsGroupSocial => 'Social';
+
+  @override
+  String get settingsGroupState => 'State';
+
+  @override
+  String get settingsGroupTransport => 'Transport';
+
+  @override
+  String get settingsGroupDriver => 'Driver';
+
+  @override
+  String get settingsGroupGeneral => 'General';
+
+  @override
+  String get platformSettingsFeaturesTitle => 'Platform features';
+
+  @override
+  String get platformSettingsFeaturesSubtitle =>
+      'Platform-wide availability switches.';
+
+  @override
+  String get platformSettingsFeaturesNoteTitle =>
+      'Availability, not entitlement';
+
+  @override
+  String get platformSettingsFeaturesNoteBody =>
+      'Turning a feature off removes it for every tenant, regardless of plan or permission. Data is preserved and the switch is reversible.';
+
+  @override
+  String platformSettingsFeaturesEnabled(Object count) {
+    return '$count enabled';
+  }
+
+  @override
+  String platformSettingsFeaturesTotal(Object count) {
+    return 'of $count';
+  }
+
+  @override
+  String get platformSettingsFeaturesSearch => 'Search features';
+
+  @override
+  String get platformSettingsFeaturesEmptyTitle => 'No features match';
+
+  @override
+  String get platformSettingsFeaturesEmptyBody =>
+      'Try a different search term.';
+
+  @override
+  String platformSettingsFeatureEnabled(Object name) {
+    return '$name is now available.';
+  }
+
+  @override
+  String platformSettingsFeatureDisabled(Object name) {
+    return '$name has been withdrawn.';
+  }
+
+  @override
+  String get featureGroupIntelligence => 'Intelligence';
+
+  @override
+  String get featureGroupChannels => 'Channels';
+
+  @override
+  String get featureGroupCommunication => 'Communication';
+
+  @override
+  String get featureGroupOperations => 'Operations';
+
+  @override
+  String get featureGroupCommerce => 'Commerce';
+
+  @override
+  String get featureGroupGrowth => 'Growth';
+
+  @override
+  String get platformSettingsHealthTitle => 'Integration health';
+
+  @override
+  String get platformSettingsHealthSubtitle =>
+      'Last recorded state and on-demand probes.';
+
+  @override
+  String get platformSettingsHealthReadTitle => 'Reading does not probe';
+
+  @override
+  String get platformSettingsHealthReadBody =>
+      'This screen shows the last recorded state. A probe calls the provider, so it only runs when you ask for it.';
+
+  @override
+  String get platformSettingsHealthEmpty => 'No integrations are registered.';
+
+  @override
+  String get platformSettingsHealthStateConnected => 'Connected';
+
+  @override
+  String get platformSettingsHealthStateDisconnected => 'Disconnected';
+
+  @override
+  String get platformSettingsHealthStateInvalidCredentials =>
+      'Invalid credentials';
+
+  @override
+  String get platformSettingsHealthStateRateLimited => 'Rate limited';
+
+  @override
+  String get platformSettingsHealthStateServiceUnavailable =>
+      'Service unavailable';
+
+  @override
+  String get platformSettingsHealthStateConfigurationRequired =>
+      'Configuration required';
+
+  @override
+  String get platformSettingsHealthStateNotTested => 'Not tested';
+
+  @override
+  String get platformSettingsHealthStateDisabled => 'Disabled';
+
+  @override
+  String platformSettingsHealthChecked(Object name) {
+    return '$name probe completed.';
+  }
+
+  @override
+  String platformSettingsHealthCheckedAt(Object when) {
+    return 'Checked $when';
+  }
+
+  @override
+  String get platformSettingsHealthNever => 'Never checked';
+
+  @override
+  String get platformSettingsHealthTest => 'Run check';
+
+  @override
+  String get platformSettingsHistoryTitle => 'Configuration history';
+
+  @override
+  String get platformSettingsHistorySubtitle =>
+      'Who changed what, and what it replaced.';
+
+  @override
+  String get platformSettingsHistoryFilter => 'Setting key';
+
+  @override
+  String get platformSettingsHistoryFilterHint => 'email.mail_host';
+
+  @override
+  String get platformSettingsHistoryRows => 'Rows';
+
+  @override
+  String get platformSettingsHistoryEmpty => 'No changes yet';
+
+  @override
+  String get platformSettingsHistoryEmptyFiltered =>
+      'No change matches this key.';
+
+  @override
+  String get platformSettingsHistoryEmptyBody =>
+      'Saving a setting will record it here.';
+
+  @override
+  String get platformSettingsHistoryNone => 'None';
+
+  @override
+  String platformSettingsHistorySecret(Object hint) {
+    return 'Secret · ends in $hint';
+  }
+
+  @override
+  String get platformSettingsHistorySystem => 'System';
+
+  @override
+  String get platformSettingsInfrastructureTitle => 'Infrastructure';
+
+  @override
+  String get platformSettingsInfrastructureSubtitle =>
+      'Read-only values managed by the deployment environment.';
+
+  @override
+  String get platformSettingsInfraReadOnlyTitle =>
+      'Managed by the deployment environment';
+
+  @override
+  String get platformSettingsInfraReadOnlyBody =>
+      'These values are read-only here by design. Change them in the deployment environment and redeploy; secrets are shown as configured or not configured only.';
+
+  @override
+  String get platformSettingsInfraRuntimeTitle => 'Running process';
+
+  @override
+  String get platformSettingsInfraVariablesTitle => 'Environment variables';
+
+  @override
+  String get platformSettingsInfraPhp => 'PHP';
+
+  @override
+  String get platformSettingsInfraLaravel => 'Laravel';
+
+  @override
+  String get platformSettingsInfraDatabase => 'Database';
+
+  @override
+  String get platformSettingsInfraCache => 'Cache';
+
+  @override
+  String get platformSettingsInfraQueue => 'Queue';
+
+  @override
+  String get platformSettingsInfraSession => 'Session';
+
+  @override
+  String get platformSettingsInfraMailer => 'Mailer';
+
+  @override
+  String get platformSettingsInfraFilesystem => 'Filesystem';
+
+  @override
+  String get actionPreviews => 'Action previews';
+
+  @override
+  String get actionUrl => 'Action URL';
+
+  @override
+  String get activateTenantMessage => 'Activate this tenant?';
+
+  @override
+  String get activeVersion => 'Active version';
+
+  @override
+  String get activityLog => 'Activity log';
+
+  @override
+  String get adapter => 'Adapter';
+
+  @override
+  String get addPaymentConnection => 'Add payment connection';
+
+  @override
+  String get aiAdminReadOnlyNote =>
+      'This surface is read-only apart from credential rotation.';
+
+  @override
+  String get aiAdministration => 'AI administration';
+
+  @override
+  String get aiCopilot => 'AI copilot';
+
+  @override
+  String get aiCopilotHint =>
+      'The copilot answers only from the dashboard\'s real figures and never invents numbers.';
+
+  @override
+  String get aiCopilotQuestionHint =>
+      'Example: what should I focus on this week?';
+
+  @override
+  String get aiFeatureLimits => 'AI feature limits';
+
+  @override
+  String get aiInsights => 'AI insights';
+
+  @override
+  String get aiPrompts => 'Prompts';
+
+  @override
+  String get aiServing => 'AI serving';
+
+  @override
+  String get aiTasks => 'AI tasks';
+
+  @override
+  String get aiTestConnection => 'Test connection';
+
+  @override
+  String get aiUsage30Days => 'Usage over 30 days';
+
+  @override
+  String get apiKey => 'API key';
+
+  @override
+  String get applyTemplateUpdate => 'Apply template update';
+
+  @override
+  String get applyTemplateUpdateMessage =>
+      'Apply the newer template version to this installation?';
+
+  @override
+  String get approveAiActionMessage => 'Approve this AI action?';
+
+  @override
+  String get archiveTemplate => 'Archive template';
+
+  @override
+  String get archiveTemplateMessage =>
+      'Archive this template? New stores will no longer see it.';
+
+  @override
+  String get askCopilot => 'Ask copilot';
+
+  @override
+  String get attempt => 'Attempt';
+
+  @override
+  String get attempts => 'Attempts';
+
+  @override
+  String get audience => 'Audience';
+
+  @override
+  String get automationInstallations => 'Automation installations';
+
+  @override
+  String get automationInstallationsHint =>
+      'Rules installed from platform templates.';
+
+  @override
+  String get automationTemplates => 'Automation templates';
+
+  @override
+  String get automationTemplatesHint =>
+      'Ready-made platform blueprints you can install in your store.';
+
+  @override
+  String get availability => 'Availability';
+
+  @override
+  String get baseUrl => 'Base URL';
+
+  @override
+  String get byokDisabled => 'Platform key is active';
+
+  @override
+  String get byokEnabled => 'Tenant key is active';
+
+  @override
+  String get cacheHit => 'Cache hit';
+
+  @override
+  String get cacheHits => 'Cache hits';
+
+  @override
+  String get campaigns => 'Campaigns';
+
+  @override
+  String get cancelCampaign => 'Cancel campaign';
+
+  @override
+  String get cancelCampaignMessage => 'Cancel this campaign?';
+
+  @override
+  String get cancelledAt => 'Cancelled at';
+
+  @override
+  String get capabilities => 'Capabilities';
+
+  @override
+  String get changelog => 'Changelog';
+
+  @override
+  String get channel => 'Channel';
+
+  @override
+  String get channelKey => 'Channel key';
+
+  @override
+  String get channels => 'Channels';
+
+  @override
+  String get configurationSchema => 'Configuration schema';
+
+  @override
+  String get connectionVerified => 'Connection verified';
+
+  @override
+  String get connections => 'Connections';
+
+  @override
+  String get correlationId => 'Correlation ID';
+
+  @override
+  String get countries => 'Countries';
+
+  @override
+  String get counts => 'Counts';
+
+  @override
+  String get credentialFields => 'Credential fields';
+
+  @override
+  String get credentialSource => 'Credential source';
+
+  @override
+  String get credentials => 'Credentials';
+
+  @override
+  String get currentVersion => 'Current version';
+
+  @override
+  String get dailyPerTenant => 'Daily per tenant';
+
+  @override
+  String get dailyPerUser => 'Daily per user';
+
+  @override
+  String get dataGaps => 'Data gaps';
+
+  @override
+  String get deliveredAt => 'Delivered at';
+
+  @override
+  String get deliveries => 'Deliveries';
+
+  @override
+  String get descriptionAr => 'Description (Arabic)';
+
+  @override
+  String get disableInstallation => 'Disable installation';
+
+  @override
+  String get disableInstallationMessage =>
+      'Disable this installation? It will stop running.';
+
+  @override
+  String get disconnectAccountMessage => 'Disconnect this account?';
+
+  @override
+  String get dismissRecoveryMessage => 'Dismiss this recovery opportunity?';
+
+  @override
+  String get dismissTaskMessage => 'Dismiss this task?';
+
+  @override
+  String get doNotContactMessage => 'Mark this customer as do-not-contact?';
+
+  @override
+  String get docsUrl => 'Documentation URL';
+
+  @override
+  String get draftMessageMessage => 'Create a message draft?';
+
+  @override
+  String get driver => 'Driver';
+
+  @override
+  String get durationMs => 'Duration (ms)';
+
+  @override
+  String get effectiveCopy => 'Effective copy';
+
+  @override
+  String get emailTemplates => 'Email templates';
+
+  @override
+  String get enableInstallation => 'Enable installation';
+
+  @override
+  String get enabledAt => 'Enabled at';
+
+  @override
+  String get errorCategory => 'Error category';
+
+  @override
+  String get estimatedCost => 'Estimated cost';
+
+  @override
+  String get estimatesAndRecommendations => 'Estimates and recommendations';
+
+  @override
+  String get eventId => 'Event ID';
+
+  @override
+  String get eventKey => 'Event key';
+
+  @override
+  String get eventType => 'Event type';
+
+  @override
+  String get executeAiActionMessage => 'Execute this AI action now?';
+
+  @override
+  String get factsUsed => 'Facts used';
+
+  @override
+  String get failedAt => 'Failed at';
+
+  @override
+  String get failing => 'Failing';
+
+  @override
+  String get failureReason => 'Failure reason';
+
+  @override
+  String get failureType => 'Failure type';
+
+  @override
+  String get failures => 'Failures';
+
+  @override
+  String get fallbackAttempts => 'Fallback attempts';
+
+  @override
+  String get fallbackRequests => 'Fallback requests';
+
+  @override
+  String get feature => 'Feature';
+
+  @override
+  String get fromStore => 'From store';
+
+  @override
+  String get group => 'Group';
+
+  @override
+  String get headingAr => 'Heading (Arabic)';
+
+  @override
+  String get headingEn => 'Heading (English)';
+
+  @override
+  String get httpStatus => 'HTTP status';
+
+  @override
+  String get icon => 'Icon';
+
+  @override
+  String get inputTokens => 'Input tokens';
+
+  @override
+  String get installTemplate => 'Install template';
+
+  @override
+  String get installTemplateMessage =>
+      'Install this template in your workspace?';
+
+  @override
+  String get installation => 'Installation';
+
+  @override
+  String get installations => 'Installations';
+
+  @override
+  String get installed => 'Installed';
+
+  @override
+  String get installedAt => 'Installed at';
+
+  @override
+  String get installedVersion => 'Installed version';
+
+  @override
+  String get installer => 'Installer';
+
+  @override
+  String get integrationEnabled => 'Integration enabled';
+
+  @override
+  String get integrationHealth => 'Integration health';
+
+  @override
+  String get introAr => 'Intro (Arabic)';
+
+  @override
+  String get introEn => 'Intro (English)';
+
+  @override
+  String get inventoryTransfer => 'Inventory transfer';
+
+  @override
+  String get inventoryTransferHint =>
+      'Move a product variant between two stores in the same workspace. The server checks both stores and the stock.';
+
+  @override
+  String get isMarketing => 'Marketing message';
+
+  @override
+  String get key => 'Key';
+
+  @override
+  String get kind => 'Kind';
+
+  @override
+  String get lastSyncedAt => 'Last synced';
+
+  @override
+  String get lastVerified => 'Last verified';
+
+  @override
+  String get live => 'Live';
+
+  @override
+  String get makeDefaultMessage => 'Make this the default?';
+
+  @override
+  String get markCompletedMessage => 'Mark this as completed?';
+
+  @override
+  String get maxOutputTokens => 'Max output tokens';
+
+  @override
+  String get maxRetries => 'Max retries';
+
+  @override
+  String get merchantReference => 'Merchant reference';
+
+  @override
+  String get methodCode => 'Method code';
+
+  @override
+  String get metricExplanations => 'Metric explanations';
+
+  @override
+  String get missingData => 'Missing data';
+
+  @override
+  String get model => 'Model';
+
+  @override
+  String get models => 'Models';
+
+  @override
+  String get monthlyPerTenant => 'Monthly per tenant';
+
+  @override
+  String get monthlyPlatformRequests => 'Monthly platform requests';
+
+  @override
+  String get nameAr => 'Name (Arabic)';
+
+  @override
+  String get noAiPrompts => 'No prompts yet';
+
+  @override
+  String get noAiTasks => 'No AI tasks yet';
+
+  @override
+  String get noAnswerReturned => 'The copilot returned no answer.';
+
+  @override
+  String get noAutomationInstallations => 'No automation installations';
+
+  @override
+  String get noAutomationTemplates => 'No automation templates';
+
+  @override
+  String get noCampaigns => 'No campaigns';
+
+  @override
+  String get noConnections => 'No connections';
+
+  @override
+  String get noCountries => 'No countries';
+
+  @override
+  String get noCredentials => 'No credentials';
+
+  @override
+  String get noDeliveries => 'No deliveries';
+
+  @override
+  String get noEmailTemplates => 'No email templates';
+
+  @override
+  String get noIntegrations => 'No integrations';
+
+  @override
+  String get noPaymentConnections => 'No payment connections';
+
+  @override
+  String get noPaymentConnectionsMessage =>
+      'Add a connection so the store can collect payments.';
+
+  @override
+  String get noPayments => 'No payments';
+
+  @override
+  String get noProviders => 'No providers';
+
+  @override
+  String get noVariantsToTransfer => 'No product variants to transfer';
+
+  @override
+  String get noWebhookEvents => 'No webhook events';
+
+  @override
+  String get nothingHereYet => 'Nothing here yet';
+
+  @override
+  String get notificationOperations => 'Notification operations';
+
+  @override
+  String get operations => 'Operations';
+
+  @override
+  String get outputTokens => 'Output tokens';
+
+  @override
+  String get paidAt => 'Paid at';
+
+  @override
+  String get payment => 'Payment';
+
+  @override
+  String get paymentCatalogue => 'Payment catalogue';
+
+  @override
+  String get paymentConnections => 'Payment connections';
+
+  @override
+  String get paymentHistory => 'Payment history';
+
+  @override
+  String get payments => 'Payments';
+
+  @override
+  String get period => 'Period';
+
+  @override
+  String get platformConfigured => 'Configured on the platform';
+
+  @override
+  String get processedAt => 'Processed at';
+
+  @override
+  String get productVariant => 'Product variant';
+
+  @override
+  String get promptKey => 'Prompt key';
+
+  @override
+  String get provider => 'Provider';
+
+  @override
+  String get providerCode => 'Provider code';
+
+  @override
+  String get providerCount => 'Provider count';
+
+  @override
+  String get providerCoverage => 'Provider coverage';
+
+  @override
+  String get providerKey => 'Provider key';
+
+  @override
+  String get providerMessageId => 'Provider message ID';
+
+  @override
+  String get providers => 'Providers';
+
+  @override
+  String get publicKey => 'Public key';
+
+  @override
+  String get publishCampaign => 'Publish campaign';
+
+  @override
+  String get publishCampaignMessage => 'Publish this campaign now?';
+
+  @override
+  String get publishTemplate => 'Publish template';
+
+  @override
+  String get publishTemplateMessage => 'Publish this template to stores?';
+
+  @override
+  String get questionTooLong =>
+      'Your question is too long (1000 characters max).';
+
+  @override
+  String get queuedAt => 'Queued at';
+
+  @override
+  String get recheckComplete => 'Re-check complete';
+
+  @override
+  String get recheckIntegration => 'Re-check integration';
+
+  @override
+  String get recheckIntegrationMessage => 'Re-check this integration now?';
+
+  @override
+  String get recipient => 'Recipient';
+
+  @override
+  String get recommendations => 'Recommendations';
+
+  @override
+  String get refundAmount => 'Refund amount';
+
+  @override
+  String get refundPayment => 'Refund payment';
+
+  @override
+  String get refundReason => 'Refund reason';
+
+  @override
+  String get refundSubmitted => 'Refund submitted';
+
+  @override
+  String get rejectAiActionMessage => 'Reject this AI action?';
+
+  @override
+  String get removed => 'Removed';
+
+  @override
+  String get requests => 'Requests';
+
+  @override
+  String get restoreTemplate => 'Restore template';
+
+  @override
+  String get restoreTemplateMessage => 'Restore this template\'s default copy?';
+
+  @override
+  String get retryDelivery => 'Retry delivery';
+
+  @override
+  String get retryDeliveryMessage => 'Retry delivering this message?';
+
+  @override
+  String get revokeConnectionMessage =>
+      'Revoke this connection? The store will stop using it.';
+
+  @override
+  String get rotateCredential => 'Rotate credential';
+
+  @override
+  String get routes => 'Routes';
+
+  @override
+  String get rule => 'Rule';
+
+  @override
+  String get sandbox => 'Sandbox';
+
+  @override
+  String get scheduleCampaign => 'Schedule campaign';
+
+  @override
+  String get scheduledAt => 'Scheduled at';
+
+  @override
+  String get secretKey => 'Secret key';
+
+  @override
+  String get seedAiTasks => 'Seed AI tasks';
+
+  @override
+  String get seedAiTasksMessage => 'Create the missing default AI tasks?';
+
+  @override
+  String get selectPeriod => 'Select period';
+
+  @override
+  String get sendTestEmail => 'Send test email';
+
+  @override
+  String get sentAt => 'Sent at';
+
+  @override
+  String get signatureValid => 'Signature valid';
+
+  @override
+  String get stockTransferred => 'Stock transferred';
+
+  @override
+  String get subjectAr => 'Subject (Arabic)';
+
+  @override
+  String get subjectEn => 'Subject (English)';
+
+  @override
+  String get submitForApprovalMessage => 'Submit for approval?';
+
+  @override
+  String get suspendTenantMessage => 'Suspend this tenant?';
+
+  @override
+  String get syncPayment => 'Sync payment';
+
+  @override
+  String get taskKey => 'Task key';
+
+  @override
+  String get temperature => 'Temperature';
+
+  @override
+  String get template => 'Template';
+
+  @override
+  String get templateActionsHint =>
+      'A JSON array of actions, for example the send_notification type.';
+
+  @override
+  String get templateCategoryHint =>
+      'One of the template categories the server defines.';
+
+  @override
+  String get templateCustomized => 'Template customised';
+
+  @override
+  String get templateKey => 'Template key';
+
+  @override
+  String get templateKeyHint => 'A unique lowercase identifier with dashes.';
+
+  @override
+  String get templateTriggerHint =>
+      'A trigger from the automation trigger list.';
+
+  @override
+  String get timeoutSeconds => 'Timeout (seconds)';
+
+  @override
+  String get toStore => 'To store';
+
+  @override
+  String get toggleCountry => 'Toggle country';
+
+  @override
+  String get toggleCountryMessage => 'Change whether this country is active?';
+
+  @override
+  String get toggleMethod => 'Toggle method';
+
+  @override
+  String get toggleMethodMessage =>
+      'Change whether this payment method is active?';
+
+  @override
+  String get tokens => 'Tokens';
+
+  @override
+  String get transferNeedsTwoStores => 'Two stores are required';
+
+  @override
+  String get transferNeedsTwoStoresMessage =>
+      'Create a second store before transferring stock between stores.';
+
+  @override
+  String get transferStock => 'Transfer stock';
+
+  @override
+  String get transferStockConfirm =>
+      'Move this quantity between the two stores?';
+
+  @override
+  String get unprocessedEvents => 'Unprocessed events';
+
+  @override
+  String get unregisteredProviders => 'Unregistered providers';
+
+  @override
+  String get variables => 'Variables';
+
+  @override
+  String get verifyAccountMessage => 'Verify this account?';
+
+  @override
+  String get verifyConnection => 'Verify connection';
+
+  @override
+  String get versions => 'Versions';
+
+  @override
+  String get webhookDocsUrl => 'Webhook documentation URL';
+
+  @override
+  String get webhookEvents => 'Webhook events';
+
+  @override
+  String get webhookSecret => 'Webhook secret';
+
+  @override
+  String get yourQuestion => 'Your question';
 }

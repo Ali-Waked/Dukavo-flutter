@@ -21,9 +21,18 @@ class _FakeAuthRepository implements AuthRepository {
   Future<Session?> restoreSession() async => null;
 
   @override
-  Future<Session> login({required String email, required String password}) {
+  Future<LoginOutcome> login(
+      {required String email, required String password}) {
     throw UnimplementedError();
   }
+
+  @override
+  Future<Session> completeTwoFactor({
+    required String challengeToken,
+    String? code,
+    String? recoveryCode,
+  }) =>
+      throw UnimplementedError();
 
   @override
   Future<void> logout() async {}
@@ -36,6 +45,11 @@ class _FakeAuthRepository implements AuthRepository {
 
   @override
   Future<Session> switchTenant(String slug) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Session> enterPlatformMode() {
     throw UnimplementedError();
   }
 

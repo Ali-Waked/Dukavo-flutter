@@ -661,6 +661,117 @@ final platformNewsletterSpec = ResourceSpec(
   emptyTitleKey: 'noNewsletters',
 );
 
+final platformAutomationTemplateSpec = ResourceSpec(
+  titleKey: 'automationTemplates',
+  path: ApiPaths.platformAutomationTemplates,
+  icon: Icons.bolt_outlined,
+  fields: const [
+    ResourceFieldSpec(key: 'name', labelKey: 'name', required: true),
+    ResourceFieldSpec(key: 'key', labelKey: 'key', helperKey: 'templateKeyHint'),
+    ResourceFieldSpec(
+      key: 'description',
+      labelKey: 'description',
+      type: ResourceFieldType.multiline,
+      maxLines: 4,
+      required: true,
+    ),
+    ResourceFieldSpec(
+      key: 'category',
+      labelKey: 'category',
+      required: true,
+      helperKey: 'templateCategoryHint',
+    ),
+    ResourceFieldSpec(
+      key: 'trigger',
+      labelKey: 'trigger',
+      required: true,
+      helperKey: 'templateTriggerHint',
+    ),
+    ResourceFieldSpec(
+      key: 'conditions',
+      labelKey: 'conditions',
+      type: ResourceFieldType.json,
+    ),
+    ResourceFieldSpec(
+      key: 'actions',
+      labelKey: 'actions',
+      type: ResourceFieldType.json,
+      required: true,
+      helperKey: 'templateActionsHint',
+    ),
+    ResourceFieldSpec(
+      key: 'configuration_schema',
+      labelKey: 'configurationSchema',
+      type: ResourceFieldType.json,
+    ),
+    ResourceFieldSpec(key: 'icon', labelKey: 'icon'),
+    ResourceFieldSpec(
+      key: 'sort_order',
+      labelKey: 'sortOrder',
+      type: ResourceFieldType.integer,
+    ),
+    ResourceFieldSpec(key: 'version', labelKey: 'version'),
+    ResourceFieldSpec(key: 'changelog', labelKey: 'changelog'),
+    ResourceFieldSpec(
+      key: 'status',
+      labelKey: 'status',
+      showInForm: false,
+    ),
+    ResourceFieldSpec(
+      key: 'current_version',
+      labelKey: 'currentVersion',
+      showInForm: false,
+    ),
+    ResourceFieldSpec(
+      key: 'installations_count',
+      labelKey: 'installations',
+      type: ResourceFieldType.integer,
+      showInForm: false,
+    ),
+  ],
+  title: (resource) => resource.text('name', fallback: '—'),
+  subtitle: (resource) => [
+    resource.text('trigger_label', fallback: resource.text('trigger')),
+    resource.text('category'),
+  ].where((part) => part.isNotEmpty).join(' · '),
+  status: (resource) => resource.text('status'),
+  detailRoute: (resource) => RoutePaths.platformAutomationTemplate(resource.id),
+  canCreate: true,
+  createPath: RoutePaths.platformCreateAutomationTemplate,
+  createLabelKey: 'createAutomationTemplate',
+  canEdit: true,
+  editPath: (resource) =>
+      RoutePaths.platformAutomationTemplateEdit(resource.id),
+  canDelete: true,
+  deletePath: (resource) =>
+      '${ApiPaths.platformAutomationTemplates}/${resource.id}',
+  actions: [
+    ResourceActionSpec(
+      labelKey: 'publishTemplate',
+      path: (resource) => ApiPaths.platformAutomationTemplatePublish(resource.id),
+      confirmKey: 'publishTemplateMessage',
+      icon: Icons.publish,
+      visible: (resource) => resource.text('status') != 'active',
+    ),
+    ResourceActionSpec(
+      labelKey: 'archiveTemplate',
+      path: (resource) => ApiPaths.platformAutomationTemplateArchive(resource.id),
+      confirmKey: 'archiveTemplateMessage',
+      icon: Icons.archive_outlined,
+      destructive: true,
+      visible: (resource) => resource.text('status') == 'active',
+    ),
+    ResourceActionSpec(
+      labelKey: 'restoreTemplate',
+      path: (resource) => ApiPaths.platformAutomationTemplateRestore(resource.id),
+      icon: Icons.restore,
+      visible: (resource) => resource.text('status') == 'archived',
+    ),
+  ],
+  emptyIcon: Icons.bolt_outlined,
+  emptyTitleKey: 'noAutomationTemplates',
+);
+
 /// Form-only specs that reuse the same field descriptions.
 final platformFaqFormSpec = platformFaqSpec;
 final platformNewsletterFormSpec = platformNewsletterSpec;

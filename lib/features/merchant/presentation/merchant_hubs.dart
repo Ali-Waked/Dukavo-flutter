@@ -166,6 +166,20 @@ class MerchantAutomationHubScreen extends ConsumerWidget {
         path: RoutePaths.automationTasks,
         visible: permissions.canViewAutomation,
       ),
+      _HubEntry(
+        labelKey: 'automationTemplates',
+        descriptionKey: 'automationTemplatesHint',
+        icon: Icons.library_books_outlined,
+        path: RoutePaths.automationTemplates,
+        visible: permissions.canViewAutomation,
+      ),
+      _HubEntry(
+        labelKey: 'automationInstallations',
+        descriptionKey: 'automationInstallationsHint',
+        icon: Icons.rule_folder_outlined,
+        path: RoutePaths.automationInstallations,
+        visible: permissions.canViewAutomation,
+      ),
     ];
 
     return Scaffold(

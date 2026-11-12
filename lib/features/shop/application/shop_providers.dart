@@ -47,17 +47,21 @@ final shopRepositoryProvider = Provider<ShopRepository>((ref) {
 
 final shopInfoProvider =
     FutureProvider.autoDispose.family<StorefrontInfo, ShopRef>((ref, shop) {
+  // Store copy and direction are language-specific; a switch must re-fetch.
+  ref.watch(effectiveLocaleProvider);
   return ref.watch(shopRepositoryProvider).info(shop.tenant, shop.store);
 });
 
 final shopCategoriesProvider =
     FutureProvider.autoDispose.family<List<ShopCategory>, ShopRef>((ref, shop) {
+  ref.watch(effectiveLocaleProvider);
   return ref.watch(shopRepositoryProvider).categories(shop.tenant, shop.store);
 });
 
 final shopProductProvider = FutureProvider.autoDispose
     .family<ShopProduct, (ShopRef, String)>((ref, args) {
   final (shop, slug) = args;
+  ref.watch(effectiveLocaleProvider);
   return ref
       .watch(shopRepositoryProvider)
       .product(shop.tenant, shop.store, slug);

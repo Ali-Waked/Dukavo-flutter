@@ -29,6 +29,7 @@ class ShopProductScreen extends ConsumerStatefulWidget {
 class _ShopProductScreenState extends ConsumerState<ShopProductScreen> {
   int? _variantId;
   int _quantity = 1;
+  int _imageIndex = 0;
   final _pageController = PageController();
 
   @override
@@ -93,6 +94,8 @@ class _ShopProductScreenState extends ConsumerState<ShopProductScreen> {
                       PageView.builder(
                         controller: _pageController,
                         itemCount: product.images.length,
+                        onPageChanged: (index) =>
+                            setState(() => _imageIndex = index),
                         itemBuilder: (context, index) => ClipRRect(
                           borderRadius: BorderRadius.circular(AppRadius.xl),
                           child: CachedNetworkImage(
@@ -154,6 +157,17 @@ class _ShopProductScreenState extends ConsumerState<ShopProductScreen> {
                     color: context.dukavo.textMuted,
                   ),
                 ),
+              if (_imageIndex < product.images.length &&
+                  product.images[_imageIndex].caption != null) ...[
+                const SizedBox(height: 6),
+                Text(
+                  product.images[_imageIndex].caption!,
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: context.dukavo.textMuted,
+                  ),
+                ),
+              ],
               const SizedBox(height: AppSpacing.md),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -190,6 +204,15 @@ class _ShopProductScreenState extends ConsumerState<ShopProductScreen> {
                   color: context.scheme.primary,
                 ),
               ),
+              if (product.shortDescription?.isNotEmpty == true) ...[
+                const SizedBox(height: 8),
+                Text(
+                  product.shortDescription!,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
               if (selected != null && selected.sku != null)
                 Text(
                   '${context.tr('sku')}: ${selected.sku}',
@@ -225,6 +248,16 @@ class _ShopProductScreenState extends ConsumerState<ShopProductScreen> {
                       ),
                   ],
                 ),
+                if (selected?.description?.isNotEmpty == true) ...[
+                  const SizedBox(height: 8),
+                  Text(
+                    selected!.description!,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: context.dukavo.textMuted,
+                      height: 1.5,
+                    ),
+                  ),
+                ],
               ],
               const SizedBox(height: AppSpacing.md),
               Row(
@@ -262,6 +295,142 @@ class _ShopProductScreenState extends ConsumerState<ShopProductScreen> {
                   style: theme.textTheme.bodyMedium?.copyWith(height: 1.6),
                 ),
               ],
+              if (product.highlights.isNotEmpty) ...[
+                const SizedBox(height: AppSpacing.lg),
+                Text(
+                  context.tr('highlights'),
+                  style: theme.textTheme.titleSmall,
+                ),
+                const SizedBox(height: 6),
+                for (final highlight in product.highlights)
+                  Padding(
+                    padding: const EdgeInsetsDirectional.only(bottom: 4),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Icon(
+                          Icons.check_circle_outline,
+                          size: 16,
+                          color: context.scheme.primary,
+                        ),
+                        const SizedBox(width: 6),
+                        Expanded(
+                          child: Text(
+                            highlight,
+                            style: theme.textTheme.bodyMedium,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+              ],
+              if (product.features.isNotEmpty) ...[
+                const SizedBox(height: AppSpacing.lg),
+                Text(
+                  context.tr('features'),
+                  style: theme.textTheme.titleSmall,
+                ),
+                const SizedBox(height: 6),
+                for (final feature in product.features)
+                  Padding(
+                    padding: const EdgeInsetsDirectional.only(bottom: 4),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text('• '),
+                        Expanded(
+                          child: Text(
+                            feature,
+                            style: theme.textTheme.bodyMedium,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+              ],
+              if (product.specifications.isNotEmpty) ...[
+                const SizedBox(height: AppSpacing.lg),
+                Text(
+                  context.tr('specifications'),
+                  style: theme.textTheme.titleSmall,
+                ),
+                const SizedBox(height: 6),
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: context.dukavo.border),
+                    borderRadius: BorderRadius.circular(AppRadius.lg),
+                  ),
+                  child: Column(
+                    children: [
+                      for (var index = 0;
+                          index < product.specifications.length;
+                          index++)
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 8,
+                          ),
+                          decoration: BoxDecoration(
+                            color: index.isEven
+                                ? context.dukavo.surfaceHigh
+                                : null,
+                            border: index == 0
+                                ? null
+                                : Border(
+                                    top: BorderSide(
+                                      color: context.dukavo.border,
+                                    ),
+                                  ),
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                flex: 2,
+                                child: Text(
+                                  product.specifications[index].label,
+                                  style: theme.textTheme.bodySmall?.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                flex: 3,
+                                child: Text(
+                                  product.specifications[index].value,
+                                  style: theme.textTheme.bodySmall?.copyWith(
+                                    color: context.dukavo.textMuted,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ],
+              if (product.tags.isNotEmpty) ...[
+                const SizedBox(height: AppSpacing.md),
+                Wrap(
+                  spacing: 6,
+                  runSpacing: 6,
+                  children: [
+                    for (final tag in product.tags)
+                      Chip(
+                        label: Text(tag),
+                        visualDensity: VisualDensity.compact,
+                      ),
+                  ],
+                ),
+              ],
+              if (product.description?.isNotEmpty == true ||
+                  product.highlights.isNotEmpty ||
+                  product.features.isNotEmpty ||
+                  product.specifications.isNotEmpty ||
+                  product.tags.isNotEmpty)
+                const SizedBox(height: AppSpacing.lg),
             ],
           ),
         ),

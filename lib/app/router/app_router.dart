@@ -8,6 +8,7 @@ import '../../core/resources/resource_screens.dart';
 import '../../core/resources/resource_spec.dart';
 import '../../core/widgets/app_widgets.dart';
 import '../../features/analytics/presentation/analytics_screen.dart';
+import '../../features/ai_settings/presentation/ai_settings_screen.dart';
 import '../../features/auth/application/auth_controller.dart';
 import '../../features/auth/presentation/forgot_password_screen.dart';
 import '../../features/auth/presentation/login_screen.dart';
@@ -21,10 +22,15 @@ import '../../features/conversations/presentation/conversations_screen.dart';
 import '../../features/customers/presentation/customer_crm_screen.dart';
 import '../../features/customers/presentation/customers_screen.dart';
 import '../../features/dashboard/presentation/dashboard_screen.dart';
+import '../../features/help/domain/help_models.dart';
+import '../../features/help/presentation/support_screens.dart';
 import '../../features/inventory/presentation/inventory_screen.dart';
+import '../../features/integrations/presentation/integrations_screen.dart';
 import '../../features/marketing/presentation/public_screens.dart';
 import '../../features/marketing/presentation/public_shell.dart';
 import '../../features/merchant/presentation/inventory_intelligence_screen.dart';
+import '../../features/merchant/presentation/inventory_transfer_screen.dart';
+import '../../features/merchant/presentation/merchant_ai_screens.dart';
 import '../../features/merchant/presentation/merchant_hubs.dart';
 import '../../features/merchant/presentation/merchant_specs.dart';
 import '../../features/merchant/presentation/profit_screen.dart';
@@ -33,17 +39,30 @@ import '../../features/notifications/domain/notification_domain.dart';
 import '../../features/notifications/presentation/notification_detail_screen.dart';
 import '../../features/notifications/presentation/notifications_screen.dart';
 import '../../features/orders/presentation/orders_screen.dart';
+import '../../features/payments/presentation/merchant_payments_screen.dart';
 import '../../features/payments/presentation/payment_settings_screen.dart';
+import '../../features/platform/presentation/platform_ai_admin_screen.dart';
 import '../../features/platform/presentation/platform_dashboard_screen.dart';
+import '../../features/platform/presentation/platform_integrations_screen.dart';
 import '../../features/platform/presentation/platform_marketing_screen.dart';
+import '../../features/platform/presentation/platform_notifications_screen.dart';
+import '../../features/platform/presentation/platform_payments_screen.dart';
 import '../../features/platform/presentation/platform_more_screen.dart';
 import '../../features/platform/presentation/platform_shell.dart';
 import '../../features/platform/presentation/platform_specs.dart';
+import '../../features/platform_settings/presentation/platform_settings_features_screen.dart';
+import '../../features/platform_settings/presentation/platform_settings_health_screen.dart';
+import '../../features/platform_settings/presentation/platform_settings_history_screen.dart';
+import '../../features/platform_settings/presentation/platform_settings_infrastructure_screen.dart';
+import '../../features/platform_settings/presentation/platform_settings_screen.dart';
+import '../../features/platform_settings/presentation/platform_settings_section_screen.dart';
 import '../../features/products/presentation/product_detail_screen.dart';
 import '../../features/products/presentation/product_form_screen.dart';
 import '../../features/products/presentation/product_images_screen.dart';
 import '../../features/products/presentation/products_screen.dart';
+import '../../features/profile/presentation/onboarding_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
+import '../../features/profile/presentation/security_screen.dart';
 import '../../features/settings/presentation/settings_screen.dart';
 import '../../features/shipping/presentation/shipping_zones_screen.dart';
 import '../../features/shop/application/shop_providers.dart';
@@ -107,8 +126,13 @@ bool _isPublicPath(String path) {
 /// Screens that belong to the person, not to a workspace or the platform.
 bool _isPersonalPath(String path) {
   return path.startsWith(RoutePaths.profile) ||
+      path.startsWith(RoutePaths.security) ||
+      path.startsWith(RoutePaths.welcome) ||
       path.startsWith(RoutePaths.settings) ||
-      path.startsWith(RoutePaths.notifications);
+      path.startsWith(RoutePaths.notifications) ||
+      // The Help Center is readable by every signed-in role: merchants read
+      // the merchant tier, platform operators read everything.
+      path.startsWith(RoutePaths.support);
 }
 
 String? _permissionRedirect(Permissions permissions, String path) {
@@ -162,6 +186,10 @@ String? _permissionRedirect(Permissions permissions, String path) {
   if (path.startsWith(RoutePaths.paymentSettings)) {
     return permissions.canViewPayments ? null : RoutePaths.noAccess;
   }
+  if (path.startsWith(RoutePaths.paymentConnections) ||
+      path.startsWith('/payments/history')) {
+    return permissions.canViewPayments ? null : RoutePaths.noAccess;
+  }
 
   // Merchant workspace additions.
   if (path.startsWith(RoutePaths.team)) {
@@ -178,7 +206,12 @@ String? _permissionRedirect(Permissions permissions, String path) {
   if (path.startsWith(RoutePaths.whatsapp)) {
     return permissions.canViewWhatsapp ? null : RoutePaths.noAccess;
   }
-  if (path.startsWith(RoutePaths.aiActions)) {
+  if (path.startsWith(RoutePaths.integrations)) {
+    return permissions.canViewIntegrations ? null : RoutePaths.noAccess;
+  }
+  if (path.startsWith(RoutePaths.aiActions) ||
+      path.startsWith(RoutePaths.aiCopilot) ||
+      path.startsWith(RoutePaths.aiInsights)) {
     return permissions.canUseAi ? null : RoutePaths.noAccess;
   }
   if (path.startsWith(RoutePaths.automations)) {
@@ -257,7 +290,7 @@ String? _redirect(Ref ref, GoRouterState state) {
 
     case AuthStatus.authenticated:
       final permissions = ref.read(permissionsProvider);
-      final canUsePlatform = session?.isPlatformUser ?? false;
+      final canUsePlatform = session?.canUsePlatform ?? false;
       if (onSetup) return homePathFor(permissions, platformMode: false);
       if (onAuth) {
         return sanitizeRedirect(state.uri.queryParameters['redirect']) ??
@@ -266,6 +299,10 @@ String? _redirect(Ref ref, GoRouterState state) {
       if (onVerify || public || path == RoutePaths.noAccess) return null;
       if (path.startsWith(RoutePaths.platform)) {
         if (!canUsePlatform) return RoutePaths.noAccess;
+        // A platform route only renders in the platform context. While a
+        // merchant workspace is active the switcher must move the account
+        // there first, so platform requests never carry a tenant header.
+        if (session?.hasTenant ?? false) return homePathFor(permissions);
         return path == RoutePaths.platform
             ? RoutePaths.platformDashboard
             : null;
@@ -509,8 +546,39 @@ List<RouteBase> _routes() {
       builder: (context, state) => const ProfileScreen(),
     ),
     GoRoute(
+      path: RoutePaths.security,
+      builder: (context, state) => const SecurityScreen(),
+    ),
+    GoRoute(
+      path: RoutePaths.welcome,
+      builder: (context, state) => const PreferencesOnboardingPage(),
+    ),
+    GoRoute(
       path: RoutePaths.settings,
       builder: (context, state) => const SettingsScreen(),
+    ),
+
+    // The Help Center: readable by every signed-in account, widened to the
+    // reader's tier. `?q=` pre-fills the search for contextual deep links.
+    GoRoute(
+      path: RoutePaths.support,
+      builder: (context, state) => SupportScreen(
+        initialQuery: state.uri.queryParameters['q'],
+      ),
+    ),
+    GoRoute(
+      path: '/support/categories/:slug',
+      builder: (context, state) => SupportCategoryScreen(
+        slug: state.pathParameters['slug'] ?? '',
+        category:
+            state.extra is HelpCategory ? state.extra! as HelpCategory : null,
+      ),
+    ),
+    GoRoute(
+      path: '/support/articles/:slug',
+      builder: (context, state) => SupportArticleScreen(
+        slug: state.pathParameters['slug'] ?? '',
+      ),
     ),
 
     /*
@@ -625,6 +693,14 @@ List<RouteBase> _routes() {
       ),
     ),
     GoRoute(
+      path: RoutePaths.aiSettings,
+      builder: (context, state) => const AiSettingsScreen(),
+    ),
+    GoRoute(
+      path: RoutePaths.integrations,
+      builder: (context, state) => const IntegrationsScreen(),
+    ),
+    GoRoute(
       path: RoutePaths.automations,
       builder: (context, state) => const MerchantAutomationHubScreen(),
     ),
@@ -672,6 +748,52 @@ List<RouteBase> _routes() {
         state,
         _idOf(state),
       ),
+    ),
+    GoRoute(
+      path: RoutePaths.automationTemplates,
+      builder: (context, state) =>
+          ResourceListScreen(spec: automationTemplateSpec),
+    ),
+    GoRoute(
+      path: '/automations/templates/:id',
+      builder: (context, state) => _resourceDetail(
+        automationTemplateSpec,
+        state,
+        _idOf(state),
+      ),
+    ),
+    GoRoute(
+      path: RoutePaths.automationInstallations,
+      builder: (context, state) =>
+          ResourceListScreen(spec: automationInstallationSpec),
+    ),
+    GoRoute(
+      path: '/automations/installations/:id',
+      builder: (context, state) => _resourceDetail(
+        automationInstallationSpec,
+        state,
+        _idOf(state),
+      ),
+    ),
+    GoRoute(
+      path: RoutePaths.aiCopilot,
+      builder: (context, state) => const MerchantCopilotScreen(),
+    ),
+    GoRoute(
+      path: RoutePaths.aiInsights,
+      builder: (context, state) => const MerchantInsightsScreen(),
+    ),
+    GoRoute(
+      path: RoutePaths.inventoryTransfer,
+      builder: (context, state) => const InventoryTransferScreen(),
+    ),
+    GoRoute(
+      path: RoutePaths.paymentConnections,
+      builder: (context, state) => const MerchantPaymentsScreen(),
+    ),
+    GoRoute(
+      path: RoutePaths.paymentHistory,
+      builder: (context, state) => const MerchantPaymentsScreen(),
     ),
     GoRoute(
       path: RoutePaths.recovery,
@@ -749,7 +871,38 @@ List<RouteBase> _routes() {
           path: RoutePaths.platformMore,
           builder: (context, state) => const PlatformMoreScreen(),
         ),
+        GoRoute(
+          path: RoutePaths.platformSettings,
+          builder: (context, state) => const PlatformSettingsScreen(),
+        ),
       ],
+    ),
+    /*
+     * Settings sections are full-screen editors. They sit outside the shell so
+     * the save bar owns the bottom edge and a long form gets the whole height.
+     */
+    GoRoute(
+      path: RoutePaths.platformSettingsFeatures,
+      builder: (context, state) => const PlatformSettingsFeaturesScreen(),
+    ),
+    GoRoute(
+      path: RoutePaths.platformSettingsHealth,
+      builder: (context, state) => const PlatformSettingsHealthScreen(),
+    ),
+    GoRoute(
+      path: RoutePaths.platformSettingsHistory,
+      builder: (context, state) => const PlatformSettingsHistoryScreen(),
+    ),
+    GoRoute(
+      path: RoutePaths.platformSettingsInfrastructure,
+      builder: (context, state) =>
+          const PlatformSettingsInfrastructureScreen(),
+    ),
+    GoRoute(
+      path: '/platform/settings/:category',
+      builder: (context, state) => PlatformSettingsSectionScreen(
+        category: state.pathParameters['category'] ?? 'general',
+      ),
     ),
     GoRoute(
       path: RoutePaths.platformCreateTenant,
@@ -952,6 +1105,48 @@ List<RouteBase> _routes() {
       path: '/platform/newsletters/:id',
       builder: (context, state) => _resourceDetail(
         platformNewsletterSpec,
+        state,
+        _idOf(state),
+      ),
+    ),
+    GoRoute(
+      path: RoutePaths.platformAiAdmin,
+      builder: (context, state) => const PlatformAiAdminScreen(),
+    ),
+    GoRoute(
+      path: RoutePaths.platformPayments,
+      builder: (context, state) => const PlatformPaymentsScreen(),
+    ),
+    GoRoute(
+      path: RoutePaths.platformIntegrations,
+      builder: (context, state) => const PlatformIntegrationsScreen(),
+    ),
+    GoRoute(
+      path: RoutePaths.platformNotifications,
+      builder: (context, state) => const PlatformNotificationsScreen(),
+    ),
+    GoRoute(
+      path: RoutePaths.platformAutomationTemplates,
+      builder: (context, state) =>
+          ResourceListScreen(spec: platformAutomationTemplateSpec),
+    ),
+    GoRoute(
+      path: RoutePaths.platformCreateAutomationTemplate,
+      builder: (context, state) =>
+          _resourceForm(platformAutomationTemplateSpec, state),
+    ),
+    GoRoute(
+      path: '/platform/automation-templates/:id/edit',
+      builder: (context, state) => _resourceForm(
+        platformAutomationTemplateSpec,
+        state,
+        id: _idOf(state),
+      ),
+    ),
+    GoRoute(
+      path: '/platform/automation-templates/:id',
+      builder: (context, state) => _resourceDetail(
+        platformAutomationTemplateSpec,
         state,
         _idOf(state),
       ),

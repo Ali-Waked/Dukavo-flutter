@@ -27,11 +27,20 @@ class _FakeAuthRepository implements AuthRepository {
   Future<Session?> restoreSession() async => null;
 
   @override
-  Future<Session> login({required String email, required String password}) async {
+  Future<LoginOutcome> login(
+      {required String email, required String password}) async {
     final result = session;
     if (result == null) throw UnimplementedError('No session configured.');
-    return result;
+    return LoginOutcome.session(result);
   }
+
+  @override
+  Future<Session> completeTwoFactor({
+    required String challengeToken,
+    String? code,
+    String? recoveryCode,
+  }) =>
+      throw UnimplementedError();
 
   @override
   Future<void> logout() async {}
@@ -44,6 +53,13 @@ class _FakeAuthRepository implements AuthRepository {
 
   @override
   Future<Session> switchTenant(String slug) => throw UnimplementedError();
+
+  @override
+  Future<Session> enterPlatformMode() async {
+    final result = session;
+    if (result == null) throw UnimplementedError('No session configured.');
+    return result;
+  }
 
   @override
   Future<Session> provisionTenant({
@@ -162,8 +178,7 @@ void main() {
         GoRoute(
           path: RoutePaths.login,
           builder: (context, state) => LoginScreen(
-            redirect:
-                sanitizeRedirect(state.uri.queryParameters['redirect']),
+            redirect: sanitizeRedirect(state.uri.queryParameters['redirect']),
           ),
         ),
         GoRoute(
@@ -211,8 +226,7 @@ void main() {
     expect(find.text('Orders destination'), findsOneWidget);
   });
 
-  testWidgets('the login screen can return to the public site',
-      (tester) async {
+  testWidgets('the login screen can return to the public site', (tester) async {
     final controller = _TestAuthController(_FakeAuthRepository());
     final router = GoRouter(
       initialLocation: RoutePaths.login,

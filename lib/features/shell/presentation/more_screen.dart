@@ -36,6 +36,12 @@ class MoreScreen extends ConsumerWidget {
             path: RoutePaths.inventory,
             visible: permissions.canViewInventory,
           ),
+          _MoreEntry(
+            labelKey: 'inventoryTransfer',
+            icon: Icons.swap_horiz_rounded,
+            path: RoutePaths.inventoryTransfer,
+            visible: permissions.canViewInventory,
+          ),
         ],
       ),
       _MoreGroup(
@@ -57,6 +63,12 @@ class MoreScreen extends ConsumerWidget {
             labelKey: 'paymentSettings',
             icon: Icons.payments_outlined,
             path: RoutePaths.paymentSettings,
+            visible: permissions.canViewPayments,
+          ),
+          _MoreEntry(
+            labelKey: 'payments',
+            icon: Icons.receipt_long_outlined,
+            path: RoutePaths.paymentConnections,
             visible: permissions.canViewPayments,
           ),
         ],
@@ -92,6 +104,18 @@ class MoreScreen extends ConsumerWidget {
             icon: Icons.auto_graph_outlined,
             path: RoutePaths.inventoryIntelligence,
             visible: permissions.canViewInventory,
+          ),
+          _MoreEntry(
+            labelKey: 'aiCopilot',
+            icon: Icons.auto_awesome_outlined,
+            path: RoutePaths.aiCopilot,
+            visible: permissions.canUseAi,
+          ),
+          _MoreEntry(
+            labelKey: 'aiInsights',
+            icon: Icons.lightbulb_outline_rounded,
+            path: RoutePaths.aiInsights,
+            visible: permissions.canUseAi,
           ),
           _MoreEntry(
             labelKey: 'notifications',
@@ -134,6 +158,12 @@ class MoreScreen extends ConsumerWidget {
             path: RoutePaths.whatsapp,
             visible: permissions.canViewWhatsapp,
           ),
+          _MoreEntry(
+            labelKey: 'integrations',
+            icon: Icons.hub_outlined,
+            path: RoutePaths.integrations,
+            visible: permissions.canViewIntegrations,
+          ),
         ],
       ),
       _MoreGroup(
@@ -153,11 +183,22 @@ class MoreScreen extends ConsumerWidget {
                 permissions.canViewRoles ||
                 permissions.canViewAudit,
           ),
+          _MoreEntry(
+            labelKey: 'aiSettings',
+            icon: Icons.smart_toy_outlined,
+            path: RoutePaths.aiSettings,
+            visible: permissions.canViewAiSettings,
+          ),
         ],
       ),
       const _MoreGroup(
         titleKey: 'about',
         entries: [
+          _MoreEntry(
+            labelKey: 'helpCenter',
+            icon: Icons.help_outline_rounded,
+            path: RoutePaths.support,
+          ),
           _MoreEntry(
             labelKey: 'aboutDukavo',
             icon: Icons.public_outlined,
@@ -199,6 +240,45 @@ class MoreScreen extends ConsumerWidget {
             onSwitch: () => showTenantSwitcher(context, ref),
           ),
           const SizedBox(height: AppSpacing.sm),
+          if (session?.canUsePlatform ?? false) ...[
+            AppCard(
+              padding: EdgeInsets.zero,
+              onTap: () async {
+                final ok = await ref
+                    .read(authControllerProvider.notifier)
+                    .enterPlatformMode();
+                if (!context.mounted) return;
+                if (!ok) {
+                  final message =
+                      ref.read(authControllerProvider).errorMessage ??
+                          context.tr('errorGeneric');
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text(message)));
+                  return;
+                }
+                context.go(RoutePaths.platformDashboard);
+              },
+              child: ListTile(
+                leading: Container(
+                  width: 38,
+                  height: 38,
+                  decoration: BoxDecoration(
+                    color: context.scheme.primaryContainer,
+                    borderRadius: BorderRadius.circular(AppRadius.xs),
+                  ),
+                  child: Icon(
+                    Icons.space_dashboard_outlined,
+                    size: 20,
+                    color: context.scheme.onPrimaryContainer,
+                  ),
+                ),
+                title: Text(context.tr('platformConsole')),
+                subtitle: Text(context.tr('platformOverview')),
+                trailing: const Icon(Icons.chevron_right_rounded),
+              ),
+            ),
+            const SizedBox(height: AppSpacing.sm),
+          ],
           AppCard(
             padding: EdgeInsets.zero,
             onTap: () => showTenantSwitcher(context, ref),

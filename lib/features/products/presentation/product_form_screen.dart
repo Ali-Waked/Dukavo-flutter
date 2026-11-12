@@ -27,6 +27,14 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
   final _price = TextEditingController();
   final _cost = TextEditingController();
   final _description = TextEditingController();
+  final _shortDescription = TextEditingController();
+  final _highlights = TextEditingController();
+  final _features = TextEditingController();
+  final _specifications = TextEditingController();
+  final _tags = TextEditingController();
+  final _seoTitle = TextEditingController();
+  final _seoDescription = TextEditingController();
+  final _seoKeywords = TextEditingController();
 
   String _status = 'active';
   int? _categoryId;
@@ -57,6 +65,16 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
         _price.text = product.price.toString();
         _cost.text = product.cost.toString();
         _description.text = product.description ?? '';
+        _shortDescription.text = product.shortDescription ?? '';
+        _highlights.text = product.highlights.join('\n');
+        _features.text = product.features.join('\n');
+        _specifications.text = product.specifications
+            .map((row) => '${row.label}: ${row.value}')
+            .join('\n');
+        _tags.text = product.tags.join(', ');
+        _seoTitle.text = product.seoTitle ?? '';
+        _seoDescription.text = product.seoDescription ?? '';
+        _seoKeywords.text = product.seoKeywords ?? '';
         _status = product.status;
         _categoryId = product.categoryId;
         _isTaxable = product.isTaxable;
@@ -78,7 +96,43 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
     _price.dispose();
     _cost.dispose();
     _description.dispose();
+    _shortDescription.dispose();
+    _highlights.dispose();
+    _features.dispose();
+    _specifications.dispose();
+    _tags.dispose();
+    _seoTitle.dispose();
+    _seoDescription.dispose();
+    _seoKeywords.dispose();
     super.dispose();
+  }
+
+  List<String> _lines(String value) => value
+      .split(RegExp(r'\r?\n'))
+      .map((line) => line.trim())
+      .where((line) => line.isNotEmpty)
+      .toList(growable: false);
+
+  List<String> _tagList(String value) => value
+      .split(',')
+      .map((tag) => tag.trim())
+      .where((tag) => tag.isNotEmpty)
+      .toList(growable: false);
+
+  List<ProductSpecification> _specificationList(String value) {
+    return _lines(value)
+        .map((line) {
+          final separator = line.indexOf(':');
+          if (separator == -1) {
+            return ProductSpecification(label: line, value: '');
+          }
+          return ProductSpecification(
+            label: line.substring(0, separator).trim(),
+            value: line.substring(separator + 1).trim(),
+          );
+        })
+        .where((row) => row.label.isNotEmpty)
+        .toList(growable: false);
   }
 
   Future<void> _submit() async {
@@ -91,6 +145,19 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
       sku: _sku.text.trim().isEmpty ? null : _sku.text.trim(),
       description:
           _description.text.trim().isEmpty ? null : _description.text.trim(),
+      shortDescription: _shortDescription.text.trim().isEmpty
+          ? null
+          : _shortDescription.text.trim(),
+      highlights: _lines(_highlights.text),
+      features: _lines(_features.text),
+      specifications: _specificationList(_specifications.text),
+      tags: _tagList(_tags.text),
+      seoTitle: _seoTitle.text.trim().isEmpty ? null : _seoTitle.text.trim(),
+      seoDescription: _seoDescription.text.trim().isEmpty
+          ? null
+          : _seoDescription.text.trim(),
+      seoKeywords:
+          _seoKeywords.text.trim().isEmpty ? null : _seoKeywords.text.trim(),
       status: _status,
       price: num.tryParse(_price.text.trim()) ?? 0,
       cost: num.tryParse(_cost.text.trim()) ?? 0,
@@ -238,8 +305,7 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
                                 value: _status,
                                 decoration: InputDecoration(
                                   labelText: context.tr('productStatus'),
-                                  prefixIcon:
-                                      const Icon(Icons.tune, size: 20),
+                                  prefixIcon: const Icon(Icons.tune, size: 20),
                                 ),
                                 items: [
                                   for (final status in const [
@@ -263,6 +329,69 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
                                 helper: context.tr('optional'),
                                 maxLines: 4,
                                 minLines: 3,
+                              ),
+                              const SizedBox(height: AppSpacing.sm),
+                              AppTextField(
+                                controller: _shortDescription,
+                                label: context.tr('shortDescription'),
+                                helper: context.tr('optional'),
+                                maxLines: 2,
+                                minLines: 2,
+                              ),
+                              const SizedBox(height: AppSpacing.sm),
+                              AppTextField(
+                                controller: _highlights,
+                                label: context.tr('highlights'),
+                                helper: context.tr('linesHint'),
+                                maxLines: 4,
+                                minLines: 3,
+                              ),
+                              const SizedBox(height: AppSpacing.sm),
+                              AppTextField(
+                                controller: _features,
+                                label: context.tr('features'),
+                                helper: context.tr('linesHint'),
+                                maxLines: 4,
+                                minLines: 3,
+                              ),
+                              const SizedBox(height: AppSpacing.sm),
+                              AppTextField(
+                                controller: _specifications,
+                                label: context.tr('specifications'),
+                                helper: context.tr('specificationsHint'),
+                                maxLines: 5,
+                                minLines: 3,
+                              ),
+                              const SizedBox(height: AppSpacing.sm),
+                              AppTextField(
+                                controller: _tags,
+                                label: context.tr('tags'),
+                                helper: context.tr('tagsHint'),
+                              ),
+                              const SizedBox(height: AppSpacing.lg),
+                              Text(
+                                context.tr('seoTitle'),
+                                style: context.texts.titleSmall,
+                              ),
+                              const SizedBox(height: AppSpacing.sm),
+                              AppTextField(
+                                controller: _seoTitle,
+                                label: context.tr('seoTitle'),
+                                helper: context.tr('optional'),
+                              ),
+                              const SizedBox(height: AppSpacing.sm),
+                              AppTextField(
+                                controller: _seoDescription,
+                                label: context.tr('seoDescription'),
+                                helper: context.tr('optional'),
+                                maxLines: 2,
+                                minLines: 2,
+                              ),
+                              const SizedBox(height: AppSpacing.sm),
+                              AppTextField(
+                                controller: _seoKeywords,
+                                label: context.tr('seoKeywords'),
+                                helper: context.tr('tagsHint'),
                               ),
                               SwitchListTile(
                                 contentPadding: EdgeInsets.zero,

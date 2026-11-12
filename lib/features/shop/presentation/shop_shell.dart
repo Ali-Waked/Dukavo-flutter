@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/localization/app_localizations.dart';
 import '../../../app/router/route_paths.dart';
+import '../../../app/theme/theme_controller.dart';
 import '../../../core/api/api_exception.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/widgets/app_widgets.dart';
@@ -325,6 +326,11 @@ class _ShopHomeScreenState extends ConsumerState<ShopHomeScreen> {
     final info = ref.watch(shopInfoProvider(widget.shop));
     final categories = ref.watch(shopCategoriesProvider(widget.shop));
     final theme = Theme.of(context);
+    ref.listen(effectiveLocaleProvider, (previous, next) {
+      if (previous != next) {
+        _load();
+      }
+    });
     return RefreshIndicator(
       onRefresh: () async {
         ref.invalidate(shopInfoProvider(widget.shop));
@@ -665,6 +671,17 @@ class _ShopProductCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: theme.textTheme.titleSmall,
                   ),
+                  if (product.summary != null) ...[
+                    const SizedBox(height: 2),
+                    Text(
+                      product.summary!,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
                   if (product.categoryName != null) ...[
                     const SizedBox(height: 2),
                     Text(

@@ -856,6 +856,34 @@ class AppLocalizationsAr extends AppLocalizations {
   String get highlights => 'أبرز النقاط';
 
   @override
+  String get specifications => 'المواصفات';
+
+  @override
+  String get tags => 'الوسوم';
+
+  @override
+  String get shortDescription => 'وصف مختصر';
+
+  @override
+  String get seoTitle => 'عنوان SEO';
+
+  @override
+  String get seoDescription => 'وصف SEO';
+
+  @override
+  String get seoKeywords => 'كلمات SEO المفتاحية';
+
+  @override
+  String get linesHint => 'عنصر واحد في كل سطر.';
+
+  @override
+  String get specificationsHint =>
+      'مواصفة واحدة في كل سطر بالصيغة الاسم: القيمة.';
+
+  @override
+  String get tagsHint => 'افصل الوسوم بفواصل.';
+
+  @override
   String get risks => 'المخاطر';
 
   @override
@@ -1812,6 +1840,47 @@ class AppLocalizationsAr extends AppLocalizations {
   String get zoneName => 'اسم المنطقة';
 
   @override
+  String get englishHint =>
+      'الإنجليزية هي النسخة الأساسية التي يراها العميل عند غياب الترجمة.';
+
+  @override
+  String get arabicHint =>
+      'اختياري. يرى القارئ العربي النسخة الإنجليزية عند ترك الحقل فارغًا.';
+
+  @override
+  String get missingArabic => 'الترجمة العربية ناقصة';
+
+  @override
+  String get zoneDescription => 'وصف المنطقة';
+
+  @override
+  String get shippingMethodName => 'اسم طريقة التوصيل';
+
+  @override
+  String get shippingMethodNameHint =>
+      'خيار التوصيل الذي يراه العميل عند إتمام الطلب.';
+
+  @override
+  String get shippingMethodDescription => 'وصف طريقة التوصيل';
+
+  @override
+  String get shippingMethodDescriptionHint =>
+      'تفاصيل اختيارية تظهر أسفل خيار التوصيل.';
+
+  @override
+  String get deliveryInstructions => 'تعليمات التوصيل';
+
+  @override
+  String get deliveryInstructionsHint =>
+      'ما يجب أن يعرفه العميل قبل وصول المندوب.';
+
+  @override
+  String get shippingTerms => 'شروط التوصيل';
+
+  @override
+  String get shippingTermsHint => 'شروط اختيارية تظهر للعميل لهذا الخيار.';
+
+  @override
   String get city => 'المدينة';
 
   @override
@@ -1926,6 +1995,145 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get aiActions => 'إجراءات الذكاء الاصطناعي';
+
+  @override
+  String get aiSettings => 'إعدادات الذكاء الاصطناعي';
+
+  @override
+  String get aiSettingsByokLabel => 'التوجيه عبر مفاتيحي';
+
+  @override
+  String get aiSettingsByokOff =>
+      'لم تفعّل المنصة خاصية إحضار مفتاحك الخاص، فلا تستطيع هذه المساحة حفظ مفاتيح المزودين الخاصة بها.';
+
+  @override
+  String get aiSettingsByokOptedIn => 'تفضّل هذه المساحة الآن مفاتيحها الخاصة.';
+
+  @override
+  String get aiSettingsByokOptedOut => 'عادت هذه المساحة إلى مفاتيح المنصة.';
+
+  @override
+  String get aiSettingsByokSubtitle =>
+      'عند التفعيل، تفضّل مهام هذه المساحة بيانات اعتمادك على بيانات المنصة، مع مزودي المنصة كاحتياط.';
+
+  @override
+  String get aiSettingsByokTitle => 'إحضار مفتاحك الخاص';
+
+  @override
+  String get aiSettingsFeatureDisabled => 'تم تعطيل الميزة لمساحة العمل هذه.';
+
+  @override
+  String get aiSettingsFeatureEnabled => 'تم تفعيل الميزة لمساحة العمل هذه.';
+
+  @override
+  String get aiSettingsFeaturePlatformOff =>
+      'الميزة معطّلة على مستوى المنصة، فلا يمكن تفعيلها من هنا.';
+
+  @override
+  String get aiSettingsFeaturesSubtitle =>
+      'إيقاف ميزة هنا يخص هذه المساحة فقط؛ لا تتأثر بقية المساحات.';
+
+  @override
+  String get aiSettingsFeaturesTitle => 'الميزات';
+
+  @override
+  String get aiSettingsKeyApiKeyHint =>
+      'الصق المفتاح مرة واحدة؛ لن يظهر مجددًا أبدًا.';
+
+  @override
+  String get aiSettingsKeyApiKeyLabel => 'مفتاح API';
+
+  @override
+  String get aiSettingsKeyBaseUrlHint =>
+      'اختياري. يجب أن تكون نقطة نهاية عامة للمزود — تُرفض العناوين المحلية والخاصة.';
+
+  @override
+  String get aiSettingsKeyBaseUrlLabel => 'عنوان الأساس';
+
+  @override
+  String get aiSettingsKeyFormHint =>
+      'إعادة الحفظ للمزود نفسه تستبدل مفتاح ذلك المزود.';
+
+  @override
+  String get aiSettingsKeyFormTitle => 'حفظ مفتاح أو تبديله';
+
+  @override
+  String get aiSettingsKeyModelLabel => 'النموذج الافتراضي';
+
+  @override
+  String get aiSettingsKeyProviderLabel => 'المزود';
+
+  @override
+  String aiSettingsKeyRevokeBody(Object masked, Object provider) {
+    return 'إلغاء $masked على $provider؟ يعود التوجيه إلى مزودي المنصة.';
+  }
+
+  @override
+  String get aiSettingsKeyRevokeTitle => 'إلغاء هذا المفتاح';
+
+  @override
+  String get aiSettingsKeyRevoked => 'تم إلغاء المفتاح.';
+
+  @override
+  String get aiSettingsKeyStored => 'تم حفظ المفتاح.';
+
+  @override
+  String get aiSettingsKeyTest => 'اختبار';
+
+  @override
+  String get aiSettingsKeyTestFailed => 'فشل فحص الاتصال.';
+
+  @override
+  String aiSettingsKeyTestOk(Object latency) {
+    return 'أجاب مفتاحك خلال $latency ملي ثانية.';
+  }
+
+  @override
+  String get aiSettingsKeyTooShort => 'استخدم 8 أحرف على الأقل.';
+
+  @override
+  String get aiSettingsKeysEmpty => 'لا مفاتيح محفوظة.';
+
+  @override
+  String get aiSettingsKeysSubtitle =>
+      'مفتاحك مشفّر في التخزين ولا يُعرض إلا أحرفه الأخيرة.';
+
+  @override
+  String get aiSettingsKeysTitle => 'مفاتيحي';
+
+  @override
+  String get aiSettingsNoProviders => 'لا مزودين متاحين لمفتاح مساحة عمل.';
+
+  @override
+  String get aiSettingsPlatformOffBody =>
+      'الذكاء الاصطناعي متوقّف على مستوى المنصة بأكملها. لن يعمل أي شيء هنا حتى يفعّله فريق Dukavo.';
+
+  @override
+  String get aiSettingsPlatformOffTitle => 'معطّل على مستوى المنصة';
+
+  @override
+  String get aiSettingsUsageCost => 'التكلفة التقديرية';
+
+  @override
+  String get aiSettingsUsageEstimatesNote =>
+      'التكاليف تقديرات من أسعار النماذج المعلنة — إشارة تشغيلية، وليست رقم فوترة أبدًا.';
+
+  @override
+  String get aiSettingsUsageFailures => 'الطلبات الفاشلة';
+
+  @override
+  String aiSettingsUsageRow(Object requests, Object tokens) {
+    return '$requests طلبًا · $tokens رمزًا';
+  }
+
+  @override
+  String get aiSettingsUsageTitle => 'استخدام الذكاء الاصطناعي';
+
+  @override
+  String get aiSettingsUsageTodayRequests => 'طلبات اليوم';
+
+  @override
+  String get aiSettingsUsageTodayTokens => 'رموز اليوم';
 
   @override
   String get altText => 'النص البديل';
@@ -3463,5 +3671,1915 @@ class AppLocalizationsAr extends AppLocalizations {
       'انضم لقائمة الانتظار وسنجهّز منتجاتك وطلباتك وعملاءك ومحادثاتك معًا.';
 
   @override
+  String get translationAssistant => 'الترجمات بالذكاء الاصطناعي';
+
+  @override
+  String get translationOpen => 'الترجمات';
+
+  @override
+  String get translationReviewHint =>
+      'تبقى مسودات الذكاء الاصطناعي خاصة حتى تعتمدها.';
+
+  @override
+  String get translationNoSelection => 'لا شيء محدد';
+
+  @override
+  String translationSelectedCount(Object count) {
+    return 'تم تحديد $count';
+  }
+
+  @override
+  String translationApproveSelectedCount(Object count) {
+    return 'اعتماد $count';
+  }
+
+  @override
+  String get translationGenerateTitle => 'إنشاء الترجمات';
+
+  @override
+  String get translationGenerateHint =>
+      'اختر الحقول واللغات المطلوبة. النتيجة اقتراح وليست تغييرًا منشورًا.';
+
+  @override
+  String get translationSourceLanguage => 'لغة المصدر';
+
+  @override
+  String get translationSourceUnknown =>
+      'تعذر تحديد لغة المصدر. اخترها صراحةً.';
+
+  @override
+  String translationDetectedLanguage(Object confidence, Object language) {
+    return 'تم اكتشاف $language (ثقة $confidence٪)';
+  }
+
+  @override
+  String get translationSourceRequired => 'لغة المصدر مطلوبة';
+
+  @override
+  String get translationSourceRequiredHint =>
+      'اختر اللغة المكتوب بها النص حتى تترجم دوكافو من اللغة الصحيحة.';
+
+  @override
+  String get translationFields => 'الحقول';
+
+  @override
+  String get translationTargets => 'لغات الهدف';
+
+  @override
+  String get translationNoTargets => 'لا توجد لغة أخرى مفعّلة متاحة بعد.';
+
+  @override
+  String get translationGenerate => 'إنشاء';
+
+  @override
+  String get translationUsageTitle => 'استخدام الذكاء الاصطناعي اليوم';
+
+  @override
+  String translationUsageSummary(Object cost, Object requests, Object tokens) {
+    return '$requests طلبًا · $tokens رمزًا · التكلفة التقديرية $cost';
+  }
+
+  @override
+  String get translationReviewTitle => 'المراجعة';
+
+  @override
+  String get translationStale => 'قديمة';
+
+  @override
+  String get translationManuallyEdited => 'معدّلة يدويًا';
+
+  @override
+  String get translationSourceCopy => 'المصدر';
+
+  @override
+  String get translationNotTranslatedYet => 'لم تُترجم بعد.';
+
+  @override
+  String translationRejectionReasonValue(Object reason) {
+    return 'مرفوضة: $reason';
+  }
+
+  @override
+  String get translationPublishedCopy => 'لا تزال منشورة';
+
+  @override
+  String get translationApprove => 'اعتماد';
+
+  @override
+  String get translationEdit => 'تعديل';
+
+  @override
+  String get translationReject => 'رفض';
+
+  @override
+  String get translationRegenerate => 'إعادة الإنشاء';
+
+  @override
+  String get translationStatusNotTranslated => 'غير مترجمة';
+
+  @override
+  String get translationStatusGenerating => 'جارٍ الإنشاء';
+
+  @override
+  String get translationStatusGenerated => 'تم الإنشاء';
+
+  @override
+  String get translationStatusNeedsReview => 'تحتاج مراجعة';
+
+  @override
+  String get translationStatusApproved => 'معتمدة';
+
+  @override
+  String get translationStatusRejected => 'مرفوضة';
+
+  @override
+  String get translationStatusFailed => 'فشلت';
+
+  @override
+  String get translationStatusStale => 'قديمة';
+
+  @override
+  String get translationGenerated => 'تم إنشاء الترجمات للمراجعة.';
+
+  @override
+  String get translationApprovedMessage => 'تم اعتماد الترجمة ونشرها.';
+
+  @override
+  String get translationUpdated => 'تم تحديث الترجمة وإعادتها للمراجعة.';
+
+  @override
+  String get translationRejectedMessage => 'تم رفض الترجمة.';
+
+  @override
+  String get translationNothingSelected => 'اختر ترجمة واحدة على الأقل أولًا.';
+
+  @override
+  String get translationTextRequired => 'أدخل النص المترجم.';
+
+  @override
+  String get translationEditApprovedTitle => 'تعديل ترجمة منشورة؟';
+
+  @override
+  String get translationEditApprovedMessage =>
+      'يبقى النص العام الحالي منشورًا حتى تعتمد النص الجديد.';
+
+  @override
+  String get translationEditHint => 'عدّل الترجمة';
+
+  @override
+  String get translationRejectReason => 'السبب (اختياري)';
+
+  @override
+  String get translationRejectReasonHint =>
+      'أخبر المراجع سبب رفض هذا الاقتراح.';
+
+  @override
+  String get translationOverwriteMessage =>
+      'سيستبدل هذا المسودة الحالية. النص المعدّل يدويًا والنص المنشور يحتاجان تأكيدك قبل إعادة الإنشاء.';
+
+  @override
   String get register => 'إنشاء حساب';
+
+  @override
+  String get choosePaymentRail => 'اختر طريقة الدفع';
+
+  @override
+  String get onlineRedirectNote =>
+      'ستنتقل إلى صفحة المزوّد الآمنة. يبقى الطلب غير مدفوع حتى يؤكده المزوّد.';
+
+  @override
+  String get bankTransferNote =>
+      'حوّل المبلغ إلى المتجر واحتفظ بالإيصال. يؤكد المتجر الطلب عند وصول المبلغ.';
+
+  @override
+  String get paymentProvider => 'المزوّد';
+
+  @override
+  String get paymentRail => 'طريقة الدفع';
+
+  @override
+  String get paymentAttempt => 'المحاولة';
+
+  @override
+  String get paymentAmount => 'المبلغ';
+
+  @override
+  String get paymentReference => 'المرجع';
+
+  @override
+  String get paymentPendingNote =>
+      'بانتظار تأكيد المزوّد. تُحدَّث هذه الصفحة تلقائيًا.';
+
+  @override
+  String get paymentPaidNote => 'أكّد المزوّد هذا الدفع.';
+
+  @override
+  String get paymentLinkHint =>
+      'افتح هذا الرابط في المتصفح للدفع. لا يتحدّث الطلب إلا بعد تأكيد المزوّد.';
+
+  @override
+  String get paymentLinkCopied => 'تم نسخ رابط الدفع.';
+
+  @override
+  String get copyPaymentLink => 'نسخ رابط الدفع';
+
+  @override
+  String get retryPayment => 'إعادة محاولة الدفع';
+
+  @override
+  String get orderAwaitingPayment => 'بانتظار الدفع';
+
+  @override
+  String get bankTransfer => 'التحويل البنكي';
+
+  @override
+  String get codNote =>
+      'ادفع للمندوب عند الاستلام. يبقى الطلب غير مدفوع حتى ذلك الحين.';
+
+  @override
+  String get twoFactorTitle => 'التحقق بخطوتين';
+
+  @override
+  String get twoFactorSubtitle => 'أكّد أنك أنت لإكمال تسجيل الدخول.';
+
+  @override
+  String get twoFactorPrompt =>
+      'أدخل الرمز المكوّن من 6 أرقام من تطبيق المصادقة.';
+
+  @override
+  String get twoFactorCode => 'رمز المصادقة';
+
+  @override
+  String get twoFactorCodePlaceholder => '000000';
+
+  @override
+  String get twoFactorCodeLength => 'أدخل الرمز المكوّن من 6 أرقام.';
+
+  @override
+  String get twoFactorVerify => 'تحقّق وسجّل الدخول';
+
+  @override
+  String get verifying => 'جارٍ التحقق';
+
+  @override
+  String get twoFactorUseRecovery => 'استخدام رمز استرداد';
+
+  @override
+  String get twoFactorUseCode => 'استخدام رمز المصادقة';
+
+  @override
+  String get twoFactorRecoveryCode => 'رمز الاسترداد';
+
+  @override
+  String get twoFactorRecoveryHint =>
+      'أحد الرموز أحادية الاستخدام التي حفظتها عند تفعيل التحقق بخطوتين.';
+
+  @override
+  String get onboardingPreferencesTitle => 'بعض التفاصيل عنك';
+
+  @override
+  String get onboardingPreferencesSubtitle =>
+      'خمّنّا هذه من شبكتك ومتصفحك لتوفير وقتك. راجعها، وغيّر أي شيء غير صحيح، أو تخطَّ الآن.';
+
+  @override
+  String get onboardingPersonalTitle => 'المعلومات الشخصية';
+
+  @override
+  String get onboardingPersonalHint => 'كيف يظهر اسمك وصورتك لفريقك.';
+
+  @override
+  String get onboardingLocationHint =>
+      'يساعدنا الموقع على عرض التوقيت المحلي. التخمين من الشبكة تقريبي وليس موثّقًا.';
+
+  @override
+  String get onboardingDisplayHint => 'اختر كيف يبدو دوكافو ويُقرأ لك.';
+
+  @override
+  String get onboardingDetectedBadge => 'تم اكتشافها لك';
+
+  @override
+  String get onboardingApproximateBadge =>
+      'بعض القيم تقدير من شبكتك. راجعها قبل الحفظ.';
+
+  @override
+  String get onboardingSave => 'حفظ التفضيلات';
+
+  @override
+  String get onboardingSkip => 'تخطٍّ الآن';
+
+  @override
+  String get onboardingSaved => 'تم حفظ التفضيلات.';
+
+  @override
+  String get onboardingSkipped =>
+      'لا مشكلة — يمكنك تغييرها في أي وقت من ملفك الشخصي.';
+
+  @override
+  String get onboardingFootnote =>
+      'هذه إعدادات شخصية. لا تغيّر أبدًا عملة متجر أو أسعاره أو طلباته السابقة.';
+
+  @override
+  String get onboardingPromptBody =>
+      'أكّد لغتك وعملتك ومنطقتك الزمنية ليكون دوكافو مناسبًا لك.';
+
+  @override
+  String get onboardingPromptAction => 'مراجعة التفضيلات';
+
+  @override
+  String get nameHint => 'اسمك الكامل.';
+
+  @override
+  String get bio => 'نبذة';
+
+  @override
+  String get bioHint => 'جملة أو جملتان عنك. اختياري.';
+
+  @override
+  String get location => 'الموقع';
+
+  @override
+  String get country => 'الدولة';
+
+  @override
+  String get countryPlaceholder => 'اختر دولة';
+
+  @override
+  String get countrySearch => 'ابحث بالاسم أو الرمز أو رمز الاتصال';
+
+  @override
+  String get cityManualHint =>
+      'لم تجدها؟ اكتب الاسم — الإدخال اليدوي مقبول دائمًا.';
+
+  @override
+  String get phoneCountry => 'رمز دولة الهاتف';
+
+  @override
+  String get phoneCountryHint => 'الدولة التي ينتمي إليها رقم هاتفك.';
+
+  @override
+  String get timezonePlaceholder => 'اختر منطقة زمنية';
+
+  @override
+  String get timezoneSearch => 'ابحث في المناطق الزمنية';
+
+  @override
+  String get dateFormat => 'تنسيق التاريخ';
+
+  @override
+  String get timeFormat => 'تنسيق الوقت';
+
+  @override
+  String get timeFormat24 => '24 ساعة (14:30)';
+
+  @override
+  String get timeFormat12 => '12 ساعة (2:30 م)';
+
+  @override
+  String get themeSystem => 'النظام';
+
+  @override
+  String get themeLight => 'فاتح';
+
+  @override
+  String get themeDark => 'داكن';
+
+  @override
+  String get preferences => 'تفضيلات العرض';
+
+  @override
+  String get accountInformation => 'معلومات الحساب';
+
+  @override
+  String get accountMetaDesc => 'العضوية والأمان في لمحة.';
+
+  @override
+  String get accountType => 'نوع الحساب';
+
+  @override
+  String get accountTypeMember => 'عضو';
+
+  @override
+  String get memberSince => 'عضو منذ';
+
+  @override
+  String get passwordNever => 'لم تتغيّر أبدًا';
+
+  @override
+  String get profileComplete => 'ملفك مكتمل.';
+
+  @override
+  String get profileCompletion => 'اكتمال الملف الشخصي';
+
+  @override
+  String get workspaceSeparationHint =>
+      'تغييرها لا يغيّر أبدًا عملة متجر أو أسعاره أو طلباته السابقة.';
+
+  @override
+  String get locationAndPreferences => 'الموقع والتفضيلات';
+
+  @override
+  String get locationAndPreferencesDesc =>
+      'خاصة بك — منفصلة عن أي إعدادات لمساحة العمل.';
+
+  @override
+  String get securityCenter => 'مركز الأمان';
+
+  @override
+  String get securityActivity => 'نشاط الأمان';
+
+  @override
+  String get securityActivityDesc =>
+      'عمليات الدخول وتغييرات كلمة المرور والجلسات على حسابك.';
+
+  @override
+  String get securityActivityEmpty => 'لا يوجد نشاط أمان بعد.';
+
+  @override
+  String get sessionsDesc => 'كل جهاز مسجّل الدخول إلى حسابك الآن.';
+
+  @override
+  String get twoFactor => 'التحقق بخطوتين';
+
+  @override
+  String get twoFactorDesc => 'اطلب رمزًا من تطبيق المصادقة عند تسجيل الدخول.';
+
+  @override
+  String get twoFactorOn => 'مفعّل';
+
+  @override
+  String get twoFactorOff => 'متوقف';
+
+  @override
+  String get twoFactorEnable => 'تفعيل';
+
+  @override
+  String get twoFactorEnabled => 'التحقق بخطوتين مفعّل.';
+
+  @override
+  String get twoFactorDisabled => 'التحقق بخطوتين متوقف.';
+
+  @override
+  String get twoFactorConfirm => 'تفعيل التحقق';
+
+  @override
+  String get twoFactorSetupIntro =>
+      'افتح تطبيق المصادقة، أضف هذا المفتاح، ثم أدخل الرمز الذي يعرضه.';
+
+  @override
+  String get twoFactorSecret => 'مفتاح الإعداد';
+
+  @override
+  String get twoFactorSecretOnce =>
+      'يُعرض هذا المفتاح مرة واحدة. احفظه في مكان آمن.';
+
+  @override
+  String get twoFactorProvisioningUri => 'رابط الإعداد';
+
+  @override
+  String twoFactorActiveSince(Object time) {
+    return 'مفعّل منذ $time';
+  }
+
+  @override
+  String get recoveryCodesTitle => 'رموز الاسترداد';
+
+  @override
+  String get recoveryCodesOnce =>
+      'احفظها الآن. كل رمز يعمل مرة واحدة، ولن تُعرض مرة أخرى.';
+
+  @override
+  String get recoveryCodesRegenerated => 'تم إنشاء رموز استرداد جديدة.';
+
+  @override
+  String recoveryCodesRemaining(Object count) {
+    return 'بقي $count من رموز الاسترداد';
+  }
+
+  @override
+  String get regenerateRecoveryCodes => 'رموز استرداد جديدة';
+
+  @override
+  String get regenerateIntro =>
+      'أدخل رمز مصادقة حاليًا لاستبدال رموز الاسترداد. ستتوقف الرموز القديمة عن العمل.';
+
+  @override
+  String get disableTwoFactor => 'إيقاف';
+
+  @override
+  String get currentPasswordRequired => 'أدخل كلمة مرورك الحالية.';
+
+  @override
+  String get requiresAuthenticationCode => 'أدخل رمز مصادقة أو رمز استرداد.';
+
+  @override
+  String get useAuthenticatorCode => 'استخدام رمز المصادقة';
+
+  @override
+  String get useRecoveryCode => 'استخدام رمز استرداد';
+
+  @override
+  String get recoveryCode => 'رمز الاسترداد';
+
+  @override
+  String get editProfileHint => 'الاسم والصورة والنبذة وبيانات التواصل.';
+
+  @override
+  String get changePasswordDesc =>
+      'استخدم كلمة مرور قوية لا تستخدمها في أي مكان آخر.';
+
+  @override
+  String get helpCenter => 'مركز المساعدة';
+
+  @override
+  String get supportSearchHint => 'ابحث في الأدلة والمواضيع';
+
+  @override
+  String get supportBrowseTopics => 'تصفح حسب الموضوع';
+
+  @override
+  String get supportFeatured => 'أدلة مميزة';
+
+  @override
+  String get supportPopular => 'الأكثر قراءة';
+
+  @override
+  String supportArticlesCount(Object count) {
+    return '$count مقالات';
+  }
+
+  @override
+  String get supportSearchEmptyTitle => 'لا توجد أدلة مطابقة';
+
+  @override
+  String get supportSearchEmptyBody =>
+      'جرّب عبارة أقصر، أو امسح البحث وتصفح حسب الموضوع.';
+
+  @override
+  String get supportEmptyCategoryTitle => 'لا توجد مقالات بعد';
+
+  @override
+  String get supportEmptyCategoryBody => 'لم يُنشر أي شيء في هذا التصنيف بعد.';
+
+  @override
+  String get supportNotFoundTitle => 'لم نتمكن من العثور على هذا الدليل';
+
+  @override
+  String get supportNotFoundBody =>
+      'ربما نُقل أو أعيد تسميته، أو أنه غير متاح لك.';
+
+  @override
+  String get supportRelated => 'أدلة ذات صلة';
+
+  @override
+  String get supportAllTopics => 'كل المواضيع';
+
+  @override
+  String get supportFeedbackTitle => 'هل ساعدك هذا الدليل؟';
+
+  @override
+  String get supportFeedbackYes => 'نعم';
+
+  @override
+  String get supportFeedbackNo => 'لا';
+
+  @override
+  String get supportFeedbackCommentLabel => 'هل تريد إضافة شيء؟ (اختياري)';
+
+  @override
+  String get supportFeedbackCommentHint => 'ما الذي كنت تحاول فعله؟';
+
+  @override
+  String get supportFeedbackSend => 'إرسال الإجابة';
+
+  @override
+  String get supportFeedbackThanks => 'تساعدنا إجابتك في تحسين هذا الدليل.';
+
+  @override
+  String get supportFeedbackFailed => 'تعذّر إرسال إجابتك. حاول مرة أخرى.';
+
+  @override
+  String get integrations => 'التكاملات';
+
+  @override
+  String get integrationsSubtitle => 'كل قناة يمكن لعملائك الوصول إليك عبرها.';
+
+  @override
+  String get integrationsRefresh => 'تحديث';
+
+  @override
+  String get integrationsConnect => 'ربط';
+
+  @override
+  String integrationsConnectChannel(Object channel) {
+    return 'ربط $channel';
+  }
+
+  @override
+  String get integrationsEditConnection => 'تعديل الاتصال';
+
+  @override
+  String get integrationsAvailabilityAvailable => 'متاحة';
+
+  @override
+  String get integrationsAvailabilityAwaitingConfiguration => 'بانتظار الإعداد';
+
+  @override
+  String get integrationsAvailabilityAwaitingProviderAccess =>
+      'بانتظار وصول المزوّد';
+
+  @override
+  String get integrationsStatusPending => 'قيد الانتظار';
+
+  @override
+  String get integrationsStatusConnected => 'متصلة';
+
+  @override
+  String get integrationsStatusDisconnected => 'غير متصلة';
+
+  @override
+  String get integrationsStatusError => 'خطأ';
+
+  @override
+  String get integrationsHealthUnknown => 'لم تُفحص';
+
+  @override
+  String get integrationsHealthHealthy => 'سليمة';
+
+  @override
+  String get integrationsHealthDegraded => 'متدهورة';
+
+  @override
+  String get integrationsHealthFailing => 'فاشلة';
+
+  @override
+  String get integrationsCapabilities => 'الإمكانات';
+
+  @override
+  String get integrationsConnections => 'الاتصالات';
+
+  @override
+  String get integrationsNoConnections => 'لا شيء متصل بعد.';
+
+  @override
+  String get integrationsAllStores => 'كل المتاجر';
+
+  @override
+  String get integrationsName => 'اسم الاتصال';
+
+  @override
+  String get integrationsNameHint => 'مثال: خط المبيعات';
+
+  @override
+  String get integrationsStore => 'المتجر';
+
+  @override
+  String get integrationsCredentials => 'بيانات الاعتماد';
+
+  @override
+  String get integrationsCredentialsHint =>
+      'تُشفَّر القيم عند التخزين ولا تُعرض مرة أخرى. اترك الحقل السري فارغًا للإبقاء على القيمة المحفوظة.';
+
+  @override
+  String get integrationsRequired => 'مطلوب';
+
+  @override
+  String get integrationsOptional => 'اختياري';
+
+  @override
+  String get integrationsConfigured => 'محفوظ';
+
+  @override
+  String get integrationsSecretHint => 'محفوظ — اتركه فارغًا للإبقاء عليه';
+
+  @override
+  String get integrationsAwaitingAccessTitle => 'لم يُمنح وصول المزوّد بعد';
+
+  @override
+  String get integrationsAwaitingAccessBody =>
+      'هذه القناة معلنة لكن دوكافو لا يملك وصولًا معتمدًا إلى واجهتها البرمجية. يمكنك حفظ بيانات الاعتماد الآن؛ يبقى الاتصال قيد الانتظار حتى يُمنح الوصول وينجح فحص حقيقي.';
+
+  @override
+  String get integrationsAwaitingConfigTitle => 'إعداد المنصة ناقص';
+
+  @override
+  String get integrationsAwaitingConfigBody =>
+      'يفتقد هذا التنصيب المفاتيح الخاصة بالمنصة التي تحتاجها هذه القناة. اطلب من مسؤول المنصة إعدادها.';
+
+  @override
+  String get integrationsWebhook => 'رابط الويب هوك';
+
+  @override
+  String get integrationsCopied => 'تم النسخ.';
+
+  @override
+  String get integrationsCopyFailed =>
+      'منع هذا الجهاز الوصول إلى الحافظة — انسخه يدويًا.';
+
+  @override
+  String get integrationsTest => 'فحص';
+
+  @override
+  String get integrationsReconnect => 'إعادة الاتصال';
+
+  @override
+  String get integrationsDisconnect => 'قطع الاتصال';
+
+  @override
+  String integrationsDisconnectTitle(Object name) {
+    return 'قطع اتصال $name؟';
+  }
+
+  @override
+  String get integrationsDisconnectBody =>
+      'لن يصل إليك العملاء عبر هذا الاتصال بعد الآن. تبقى المحادثات في صندوق الوارد.';
+
+  @override
+  String get integrationsSaved => 'تم حفظ الاتصال.';
+
+  @override
+  String get integrationsDisconnected => 'تم قطع الاتصال.';
+
+  @override
+  String get integrationsTested => 'تم فحص الاتصال.';
+
+  @override
+  String get integrationsReconnected => 'تمت إعادة الاتصال.';
+
+  @override
+  String get integrationsError => 'أبلغ هذا الاتصال عن خطأ.';
+
+  @override
+  String get integrationsEmptyTitle => 'لا توجد قنوات متاحة';
+
+  @override
+  String get integrationsEmptyBody =>
+      'لم تُعرَّف أي قناة مراسلة في هذا التنصيب.';
+
+  @override
+  String get integrationsNeverChecked => 'لم يُفحص قط';
+
+  @override
+  String get integrationsCapabilityText => 'نص';
+
+  @override
+  String get integrationsCapabilityImage => 'صور';
+
+  @override
+  String get integrationsCapabilityDocument => 'مستندات';
+
+  @override
+  String get integrationsCapabilityAudio => 'صوت';
+
+  @override
+  String get integrationsCapabilityVoice => 'رسائل صوتية';
+
+  @override
+  String get integrationsCapabilityVideo => 'فيديو';
+
+  @override
+  String get integrationsCapabilityTemplate => 'قوالب';
+
+  @override
+  String get integrationsCapabilityDeliveryStatus => 'حالة التسليم';
+
+  @override
+  String get integrationsCapabilityReadStatus => 'إشعارات القراءة';
+
+  @override
+  String get integrationsCapabilityMediaDownload => 'تنزيل الوسائط';
+
+  @override
+  String get integrationsCapabilityTyping => 'مؤشر الكتابة';
+
+  @override
+  String get enabled => 'مفعّل';
+
+  @override
+  String get disabled => 'معطّل';
+
+  @override
+  String get environment => 'البيئة';
+
+  @override
+  String get configuration => 'الإعدادات';
+
+  @override
+  String get platformSettings => 'إعدادات المنصة';
+
+  @override
+  String get platformSettingsSubtitle =>
+      'مكان واحد للإعدادات التي تشترك فيها المنصة كلها. إعدادات المتجر والتاجر تبقى منفصلة.';
+
+  @override
+  String get platformSettingsSpecialists =>
+      'بيانات اعتماد مزوّدي الذكاء الاصطناعي والموجّهات ودليل المدفوعات تُدار من لوحة الويب. هذه الشاشة تربط بما يمكن للهاتف تغييره بأمان.';
+
+  @override
+  String get platformSettingsAuditNote =>
+      'كل حفظ يُسجَّل في سجل التدقيق مع المشغّل والقيمة السابقة والجديدة. تُحجب الأسرار.';
+
+  @override
+  String get platformSettingsSections => 'أقسام الإعدادات';
+
+  @override
+  String get platformSettingsControls => 'أدوات المنصة';
+
+  @override
+  String get platformSettingsOperations => 'العمليات';
+
+  @override
+  String platformSettingsSectionMeta(Object overrides, Object settings) {
+    return '$settings إعداد · $overrides متجاوَز';
+  }
+
+  @override
+  String platformSettingsSecretCount(Object count) {
+    return '$count سر';
+  }
+
+  @override
+  String get platformSettingsOverrides => 'التجاوزات';
+
+  @override
+  String get platformSettingsSecrets => 'الأسرار';
+
+  @override
+  String get platformSettingsDefinitions => 'التعريفات';
+
+  @override
+  String get platformSettingsRuntime => 'وقت التشغيل';
+
+  @override
+  String get platformSettingsMaintenanceActive => 'وضع الصيانة مفعّل';
+
+  @override
+  String get platformSettingsOpenMaintenance => 'فتح الصيانة';
+
+  @override
+  String get platformSettingsSaved => 'تم حفظ الإعدادات.';
+
+  @override
+  String get platformSettingsReadOnlyTitle => 'للقراءة فقط لدورك';
+
+  @override
+  String get platformSettingsReadOnlyBody =>
+      'يمكنك قراءة هذا القسم دون تغييره. اطلب من مسؤول المنصة الصلاحية المطابقة.';
+
+  @override
+  String get platformSettingsEmptySection =>
+      'لا توجد إعدادات معرّفة في هذا القسم.';
+
+  @override
+  String platformSettingsUnsaved(Object count) {
+    return '$count تغيير غير محفوظ';
+  }
+
+  @override
+  String get platformSettingsClearOverride =>
+      'إعادة الضبط إلى قيمة البيئة أو التطبيق الافتراضية';
+
+  @override
+  String get platformSettingsRequiresRestart => 'يُطبَّق مع الطلب التالي';
+
+  @override
+  String platformSettingsSecretHint(Object hint) {
+    return 'ينتهي بـ $hint';
+  }
+
+  @override
+  String get platformSettingsSecretPlaceholder =>
+      'أدخل قيمة جديدة لاستبدال السر المخزّن';
+
+  @override
+  String get platformSettingsSecretConfigured => 'مضبوط';
+
+  @override
+  String get platformSettingsSecretMissing => 'غير مضبوط';
+
+  @override
+  String get platformSettingsChooseOption => 'اختر خيارًا';
+
+  @override
+  String platformSettingsRange(Object max, Object min) {
+    return 'النطاق $min–$max';
+  }
+
+  @override
+  String get platformSettingsSourceDatabase => 'إعداد المنصة';
+
+  @override
+  String get platformSettingsSourceEnvironment => 'البيئة';
+
+  @override
+  String get platformSettingsSourceDefault => 'افتراضي التطبيق';
+
+  @override
+  String get settingsGroupIdentity => 'الهوية';
+
+  @override
+  String get settingsGroupApplication => 'التطبيق';
+
+  @override
+  String get settingsGroupBrand => 'العلامة';
+
+  @override
+  String get settingsGroupContact => 'التواصل';
+
+  @override
+  String get settingsGroupFormat => 'التنسيقات';
+
+  @override
+  String get settingsGroupLanguage => 'اللغات';
+
+  @override
+  String get settingsGroupNumber => 'الأرقام';
+
+  @override
+  String get settingsGroupPassword => 'سياسة كلمة المرور';
+
+  @override
+  String get settingsGroupRateLimits => 'حدود المعدّل';
+
+  @override
+  String get settingsGroupRegion => 'المنطقة';
+
+  @override
+  String get settingsGroupRouting => 'التوجيه';
+
+  @override
+  String get settingsGroupRuntime => 'وقت التشغيل';
+
+  @override
+  String get settingsGroupSession => 'الجلسات';
+
+  @override
+  String get settingsGroupSocial => 'التواصل الاجتماعي';
+
+  @override
+  String get settingsGroupState => 'الحالة';
+
+  @override
+  String get settingsGroupTransport => 'النقل';
+
+  @override
+  String get settingsGroupDriver => 'المشغّل';
+
+  @override
+  String get settingsGroupGeneral => 'عام';
+
+  @override
+  String get platformSettingsFeaturesTitle => 'مزايا المنصة';
+
+  @override
+  String get platformSettingsFeaturesSubtitle =>
+      'مفاتيح التوفر على مستوى المنصة.';
+
+  @override
+  String get platformSettingsFeaturesNoteTitle => 'توفر لا استحقاق';
+
+  @override
+  String get platformSettingsFeaturesNoteBody =>
+      'إيقاف ميزة يزيلها من كل المستأجرين بغض النظر عن الخطة أو الصلاحية. تُحفظ البيانات والمفتاح قابل للعكس.';
+
+  @override
+  String platformSettingsFeaturesEnabled(Object count) {
+    return '$count مفعّلة';
+  }
+
+  @override
+  String platformSettingsFeaturesTotal(Object count) {
+    return 'من $count';
+  }
+
+  @override
+  String get platformSettingsFeaturesSearch => 'ابحث في المزايا';
+
+  @override
+  String get platformSettingsFeaturesEmptyTitle => 'لا توجد مزايا مطابقة';
+
+  @override
+  String get platformSettingsFeaturesEmptyBody => 'جرّب عبارة بحث أخرى.';
+
+  @override
+  String platformSettingsFeatureEnabled(Object name) {
+    return '$name أصبحت متاحة.';
+  }
+
+  @override
+  String platformSettingsFeatureDisabled(Object name) {
+    return 'تم سحب $name.';
+  }
+
+  @override
+  String get featureGroupIntelligence => 'الذكاء';
+
+  @override
+  String get featureGroupChannels => 'القنوات';
+
+  @override
+  String get featureGroupCommunication => 'التواصل';
+
+  @override
+  String get featureGroupOperations => 'العمليات';
+
+  @override
+  String get featureGroupCommerce => 'التجارة';
+
+  @override
+  String get featureGroupGrowth => 'النمو';
+
+  @override
+  String get platformSettingsHealthTitle => 'صحة التكاملات';
+
+  @override
+  String get platformSettingsHealthSubtitle =>
+      'آخر حالة مسجّلة وفحوص عند الطلب.';
+
+  @override
+  String get platformSettingsHealthReadTitle => 'القراءة لا تفحص';
+
+  @override
+  String get platformSettingsHealthReadBody =>
+      'تعرض هذه الشاشة آخر حالة مسجّلة. الفحص يستدعي المزوّد، لذا لا يعمل إلا عند طلبه.';
+
+  @override
+  String get platformSettingsHealthEmpty => 'لا توجد تكاملات مسجّلة.';
+
+  @override
+  String get platformSettingsHealthStateConnected => 'متصل';
+
+  @override
+  String get platformSettingsHealthStateDisconnected => 'غير متصل';
+
+  @override
+  String get platformSettingsHealthStateInvalidCredentials =>
+      'بيانات اعتماد غير صالحة';
+
+  @override
+  String get platformSettingsHealthStateRateLimited => 'تجاوز حد المعدّل';
+
+  @override
+  String get platformSettingsHealthStateServiceUnavailable =>
+      'الخدمة غير متاحة';
+
+  @override
+  String get platformSettingsHealthStateConfigurationRequired => 'يلزم الضبط';
+
+  @override
+  String get platformSettingsHealthStateNotTested => 'لم يُفحص';
+
+  @override
+  String get platformSettingsHealthStateDisabled => 'معطّل';
+
+  @override
+  String platformSettingsHealthChecked(Object name) {
+    return 'اكتمل فحص $name.';
+  }
+
+  @override
+  String platformSettingsHealthCheckedAt(Object when) {
+    return 'فُحص $when';
+  }
+
+  @override
+  String get platformSettingsHealthNever => 'لم يُفحص أبدًا';
+
+  @override
+  String get platformSettingsHealthTest => 'تشغيل الفحص';
+
+  @override
+  String get platformSettingsHistoryTitle => 'سجل الإعدادات';
+
+  @override
+  String get platformSettingsHistorySubtitle =>
+      'من غيّر ماذا، وما الذي استبدله.';
+
+  @override
+  String get platformSettingsHistoryFilter => 'مفتاح الإعداد';
+
+  @override
+  String get platformSettingsHistoryFilterHint => 'email.mail_host';
+
+  @override
+  String get platformSettingsHistoryRows => 'الصفوف';
+
+  @override
+  String get platformSettingsHistoryEmpty => 'لا تغييرات بعد';
+
+  @override
+  String get platformSettingsHistoryEmptyFiltered =>
+      'لا تغيير يطابق هذا المفتاح.';
+
+  @override
+  String get platformSettingsHistoryEmptyBody =>
+      'سيُسجَّل أي حفظ للإعدادات هنا.';
+
+  @override
+  String get platformSettingsHistoryNone => 'لا شيء';
+
+  @override
+  String platformSettingsHistorySecret(Object hint) {
+    return 'سر · ينتهي بـ $hint';
+  }
+
+  @override
+  String get platformSettingsHistorySystem => 'النظام';
+
+  @override
+  String get platformSettingsInfrastructureTitle => 'البنية التحتية';
+
+  @override
+  String get platformSettingsInfrastructureSubtitle =>
+      'قيم للقراءة فقط تديرها بيئة النشر.';
+
+  @override
+  String get platformSettingsInfraReadOnlyTitle => 'تديرها بيئة النشر';
+
+  @override
+  String get platformSettingsInfraReadOnlyBody =>
+      'هذه القيم للقراءة فقط هنا بحكم التصميم. غيّرها في بيئة النشر وأعد النشر؛ تُعرض الأسرار كمضبوطة أو غير مضبوطة فقط.';
+
+  @override
+  String get platformSettingsInfraRuntimeTitle => 'العملية قيد التشغيل';
+
+  @override
+  String get platformSettingsInfraVariablesTitle => 'متغيّرات البيئة';
+
+  @override
+  String get platformSettingsInfraPhp => 'PHP';
+
+  @override
+  String get platformSettingsInfraLaravel => 'Laravel';
+
+  @override
+  String get platformSettingsInfraDatabase => 'قاعدة البيانات';
+
+  @override
+  String get platformSettingsInfraCache => 'التخزين المؤقت';
+
+  @override
+  String get platformSettingsInfraQueue => 'الطابور';
+
+  @override
+  String get platformSettingsInfraSession => 'الجلسة';
+
+  @override
+  String get platformSettingsInfraMailer => 'البريد';
+
+  @override
+  String get platformSettingsInfraFilesystem => 'الملفات';
+
+  @override
+  String get actionPreviews => 'معاينات الإجراءات';
+
+  @override
+  String get actionUrl => 'رابط الإجراء';
+
+  @override
+  String get activateTenantMessage => 'تفعيل هذا المستأجر؟';
+
+  @override
+  String get activeVersion => 'النسخة النشطة';
+
+  @override
+  String get activityLog => 'سجل النشاط';
+
+  @override
+  String get adapter => 'المحوّل';
+
+  @override
+  String get addPaymentConnection => 'إضافة اتصال دفع';
+
+  @override
+  String get aiAdminReadOnlyNote =>
+      'هذه الشاشة للقراءة فقط باستثناء تدوير بيانات الاعتماد.';
+
+  @override
+  String get aiAdministration => 'إدارة الذكاء الاصطناعي';
+
+  @override
+  String get aiCopilot => 'مساعد الذكاء الاصطناعي';
+
+  @override
+  String get aiCopilotHint =>
+      'يجيب المساعد من أرقام لوحة التحكم الفعلية فقط، ولا يخترع أي قيمة.';
+
+  @override
+  String get aiCopilotQuestionHint =>
+      'مثال: على ماذا يجب أن أركّز هذا الأسبوع؟';
+
+  @override
+  String get aiFeatureLimits => 'حدود ميزات الذكاء الاصطناعي';
+
+  @override
+  String get aiInsights => 'رؤى الذكاء الاصطناعي';
+
+  @override
+  String get aiPrompts => 'الموجّهات';
+
+  @override
+  String get aiServing => 'حالة خدمة الذكاء الاصطناعي';
+
+  @override
+  String get aiTasks => 'مهام الذكاء الاصطناعي';
+
+  @override
+  String get aiTestConnection => 'اختبار الاتصال';
+
+  @override
+  String get aiUsage30Days => 'الاستخدام خلال 30 يومًا';
+
+  @override
+  String get apiKey => 'مفتاح API';
+
+  @override
+  String get applyTemplateUpdate => 'تطبيق تحديث القالب';
+
+  @override
+  String get applyTemplateUpdateMessage =>
+      'تطبيق نسخة القالب الأحدث على هذا التثبيت؟';
+
+  @override
+  String get approveAiActionMessage => 'الموافقة على إجراء الذكاء الاصطناعي؟';
+
+  @override
+  String get archiveTemplate => 'أرشفة القالب';
+
+  @override
+  String get archiveTemplateMessage =>
+      'أرشفة هذا القالب؟ لن يظهر للمتاجر الجديدة.';
+
+  @override
+  String get askCopilot => 'اسأل المساعد';
+
+  @override
+  String get attempt => 'المحاولة';
+
+  @override
+  String get attempts => 'المحاولات';
+
+  @override
+  String get audience => 'الجمهور';
+
+  @override
+  String get automationInstallations => 'تثبيتات الأتمتة';
+
+  @override
+  String get automationInstallationsHint => 'قواعد مثبّتة من قوالب المنصة.';
+
+  @override
+  String get automationTemplates => 'قوالب الأتمتة';
+
+  @override
+  String get automationTemplatesHint =>
+      'قوالب جاهزة من المنصة يمكنك تثبيتها في متجرك.';
+
+  @override
+  String get availability => 'التوافر';
+
+  @override
+  String get baseUrl => 'عنوان URL الأساسي';
+
+  @override
+  String get byokDisabled => 'مفتاح المنصة مفعّل';
+
+  @override
+  String get byokEnabled => 'مفتاح المستأجر مفعّل';
+
+  @override
+  String get cacheHit => 'إصابة الذاكرة المؤقتة';
+
+  @override
+  String get cacheHits => 'إصابات الذاكرة المؤقتة';
+
+  @override
+  String get campaigns => 'الحملات';
+
+  @override
+  String get cancelCampaign => 'إلغاء الحملة';
+
+  @override
+  String get cancelCampaignMessage => 'إلغاء هذه الحملة؟';
+
+  @override
+  String get cancelledAt => 'أُلغيت في';
+
+  @override
+  String get capabilities => 'القدرات';
+
+  @override
+  String get changelog => 'سجل التغييرات';
+
+  @override
+  String get channel => 'القناة';
+
+  @override
+  String get channelKey => 'مفتاح القناة';
+
+  @override
+  String get channels => 'القنوات';
+
+  @override
+  String get configurationSchema => 'مخطط الإعدادات';
+
+  @override
+  String get connectionVerified => 'تم التحقق من الاتصال';
+
+  @override
+  String get connections => 'الاتصالات';
+
+  @override
+  String get correlationId => 'معرّف الارتباط';
+
+  @override
+  String get countries => 'الدول';
+
+  @override
+  String get counts => 'الأعداد';
+
+  @override
+  String get credentialFields => 'حقول بيانات الاعتماد';
+
+  @override
+  String get credentialSource => 'مصدر بيانات الاعتماد';
+
+  @override
+  String get credentials => 'بيانات الاعتماد';
+
+  @override
+  String get currentVersion => 'النسخة الحالية';
+
+  @override
+  String get dailyPerTenant => 'الحد اليومي للمستأجر';
+
+  @override
+  String get dailyPerUser => 'الحد اليومي للمستخدم';
+
+  @override
+  String get dataGaps => 'فجوات البيانات';
+
+  @override
+  String get deliveredAt => 'سُلّمت في';
+
+  @override
+  String get deliveries => 'عمليات التسليم';
+
+  @override
+  String get descriptionAr => 'الوصف (عربي)';
+
+  @override
+  String get disableInstallation => 'تعطيل التثبيت';
+
+  @override
+  String get disableInstallationMessage =>
+      'تعطيل هذا التثبيت؟ سيتوقف عن العمل.';
+
+  @override
+  String get disconnectAccountMessage => 'فصل هذا الحساب؟';
+
+  @override
+  String get dismissRecoveryMessage => 'تجاهل فرصة الاستعادة هذه؟';
+
+  @override
+  String get dismissTaskMessage => 'تجاهل هذه المهمة؟';
+
+  @override
+  String get doNotContactMessage => 'تسجيل هذا العميل كعدم التواصل؟';
+
+  @override
+  String get docsUrl => 'رابط التوثيق';
+
+  @override
+  String get draftMessageMessage => 'إنشاء مسودة رسالة؟';
+
+  @override
+  String get driver => 'المشغّل';
+
+  @override
+  String get durationMs => 'المدة (مللي ثانية)';
+
+  @override
+  String get effectiveCopy => 'النص الفعلي';
+
+  @override
+  String get emailTemplates => 'قوالب البريد';
+
+  @override
+  String get enableInstallation => 'تفعيل التثبيت';
+
+  @override
+  String get enabledAt => 'فُعّل في';
+
+  @override
+  String get errorCategory => 'فئة الخطأ';
+
+  @override
+  String get estimatedCost => 'التكلفة المقدّرة';
+
+  @override
+  String get estimatesAndRecommendations => 'التقديرات والتوصيات';
+
+  @override
+  String get eventId => 'معرّف الحدث';
+
+  @override
+  String get eventKey => 'مفتاح الحدث';
+
+  @override
+  String get eventType => 'نوع الحدث';
+
+  @override
+  String get executeAiActionMessage => 'تنفيذ إجراء الذكاء الاصطناعي الآن؟';
+
+  @override
+  String get factsUsed => 'الحقائق المستخدمة';
+
+  @override
+  String get failedAt => 'فشلت في';
+
+  @override
+  String get failing => 'فاشلة';
+
+  @override
+  String get failureReason => 'سبب الفشل';
+
+  @override
+  String get failureType => 'نوع الفشل';
+
+  @override
+  String get failures => 'الإخفاقات';
+
+  @override
+  String get fallbackAttempts => 'محاولات البديل';
+
+  @override
+  String get fallbackRequests => 'طلبات البديل';
+
+  @override
+  String get feature => 'الميزة';
+
+  @override
+  String get fromStore => 'من متجر';
+
+  @override
+  String get group => 'المجموعة';
+
+  @override
+  String get headingAr => 'العنوان (عربي)';
+
+  @override
+  String get headingEn => 'العنوان (إنجليزي)';
+
+  @override
+  String get httpStatus => 'حالة HTTP';
+
+  @override
+  String get icon => 'الأيقونة';
+
+  @override
+  String get inputTokens => 'رموز الإدخال';
+
+  @override
+  String get installTemplate => 'تثبيت القالب';
+
+  @override
+  String get installTemplateMessage => 'تثبيت هذا القالب في مساحة عملك؟';
+
+  @override
+  String get installation => 'التثبيت';
+
+  @override
+  String get installations => 'التثبيتات';
+
+  @override
+  String get installed => 'مثبّت';
+
+  @override
+  String get installedAt => 'ثُبّت في';
+
+  @override
+  String get installedVersion => 'النسخة المثبّتة';
+
+  @override
+  String get installer => 'المثبّت';
+
+  @override
+  String get integrationEnabled => 'التكامل مفعّل';
+
+  @override
+  String get integrationHealth => 'صحة التكاملات';
+
+  @override
+  String get introAr => 'المقدمة (عربي)';
+
+  @override
+  String get introEn => 'المقدمة (إنجليزي)';
+
+  @override
+  String get inventoryTransfer => 'نقل المخزون';
+
+  @override
+  String get inventoryTransferHint =>
+      'انقل كمية من متغير منتج بين متجرين في مساحة العمل نفسها. يتحقق الخادم من المتجرين والمخزون.';
+
+  @override
+  String get isMarketing => 'رسالة تسويقية';
+
+  @override
+  String get key => 'المفتاح';
+
+  @override
+  String get kind => 'النوع';
+
+  @override
+  String get lastSyncedAt => 'آخر مزامنة';
+
+  @override
+  String get lastVerified => 'آخر تحقق';
+
+  @override
+  String get live => 'مباشر';
+
+  @override
+  String get makeDefaultMessage => 'تعيين هذا كافتراضي؟';
+
+  @override
+  String get markCompletedMessage => 'تعليم هذا كمكتمل؟';
+
+  @override
+  String get maxOutputTokens => 'أقصى رموز الإخراج';
+
+  @override
+  String get maxRetries => 'أقصى عدد محاولات';
+
+  @override
+  String get merchantReference => 'مرجع التاجر';
+
+  @override
+  String get methodCode => 'رمز طريقة الدفع';
+
+  @override
+  String get metricExplanations => 'شرح المؤشرات';
+
+  @override
+  String get missingData => 'بيانات ناقصة';
+
+  @override
+  String get model => 'النموذج';
+
+  @override
+  String get models => 'النماذج';
+
+  @override
+  String get monthlyPerTenant => 'الحد الشهري للمستأجر';
+
+  @override
+  String get monthlyPlatformRequests => 'الحد الشهري للمنصة';
+
+  @override
+  String get nameAr => 'الاسم (عربي)';
+
+  @override
+  String get noAiPrompts => 'لا توجد موجّهات بعد';
+
+  @override
+  String get noAiTasks => 'لا توجد مهام بعد';
+
+  @override
+  String get noAnswerReturned => 'لم يُرجع المساعد إجابة.';
+
+  @override
+  String get noAutomationInstallations => 'لا توجد تثبيتات أتمتة';
+
+  @override
+  String get noAutomationTemplates => 'لا توجد قوالب أتمتة';
+
+  @override
+  String get noCampaigns => 'لا توجد حملات';
+
+  @override
+  String get noConnections => 'لا توجد اتصالات';
+
+  @override
+  String get noCountries => 'لا توجد دول';
+
+  @override
+  String get noCredentials => 'لا توجد بيانات اعتماد';
+
+  @override
+  String get noDeliveries => 'لا توجد عمليات تسليم';
+
+  @override
+  String get noEmailTemplates => 'لا توجد قوالب بريد';
+
+  @override
+  String get noIntegrations => 'لا توجد تكاملات';
+
+  @override
+  String get noPaymentConnections => 'لا توجد اتصالات دفع';
+
+  @override
+  String get noPaymentConnectionsMessage =>
+      'أضف اتصالًا ليتمكن المتجر من تحصيل المدفوعات.';
+
+  @override
+  String get noPayments => 'لا توجد مدفوعات';
+
+  @override
+  String get noProviders => 'لا يوجد مزوّدون';
+
+  @override
+  String get noVariantsToTransfer => 'لا توجد متغيرات منتجات للنقل';
+
+  @override
+  String get noWebhookEvents => 'لا توجد أحداث webhook';
+
+  @override
+  String get nothingHereYet => 'لا يوجد شيء بعد';
+
+  @override
+  String get notificationOperations => 'عمليات الإشعارات';
+
+  @override
+  String get operations => 'العمليات';
+
+  @override
+  String get outputTokens => 'رموز الإخراج';
+
+  @override
+  String get paidAt => 'دُفعت في';
+
+  @override
+  String get payment => 'الدفعة';
+
+  @override
+  String get paymentCatalogue => 'دليل المدفوعات';
+
+  @override
+  String get paymentConnections => 'اتصالات الدفع';
+
+  @override
+  String get paymentHistory => 'سجل المدفوعات';
+
+  @override
+  String get payments => 'المدفوعات';
+
+  @override
+  String get period => 'الفترة';
+
+  @override
+  String get platformConfigured => 'مضبوط على المنصة';
+
+  @override
+  String get processedAt => 'عُولج في';
+
+  @override
+  String get productVariant => 'متغير المنتج';
+
+  @override
+  String get promptKey => 'مفتاح الموجّه';
+
+  @override
+  String get provider => 'المزوّد';
+
+  @override
+  String get providerCode => 'رمز المزوّد';
+
+  @override
+  String get providerCount => 'عدد المزوّدين';
+
+  @override
+  String get providerCoverage => 'تغطية المزوّدين';
+
+  @override
+  String get providerKey => 'مفتاح المزوّد';
+
+  @override
+  String get providerMessageId => 'معرّف رسالة المزوّد';
+
+  @override
+  String get providers => 'المزوّدون';
+
+  @override
+  String get publicKey => 'المفتاح العام';
+
+  @override
+  String get publishCampaign => 'نشر الحملة';
+
+  @override
+  String get publishCampaignMessage => 'نشر هذه الحملة الآن؟';
+
+  @override
+  String get publishTemplate => 'نشر القالب';
+
+  @override
+  String get publishTemplateMessage => 'نشر هذا القالب للمتاجر؟';
+
+  @override
+  String get questionTooLong => 'السؤال طويل جدًا (الحد 1000 حرف).';
+
+  @override
+  String get queuedAt => 'في الانتظار منذ';
+
+  @override
+  String get recheckComplete => 'اكتمل إعادة الفحص';
+
+  @override
+  String get recheckIntegration => 'إعادة فحص التكامل';
+
+  @override
+  String get recheckIntegrationMessage => 'إعادة فحص هذا التكامل الآن؟';
+
+  @override
+  String get recipient => 'المستلم';
+
+  @override
+  String get recommendations => 'التوصيات';
+
+  @override
+  String get refundAmount => 'مبلغ الاسترداد';
+
+  @override
+  String get refundPayment => 'استرداد الدفعة';
+
+  @override
+  String get refundReason => 'سبب الاسترداد';
+
+  @override
+  String get refundSubmitted => 'تم إرسال الاسترداد';
+
+  @override
+  String get rejectAiActionMessage => 'رفض إجراء الذكاء الاصطناعي؟';
+
+  @override
+  String get removed => 'مزال';
+
+  @override
+  String get requests => 'الطلبات';
+
+  @override
+  String get restoreTemplate => 'استعادة القالب';
+
+  @override
+  String get restoreTemplateMessage => 'استعادة النص الافتراضي لهذا القالب؟';
+
+  @override
+  String get retryDelivery => 'إعادة محاولة التسليم';
+
+  @override
+  String get retryDeliveryMessage => 'إعادة محاولة تسليم هذه الرسالة؟';
+
+  @override
+  String get revokeConnectionMessage =>
+      'إلغاء هذا الاتصال؟ سيتوقف المتجر عن استخدامه.';
+
+  @override
+  String get rotateCredential => 'تدوير بيانات الاعتماد';
+
+  @override
+  String get routes => 'المسارات';
+
+  @override
+  String get rule => 'القاعدة';
+
+  @override
+  String get sandbox => 'تجريبي';
+
+  @override
+  String get scheduleCampaign => 'جدولة الحملة';
+
+  @override
+  String get scheduledAt => 'مجدولة في';
+
+  @override
+  String get secretKey => 'المفتاح السري';
+
+  @override
+  String get seedAiTasks => 'تهيئة مهام الذكاء الاصطناعي';
+
+  @override
+  String get seedAiTasksMessage =>
+      'إنشاء مهام الذكاء الاصطناعي الافتراضية الناقصة؟';
+
+  @override
+  String get selectPeriod => 'اختر الفترة';
+
+  @override
+  String get sendTestEmail => 'إرسال بريد تجريبي';
+
+  @override
+  String get sentAt => 'أُرسلت في';
+
+  @override
+  String get signatureValid => 'التوقيع صالح';
+
+  @override
+  String get stockTransferred => 'تم نقل المخزون';
+
+  @override
+  String get subjectAr => 'الموضوع (عربي)';
+
+  @override
+  String get subjectEn => 'الموضوع (إنجليزي)';
+
+  @override
+  String get submitForApprovalMessage => 'إرسال للموافقة؟';
+
+  @override
+  String get suspendTenantMessage => 'تعليق هذا المستأجر؟';
+
+  @override
+  String get syncPayment => 'مزامنة الدفعة';
+
+  @override
+  String get taskKey => 'مفتاح المهمة';
+
+  @override
+  String get temperature => 'درجة الحرارة';
+
+  @override
+  String get template => 'القالب';
+
+  @override
+  String get templateActionsHint =>
+      'مصفوفة JSON للإجراءات، مثل النوع send_notification.';
+
+  @override
+  String get templateCategoryHint => 'إحدى فئات القوالب التي يعرّفها الخادم.';
+
+  @override
+  String get templateCustomized => 'القالب مخصّص';
+
+  @override
+  String get templateKey => 'مفتاح القالب';
+
+  @override
+  String get templateKeyHint => 'معرّف فريد بأحرف صغيرة وشرطات.';
+
+  @override
+  String get templateTriggerHint => 'مشغّل من قائمة مشغّلات الأتمتة.';
+
+  @override
+  String get timeoutSeconds => 'مهلة (ثانية)';
+
+  @override
+  String get toStore => 'إلى متجر';
+
+  @override
+  String get toggleCountry => 'تبديل حالة الدولة';
+
+  @override
+  String get toggleCountryMessage => 'تغيير حالة تفعيل هذه الدولة؟';
+
+  @override
+  String get toggleMethod => 'تبديل حالة الطريقة';
+
+  @override
+  String get toggleMethodMessage => 'تغيير حالة تفعيل طريقة الدفع؟';
+
+  @override
+  String get tokens => 'الرموز';
+
+  @override
+  String get transferNeedsTwoStores => 'تحتاج إلى متجرين';
+
+  @override
+  String get transferNeedsTwoStoresMessage =>
+      'أنشئ متجرًا ثانيًا لتتمكن من نقل المخزون بين المتاجر.';
+
+  @override
+  String get transferStock => 'نقل المخزون';
+
+  @override
+  String get transferStockConfirm => 'نقل هذه الكمية بين المتجرين؟';
+
+  @override
+  String get unprocessedEvents => 'أحداث غير معالجة';
+
+  @override
+  String get unregisteredProviders => 'مزوّدون غير مسجّلين';
+
+  @override
+  String get variables => 'المتغيرات';
+
+  @override
+  String get verifyAccountMessage => 'التحقق من هذا الحساب؟';
+
+  @override
+  String get verifyConnection => 'التحقق من الاتصال';
+
+  @override
+  String get versions => 'النسخ';
+
+  @override
+  String get webhookDocsUrl => 'رابط توثيق webhook';
+
+  @override
+  String get webhookEvents => 'أحداث webhook';
+
+  @override
+  String get webhookSecret => 'سر webhook';
+
+  @override
+  String get yourQuestion => 'سؤالك';
 }
