@@ -140,7 +140,10 @@ class _TeamUserFormScreenState extends ConsumerState<TeamUserFormScreen> {
                 padding: AppSpacing.page,
                 children: [
                   if (_error != null) ...[
-                    _ErrorBanner(message: _error!),
+                    StatusBanner(
+                      tone: StatusBannerTone.error,
+                      message: _error!,
+                    ),
                     const SizedBox(height: 12),
                   ],
                   AppTextField(
@@ -336,28 +339,5 @@ class _TeamUserFormScreenState extends ConsumerState<TeamUserFormScreen> {
   JsonMap _asMap(Object? data) {
     if (data is Map) return Map<String, dynamic>.from(data);
     return const <String, dynamic>{};
-  }
-}
-
-class _ErrorBanner extends StatelessWidget {
-  const _ErrorBanner({required this.message});
-
-  final String message;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.errorContainer,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Text(
-        message,
-        style: TextStyle(
-          color: Theme.of(context).colorScheme.onErrorContainer,
-        ),
-      ),
-    );
   }
 }

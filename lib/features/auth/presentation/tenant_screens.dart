@@ -76,18 +76,9 @@ class _TenantSetupScreenState extends ConsumerState<TenantSetupScreen> {
                     ),
                     const SizedBox(height: 26),
                     if (error != null && error.isNotEmpty) ...[
-                      Container(
-                        padding: const EdgeInsets.all(14),
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.errorContainer,
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                        child: Text(
-                          error,
-                          style: TextStyle(
-                            color: theme.colorScheme.onErrorContainer,
-                          ),
-                        ),
+                      StatusBanner(
+                        tone: StatusBannerTone.error,
+                        message: error,
                       ),
                       const SizedBox(height: 16),
                     ],

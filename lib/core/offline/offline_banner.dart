@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app/localization/app_localizations.dart';
 import '../../app/theme/design_tokens.dart';
 import '../providers.dart';
+import '../widgets/app_widgets.dart';
 import 'connectivity.dart';
 
 /// A quiet, global connection banner.
@@ -63,35 +64,32 @@ class _OfflineBannerHostState extends ConsumerState<OfflineBannerHost> {
     // has already seen the app react.
     if (offline) _showBackOnline = false;
 
-    final _Banner? banner;
+    final StatusBanner? banner;
     if (offline) {
-      banner = _Banner(
+      banner = StatusBanner(
+        tone: StatusBannerTone.warning,
         icon: Icons.cloud_off_rounded,
         title: context.tr('offlineTitle'),
         message: context.tr('offlineBody'),
-        background: context.dukavo.warningContainer,
-        foreground: context.dukavo.onWarningContainer,
         actionLabel: context.tr('retry'),
         onAction: () => connectivity.check(force: true),
       );
     } else if (syncing) {
-      banner = _Banner(
+      banner = StatusBanner(
+        tone: StatusBannerTone.info,
         icon: Icons.sync_rounded,
         title: context.tr('offlineSyncingTitle'),
         message: pending > 0
             ? context.tr('offlineSyncingBody', args: {'count': pending})
             : context.tr('offlineRefreshing'),
-        background: context.dukavo.infoContainer,
-        foreground: context.dukavo.onInfoContainer,
         progress: true,
       );
     } else if (_showBackOnline) {
-      banner = _Banner(
+      banner = StatusBanner(
+        tone: StatusBannerTone.success,
         icon: Icons.cloud_done_rounded,
         title: context.tr('offlineBackOnline'),
         message: context.tr('offlineBackOnlineBody'),
-        background: context.dukavo.successContainer,
-        foreground: context.dukavo.onSuccessContainer,
       );
     } else {
       banner = null;
@@ -102,9 +100,14 @@ class _OfflineBannerHostState extends ConsumerState<OfflineBannerHost> {
       children: [
         if (banner != null)
           Material(
-            color: banner.background,
+            color: context.dukavo.background,
             child: Padding(
-              padding: EdgeInsets.only(top: topInset),
+              padding: EdgeInsetsDirectional.fromSTEB(
+                AppSpacing.md,
+                topInset + AppSpacing.xs,
+                AppSpacing.md,
+                AppSpacing.xs,
+              ),
               child: banner,
             ),
           ),
@@ -116,101 +119,6 @@ class _OfflineBannerHostState extends ConsumerState<OfflineBannerHost> {
           ),
         ),
       ],
-    );
-  }
-}
-
-class _Banner extends StatelessWidget {
-  const _Banner({
-    required this.icon,
-    required this.title,
-    required this.message,
-    required this.background,
-    required this.foreground,
-    this.actionLabel,
-    this.onAction,
-    this.progress = false,
-  });
-
-  final IconData icon;
-  final String title;
-  final String message;
-  final Color background;
-  final Color foreground;
-  final String? actionLabel;
-  final VoidCallback? onAction;
-  final bool progress;
-
-  @override
-  Widget build(BuildContext context) {
-    final texts = Theme.of(context).textTheme;
-    return Semantics(
-      liveRegion: true,
-      container: true,
-      child: Padding(
-        padding: const EdgeInsetsDirectional.fromSTEB(
-          AppSpacing.md,
-          AppSpacing.xs,
-          AppSpacing.sm,
-          AppSpacing.xs,
-        ),
-        child: Row(
-          children: [
-            if (progress)
-              SizedBox(
-                width: 18,
-                height: 18,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  color: foreground,
-                ),
-              )
-            else
-              Icon(icon, size: 20, color: foreground),
-            const SizedBox(width: AppSpacing.sm),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    title,
-                    style: texts.labelLarge?.copyWith(
-                      color: foreground,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  Text(
-                    message,
-                    style: texts.bodySmall?.copyWith(
-                      color: foreground,
-                      height: 1.3,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            if (actionLabel != null && onAction != null)
-              TextButton(
-                onPressed: onAction,
-                style: TextButton.styleFrom(
-                  foregroundColor: foreground,
-                  minimumSize: const Size(
-                    AppSizes.touchTarget,
-                    AppSizes.touchTarget,
-                  ),
-                  padding: const EdgeInsetsDirectional.symmetric(
-                    horizontal: AppSpacing.sm,
-                  ),
-                  textStyle: texts.labelLarge?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                child: Text(actionLabel!),
-              ),
-          ],
-        ),
-      ),
     );
   }
 }

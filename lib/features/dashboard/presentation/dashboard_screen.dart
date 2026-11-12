@@ -11,6 +11,7 @@ import '../../../core/api/api_exception.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/widgets/app_widgets.dart';
 import '../../auth/application/auth_controller.dart';
+import '../../notifications/application/notification_controller.dart';
 import '../application/dashboard_controller.dart';
 import '../domain/dashboard_domain.dart';
 
@@ -68,6 +69,7 @@ class _DashboardBody extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final session = ref.watch(currentSessionProvider);
     final permissions = ref.watch(permissionsProvider);
+    final unread = ref.watch(notificationUnreadProvider);
     final summary = bundle.overview.summary;
     final firstName = session?.user.firstName ?? '';
 
@@ -108,16 +110,14 @@ class _DashboardBody extends ConsumerWidget {
       children: [
         PageHeader(
           eyebrow: context.tr('dashboard'),
-          title:
-              '${_greeting(context)}${firstName.isEmpty ? '' : ', $firstName'}',
-          subtitle:
-              session?.activeTenant?.name ?? context.tr('noStore'),
+          title: _greetingTitle(context, firstName),
+          subtitle: session?.activeTenant?.name ?? context.tr('noStore'),
           padding: const EdgeInsetsDirectional.only(bottom: AppSpacing.lg),
           actions: [
-            IconButton.filledTonal(
+            NotificationBellButton(
               tooltip: context.tr('notifications'),
+              unreadCount: unread,
               onPressed: () => context.push(RoutePaths.notifications),
-              icon: const Icon(Icons.notifications_none_rounded),
             ),
           ],
         ),
@@ -126,7 +126,7 @@ class _DashboardBody extends ConsumerWidget {
           currency: currency,
           revenue: bundle.revenue,
         ),
-        const SizedBox(height: AppSpacing.sm + 2),
+        const SizedBox(height: AppSpacing.md),
         GridView.count(
           crossAxisCount: 2,
           shrinkWrap: true,
@@ -308,6 +308,19 @@ class _DashboardBody extends ConsumerWidget {
     if (hour < 18) return context.tr('goodAfternoon');
     return context.tr('goodEvening');
   }
+
+  /// Builds "Good morning، Name" with the right comma and a bidi isolate
+  /// around the name so the comma cannot jump to the other side.
+  String _greetingTitle(BuildContext context, String firstName) {
+    final greeting = _greeting(context);
+    if (firstName.isEmpty) return greeting;
+
+    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
+    final separator = isArabic ? '،' : ',';
+    final isArabicName = RegExp(r'[\u0600-\u06FF]').hasMatch(firstName);
+    final isolateStart = isArabicName ? '\u2067' : '\u2066';
+    return '$greeting$separator $isolateStart$firstName\u2069';
+  }
 }
 
 class _RevenueHero extends StatelessWidget {
@@ -326,6 +339,7 @@ class _RevenueHero extends StatelessWidget {
     final colors = context.dukavo;
     return Container(
       padding: const EdgeInsets.all(AppSpacing.lg),
+      clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -412,13 +426,16 @@ class _RevenueHero extends StatelessWidget {
               if (revenue.length > 1) ...[
                 const SizedBox(height: AppSpacing.sm),
                 SizedBox(
-                  height: 54,
-                  child: CustomPaint(
-                    size: Size.infinite,
-                    painter: _SparklinePainter(
-                      values:
-                          revenue.map((point) => point.total.toDouble()).toList(),
-                      accent: context.dukavo.accent,
+                  height: 56,
+                  child: ClipRect(
+                    child: CustomPaint(
+                      size: Size.infinite,
+                      painter: _SparklinePainter(
+                        values: revenue
+                            .map((point) => point.total.toDouble())
+                            .toList(),
+                        line: context.dukavo.chartLine,
+                      ),
                     ),
                   ),
                 ),
@@ -475,10 +492,10 @@ class _HeroStat extends StatelessWidget {
           Text(
             label,
             style: context.texts.labelSmall?.copyWith(
-              color: Colors.white.withValues(alpha: 0.72),
+              color: Colors.white.withValues(alpha: 0.78),
             ),
           ),
-          const SizedBox(height: 2),
+          const SizedBox(height: AppSpacing.xxs),
           Text(
             value,
             style: context.texts.titleMedium?.copyWith(
@@ -494,10 +511,10 @@ class _HeroStat extends StatelessWidget {
 }
 
 class _SparklinePainter extends CustomPainter {
-  _SparklinePainter({required this.values, required this.accent});
+  _SparklinePainter({required this.values, required this.line});
 
   final List<double> values;
-  final Color accent;
+  final Color line;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -532,8 +549,8 @@ class _SparklinePainter extends CustomPainter {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            accent.withValues(alpha: 0.32),
-            accent.withValues(alpha: 0.02),
+            line.withValues(alpha: 0.30),
+            line.withValues(alpha: 0.02),
           ],
         ).createShader(Offset.zero & size),
     );
@@ -541,9 +558,9 @@ class _SparklinePainter extends CustomPainter {
     canvas.drawPath(
       path,
       Paint()
-        ..color = accent
+        ..color = line
         ..style = PaintingStyle.stroke
-        ..strokeWidth = 2.2
+        ..strokeWidth = 2
         ..strokeCap = StrokeCap.round
         ..strokeJoin = StrokeJoin.round,
     );
@@ -551,7 +568,7 @@ class _SparklinePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _SparklinePainter oldDelegate) {
-    return oldDelegate.values != values || oldDelegate.accent != accent;
+    return oldDelegate.values != values || oldDelegate.line != line;
   }
 }
 
@@ -576,7 +593,7 @@ class _TopProductRow extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: AppSpacing.sm,
-          vertical: 10,
+          vertical: AppSpacing.xs,
         ),
         child: Row(
           children: [
@@ -668,7 +685,7 @@ class _QuickActionGrid extends StatelessWidget {
         for (final action in actions)
           AppCard(
             padding: const EdgeInsetsDirectional.symmetric(
-              horizontal: AppSpacing.sm + 2,
+              horizontal: AppSpacing.sm,
               vertical: AppSpacing.sm,
             ),
             onTap: action.onTap,

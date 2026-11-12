@@ -51,9 +51,8 @@ class AppLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final asset = showWordmark
-        ? fullAssetFor(context)
-        : 'assets/images/logo-icon.png';
+    final asset =
+        showWordmark ? fullAssetFor(context) : 'assets/images/logo-icon.png';
 
     return Image.asset(
       asset,
@@ -176,9 +175,8 @@ class AppButton extends StatelessWidget {
               );
     }
 
-    final sized = height == null
-        ? button
-        : SizedBox(height: height, child: button);
+    final sized =
+        height == null ? button : SizedBox(height: height, child: button);
     if (!expand) return sized;
     return SizedBox(width: double.infinity, child: sized);
   }
@@ -345,7 +343,8 @@ class PageHeader extends StatelessWidget {
                   const SizedBox(height: AppSpacing.xxs),
                   Text(
                     subtitle!,
-                    style: theme.bodyMedium?.copyWith(color: colors.textSecondary),
+                    style:
+                        theme.bodyMedium?.copyWith(color: colors.textSecondary),
                   ),
                 ],
               ],
@@ -357,6 +356,82 @@ class PageHeader extends StatelessWidget {
           ],
         ],
       ),
+    );
+  }
+}
+
+/// The dashboard notification action.
+///
+/// A teal-tinted surface keeps the bell inside the brand palette in both
+/// themes, and the dot only appears when there is something unread. The whole
+/// 48dp square is the tap target.
+class NotificationBellButton extends StatelessWidget {
+  const NotificationBellButton({
+    super.key,
+    required this.onPressed,
+    this.tooltip,
+    this.unreadCount = 0,
+  });
+
+  final VoidCallback onPressed;
+  final String? tooltip;
+  final int unreadCount;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.dukavo;
+    final scheme = context.scheme;
+    final hasUnread = unreadCount > 0;
+
+    final button = Material(
+      color: colors.primarySurface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppRadius.sm + 2),
+        side: BorderSide(color: scheme.primary.withValues(alpha: 0.18)),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: onPressed,
+        child: SizedBox(
+          width: AppSizes.touchTarget,
+          height: AppSizes.touchTarget,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Icon(
+                Icons.notifications_none_rounded,
+                size: 24,
+                color: scheme.primary,
+              ),
+              if (hasUnread)
+                PositionedDirectional(
+                  top: 10,
+                  end: 11,
+                  child: Container(
+                    key: const ValueKey('notificationUnreadDot'),
+                    width: 8,
+                    height: 8,
+                    decoration: BoxDecoration(
+                      color: scheme.error,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: colors.primarySurface,
+                        width: 1.5,
+                      ),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    return Semantics(
+      button: true,
+      label: hasUnread && tooltip != null ? '$tooltip ($unreadCount)' : tooltip,
+      child:
+          tooltip == null ? button : Tooltip(message: tooltip!, child: button),
     );
   }
 }
@@ -451,9 +526,7 @@ class AppCard extends StatelessWidget {
         color: Colors.transparent,
         borderRadius: effectiveRadius,
         clipBehavior: Clip.antiAlias,
-        child: onTap == null
-            ? content
-            : InkWell(onTap: onTap, child: content),
+        child: onTap == null ? content : InkWell(onTap: onTap, child: content),
       ),
     );
   }
@@ -498,13 +571,15 @@ class StatisticCard extends StatelessWidget {
             children: [
               if (icon != null)
                 Container(
-                  width: compact ? 30 : 34,
-                  height: compact ? 30 : 34,
+                  width: compact ? 32 : 36,
+                  height: compact ? 32 : 36,
                   decoration: BoxDecoration(
-                    color: accent.withValues(alpha: context.isDark ? 0.16 : 0.10),
-                    borderRadius: BorderRadius.circular(AppRadius.xs + 2),
+                    color: accent.withValues(
+                      alpha: context.isDark ? 0.18 : 0.12,
+                    ),
+                    borderRadius: BorderRadius.circular(AppRadius.xs),
                   ),
-                  child: Icon(icon, size: compact ? 16 : 18, color: accent),
+                  child: Icon(icon, size: compact ? 18 : 20, color: accent),
                 ),
               const Spacer(),
               if (trend != null)
@@ -518,7 +593,7 @@ class StatisticCard extends StatelessWidget {
                       size: 14,
                       color: trendColor,
                     ),
-                    const SizedBox(width: 2),
+                    const SizedBox(width: AppSpacing.xxs),
                     Text(
                       trend!,
                       style: context.texts.labelSmall?.copyWith(
@@ -530,7 +605,7 @@ class StatisticCard extends StatelessWidget {
                 ),
             ],
           ),
-          SizedBox(height: compact ? 10 : 14),
+          SizedBox(height: compact ? AppSpacing.xs : AppSpacing.sm),
           Text(
             value,
             maxLines: 1,
@@ -545,7 +620,7 @@ class StatisticCard extends StatelessWidget {
               fontFeatures: const [FontFeature.tabularFigures()],
             ),
           ),
-          const SizedBox(height: 2),
+          const SizedBox(height: AppSpacing.xxs),
           Text(
             label,
             maxLines: 2,
@@ -569,8 +644,7 @@ class SectionHeader extends StatelessWidget {
     this.subtitle,
     this.actionLabel,
     this.onAction,
-    this.padding =
-        const EdgeInsetsDirectional.only(bottom: AppSpacing.xs),
+    this.padding = const EdgeInsetsDirectional.only(bottom: AppSpacing.xs),
   });
 
   final String title;
@@ -924,9 +998,8 @@ class AsyncValueView<T> extends StatelessWidget {
       data: builder,
       loading: () => loading ?? const LoadingView(),
       error: (error, stack) => ErrorView(
-        message: error is ApiException
-            ? error.message
-            : context.tr('errorGeneric'),
+        message:
+            error is ApiException ? error.message : context.tr('errorGeneric'),
         onRetry: onRetry,
       ),
     );
@@ -1018,7 +1091,10 @@ class _StatusColors {
       case 'open':
       case 'confirmed':
       case 'completed':
-        return _StatusColors(colors.success, colors.successContainer);
+        return _StatusColors(
+          colors.onSuccessContainer,
+          colors.successContainer,
+        );
       case 'pending':
       case 'pending_confirmation':
       case 'draft':
@@ -1030,7 +1106,10 @@ class _StatusColors {
       case 'shipped':
       case 'reorder':
       case 'invited':
-        return _StatusColors(colors.warning, colors.warningContainer);
+        return _StatusColors(
+          colors.onWarningContainer,
+          colors.warningContainer,
+        );
       case 'cancelled':
       case 'failed':
       case 'blocked':
@@ -1038,7 +1117,10 @@ class _StatusColors {
       case 'out_of_stock':
       case 'error':
       case 'critical':
-        return _StatusColors(colors.danger, colors.dangerContainer);
+        return _StatusColors(
+          colors.onDangerContainer,
+          colors.dangerContainer,
+        );
       case 'inactive':
       case 'closed':
       case 'read':
@@ -1048,7 +1130,7 @@ class _StatusColors {
           colors.surfaceHigh,
         );
       default:
-        return _StatusColors(colors.info, colors.infoContainer);
+        return _StatusColors(colors.onInfoContainer, colors.infoContainer);
     }
   }
 }
@@ -1306,80 +1388,177 @@ class AppSnack {
   }
 }
 
-/// A quiet information banner for hints, warnings and empty-form guidance.
+enum StatusBannerTone { error, warning, success, info }
+
+/// The single inline status banner used across the app.
+///
+/// Light mode pairs a pale status container with its dark foreground; dark
+/// mode pairs a deep container with its light foreground. Both combinations
+/// clear WCAG AA for body text, and the 1px border is a slightly stronger tint
+/// of the same foreground so the card still reads without relying on colour
+/// alone.
+class StatusBanner extends StatelessWidget {
+  const StatusBanner({
+    super.key,
+    required this.message,
+    this.title,
+    this.icon,
+    this.tone = StatusBannerTone.info,
+    this.actionLabel,
+    this.onAction,
+    this.progress = false,
+    this.compact = false,
+  });
+
+  final String message;
+  final String? title;
+  final IconData? icon;
+  final StatusBannerTone tone;
+  final String? actionLabel;
+  final VoidCallback? onAction;
+  final bool progress;
+  final bool compact;
+
+  IconData get _defaultIcon => switch (tone) {
+        StatusBannerTone.error => Icons.error_outline_rounded,
+        StatusBannerTone.warning => Icons.warning_amber_rounded,
+        StatusBannerTone.success => Icons.check_circle_outline_rounded,
+        StatusBannerTone.info => Icons.info_outline_rounded,
+      };
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.dukavo;
+    final (foreground, background) = switch (tone) {
+      StatusBannerTone.error => (
+          colors.onDangerContainer,
+          colors.dangerContainer,
+        ),
+      StatusBannerTone.warning => (
+          colors.onWarningContainer,
+          colors.warningContainer,
+        ),
+      StatusBannerTone.success => (
+          colors.onSuccessContainer,
+          colors.successContainer,
+        ),
+      StatusBannerTone.info => (
+          colors.onInfoContainer,
+          colors.infoContainer,
+        ),
+    };
+
+    final iconSize = compact ? 18.0 : 20.0;
+    final padding = compact ? AppSpacing.sm : AppSpacing.sm + 2;
+
+    return Semantics(
+      liveRegion: true,
+      container: true,
+      child: Container(
+        padding: EdgeInsets.all(padding),
+        decoration: BoxDecoration(
+          color: background,
+          borderRadius: AppRadius.input,
+          border: Border.all(color: foreground.withValues(alpha: 0.28)),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (progress)
+              SizedBox(
+                width: iconSize,
+                height: iconSize,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: foreground,
+                ),
+              )
+            else
+              Icon(
+                icon ?? _defaultIcon,
+                size: iconSize,
+                color: foreground,
+              ),
+            const SizedBox(width: AppSpacing.sm),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (title != null) ...[
+                    Text(
+                      title!,
+                      style: context.texts.labelLarge?.copyWith(
+                        color: foreground,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.xxs),
+                  ],
+                  Text(
+                    message,
+                    style: context.texts.bodySmall?.copyWith(
+                      color: foreground,
+                      height: 1.45,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            if (actionLabel != null && onAction != null) ...[
+              const SizedBox(width: AppSpacing.xs),
+              TextButton(
+                onPressed: onAction,
+                style: TextButton.styleFrom(
+                  foregroundColor: foreground,
+                  minimumSize: const Size(
+                    AppSizes.touchTarget,
+                    AppSizes.touchTarget,
+                  ),
+                  padding: const EdgeInsetsDirectional.symmetric(
+                    horizontal: AppSpacing.sm,
+                  ),
+                  textStyle: context.texts.labelLarge?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                child: Text(actionLabel!),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Compatibility wrapper kept for call sites that still use the older
+/// [InfoBannerTone] names. New code should use [StatusBanner].
 class InfoBanner extends StatelessWidget {
   const InfoBanner({
     super.key,
     required this.message,
     this.title,
-    this.icon = Icons.info_outline_rounded,
+    this.icon,
     this.tone = InfoBannerTone.info,
   });
 
   final String message;
   final String? title;
-  final IconData icon;
+  final IconData? icon;
   final InfoBannerTone tone;
 
   @override
   Widget build(BuildContext context) {
-    final colors = switch (tone) {
-      InfoBannerTone.info => (
-          context.dukavo.onInfoContainer,
-          context.dukavo.infoContainer
-        ),
-      InfoBannerTone.success => (
-          context.dukavo.onSuccessContainer,
-          context.dukavo.successContainer
-        ),
-      InfoBannerTone.warning => (
-          context.dukavo.onWarningContainer,
-          context.dukavo.warningContainer
-        ),
-      InfoBannerTone.danger => (
-          context.dukavo.onDangerContainer,
-          context.dukavo.dangerContainer
-        ),
-    };
-
-    return Container(
-      padding: const EdgeInsets.all(AppSpacing.sm + 2),
-      decoration: BoxDecoration(
-        color: colors.$2,
-        borderRadius: AppRadius.input,
-        border: Border.all(color: colors.$1.withValues(alpha: 0.18)),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(icon, size: 20, color: colors.$1),
-          const SizedBox(width: AppSpacing.sm),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (title != null) ...[
-                  Text(
-                    title!,
-                    style: context.texts.labelLarge?.copyWith(
-                      color: colors.$1,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                ],
-                Text(
-                  message,
-                  style: context.texts.bodySmall?.copyWith(
-                    color: colors.$1,
-                    height: 1.45,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+    return StatusBanner(
+      message: message,
+      title: title,
+      icon: icon,
+      tone: switch (tone) {
+        InfoBannerTone.info => StatusBannerTone.info,
+        InfoBannerTone.success => StatusBannerTone.success,
+        InfoBannerTone.warning => StatusBannerTone.warning,
+        InfoBannerTone.danger => StatusBannerTone.error,
+      },
     );
   }
 }
@@ -1392,17 +1571,50 @@ class KeyValueRow extends StatelessWidget {
     required this.label,
     required this.value,
     this.valueColor,
+    this.technical = false,
   });
 
   final String label;
   final String value;
   final Color? valueColor;
 
+  /// Technical identifiers (phone number IDs, webhook tokens, …) are forced
+  /// LTR, use a monospace face, wrap cleanly and can be selected.
+  final bool technical;
+
   @override
   Widget build(BuildContext context) {
     final colors = context.dukavo;
+    final isRtl = Directionality.of(context) == TextDirection.rtl;
+
+    final valueStyle = technical
+        ? context.texts.bodySmall?.copyWith(
+            fontFamily: 'monospace',
+            fontFamilyFallback: const ['monospace'],
+            fontSize: 13,
+            height: 1.4,
+            letterSpacing: 0,
+            fontWeight: FontWeight.w600,
+            color: valueColor,
+          )
+        : context.texts.bodyMedium?.copyWith(
+            fontWeight: FontWeight.w600,
+            color: valueColor,
+          );
+
+    final valueText = Text(
+      value,
+      textAlign: technical
+          ? (isRtl ? TextAlign.left : TextAlign.right)
+          : TextAlign.end,
+      textDirection: technical ? TextDirection.ltr : null,
+      maxLines: technical ? 3 : null,
+      overflow: technical ? TextOverflow.ellipsis : null,
+      style: valueStyle,
+    );
+
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 7),
+      padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -1418,14 +1630,7 @@ class KeyValueRow extends StatelessWidget {
           const SizedBox(width: AppSpacing.sm),
           Expanded(
             flex: 6,
-            child: Text(
-              value,
-              textAlign: TextAlign.end,
-              style: context.texts.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-                color: valueColor,
-              ),
-            ),
+            child: technical ? SelectionArea(child: valueText) : valueText,
           ),
         ],
       ),
@@ -1506,8 +1711,7 @@ class _PagedListViewState<T> extends State<PagedListView<T>> {
           children: [
             SizedBox(
               height: MediaQuery.sizeOf(context).height * 0.55,
-              child: widget.empty ??
-                  EmptyState(title: context.tr('noData')),
+              child: widget.empty ?? EmptyState(title: context.tr('noData')),
             ),
           ],
         ),
@@ -1570,7 +1774,7 @@ class AppListGroup extends StatelessWidget {
             child: Text(
               title!.toUpperCase(),
               style: context.texts.labelSmall?.copyWith(
-                color: context.dukavo.textMuted,
+                color: context.dukavo.textSecondary,
                 fontWeight: FontWeight.w700,
                 letterSpacing: 0.8,
               ),
@@ -1621,19 +1825,18 @@ class AppNavigationBar extends StatelessWidget {
       decoration: BoxDecoration(
         color: colors.surface,
         border: Border(top: BorderSide(color: colors.border)),
-        boxShadow: colors.isDark
-            ? null
-            : [
-                BoxShadow(
-                  color: colors.shadow.withValues(alpha: 0.05),
-                  blurRadius: 18,
-                  offset: const Offset(0, -4),
-                  spreadRadius: -8,
-                ),
-              ],
+        boxShadow: [
+          BoxShadow(
+            color: colors.shadow.withValues(alpha: colors.isDark ? 0.32 : 0.06),
+            blurRadius: 18,
+            offset: const Offset(0, -4),
+            spreadRadius: -8,
+          ),
+        ],
       ),
       child: NavigationBar(
         selectedIndex: selectedIndex,
+        animationDuration: AppDurations.normal,
         onDestinationSelected: (index) {
           HapticFeedback.selectionClick();
           onDestinationSelected(index);

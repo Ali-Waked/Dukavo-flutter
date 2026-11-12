@@ -69,8 +69,7 @@ class AppTheme {
         actionsIconTheme: IconThemeData(color: tokens.textPrimary, size: 24),
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
-          statusBarIconBrightness:
-              isDark ? Brightness.light : Brightness.dark,
+          statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
           statusBarBrightness: isDark ? Brightness.dark : Brightness.light,
           systemNavigationBarColor: tokens.background,
           systemNavigationBarIconBrightness:
@@ -119,7 +118,8 @@ class AppTheme {
           minimumSize: const Size(0, AppSizes.buttonHeight),
           padding: const EdgeInsetsDirectional.symmetric(horizontal: 22),
           shape: RoundedRectangleBorder(borderRadius: AppRadius.input),
-          textStyle: textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w700),
+          textStyle:
+              textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w700),
           backgroundColor: scheme.primary,
           foregroundColor: scheme.onPrimary,
           disabledBackgroundColor: tokens.surfaceHigh,
@@ -134,7 +134,8 @@ class AppTheme {
           shape: RoundedRectangleBorder(borderRadius: AppRadius.input),
           side: BorderSide(color: tokens.border),
           foregroundColor: tokens.textPrimary,
-          textStyle: textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w700),
+          textStyle:
+              textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w700),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
@@ -142,7 +143,8 @@ class AppTheme {
           foregroundColor: scheme.primary,
           minimumSize: const Size(0, 44),
           padding: const EdgeInsetsDirectional.symmetric(horizontal: 14),
-          textStyle: textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w600),
+          textStyle:
+              textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w600),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppRadius.sm),
           ),
@@ -185,24 +187,64 @@ class AppTheme {
         backgroundColor: tokens.surface,
         surfaceTintColor: Colors.transparent,
         indicatorColor: scheme.primaryContainer,
-        indicatorShape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppRadius.sm),
-        ),
+        indicatorShape: const StadiumBorder(),
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+        labelPadding: const EdgeInsetsDirectional.only(top: AppSpacing.xxs),
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
           final selected = states.contains(WidgetState.selected);
           return textTheme.labelSmall?.copyWith(
-            fontWeight: selected ? FontWeight.w700 : FontWeight.w600,
+            fontSize: 12,
+            height: 1.34,
+            fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
             color: selected ? scheme.primary : tokens.textSecondary,
           );
         }),
         iconTheme: WidgetStateProperty.resolveWith((states) {
           final selected = states.contains(WidgetState.selected);
           return IconThemeData(
-            color: selected ? scheme.onPrimaryContainer : tokens.textSecondary,
-            size: 23,
+            color: selected ? scheme.primary : tokens.textSecondary,
+            size: 25,
           );
         }),
+      ),
+      segmentedButtonTheme: SegmentedButtonThemeData(
+        style: ButtonStyle(
+          minimumSize: const WidgetStatePropertyAll(Size(0, 44)),
+          textStyle: WidgetStatePropertyAll(
+            textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w600),
+          ),
+          backgroundColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.selected)) {
+              return scheme.primaryContainer;
+            }
+            return tokens.surfaceLow;
+          }),
+          foregroundColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.selected)) {
+              return scheme.onPrimaryContainer;
+            }
+            return tokens.textPrimary;
+          }),
+          iconColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.selected)) {
+              return scheme.onPrimaryContainer;
+            }
+            return tokens.textSecondary;
+          }),
+          side: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.selected)) {
+              return BorderSide(
+                color: scheme.primary.withValues(alpha: 0.45),
+              );
+            }
+            return BorderSide(color: tokens.border);
+          }),
+          shape: WidgetStatePropertyAll(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppRadius.sm),
+            ),
+          ),
+        ),
       ),
       bottomSheetTheme: BottomSheetThemeData(
         backgroundColor: tokens.surfaceLow,
@@ -290,8 +332,7 @@ class AppTheme {
           if (states.contains(WidgetState.selected)) return scheme.primary;
           return tokens.surfaceHighest;
         }),
-        trackOutlineColor:
-            WidgetStatePropertyAll(tokens.border),
+        trackOutlineColor: WidgetStatePropertyAll(tokens.border),
       ),
       checkboxTheme: CheckboxThemeData(
         fillColor: WidgetStateProperty.resolveWith((states) {
@@ -394,18 +435,16 @@ class AppTheme {
       brightness: brightness,
       primary: tokens.primary,
       onPrimary: isDark ? const Color(0xFF062B26) : Colors.white,
-      primaryContainer: isDark
-          ? const Color(0xFF134E4A)
-          : const Color(0xFFCCFBF1),
+      primaryContainer:
+          isDark ? const Color(0xFF134E4A) : const Color(0xFFCCFBF1),
       onPrimaryContainer:
           isDark ? const Color(0xFF99F6E4) : AppColors.primaryDark,
       secondary: tokens.accent,
       onSecondary: const Color(0xFF1A2E05),
-      secondaryContainer: isDark
-          ? const Color(0xFF3F4A1B)
-          : const Color(0xFFF1FBD3),
+      secondaryContainer:
+          isDark ? const Color(0xFF163C38) : const Color(0xFFDDF4F0),
       onSecondaryContainer:
-          isDark ? const Color(0xFFECFCCB) : const Color(0xFF365314),
+          isDark ? const Color(0xFFB8F5EC) : const Color(0xFF0B3B37),
       tertiary: isDark ? const Color(0xFF5EEAD4) : AppColors.primaryDark,
       onTertiary: isDark ? const Color(0xFF062B26) : Colors.white,
       tertiaryContainer:
@@ -415,7 +454,8 @@ class AppTheme {
       error: tokens.danger,
       onError: tokens.onDanger,
       errorContainer: tokens.dangerContainer,
-      onErrorContainer: isDark ? const Color(0xFFFECACA) : const Color(0xFF7F1D1D),
+      onErrorContainer:
+          isDark ? const Color(0xFFFECACA) : const Color(0xFF7F1D1D),
       surface: tokens.surface,
       onSurface: tokens.textPrimary,
       surfaceContainerLowest: tokens.background,
@@ -546,7 +586,8 @@ class _DukavoPageTransitionsBuilder extends PageTransitionsBuilder {
     Animation<double> secondaryAnimation,
     Widget child,
   ) {
-    if (route.isFirst || MediaQuery.maybeOf(context)?.disableAnimations == true) {
+    if (route.isFirst ||
+        MediaQuery.maybeOf(context)?.disableAnimations == true) {
       return child;
     }
 

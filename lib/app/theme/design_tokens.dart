@@ -48,7 +48,7 @@ class AppSizes {
   static const double buttonHeight = 52;
   static const double inputHeight = 52;
   static const double appBarHeight = 60;
-  static const double navBarHeight = 70;
+  static const double navBarHeight = 72;
   static const double logo = 28;
   static const double avatar = 44;
   static const double pageMaxWidth = 720;
@@ -83,7 +83,9 @@ class DukavoColors extends ThemeExtension<DukavoColors> {
     required this.border,
     required this.primary,
     required this.primaryPressed,
+    required this.primarySurface,
     required this.accent,
+    required this.chartLine,
     required this.success,
     required this.onSuccess,
     required this.successContainer,
@@ -117,7 +119,16 @@ class DukavoColors extends ThemeExtension<DukavoColors> {
   final Color border;
   final Color primary;
   final Color primaryPressed;
+
+  /// A teal-tinted elevated surface for accent actions (e.g. the notification
+  /// bell). It sits between [surfaceHigh] and [primary] so a primary icon keeps
+  /// its contrast in both themes.
+  final Color primarySurface;
   final Color accent;
+
+  /// The chart stroke. A softened mint/teal that stays legible on the teal
+  /// revenue hero without the neon-lime glare of [accent].
+  final Color chartLine;
   final Color success;
   final Color onSuccess;
   final Color successContainer;
@@ -151,7 +162,9 @@ class DukavoColors extends ThemeExtension<DukavoColors> {
     border: Color(0xFFE5ECE9),
     primary: Color(0xFF0F766E),
     primaryPressed: Color(0xFF115E59),
+    primarySurface: Color(0xFFE1F3F0),
     accent: Color(0xFFA3E635),
+    chartLine: Color(0xFFA7F3D0),
     success: Color(0xFF047857),
     onSuccess: Color(0xFFFFFFFF),
     successContainer: Color(0xFFD1FAE5),
@@ -187,7 +200,9 @@ class DukavoColors extends ThemeExtension<DukavoColors> {
     border: Color(0xFF2B3D36),
     primary: Color(0xFF2DD4BF),
     primaryPressed: Color(0xFF14B8A6),
+    primarySurface: Color(0xFF1C3B37),
     accent: Color(0xFFA3E635),
+    chartLine: Color(0xFF99F6E4),
     success: Color(0xFF34D399),
     onSuccess: Color(0xFF042F24),
     successContainer: Color(0xFF123B2E),
@@ -225,7 +240,9 @@ class DukavoColors extends ThemeExtension<DukavoColors> {
     Color? border,
     Color? primary,
     Color? primaryPressed,
+    Color? primarySurface,
     Color? accent,
+    Color? chartLine,
     Color? success,
     Color? onSuccess,
     Color? successContainer,
@@ -259,7 +276,9 @@ class DukavoColors extends ThemeExtension<DukavoColors> {
       border: border ?? this.border,
       primary: primary ?? this.primary,
       primaryPressed: primaryPressed ?? this.primaryPressed,
+      primarySurface: primarySurface ?? this.primarySurface,
       accent: accent ?? this.accent,
+      chartLine: chartLine ?? this.chartLine,
       success: success ?? this.success,
       onSuccess: onSuccess ?? this.onSuccess,
       successContainer: successContainer ?? this.successContainer,
@@ -298,7 +317,9 @@ class DukavoColors extends ThemeExtension<DukavoColors> {
       border: Color.lerp(border, other.border, t)!,
       primary: Color.lerp(primary, other.primary, t)!,
       primaryPressed: Color.lerp(primaryPressed, other.primaryPressed, t)!,
+      primarySurface: Color.lerp(primarySurface, other.primarySurface, t)!,
       accent: Color.lerp(accent, other.accent, t)!,
+      chartLine: Color.lerp(chartLine, other.chartLine, t)!,
       success: Color.lerp(success, other.success, t)!,
       onSuccess: Color.lerp(onSuccess, other.onSuccess, t)!,
       successContainer:
@@ -319,8 +340,7 @@ class DukavoColors extends ThemeExtension<DukavoColors> {
       info: Color.lerp(info, other.info, t)!,
       onInfo: Color.lerp(onInfo, other.onInfo, t)!,
       infoContainer: Color.lerp(infoContainer, other.infoContainer, t)!,
-      onInfoContainer:
-          Color.lerp(onInfoContainer, other.onInfoContainer, t)!,
+      onInfoContainer: Color.lerp(onInfoContainer, other.onInfoContainer, t)!,
       heroStart: Color.lerp(heroStart, other.heroStart, t)!,
       heroEnd: Color.lerp(heroEnd, other.heroEnd, t)!,
       shadow: Color.lerp(shadow, other.shadow, t)!,

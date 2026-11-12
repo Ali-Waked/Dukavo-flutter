@@ -151,20 +151,11 @@ class _RolePermissionsScreenState extends ConsumerState<RolePermissionsScreen> {
                 padding: AppSpacing.page,
                 children: [
                   if (_error != null) ...[
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: theme.colorScheme.errorContainer,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        _error!,
-                        style: TextStyle(
-                          color: theme.colorScheme.onErrorContainer,
-                        ),
-                      ),
+                    StatusBanner(
+                      tone: StatusBannerTone.error,
+                      message: _error!,
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: AppSpacing.sm),
                   ],
                   Row(
                     children: [

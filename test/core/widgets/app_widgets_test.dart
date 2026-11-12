@@ -95,4 +95,101 @@ void main() {
     expect(find.text('Grand total'), findsOneWidget);
     expect(find.text('AED 195.00'), findsOneWidget);
   });
+
+  testWidgets('KeyValueRow technical values stay LTR in RTL layouts',
+      (tester) async {
+    await pumpTestApp(
+      tester,
+      const Scaffold(
+        body: Directionality(
+          textDirection: TextDirection.rtl,
+          child: KeyValueRow(
+            label: 'Phone number ID',
+            value: 'DEMO_PHONE_NUMBER_ID',
+            technical: true,
+          ),
+        ),
+      ),
+    );
+
+    final value = tester.widget<Text>(find.text('DEMO_PHONE_NUMBER_ID'));
+    expect(value.textDirection, TextDirection.ltr);
+  });
+
+  testWidgets('StatusBanner renders its message and tone icon', (tester) async {
+    await pumpTestApp(
+      tester,
+      const Scaffold(
+        body: StatusBanner(
+          message: 'Could not load the account.',
+          tone: StatusBannerTone.error,
+        ),
+      ),
+    );
+
+    expect(find.text('Could not load the account.'), findsOneWidget);
+    expect(find.byIcon(Icons.error_outline_rounded), findsOneWidget);
+  });
+
+  testWidgets('StatusBanner invokes its action', (tester) async {
+    var tapped = 0;
+
+    await pumpTestApp(
+      tester,
+      Scaffold(
+        body: StatusBanner(
+          message: 'You are offline.',
+          tone: StatusBannerTone.warning,
+          actionLabel: 'Retry',
+          onAction: () => tapped++,
+        ),
+      ),
+    );
+
+    await tester.tap(find.text('Retry'));
+    await tester.pumpAndSettle();
+
+    expect(tapped, 1);
+  });
+
+  testWidgets('NotificationBellButton keeps a 48dp target and unread dot',
+      (tester) async {
+    var tapped = 0;
+
+    await pumpTestApp(
+      tester,
+      Scaffold(
+        body: Center(
+          child: NotificationBellButton(
+            onPressed: () => tapped++,
+            tooltip: 'Notifications',
+            unreadCount: 2,
+          ),
+        ),
+      ),
+    );
+
+    expect(find.byKey(const ValueKey('notificationUnreadDot')), findsOneWidget);
+    expect(
+      tester.getSize(find.byType(NotificationBellButton)),
+      const Size(48, 48),
+    );
+
+    await tester.tap(find.byType(NotificationBellButton));
+    await tester.pump();
+
+    expect(tapped, 1);
+  });
+
+  testWidgets('NotificationBellButton hides the dot when nothing is unread',
+      (tester) async {
+    await pumpTestApp(
+      tester,
+      Scaffold(
+        body: Center(child: NotificationBellButton(onPressed: () {})),
+      ),
+    );
+
+    expect(find.byKey(const ValueKey('notificationUnreadDot')), findsNothing);
+  });
 }

@@ -289,23 +289,23 @@ class _WorkspaceFormState extends ConsumerState<_WorkspaceForm> {
                   ? context.tr('requiredField')
                   : null,
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: AppSpacing.sm),
             AppTextField(
               controller: _email,
               label: context.tr('contactEmail'),
               enabled: widget.canManage,
               keyboardType: TextInputType.emailAddress,
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: AppSpacing.sm),
             AppTextField(
               controller: _phone,
               label: context.tr('phone'),
               enabled: widget.canManage,
               keyboardType: TextInputType.phone,
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: AppSpacing.sm),
             _WorkspaceCurrencyField(currency: widget.settings.currency),
-            const SizedBox(height: 10),
+            const SizedBox(height: AppSpacing.sm),
             DropdownButtonFormField<String>(
               // ignore: deprecated_member_use
               value: _timezone,
@@ -318,7 +318,7 @@ class _WorkspaceFormState extends ConsumerState<_WorkspaceForm> {
                   ? (value) => setState(() => _timezone = value ?? _timezone)
                   : null,
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: AppSpacing.sm),
             DropdownButtonFormField<String>(
               // ignore: deprecated_member_use
               value: _locale,
@@ -338,7 +338,7 @@ class _WorkspaceFormState extends ConsumerState<_WorkspaceForm> {
                   : null,
             ),
             if (widget.canManage) ...[
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.md),
               AppButton(
                 label: context.tr('saveChanges'),
                 expand: true,
@@ -485,7 +485,7 @@ class _NotificationSwitchesState extends ConsumerState<_NotificationSwitches> {
               () => _draft = _draft.copyWithEvent('email', event, value),
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.xs),
           _ChannelGroup(
             channel: 'push',
             title: context.tr('pushNotifications'),
@@ -496,7 +496,7 @@ class _NotificationSwitchesState extends ConsumerState<_NotificationSwitches> {
               () => _draft = _draft.copyWithEvent('push', event, value),
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.xs),
           _ChannelGroup(
             channel: 'in_app',
             title: context.tr('inAppNotifications'),
@@ -507,7 +507,7 @@ class _NotificationSwitchesState extends ConsumerState<_NotificationSwitches> {
               () => _draft = _draft.copyWithEvent('in_app', event, value),
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.xs),
           _ChannelGroup(
             channel: 'whatsapp',
             title: context.tr('whatsappNotifications'),
@@ -524,7 +524,7 @@ class _NotificationSwitchesState extends ConsumerState<_NotificationSwitches> {
               () => _draft = _draft.copyWithEvent('whatsapp', event, value),
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.sm),
           AppButton(
             label: context.tr('savePreferences'),
             expand: true,

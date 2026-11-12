@@ -89,8 +89,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                             height: 52,
                             decoration: BoxDecoration(
                               color: context.scheme.primaryContainer,
-                              borderRadius:
-                                  BorderRadius.circular(AppRadius.md),
+                              borderRadius: BorderRadius.circular(AppRadius.md),
                             ),
                             child: Icon(
                               Icons.lock_reset_rounded,
@@ -117,9 +116,9 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                           ),
                           const SizedBox(height: AppSpacing.xl),
                           if (_error != null) ...[
-                            InfoBanner(
+                            StatusBanner(
                               message: _error!,
-                              tone: InfoBannerTone.danger,
+                              tone: StatusBannerTone.error,
                               icon: Icons.error_outline_rounded,
                             ),
                             const SizedBox(height: AppSpacing.md),

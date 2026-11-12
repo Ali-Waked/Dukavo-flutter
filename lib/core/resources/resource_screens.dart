@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../app/localization/app_localizations.dart';
 import '../../app/router/route_paths.dart';
+import '../../app/theme/design_tokens.dart';
 import '../../features/auth/application/auth_controller.dart';
 import '../api/api_client.dart';
 import '../api/api_exception.dart';
@@ -292,6 +293,7 @@ class _ResourceDetailScreenState extends ConsumerState<ResourceDetailScreen> {
   JsonResource? _resource;
   bool _loading = false;
   bool _acting = false;
+  String? _runningAction;
   String? _error;
 
   @override
@@ -387,6 +389,7 @@ class _ResourceDetailScreenState extends ConsumerState<ResourceDetailScreen> {
                               KeyValueRow(
                                 label: context.tr(field.labelKey),
                                 value: _display(context, field, resource),
+                                technical: _isTechnicalField(field.key),
                               ),
                           ],
                         ),
@@ -400,12 +403,10 @@ class _ResourceDetailScreenState extends ConsumerState<ResourceDetailScreen> {
                         _actions(context, resource),
                       ],
                       if (_error != null) ...[
-                        const SizedBox(height: 12),
-                        Text(
-                          _error!,
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.error,
-                          ),
+                        const SizedBox(height: AppSpacing.sm),
+                        StatusBanner(
+                          tone: StatusBannerTone.error,
+                          message: _error!,
                         ),
                       ],
                     ],
@@ -463,20 +464,27 @@ class _ResourceDetailScreenState extends ConsumerState<ResourceDetailScreen> {
   }
 
   Widget _actions(BuildContext context, JsonResource resource) {
-    return Wrap(
-      spacing: 10,
-      runSpacing: 10,
+    final visible = widget.spec.actions
+        .where((action) => action.visible?.call(resource) ?? true)
+        .toList();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        for (final action in widget.spec.actions)
-          if (action.visible?.call(resource) ?? true)
-            AppButton(
-              label: context.tr(action.labelKey),
-              icon: action.icon,
-              variant: action.destructive
-                  ? AppButtonVariant.outlined
-                  : AppButtonVariant.filled,
-              onPressed: _acting ? null : () => _run(action, resource),
-            ),
+        for (var index = 0; index < visible.length; index++) ...[
+          if (index > 0) const SizedBox(height: AppSpacing.sm),
+          AppButton(
+            label: context.tr(visible[index].labelKey),
+            icon: visible[index].icon,
+            variant: visible[index].destructive
+                ? AppButtonVariant.outlined
+                : AppButtonVariant.filled,
+            expand: true,
+            height: AppSizes.buttonHeight,
+            loading: _acting && _runningAction == visible[index].labelKey,
+            onPressed: _acting ? null : () => _run(visible[index], resource),
+          ),
+        ],
       ],
     );
   }
@@ -492,7 +500,10 @@ class _ResourceDetailScreenState extends ConsumerState<ResourceDetailScreen> {
       );
       if (!confirmed) return;
     }
-    setState(() => _acting = true);
+    setState(() {
+      _acting = true;
+      _runningAction = action.labelKey;
+    });
     try {
       final api = ref.read(apiClientProvider);
       final path = action.path(resource);
@@ -518,7 +529,12 @@ class _ResourceDetailScreenState extends ConsumerState<ResourceDetailScreen> {
         isError: true,
       );
     } finally {
-      if (mounted) setState(() => _acting = false);
+      if (mounted) {
+        setState(() {
+          _acting = false;
+          _runningAction = null;
+        });
+      }
     }
   }
 
@@ -679,20 +695,11 @@ class _ResourceFormScreenState extends ConsumerState<ResourceFormScreen> {
                 padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
                 children: [
                   if (_error != null) ...[
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.errorContainer,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        _error!,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onErrorContainer,
-                        ),
-                      ),
+                    StatusBanner(
+                      tone: StatusBannerTone.error,
+                      message: _error!,
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: AppSpacing.sm),
                   ],
                   if (spec.extraForm != null) ...[
                     spec.extraForm!(context),
@@ -875,6 +882,16 @@ class _ResourceFormScreenState extends ConsumerState<ResourceFormScreen> {
     }
     return body;
   }
+}
+
+/// Fields whose values are opaque identifiers rather than human copy.
+bool _isTechnicalField(String key) {
+  return const <String>{
+    'phone_number_id',
+    'business_account_id',
+    'webhook_verify_token',
+    'access_token',
+  }.contains(key);
 }
 
 String _display(

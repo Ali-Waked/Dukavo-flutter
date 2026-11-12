@@ -185,9 +185,9 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
                           ),
                           if (incomplete) ...[
                             const SizedBox(height: AppSpacing.md),
-                            InfoBanner(
+                            StatusBanner(
                               message: context.tr('resetTokenMissing'),
-                              tone: InfoBannerTone.warning,
+                              tone: StatusBannerTone.warning,
                             ),
                           ],
                           const SizedBox(height: AppSpacing.lg),
@@ -250,9 +250,9 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
                           ),
                           if (_error != null) ...[
                             const SizedBox(height: AppSpacing.md),
-                            InfoBanner(
+                            StatusBanner(
                               message: _error!,
-                              tone: InfoBannerTone.danger,
+                              tone: StatusBannerTone.error,
                             ),
                           ],
                           const SizedBox(height: AppSpacing.lg),

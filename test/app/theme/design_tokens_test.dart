@@ -47,6 +47,45 @@ void main() {
           greaterThanOrEqualTo(4.5),
         );
       });
+
+      test('$name notification bell icon', () {
+        expect(
+          _contrast(colors.primary, colors.primarySurface),
+          greaterThanOrEqualTo(4.5),
+        );
+      });
+
+      test('$name bottom navigation labels', () {
+        expect(
+          _contrast(colors.primary, colors.surface),
+          greaterThanOrEqualTo(4.5),
+        );
+        expect(
+          _contrast(colors.textSecondary, colors.surface),
+          greaterThanOrEqualTo(4.5),
+        );
+      });
+    }
+  });
+
+  group('revenue chart line meets WCAG AA for graphics', () {
+    for (final entry in {
+      'light': DukavoColors.light,
+      'dark': DukavoColors.dark,
+    }.entries) {
+      final name = entry.key;
+      final colors = entry.value;
+
+      test('$name chart line over the hero gradient', () {
+        expect(
+          _contrast(colors.chartLine, colors.heroStart),
+          greaterThanOrEqualTo(3.0),
+        );
+        expect(
+          _contrast(colors.chartLine, colors.heroEnd),
+          greaterThanOrEqualTo(3.0),
+        );
+      });
     }
   });
 }
